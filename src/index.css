@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+/* cutom css add here */
+.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  transition: 0.3s ease;
+}
+.inactive {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-100%);
+  transition: 0.3s ease;
+}
+body {
+  font-family: "Poppins", sans-serif;
+}
+.poppins {
+  font-family: "Poppins", sans-serif;
+}
+.roboto {
+  font-family: "Roboto", sans-serif;
+}
+.container {
+  width: 96%;
+  margin: 0 auto;
+}
+.primary-btn {
+  background-color: #96c94b;
+  color: black;
+  border-radius: 5px;
+  padding: 10px 20px;
+  transition: ease-in 0.2s;
+  cursor: pointer;
+}
+.primary-btn:hover {
+  background-color: #96c94b;
+}
+.secondary-btn {
+  background-color: #cf3832;
+  color: #ffffff;
+  border-radius: 5px;
+  padding: 10px 20px;
+  transition: ease-in 0.1s;
+}
+.secondary-btn:hover {
+  background-color: #bb2d28;
+}
+.hover-effect {
+  position: relative;
+  transform: perspective(500px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1);
+  transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+  will-change: transform;
+  box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.041);
+}
+
+.hover-effect:hover {
+  transform: perspective(1500px) rotateX(10deg) rotateY(-5deg)
+    scale3d(1.05, 1.05, 1.05);
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.11);
+}
+
+/* toogle */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 0px;
+  background-color: #96c94b;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #cbf38b;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #cbf38b;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(20px);
+  -ms-transform: translateX(20px);
+  transform: translateX(20px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+@keyframes zoomOut {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.zoom-animation {
+  animation: zoomOut 0.3s ease forwards;
+}
+.my-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.my-table th,
+.my-table td {
+  text-align: left;
+  padding: 15px 20px;
+  font-weight: 500;
+}
+.my-table tbody tr {
+  border-bottom: 1px solid #808080;
+}
+.my-table tbody tr:last-child {
+  border-bottom: none;
+}
+/* toogle */
+
+input[type="file"] {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 6px;
+  font-family: "Poppins", sans-serif;
+}
+
+input[type="file"]::file-selector-button {
+  background-color: #96c94b;
+  color: black;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 400;
+  transition: background-color 0.2s ease-in-out;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background-color: #7bb53d;
+}
+
+.oboardTable tr:nth-child(even) {
+  background-color: #f0f0f0;
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    width: 1200px;
+    margin: 0 auto;
+  }
+}
