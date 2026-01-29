@@ -31,7 +31,7 @@ function EchoRequest({
         }}
       >
         <i className="fa-solid fa-link text-xs md:text-md"></i>
-        <p className="text-xs md:text-base">Echo Request</p>
+        <p className="text-xs md:text-base">ECHO (Requests)</p>
       </button>
       {showEcho && <CreateEcho isShow={showEcho} setShow={setShowEcho} />}
     </>

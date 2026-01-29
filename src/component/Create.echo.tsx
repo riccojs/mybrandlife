@@ -3,8 +3,6 @@ import { useCreateEchoMutation } from "../redux/features/echo/echoApi";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import toast from "react-hot-toast";
 import { useOnboard } from "../hook/useOnboard";
-import useGetCity from "../hook/useGetCity";
-import SelectComponent from "./Select.component";
 import { track } from "@plausible-analytics/tracker";
 
 interface DataTypes {
@@ -12,7 +10,7 @@ interface DataTypes {
   setShow: React.Dispatch<SetStateAction<boolean>>;
 }
 
-const tipData = ["1", "3", "5", "10", "15", "20", "custom"];
+const tipData = ["0", "1", "2", "3", "5", "10", "15", "20", "custom"];
 
 function CreateEcho({ isShow, setShow }: DataTypes) {
   const { onboard } = useOnboard();
@@ -32,14 +30,8 @@ function CreateEcho({ isShow, setShow }: DataTypes) {
 
   const { name, email, message, shoutOut, city, tip } = echo || {};
 
-  const getAllCity = useGetCity();
-  const getDatas = getAllCity?.map((item: { name: string }) => ({
-    key: item.name,
-    value: item.name,
-  }));
-
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setEcho({
@@ -50,10 +42,6 @@ function CreateEcho({ isShow, setShow }: DataTypes) {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!echo.tip) {
-      toast.error("Select a tip!");
-      return;
-    }
     track("ButtonClick", {
       props: {
         buttonName: "Create Echo Request",
@@ -65,7 +53,9 @@ function CreateEcho({ isShow, setShow }: DataTypes) {
       .unwrap()
       .then((res) => {
         toast.success(res.message);
-        window.location.href = res.pageUrl;
+        if (res.pageUrl) {
+          window.location.href = res.pageUrl;
+        }
         setShow(false);
         setEcho({
           name: "",
@@ -119,31 +109,42 @@ function CreateEcho({ isShow, setShow }: DataTypes) {
               className="bg-[#F3F3F3] border border-gray-300 focus:outline focus:outline-[#96c94b] focus:border p-3 w-full rounded-lg text-normal"
               placeholder="Enter your email"
             />
-            <SelectComponent
-              handleChange={(item) =>
-                setEcho((prev) => ({ ...prev, city: item }))
-              }
-              datas={getDatas}
+            <input
+              type="text"
+              name="city"
+              onChange={handleChange}
               value={city}
-              label="Select City"
-              color="#F3F3F3"
+              className="bg-[#F3F3F3] border border-gray-300 focus:outline focus:outline-[#96c94b] focus:border p-3 w-full rounded-lg text-normal"
+              placeholder="Enter your city (optional)"
             />
-            <textarea
-              name="message"
-              value={message}
-              onChange={handleChange}
-              required
-              className="bg-[#F3F3F3] border border-gray-300 focus:outline focus:outline-[#96c94b] focus:border p-2 w-full rounded-md text-normal"
-              placeholder="Enter your message"
-            ></textarea>
-            <textarea
-              name="shoutOut"
-              value={shoutOut}
-              onChange={handleChange}
-              required
-              className="bg-[#F3F3F3] border border-gray-300 focus:outline focus:outline-[#96c94b] focus:border p-2 w-full rounded-md text-normal"
-              placeholder="Enter your shoutOut"
-            ></textarea>
+
+            <div>
+              <textarea
+                name="message"
+                value={message}
+                onChange={handleChange}
+                required
+                maxLength={120}
+                className="bg-[#F3F3F3] border border-gray-300 focus:outline focus:outline-[#96c94b] focus:border p-2 w-full rounded-md text-normal"
+                placeholder="Enter your message"
+              ></textarea>
+              <p className="text-sm font-normal text-gray-400">
+                Max length 120 characters
+              </p>
+            </div>
+            <div>
+              <textarea
+                name="shoutOut"
+                value={shoutOut}
+                onChange={handleChange}
+                maxLength={120}
+                className="bg-[#F3F3F3] border border-gray-300 focus:outline focus:outline-[#96c94b] focus:border p-2 w-full rounded-md text-normal"
+                placeholder="Enter your shoutOut (optional)"
+              ></textarea>
+              <p className="text-sm font-normal text-gray-400">
+                Max length 120 characters
+              </p>
+            </div>
             <div>
               <label htmlFor="" className="text-normal font-normal text-black">
                 Select Your Tip
@@ -160,7 +161,7 @@ function CreateEcho({ isShow, setShow }: DataTypes) {
                       }
                       setSelected(item);
                     }}
-                    className={`px-2 md:px-6 w-full py-2 text-sm md:text-md md:py-3 border-gray-200 cursor-pointer ${
+                    className={`px-2 md:px-4 w-full py-2 text-sm md:text-md md:py-3 border-gray-200 cursor-pointer ${
                       index === tipData.length - 1 ? "border-r-0" : "border-r"
                     } ${item === selected ? "bg-[#F3F3F3]" : "bg-[#ffffff]"}`}
                   >
@@ -178,6 +179,13 @@ function CreateEcho({ isShow, setShow }: DataTypes) {
                   className="bg-[#F3F3F3] border mt-2 border-gray-300 focus:outline focus:outline-[#96c94b] focus:border p-2 w-full rounded-md text-normal"
                   placeholder="Enter your tip"
                 />
+              )}
+              {Number(tip) > 0 && (
+                <p className="text-black mt-3 bg-amber-100 border-l-3 border-amber-400 p-3 rounded-md text-sm font-normal">
+                  The tip must be processed through the secure payment gateway,
+                  as you have chosen to provide a ${tip} tip. Please complete
+                  the payment to ensure your tip is successfully sent.
+                </p>
               )}
             </div>
             <button

@@ -2,13 +2,49 @@ import { Link, useParams } from "react-router";
 import ScrollBar from "../component/Scroll.bar";
 import QRCode from "react-qr-code";
 import { useOnboard } from "../hook/useOnboard";
+import { useRef } from "react";
+import { track } from "@plausible-analytics/tracker";
 
 function RequestTv() {
   const params = useParams();
-  const landerName = params.name;
+  const landerName = params.name ?? "";
   const { onboard } = useOnboard();
+  const qrRef = useRef<HTMLDivElement | null>(null);
   const { tagLine, logo, services, funnySaying, portrait } = onboard || {};
 
+  const handleDownload = () => {
+    const svg = qrRef.current?.querySelector("svg");
+    if (!svg) return;
+
+    const serializer = new XMLSerializer();
+    const svgStr = serializer.serializeToString(svg);
+
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+
+    const blob = new Blob([svgStr], {
+      type: "image/svg+xml;charset=utf-8",
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx?.drawImage(img, 0, 0);
+
+      URL.revokeObjectURL(url);
+
+      const pngUrl = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = pngUrl;
+      link.download = "qr-code.png";
+      link.click();
+    };
+
+    img.src = url;
+  };
   return (
     <section className="bg-black w-full h-screen">
       <div className="flex h-full">
@@ -63,11 +99,28 @@ function RequestTv() {
               </ul>
             </div>
           </div>
-          <div className="bg-amber-50 p-5 w-full flex justify-center items-center">
-            <QRCode
-              value={`https://${window.location.hostname}/${landerName}`}
-              size={230}
-            />
+          <div className="bg-amber-50 p-5 w-full flex flex-col justify-center items-center">
+            <div ref={qrRef}>
+              <QRCode
+                value={`https://${window.location.hostname}/${landerName}`}
+                size={150}
+              />
+            </div>
+            <button
+              onClick={() => {
+                track("ButtonClick", {
+                  props: {
+                    buttonName: "Download QR Code",
+                    lander: landerName,
+                    currentDomain: window.location.hostname,
+                  },
+                });
+                handleDownload();
+              }}
+              className="text-xl mt-3 cursor-pointer"
+            >
+              Download
+            </button>
           </div>
         </div>
         <ScrollBar />

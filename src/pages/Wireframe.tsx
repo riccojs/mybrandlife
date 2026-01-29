@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { useOnboard } from "../hook/useOnboard";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import SendInfo from "../component/Send.info";
 import Spiner from "../component/Spiner";
 import EchoRequest from "../component/Echo.request";
@@ -10,6 +10,7 @@ import { useCheckEchoConnectionQuery } from "../redux/features/echo/echoApi";
 import { usePlausible } from "../hook/usePlausible";
 import { getSocialIcon } from "../utils/socialIcons";
 import { motion } from "framer-motion";
+import QRCode from "react-qr-code";
 
 interface OnboardType {
   id: string;
@@ -26,6 +27,7 @@ interface OnboardType {
   merchendiseStatus: boolean;
   buttonSet: ButtonsType[];
   services: ServiceType[];
+  customPlatfrom: { name: string; url: string; id: string }[];
   user: UserType;
   layout: string;
   officialColor: string;
@@ -51,6 +53,42 @@ interface UserType {
 }
 
 function Wireframe() {
+  const qrRef = useRef<HTMLDivElement | null>(null);
+
+  const handleDownload = () => {
+    const svg = qrRef.current?.querySelector("svg");
+    if (!svg) return;
+
+    const serializer = new XMLSerializer();
+    const svgStr = serializer.serializeToString(svg);
+
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+
+    const blob = new Blob([svgStr], {
+      type: "image/svg+xml;charset=utf-8",
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx?.drawImage(img, 0, 0);
+
+      URL.revokeObjectURL(url);
+
+      const pngUrl = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = pngUrl;
+      link.download = "qr-code.png";
+      link.click();
+    };
+
+    img.src = url;
+  };
+
   const { onboard, isLoading } = useOnboard() as {
     onboard: OnboardType;
     isLoading: boolean;
@@ -78,6 +116,7 @@ function Wireframe() {
     officialColor,
     enableEvent,
     merchendiseStatus,
+    customPlatfrom,
   } = onboard || {};
 
   const {
@@ -114,8 +153,8 @@ function Wireframe() {
                       layout === "CENTER"
                         ? "flex-col justify-center items-center gap-5"
                         : layout === "RIGHT"
-                        ? "flex-row-reverse justify-between items-center"
-                        : "justify-between items-center"
+                          ? "flex-row-reverse justify-between items-center"
+                          : "justify-between items-center"
                     }`}
           >
             <a href={`/${landerName}`}>
@@ -150,10 +189,10 @@ function Wireframe() {
                     layout === "CENTER"
                       ? "items-center"
                       : layout === "LEFT"
-                      ? "items-end"
-                      : layout === "RIGHT"
-                      ? "items-start"
-                      : ""
+                        ? "items-end"
+                        : layout === "RIGHT"
+                          ? "items-start"
+                          : ""
                   }`}
                 >
                   {services?.map((item) => (
@@ -252,20 +291,13 @@ function Wireframe() {
               </p>
             </div>
             <div className="my-3">
-              <div className="flex gap-3 items-center mb-3">
-                {enableEcho && data?.ready && data?.connected && (
-                  <EchoRequest
-                    officialColor={officialColor}
-                    landerName={landerName}
-                  />
-                )}
-                {enableEvent && calendarId && (
-                  <BrandbookRequest
-                    officialColor={officialColor}
-                    landerName={landerName}
-                  />
-                )}
-              </div>
+              {enableEvent && calendarId && (
+                <BrandbookRequest
+                  officialColor={officialColor}
+                  landerName={landerName}
+                />
+              )}
+
               {merchendiseUrl && merchendiseStatus && (
                 <button
                   className="flex justify-center px-4 gap-2 items-center w-full h-8 md:h-12 
@@ -294,28 +326,43 @@ function Wireframe() {
                   </a>
                 </button>
               )}
-              <button
-                className="flex justify-center px-4 gap-2 items-center w-full h-8 md:h-12 
+
+              {packageName === "gold" && (
+                <div className="flex gap-3">
+                  <button
+                    className="flex justify-center px-4 gap-2 items-center w-full h-8 md:h-12 
              rounded-lg hover:scale-105 duration-300 transition-all cursor-pointer 
-             border border-white mt-3 hover:shadow-[0_0_14px_rgba(255,255,255,0.90)]"
-                style={{
-                  backgroundImage: `linear-gradient(to right, ${officialColor}, #fff)`,
-                }}
-                onClick={() =>
-                  track("ButtonClick", {
-                    props: {
-                      buttonName: "View Live Board",
-                      lander: landerName,
-                      currentDomain: window.location.hostname,
-                    },
-                  })
-                }
-              >
-                <i className="fa-regular fa-circle-play text-xl"></i>
-                <Link to={`/${landerName}/request_tv`} className="capitalize">
-                  {landerName} Live Board
-                </Link>
-              </button>
+             border border-white hover:shadow-[0_0_14px_rgba(255,255,255,0.90)]"
+                    style={{
+                      backgroundImage: `linear-gradient(to right, ${officialColor}, #fff)`,
+                    }}
+                    onClick={() =>
+                      track("ButtonClick", {
+                        props: {
+                          buttonName: "View Live Board",
+                          lander: landerName,
+                          currentDomain: window.location.hostname,
+                        },
+                      })
+                    }
+                  >
+                    <i className="fa-regular fa-circle-play text-xl"></i>
+                    <Link
+                      to={`/${landerName}/request_tv`}
+                      className="capitalize"
+                    >
+                      ECHO (Live Board)
+                    </Link>
+                  </button>
+                  {enableEcho && data?.ready && data?.connected && (
+                    <EchoRequest
+                      officialColor={officialColor}
+                      landerName={landerName}
+                    />
+                  )}
+                </div>
+              )}
+
               <div className="grid grid-cols-2 gap-2 md:gap-3 mt-2 md:mt-3">
                 {buttonSet?.map((item) => {
                   const { id, name, url } = item;
@@ -347,6 +394,41 @@ function Wireframe() {
                       }}
                     >
                       {Icon && <Icon className="text-lg md:text-2xl" />}
+                      <span className="text-md">{name}</span>
+                    </motion.a>
+                  );
+                })}
+              </div>
+              <div className="grid grid-cols-2 gap-2 md:gap-3 mt-2 md:mt-3">
+                {customPlatfrom?.map((item) => {
+                  const { id, name, url } = item;
+
+                  return (
+                    <motion.a
+                      key={id}
+                      href={url}
+                      target="_blank"
+                      onClick={() =>
+                        track("ButtonClick", {
+                          props: {
+                            buttonName: `View ${name}`,
+                            lander: landerName,
+                            currentDomain: window.location.hostname,
+                          },
+                        })
+                      }
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="flex justify-center px-4 gap-2 items-center w-full h-8 md:h-12
+                 rounded-lg cursor-pointer border border-white hover:shadow-[0_0_14px_rgba(255,255,255,0.90)]"
+                      style={{
+                        backgroundImage: `linear-gradient(to right, ${officialColor}, #fff)`,
+                      }}
+                    >
+                      <i className="fa-solid fa-link"></i>
                       <span className="text-md">{name}</span>
                     </motion.a>
                   );
@@ -450,6 +532,32 @@ function Wireframe() {
                 </button>
               </div>
             )}
+          </div>
+          <div className="bg-amber-50 m-auto mt-5 overflow-hidden w-24 p-2 h-24 min-w-24 flex flex-col rounded-xl justify-center items-center">
+            <div
+              ref={qrRef}
+              className="bg-amber-50 overflow-hidden w-24 p-2 h-24 min-w-24 flex flex-col gap-2 rounded-xl justify-center items-center"
+            >
+              <QRCode
+                value={`https://${window.location.hostname}/${landerName}`}
+              />
+            </div>
+
+            <button
+              onClick={() => {
+                track("ButtonClick", {
+                  props: {
+                    buttonName: "Download QR Code",
+                    lander: landerName,
+                    currentDomain: window.location.hostname,
+                  },
+                });
+                handleDownload();
+              }}
+              className="text-xs cursor-pointer"
+            >
+              Download
+            </button>
           </div>
         </div>
       </div>
