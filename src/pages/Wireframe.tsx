@@ -398,8 +398,6 @@ function Wireframe() {
                     </motion.a>
                   );
                 })}
-              </div>
-              <div className="grid grid-cols-2 gap-2 md:gap-3 mt-2 md:mt-3">
                 {customPlatfrom?.map((item) => {
                   const { id, name, url } = item;
 

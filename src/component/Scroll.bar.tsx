@@ -30,7 +30,7 @@ function ScrollBar() {
     if (data?.echo) {
       const sorted = [...data.echo].sort(
         (a, b) =>
-          new Date(b.create_at).getTime() - new Date(a.create_at).getTime()
+          new Date(b.create_at).getTime() - new Date(a.create_at).getTime(),
       );
       setEchos(sorted);
     }
@@ -44,12 +44,12 @@ function ScrollBar() {
     });
     socket.on("CancelEcho", (cancelEcho: EchoType) => {
       setEchos((prev: EchoType[]) =>
-        prev.filter((echo) => echo.id !== cancelEcho.id)
+        prev.filter((echo) => echo.id !== cancelEcho.id),
       );
     });
     socket.on("rejectEcho", (rejectEcho: EchoType) => {
       setEchos((prev: EchoType[]) =>
-        prev.filter((echo) => echo.id !== rejectEcho.id)
+        prev.filter((echo) => echo.id !== rejectEcho.id),
       );
     });
     return () => {
@@ -94,8 +94,8 @@ function ScrollBar() {
         tip === 0 || (tip >= 1 && tip <= 5)
           ? "text-red-500"
           : tip >= 6 && tip <= 19
-          ? "text-yellow-500"
-          : "text-green-500";
+            ? "text-yellow-500"
+            : "text-green-500";
 
       return (
         <tr key={id} className={tipColor}>
