@@ -25,13 +25,13 @@ function BrandbookRequest({
         }}
         className="flex justify-center px-4 gap-2 items-center w-full h-8 md:h-12 
              rounded-lg hover:scale-105 duration-300 transition-all cursor-pointer 
-             border border-white hover:shadow-[0_0_14px_rgba(255,255,255,0.90)]"
+             border border-white hover:shadow-[0_0_14px_rgba(255,255,255,0.90)] mb-3"
         style={{
           backgroundImage: `linear-gradient(to right, ${officialColor}, #fff)`,
         }}
       >
         <i className="fa-regular fa-calendar-days text-xs md:text-md"></i>
-        <p className="text-xs md:text-base">Brandbook</p>
+        <p className="text-xs md:text-base">BrandBook</p>
       </button>
       {isshow && <CreateBrandbook isShow={isshow} setShow={setIsshow} />}
     </>

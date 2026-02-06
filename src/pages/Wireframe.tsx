@@ -327,8 +327,8 @@ function Wireframe() {
                 </button>
               )}
 
-              {packageName === "gold" && (
-                <div className="flex gap-3">
+              {packageName === "gold" && enableEcho && (
+                <div className="flex gap-3 mt-3">
                   <button
                     className="flex justify-center px-4 gap-2 items-center w-full h-8 md:h-12 
              rounded-lg hover:scale-105 duration-300 transition-all cursor-pointer 
