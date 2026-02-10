@@ -6,6 +6,9 @@ export const onboardApi = apiSlice.injectEndpoints({
       query: (landerName) => ({
         url: `/api/echo/lander?landerName=${landerName}`,
         method: "GET",
+        headers: {
+          "x-api-key": import.meta.env.VITE_APP_PUBLIC_API_KEY,
+        },
       }),
       providesTags: ["event"],
     }),
@@ -13,6 +16,9 @@ export const onboardApi = apiSlice.injectEndpoints({
       query: (id) => ({
         url: `/api/echo/${id}`,
         method: "GET",
+        headers: {
+          "x-api-key": import.meta.env.VITE_APP_PUBLIC_API_KEY,
+        },
       }),
       providesTags: ["echo"],
     }),
@@ -42,6 +48,9 @@ export const onboardApi = apiSlice.injectEndpoints({
         url: `/api/echo/${id}`,
         method: "POST",
         body: echo,
+        headers: {
+          "x-api-key": import.meta.env.VITE_APP_PUBLIC_API_KEY,
+        },
       }),
       invalidatesTags: ["echo"],
     }),
@@ -49,6 +58,9 @@ export const onboardApi = apiSlice.injectEndpoints({
       query: (id) => ({
         url: `/api/echo/${id}`,
         method: "DELETE",
+        headers: {
+          "x-api-key": import.meta.env.VITE_APP_PUBLIC_API_KEY,
+        },
       }),
       invalidatesTags: ["echo"],
     }),
