@@ -1045,6 +1045,7 @@ export async function updateUserMembership(req: Request, res: Response) {
         activate_at: new Date(activate_at),
         oldPrice: Number(oldPrice),
         status,
+        expired: false,
       },
     });
     res.status(200).json({
