@@ -1,0 +1,12 @@
+
+[phases.setup]
+node_version = "22.17"
+
+[phases.install]
+cmd = "npm install --include=dev"
+
+[phases.build]
+cmd = "npx prisma generate && npm run build"
+
+[phases.start]
+cmd = "npm start"
