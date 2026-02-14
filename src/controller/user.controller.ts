@@ -593,6 +593,12 @@ export async function logged(req: Request, res: Response) {
         },
       });
     }
+    if (!userData) {
+      return res.status(401).json({
+        status: ERROR_STATUS,
+        message: DATA_NOT_FOUND_MESSAGE,
+      });
+    }
     return res.status(200).json({
       status: SUCCESS_STATUS,
       message: QUERY_SUCCESSFUL_MESSAGE,
