@@ -4,17 +4,23 @@ FROM node:22.17.0
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json first (for caching)
+# Copy package files first (for caching)
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Install only production dependencies
+RUN npm install --production
 
-# Copy all other files
+# Copy all source files
 COPY . .
 
-# Build your project (if you have a build script)
+# Generate Prisma client
+RUN npx prisma generate
+
+# Build TypeScript code
 RUN npm run build
 
-# Start your app
-CMD ["npm", "start"]
+# Expose port
+EXPOSE 4000
+
+# Start app with migrations
+CMD ["sh", "-c", "npx prisma migrate deploy && npm start"]
