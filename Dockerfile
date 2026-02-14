@@ -1,42 +1,26 @@
-# Stage 1 — Build
-FROM node:22.17.0 AS builder
+# Use exact Node version
+FROM node:22.17.0
 
 # Set working directory
 WORKDIR /app
 
-# Copy package files
+# Copy package.json and package-lock.json first (for caching)
 COPY package*.json ./
 
-# Install all dependencies including dev (for building)
+# Install dependencies
 RUN npm install
 
-# Copy source code
+# Copy all other files
 COPY . .
 
-# Generate Prisma client
+# generate prisma client
 RUN npx prisma generate
 
-# Build TypeScript
+# run migrations before starting
+RUN npx prisma migrate deploy
+
+# Build your project (if you have a build script)
 RUN npm run build
 
-# Stage 2 — Production image
-FROM node:22.17.0
-
-WORKDIR /app
-
-# Copy only package files for production
-COPY package*.json ./
-
-# Install only production dependencies
-RUN npm install --production
-
-# Copy compiled files from builder
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/node_modules/@prisma/client ./node_modules/@prisma/client
-
-# Expose your app port
-EXPOSE 3000
-
-# Start the server
-CMD ["node", "dist/server.js"]
+# Start your app
+CMD ["npm", "start"]
