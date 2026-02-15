@@ -59,7 +59,7 @@ type ButtonNames =
   | "PINTEREST"
   | "WHATSAPP"
   | "WECHAT"
-  | "TELIGRAM"
+  | "TELEGRAM"
   | "DISCORD"
   | "TWITCH"
   | "GITHUB"
