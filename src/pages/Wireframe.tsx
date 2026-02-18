@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { useOnboard } from "../hook/useOnboard";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SendInfo from "../component/Send.info";
 import Spiner from "../component/Spiner";
 import EchoRequest from "../component/Echo.request";
@@ -127,6 +127,12 @@ function Wireframe() {
   } = user || {};
 
   const { data } = useCheckEchoConnectionQuery(userId);
+
+  useEffect(() => {
+    if (!isLoading && !onboard) {
+      window.location.href = "https://mybrandlife.me";
+    }
+  }, [onboard, isLoading]);
 
   return isLoading ? (
     <Spiner />

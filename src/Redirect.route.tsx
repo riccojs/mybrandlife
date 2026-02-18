@@ -1,10 +1,14 @@
-import { Navigate, useParams } from "react-router";
+import { useEffect } from "react";
+import { useParams } from "react-router";
 
 function RedirectRoute() {
-  const params = useParams();
-  const name = params.name;
-  const redirecting = name ? `/${name}` : "/error";
-  return <Navigate to={redirecting} replace />;
+  const { name } = useParams();
+
+  useEffect(() => {
+    window.location.href = name ? `/${name}` : "https://mybrandlife.me";
+  }, [name]);
+
+  return null;
 }
 
 export default RedirectRoute;
