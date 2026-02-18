@@ -60,6 +60,14 @@ export const response = {
   CUSTOMER_HAS_BEEN_DELETED: "Customer has been deleted",
   CUSTOMER_ID_MISSING_ON_INVOICE: "Customer ID missing on invoice",
   NO_RECIPENT_EMAIL_PROVIDED: "No recipient emails provided",
+  INVALID_USER_MESSAGE: "Ivalid user!",
+  BRANDTAP_CREATE_SUCCESSFUL: "Brandtap create successful",
+  BRANDTAP_ID_INVALID_MESSAGE: "Brandtap id invalid!",
+  BRANDTAP_ID_VALID_MESSAGE: "Brandtap id is valid",
+  BRANDTAP_ID_IS_NOT_EDITABLE: "Brandtap ID is not editable",
+  WRISTBAND_ADDED_SUCCESSFUL: "Wristband added successful",
+  USER_ASSIGNED_SUCCESSFUL: "User assigned successful",
+  WRISTBAND_CREATE_SUCCESSFUL: "Wristband create successful",
 };
 
 export default response;

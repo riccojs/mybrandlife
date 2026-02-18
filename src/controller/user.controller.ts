@@ -6,7 +6,7 @@ import bcrypt from "bcryptjs";
 import membershipCreator from "../middelware/membership.creator.js";
 import { paymentCreator } from "../middelware/payment.creator.js";
 import { registerEmail } from "../lib/register.email.js";
-import { UserType, WristbandNameType } from "../utils/types.js";
+import { PlanWristbandType, UserType } from "../utils/types.js";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import welcomeEmail from "../lib/welcome.email.js";
 import { v4 as uuidv4 } from "uuid";
@@ -228,13 +228,7 @@ export async function register(req: Request, res: Response) {
     phone,
     secondEmail,
     aggreement,
-    extraRed,
-    extraBlack,
-    extraGreen,
-    extraYellow,
-    extraBlue,
-    extraWhite,
-    extraOrange,
+    wristbands,
     discount,
     discountType,
     referalCode,
@@ -293,39 +287,22 @@ export async function register(req: Request, res: Response) {
         },
       });
 
-      if (
-        extraBlack ||
-        extraGreen ||
-        extraRed ||
-        extraYellow ||
-        extraBlue ||
-        extraWhite ||
-        extraOrange
-      ) {
-        const extras = [
-          { name: "BLACK", count: extraBlack },
-          { name: "RED", count: extraRed },
-          { name: "GREEN", count: extraGreen },
-          { name: "YELLOW", count: extraYellow },
-          { name: "BLUE", count: extraBlue },
-          { name: "WHITE", count: extraWhite },
-          { name: "ORANGE", count: extraOrange },
-        ];
-        const newWisteband = await Prisma.wisetband.create({
-          data: {
-            userId: newUser.id,
-          },
+      if (wristbands?.length > 0) {
+        await Prisma.planWristband.createMany({
+          data: wristbands.map((wristband: PlanWristbandType) => ({
+            wristbandId: wristband.wristbandId,
+            userId: newUser?.id,
+            title: wristband.title,
+            description: wristband.description,
+            price: wristband.price,
+            quantity: wristband.quantity,
+            banner: wristband.banner,
+            color: wristband.color,
+            subTotal: wristband.subTotal,
+          })),
         });
-        for (const item of extras) {
-          await Prisma.wisetbandItem.create({
-            data: {
-              name: item.name as WristbandNameType,
-              value: Number(item.count),
-              wisetbandId: newWisteband.id,
-            },
-          });
-        }
       }
+
       if (referalCode) {
         const existReferal = await Prisma.referralCode.findUnique({
           where: {

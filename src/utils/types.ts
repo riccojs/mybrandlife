@@ -76,3 +76,18 @@ type ButtonNames =
   | "ANCHOR"
   | "PATREON"
   | "NEXTDOOR";
+
+export interface PlanWristbandType {
+  wristbandId: string;
+  userId: string;
+  title: string;
+  description: string;
+  price: number;
+  subTotal: number;
+  quantity: number;
+  banner: string;
+  color: string;
+  status: string;
+  shipped_at: string;
+  delivered_at: string;
+}

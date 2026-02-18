@@ -591,7 +591,7 @@ export async function onboardingUser(req: Request, res: Response) {
       const fileName = `${landerName || "contact"}_${Date.now()}.vcf`;
       const filePath = path.join(fileDir, fileName);
       fs.writeFileSync(filePath, card.toString(), "utf-8");
-      const fileUrl = `${req.protocol}://${req.get("host")}/public/${fileName}`;
+      const fileUrl = `${basePath}${fileName}`;
       await Prisma.userTemplete.update({
         where: { id: newTemplate.id },
         data: { vcfFile: fileUrl },

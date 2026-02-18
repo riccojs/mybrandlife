@@ -23,8 +23,9 @@ import BrandbookRouter from "./route/brandbook.route.js";
 import PartnerRouter from "./route/partner.route.js";
 import ReferralRouter from "./route/referral.route.js";
 import ReportRouter from "./route/report.route.js";
-import WistbandRouter from "./route/wistband.route.js";
+import WristbandRouter from "./route/wristband.route.js";
 import WebhookRouter from "./route/webhook.route.js";
+import BrandtapRouter from "./route/brandtap.route.js";
 const allowedOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(",").map((o) => o.trim())
   : [];
@@ -67,7 +68,8 @@ app.use("/api/brandbook", BrandbookRouter);
 app.use("/api/partner", PartnerRouter);
 app.use("/api/referral", ReferralRouter);
 app.use("/api/report", ReportRouter);
-app.use("/api/wistband", WistbandRouter);
+app.use("/api/wristband", WristbandRouter);
+app.use("/api/brandtap", BrandtapRouter);
 
 // Home Route
 app.get("/", auth, (req, res) => {
