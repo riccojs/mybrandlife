@@ -1,7 +1,6 @@
-dotenv.config();
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import response from "./utils/response.js";
 import status from "./utils/status.js";
 import cookieParser from "cookie-parser";

@@ -49,7 +49,7 @@ model user {
   referrals       referralCode?
   brandtaps       brandtap[]
   brandTapDatas   brandTapData[]
-  wristbands      planWristband[]
+  wristbands      wristbandItem[]
   create_at       DateTime         @default(now())
   update_at       DateTime         @updatedAt
 }
@@ -307,72 +307,54 @@ model reports {
 }
 
 model wristband {
-  id                String              @id @default(uuid())
-  title             String
-  description       String
-  price             Float
-  quantity          Int
-  banner            String
-  color             WristbandName
-  status            WristbandStatus
-  stock             Int
-  brandtapWistbands brandtapWristband[]
-  planWristbands    planWristband[]
-  create_at         DateTime            @default(now())
-  update_at         DateTime            @updatedAt
-}
-
-model planWristband {
-  id           String               @id @default(uuid())
-  wristbandId  String
-  userId       String
-  title        String
-  description  String
-  price        Float
-  quantity     Int
-  subTotal     Float
-  banner       String
-  color        WristbandName
-  status       OrderWristbandStatus @default(PENDING)
-  shipped_at   DateTime?
-  delivered_at DateTime?
-  wristbands   wristband            @relation(fields: [wristbandId], references: [id], onDelete: Cascade)
-  user         user                 @relation(fields: [userId], references: [id], onDelete: Cascade)
-  create_at    DateTime             @default(now())
-  update_at    DateTime             @updatedAt
+  id             String          @id @default(uuid())
+  title          String
+  description    String
+  price          Float
+  banner         String
+  color          WristbandName
+  status         WristbandStatus
+  wristbandItems wristbandItem[]
+  stock          Int
+  create_at      DateTime        @default(now())
+  update_at      DateTime        @updatedAt
 }
 
 model brandtap {
-  id                 String              @id @default(uuid())
-  sequence           Int                 @unique @default(autoincrement())
+  id                 String          @id @default(uuid())
+  sequence           Int             @unique @default(autoincrement())
   landerId           String
   name               String
   baseDomain         String
   basePath           String
-  idPrefix           Int?                @unique
-  uniqeId            String?             @unique
-  active             BrandtapStatus      @default(PENDING)
+  idPrefix           Int?            @unique
+  uniqeId            String?         @unique
+  active             BrandtapStatus  @default(PENDING)
   transactionId      String?
-  subtotal           Float               @default(0)
-  total              Float               @default(0)
-  expediteProduction Float               @default(0)
-  expediteShipping   Float               @default(0)
-  lander             user                @relation(fields: [landerId], references: [id], onDelete: Cascade)
-  brandtapWistbands  brandtapWristband[]
+  subTotal           Float           @default(0)
+  total              Float           @default(0)
+  expediteProduction Float           @default(0)
+  expediteShipping   Float           @default(0)
+  lander             user            @relation(fields: [landerId], references: [id], onDelete: Cascade)
+  wristbands         wristbandItem[]
   brandTapDatas      brandTapData[]
-  create_at          DateTime            @default(now())
-  update_at          DateTime            @updatedAt
+  create_at          DateTime        @default(now())
+  update_at          DateTime        @updatedAt
 }
 
-model brandtapWristband {
+model wristbandItem {
   id                String               @id @default(uuid())
-  brandtapId        String
-  brandtapIdPrefix  String
+  brandtapId        String?
   wristbandId       String
-  color             WristbandName
-  unitPrice         Float
-  subtotal          Float
+  userId            String
+  idPrefix          String?
+  uniqeId           String?              @unique
+  title             String
+  price             Float
   quantity          Int
+  subTotal          Float
+  banner            String
+  color             WristbandName
   assignedFirstName String?
   assignedLastName  String?
   assignedNickname  String?
@@ -381,9 +363,12 @@ model brandtapWristband {
   trackingNumber    String
   shipped_at        DateTime?
   delivered_at      DateTime?
+  complete_at       DateTime?
   qrCode            String
-  brandtap          brandtap             @relation(fields: [brandtapId], references: [id], onDelete: Cascade)
-  wristbands        wristband            @relation(fields: [wristbandId], references: [id], onDelete: Cascade)
+  mode              WristbandMode
+  brandtap          brandtap?            @relation(fields: [brandtapId], references: [id], onDelete: Cascade)
+  wristband         wristband            @relation(fields: [wristbandId], references: [id], onDelete: Cascade)
+  user              user                 @relation(fields: [userId], references: [id], onDelete: Cascade)
   create_at         DateTime             @default(now())
   update_at         DateTime             @updatedAt
 }
@@ -552,4 +537,10 @@ enum OrderWristbandStatus {
   LOST
   DISABLED
   PENDING
+  COMPLETE
+}
+
+enum WristbandMode {
+  BRANDTAP
+  GLOBAL
 }

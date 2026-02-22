@@ -127,6 +127,11 @@ export async function getOneUser(req: Request, res: Response) {
       },
       include: {
         membership: true,
+        wristbands: {
+          where: {
+            mode: "GLOBAL",
+          },
+        },
       },
     });
     if (!existUser) {
@@ -244,7 +249,6 @@ export async function register(req: Request, res: Response) {
         landerName: landerName,
       },
     });
-
     if (existUser) {
       return res.status(404).json({
         status: ERROR_STATUS,
@@ -257,7 +261,6 @@ export async function register(req: Request, res: Response) {
         message: LANDER_ALREADY_EXIST_MESSAGE,
       });
     }
-
     bcrypt.hash(password, 10, async function (err, hash) {
       const newUser = await Prisma.user.create({
         data: {
@@ -286,19 +289,20 @@ export async function register(req: Request, res: Response) {
           membership: true,
         },
       });
-
       if (wristbands?.length > 0) {
-        await Prisma.planWristband.createMany({
+        await Prisma.wristbandItem.createMany({
           data: wristbands.map((wristband: PlanWristbandType) => ({
-            wristbandId: wristband.wristbandId,
+            wristbandId: wristband?.wristbandId,
             userId: newUser?.id,
             title: wristband.title,
-            description: wristband.description,
             price: wristband.price,
             quantity: wristband.quantity,
+            subTotal: wristband.subTotal,
             banner: wristband.banner,
             color: wristband.color,
-            subTotal: wristband.subTotal,
+            trackingNumber: `${landerName}-${wristband.color}`,
+            qrCode: `https://${newUser?.domain}/${landerName}`,
+            mode: "GLOBAL",
           })),
         });
       }

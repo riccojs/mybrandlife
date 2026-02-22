@@ -2,8 +2,8 @@ import { Prisma } from "../utils/prisma.js";
 import { Request, Response } from "express";
 import status from "../utils/status.js";
 import response from "../utils/response.js";
-import ShippingEmail from "../lib/shipping.email.js";
 import wristbandPayment from "../middelware/wristband.payment.js";
+
 const { SUCCESS_STATUS, ERROR_STATUS } = status;
 const {
   QUERY_SUCCESSFUL_MESSAGE,
@@ -45,7 +45,7 @@ export async function getAllBrandtap(req: Request, res: Response) {
       where: filter,
       include: {
         lander: true,
-        brandtapWistbands: true,
+        wristbands: true,
         brandTapDatas: true,
       },
     });
@@ -78,7 +78,7 @@ export async function getOneBrandtap(req: Request, res: Response) {
         id: id,
       },
       include: {
-        brandtapWistbands: true,
+        wristbands: true,
         lander: true,
         brandTapDatas: true,
       },
@@ -297,7 +297,7 @@ export async function assignedBrandtapWristband(req: Request, res: Response) {
   const id = req.params.id as string;
   const { firstname, lastname, nickname } = req.body;
   try {
-    const existBrandtapWristband = await Prisma.brandtapWristband.findUnique({
+    const existBrandtapWristband = await Prisma.wristbandItem.findUnique({
       where: {
         id: id,
       },
@@ -308,7 +308,7 @@ export async function assignedBrandtapWristband(req: Request, res: Response) {
         message: DATA_NOT_FOUND_MESSAGE,
       });
     }
-    await Prisma.brandtapWristband.update({
+    await Prisma.wristbandItem.update({
       where: {
         id: id,
       },
@@ -330,88 +330,106 @@ export async function assignedBrandtapWristband(req: Request, res: Response) {
   }
 }
 
-// update brandtap wristband status
-export async function updateBrandtapWristbandStatus(
-  req: Request,
-  res: Response,
-) {
-  const id = req.params.id as string;
-  const { status } = req.body;
+// create or update brandtap wristband
+export async function toggleBrandtap(req: Request, res: Response) {
+  const {
+    wristbandId,
+    expediteProduction,
+    expediteShipping,
+    title,
+    price,
+    subtotal,
+    quantity,
+    idPrefix,
+    uniqeId,
+    banner,
+    color,
+    userId,
+  } = req.body;
+  const brandtapId = req.params.id as string;
   try {
-    const existBrandtapWristband = await Prisma.brandtapWristband.findUnique({
+    const existBrandtap = await Prisma.brandtap.findUnique({
       where: {
-        id: id,
+        id: brandtapId,
       },
       include: {
-        brandtap: {
-          include: {
-            lander: true,
-          },
-        },
+        wristbands: true,
       },
     });
-    if (!existBrandtapWristband) {
-      return res.status(404).json({
+    if (!existBrandtap) {
+      return res.status(401).json({
         status: ERROR_STATUS,
         message: DATA_NOT_FOUND_MESSAGE,
       });
     }
-    const { email, firstName, lastName, phone } =
-      existBrandtapWristband?.brandtap?.lander;
-    if (status === "SHIPPED") {
-      await Prisma.brandtapWristband.update({
-        where: { id: id },
-        data: {
-          status: status,
-          shipped_at: new Date(),
-        },
-      });
 
-      await ShippingEmail(
-        email,
-        firstName,
-        lastName,
-        `${phone}`,
-        existBrandtapWristband?.trackingNumber,
-        "SHIPPED",
-      );
-    }
-    if (status === "DELIVERED") {
-      await Prisma.brandtapWristband.update({
-        where: { id: id },
-        data: {
-          status: status,
-          delivered_at: new Date(),
+    if (existBrandtap) {
+      const existItem = await Prisma.wristbandItem.findFirst({
+        where: {
+          wristbandId: wristbandId,
+          brandtapId: brandtapId,
         },
       });
-      await ShippingEmail(
-        email,
-        firstName,
-        lastName,
-        `${phone}`,
-        existBrandtapWristband?.trackingNumber,
-        "DELIVERED",
-      );
-    }
-    if (status !== "SHIPPED" || status !== "DELIVERED") {
-      await Prisma.brandtapWristband.update({
-        where: { id: id },
+      if (existItem) {
+        await Prisma.wristbandItem.update({
+          where: {
+            id: existItem?.id,
+          },
+          data: {
+            price: price,
+            quantity: quantity,
+            subTotal: subtotal,
+          },
+        });
+      } else {
+        const existUser = await Prisma.user.findUnique({
+          where: {
+            id: userId,
+          },
+        });
+        await Prisma.wristbandItem.create({
+          data: {
+            brandtapId: brandtapId,
+            wristbandId: wristbandId,
+            userId: userId,
+            idPrefix: idPrefix,
+            uniqeId: uniqeId,
+            title: title,
+            price: price,
+            quantity: quantity,
+            subTotal: subtotal,
+            banner: banner,
+            color: color,
+            trackingNumber: `${existUser?.landerName}-${color}`,
+            qrCode: `https://${existUser?.domain}/${existUser?.landerName}?idprefix=${uniqeId}`,
+            mode: "BRANDTAP",
+          },
+        });
+      }
+      const subTotalPrice =
+        existBrandtap.wristbands?.reduce(
+          (total: number, item: { subTotal: number }) => total + item.subTotal,
+          0,
+        ) ?? 0;
+      const prudctionCost = expediteProduction || 0;
+      const shippingCost = expediteShipping || 0;
+      const totalPrice = subTotalPrice + prudctionCost + shippingCost;
+      await Prisma.brandtap.update({
+        where: {
+          id: brandtapId,
+        },
         data: {
-          status: status,
+          subTotal: subTotalPrice,
+          total: totalPrice,
+          expediteProduction: prudctionCost,
+          expediteShipping: shippingCost,
         },
       });
-      await ShippingEmail(
-        email,
-        firstName,
-        lastName,
-        `${phone}`,
-        existBrandtapWristband?.trackingNumber,
-        status,
-      );
     }
-    return res.status(201).json({
+    return res.status(200).json({
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
+      brandtap: existBrandtap,
     });
   } catch (error: any) {
     res.status(500).json({
@@ -422,7 +440,7 @@ export async function updateBrandtapWristbandStatus(
 }
 
 // create wristban payment
-export async function createWristbandPayment(req: Request, res: Response) {
+export async function createBrandtapPayment(req: Request, res: Response) {
   const { total, brandtapId, userId } = req.body;
   try {
     const existBrandtap = await Prisma.brandtap.findUnique({

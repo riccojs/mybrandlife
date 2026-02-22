@@ -9,7 +9,8 @@ import {
   updateBrandtap,
   updateBrandtapStatus,
   assignedBrandtapWristband,
-  updateBrandtapWristbandStatus,
+  createBrandtapPayment,
+  toggleBrandtap,
 } from "../controller/brandtap.controller.js";
 const router = express.Router();
 
@@ -17,10 +18,11 @@ router.get("/", auth, getAllBrandtap);
 router.get("/:id", auth, getOneBrandtap);
 router.get("/check/:id", auth, checkBrandtap);
 router.post("/", auth, createBrandtap);
-router.patch("/:id", auth, updateBrandtap);
+router.post("/payment", auth, createBrandtapPayment);
+router.patch("/toggle/:id", auth, toggleBrandtap);
 router.patch("/status/:id", auth, updateBrandtapStatus);
 router.patch("/assigned/:id", auth, assignedBrandtapWristband);
-router.patch("/wristband/status/:id", auth, updateBrandtapWristbandStatus);
+router.patch("/:id", auth, updateBrandtap);
 router.delete("/:id", auth, deleteBrandtap);
 
 export default router;
