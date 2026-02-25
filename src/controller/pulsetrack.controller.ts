@@ -3,24 +3,23 @@ import { Request, Response } from "express";
 import status from "../utils/status.js";
 import response from "../utils/response.js";
 import wristbandPayment from "../middelware/wristband.payment.js";
-
 const { SUCCESS_STATUS, ERROR_STATUS } = status;
 const {
   QUERY_SUCCESSFUL_MESSAGE,
   DATA_NOT_FOUND_MESSAGE,
-  BRANDTAP_CREATE_SUCCESSFUL,
+  PULSETRACK_CREATE_SUCCESSFUL,
   INVALID_USER_MESSAGE,
   DELETE_SUCCESS_MESSAGE,
-  BRANDTAP_ID_INVALID_MESSAGE,
-  BRANDTAP_ID_VALID_MESSAGE,
+  PULSETRACK_ID_INVALID_MESSAGE,
+  PULSETRACK_ID_VALID_MESSAGE,
   UPDATE_SUCCESSFUL_MESSAGE,
-  BRANDTAP_ID_IS_NOT_EDITABLE,
+  PULSETRACK_ID_IS_NOT_EDITABLE,
   USER_ASSIGNED_SUCCESSFUL,
   REGISTRATION_SUCCESS_MESSAGE,
 } = response;
 
-// get all brandtap
-export async function getAllBrandtap(req: Request, res: Response) {
+// get all pulsetrack
+export async function getAllPulsetrack(req: Request, res: Response) {
   const { searchBy = "", statusBy = "", landerId } = req.query;
   const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
   const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 10;
@@ -39,25 +38,25 @@ export async function getAllBrandtap(req: Request, res: Response) {
     filter.landerId = landerId;
   }
   try {
-    const brandtap = await Prisma.brandtap.findMany({
+    const pulsetrack = await Prisma.pulsetrack.findMany({
       skip: skip,
       take: limit,
       where: filter,
       include: {
         lander: true,
         wristbands: true,
-        brandTapDatas: true,
+        pulsetrackData: true,
       },
     });
-    const totalBrandtap = await Prisma.brandtap.count({ where: filter });
-    const totalPage = Math.ceil(totalBrandtap / limit);
+    const totalPulsetrack = await Prisma.pulsetrack.count({ where: filter });
+    const totalPage = Math.ceil(totalPulsetrack / limit);
     res.status(200).json({
       status: SUCCESS_STATUS,
       message: QUERY_SUCCESSFUL_MESSAGE,
       data: {
-        brandtap,
+        pulsetrack,
         totalPage,
-        totalBrandtap,
+        totalPulsetrack,
         currentPage: page,
       },
     });
@@ -69,21 +68,21 @@ export async function getAllBrandtap(req: Request, res: Response) {
   }
 }
 
-// get one brandtap
-export async function getOneBrandtap(req: Request, res: Response) {
+// get one pulsetrack
+export async function getOnePulsetrack(req: Request, res: Response) {
   const id = req.params.id as string;
   try {
-    const existWistband = await Prisma.brandtap.findUnique({
+    const existPulsetrack = await Prisma.pulsetrack.findUnique({
       where: {
         id: id,
       },
       include: {
         wristbands: true,
         lander: true,
-        brandTapDatas: true,
+        pulsetrackData: true,
       },
     });
-    if (!existWistband) {
+    if (!existPulsetrack) {
       return res.status(404).json({
         status: ERROR_STATUS,
         message: DATA_NOT_FOUND_MESSAGE,
@@ -92,7 +91,7 @@ export async function getOneBrandtap(req: Request, res: Response) {
     res.status(200).json({
       status: SUCCESS_STATUS,
       message: QUERY_SUCCESSFUL_MESSAGE,
-      wistband: existWistband,
+      pulsetrack: existPulsetrack,
     });
   } catch (error: any) {
     res.status(500).json({
@@ -102,8 +101,8 @@ export async function getOneBrandtap(req: Request, res: Response) {
   }
 }
 
-// create brandtap
-export async function createBrandtap(req: Request, res: Response) {
+// create pulsetrack
+export async function createPulsetrack(req: Request, res: Response) {
   const { landerId, name, idPrefix } = req.body;
 
   try {
@@ -118,7 +117,7 @@ export async function createBrandtap(req: Request, res: Response) {
         message: INVALID_USER_MESSAGE,
       });
     }
-    const newBrandtap = await Prisma.brandtap.create({
+    const newPulsetrack = await Prisma.pulsetrack.create({
       data: {
         name,
         landerId,
@@ -127,9 +126,9 @@ export async function createBrandtap(req: Request, res: Response) {
         active: "INPROCESS",
       },
     });
-    const idPrefixValue = idPrefix ? idPrefix : newBrandtap.sequence + 1000;
-    await Prisma.brandtap.update({
-      where: { id: newBrandtap.id },
+    const idPrefixValue = idPrefix ? idPrefix : newPulsetrack.sequence + 1000;
+    await Prisma.pulsetrack.update({
+      where: { id: newPulsetrack.id },
       data: {
         idPrefix: idPrefixValue,
         uniqeId: `${existLander?.landerName}${idPrefixValue}`,
@@ -137,7 +136,8 @@ export async function createBrandtap(req: Request, res: Response) {
     });
     res.status(201).json({
       status: SUCCESS_STATUS,
-      message: BRANDTAP_CREATE_SUCCESSFUL,
+      message: PULSETRACK_CREATE_SUCCESSFUL,
+      pulsetrack: newPulsetrack,
     });
   } catch (error: any) {
     res.status(500).json({
@@ -147,24 +147,24 @@ export async function createBrandtap(req: Request, res: Response) {
   }
 }
 
-// check brandtap by idPrefix
-export async function checkBrandtap(req: Request, res: Response) {
+// check pulsetrack by idPrefix
+export async function checkPulsetrack(req: Request, res: Response) {
   const id = req.params.id as string;
   try {
-    const existBrandtap = await Prisma.brandtap.findUnique({
+    const existPulsetrack = await Prisma.pulsetrack.findUnique({
       where: {
         idPrefix: Number(id),
       },
     });
-    if (existBrandtap) {
+    if (existPulsetrack) {
       return res.status(404).json({
         status: ERROR_STATUS,
-        message: BRANDTAP_ID_INVALID_MESSAGE,
+        message: PULSETRACK_ID_INVALID_MESSAGE,
       });
     }
     res.status(200).json({
       status: SUCCESS_STATUS,
-      message: BRANDTAP_ID_VALID_MESSAGE,
+      message: PULSETRACK_ID_VALID_MESSAGE,
     });
   } catch (error: any) {
     res.status(500).json({
@@ -174,17 +174,17 @@ export async function checkBrandtap(req: Request, res: Response) {
   }
 }
 
-// update brandtap
-export async function updateBrandtap(req: Request, res: Response) {
+// update pulsetrack
+export async function updatePulsetrack(req: Request, res: Response) {
   const id = req.params.id as string;
   const { name, idPrefix } = req.body;
   try {
-    const existBrandtap = await Prisma.brandtap.findUnique({
+    const existBrandtap = await Prisma.pulsetrack.findUnique({
       where: {
         id: id,
       },
     });
-    const existBrandtapByIdprefix = await Prisma.brandtap.findUnique({
+    const existBrandtapByIdprefix = await Prisma.pulsetrack.findUnique({
       where: {
         idPrefix: idPrefix,
       },
@@ -198,16 +198,16 @@ export async function updateBrandtap(req: Request, res: Response) {
     if (existBrandtapByIdprefix) {
       return res.status(404).json({
         status: ERROR_STATUS,
-        message: BRANDTAP_ID_INVALID_MESSAGE,
+        message: PULSETRACK_ID_IS_NOT_EDITABLE,
       });
     }
     if (existBrandtap?.active === "ACTIVATE") {
       return res.status(401).json({
         status: ERROR_STATUS,
-        message: BRANDTAP_ID_IS_NOT_EDITABLE,
+        message: PULSETRACK_ID_IS_NOT_EDITABLE,
       });
     }
-    await Prisma.brandtap.update({
+    await Prisma.pulsetrack.update({
       where: { id: id },
       data: {
         idPrefix: idPrefix,
@@ -226,12 +226,12 @@ export async function updateBrandtap(req: Request, res: Response) {
   }
 }
 
-// update brandtap status
-export async function updateBrandtapStatus(req: Request, res: Response) {
+// update pulsetrack status
+export async function updatePulsetrackStatus(req: Request, res: Response) {
   const id = req.params.id as string;
   const { status } = req.body;
   try {
-    const existBrandtap = await Prisma.brandtap.findUnique({
+    const existBrandtap = await Prisma.pulsetrack.findUnique({
       where: {
         id: id,
       },
@@ -242,7 +242,7 @@ export async function updateBrandtapStatus(req: Request, res: Response) {
         message: DATA_NOT_FOUND_MESSAGE,
       });
     }
-    await Prisma.brandtap.update({
+    await Prisma.pulsetrack.update({
       where: { id: id },
       data: {
         active: status,
@@ -260,11 +260,11 @@ export async function updateBrandtapStatus(req: Request, res: Response) {
   }
 }
 
-// delete brandtap
-export async function deleteBrandtap(req: Request, res: Response) {
+// delete pulsetrack
+export async function deletePulsetrack(req: Request, res: Response) {
   const id = req.params.id as string;
   try {
-    const existBrandtap = await Prisma.brandtap.findUnique({
+    const existBrandtap = await Prisma.pulsetrack.findUnique({
       where: {
         id: id,
       },
@@ -275,7 +275,7 @@ export async function deleteBrandtap(req: Request, res: Response) {
         message: DATA_NOT_FOUND_MESSAGE,
       });
     }
-    await Prisma.brandtap.delete({
+    await Prisma.pulsetrack.delete({
       where: {
         id: id,
       },
@@ -292,8 +292,8 @@ export async function deleteBrandtap(req: Request, res: Response) {
   }
 }
 
-// assigned brandtap wristband user
-export async function assignedBrandtapWristband(req: Request, res: Response) {
+// assigned pulsetrack wristband user
+export async function assignedPulsetrackWristband(req: Request, res: Response) {
   const id = req.params.id as string;
   const { firstname, lastname, nickname } = req.body;
   try {
@@ -330,15 +330,15 @@ export async function assignedBrandtapWristband(req: Request, res: Response) {
   }
 }
 
-// create or update brandtap wristband
-export async function toggleBrandtap(req: Request, res: Response) {
+// create or update pulsetrack wristband
+export async function togglePulsetrack(req: Request, res: Response) {
   const {
     wristbandId,
     expediteProduction,
     expediteShipping,
     title,
     price,
-    subtotal,
+    subTotal,
     quantity,
     idPrefix,
     uniqeId,
@@ -348,7 +348,7 @@ export async function toggleBrandtap(req: Request, res: Response) {
   } = req.body;
   const brandtapId = req.params.id as string;
   try {
-    const existBrandtap = await Prisma.brandtap.findUnique({
+    const existBrandtap = await Prisma.pulsetrack.findUnique({
       where: {
         id: brandtapId,
       },
@@ -362,7 +362,6 @@ export async function toggleBrandtap(req: Request, res: Response) {
         message: DATA_NOT_FOUND_MESSAGE,
       });
     }
-
     if (existBrandtap) {
       const existItem = await Prisma.wristbandItem.findFirst({
         where: {
@@ -378,7 +377,7 @@ export async function toggleBrandtap(req: Request, res: Response) {
           data: {
             price: price,
             quantity: quantity,
-            subTotal: subtotal,
+            subTotal: subTotal,
           },
         });
       } else {
@@ -397,7 +396,7 @@ export async function toggleBrandtap(req: Request, res: Response) {
             title: title,
             price: price,
             quantity: quantity,
-            subTotal: subtotal,
+            subTotal: subTotal,
             banner: banner,
             color: color,
             trackingNumber: `${existUser?.landerName}-${color}`,
@@ -406,15 +405,20 @@ export async function toggleBrandtap(req: Request, res: Response) {
           },
         });
       }
+      const updatedItems = await Prisma.wristbandItem.findMany({
+        where: {
+          brandtapId: brandtapId,
+        },
+      });
       const subTotalPrice =
-        existBrandtap.wristbands?.reduce(
-          (total: number, item: { subTotal: number }) => total + item.subTotal,
+        updatedItems?.reduce(
+          (acc: number, item: { subTotal: number }) => acc + item.subTotal,
           0,
         ) ?? 0;
       const prudctionCost = expediteProduction || 0;
       const shippingCost = expediteShipping || 0;
       const totalPrice = subTotalPrice + prudctionCost + shippingCost;
-      await Prisma.brandtap.update({
+      const updateBrandtap = await Prisma.pulsetrack.update({
         where: {
           id: brandtapId,
         },
@@ -425,12 +429,12 @@ export async function toggleBrandtap(req: Request, res: Response) {
           expediteShipping: shippingCost,
         },
       });
+      return res.status(200).json({
+        status: SUCCESS_STATUS,
+        message: UPDATE_SUCCESSFUL_MESSAGE,
+        brandtap: updateBrandtap,
+      });
     }
-    return res.status(200).json({
-      status: SUCCESS_STATUS,
-      message: UPDATE_SUCCESSFUL_MESSAGE,
-      brandtap: existBrandtap,
-    });
   } catch (error: any) {
     res.status(500).json({
       status: ERROR_STATUS,
@@ -439,11 +443,11 @@ export async function toggleBrandtap(req: Request, res: Response) {
   }
 }
 
-// create wristban payment
-export async function createBrandtapPayment(req: Request, res: Response) {
+// create pulsetrack payment
+export async function createPulsetrackPayment(req: Request, res: Response) {
   const { total, brandtapId, userId } = req.body;
   try {
-    const existBrandtap = await Prisma.brandtap.findUnique({
+    const existBrandtap = await Prisma.pulsetrack.findUnique({
       where: {
         id: brandtapId,
       },
@@ -455,7 +459,7 @@ export async function createBrandtapPayment(req: Request, res: Response) {
       });
     }
     const payment = await wristbandPayment(brandtapId, userId, total);
-    await Prisma.brandtap.update({
+    await Prisma.pulsetrack.update({
       where: {
         id: brandtapId,
       },

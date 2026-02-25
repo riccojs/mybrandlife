@@ -15,6 +15,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
 const membershipWebhookSecret = process.env.MEMBERSHIP_WEBHOOK_SECRET ?? "";
 const renewalWebhookSecret = process.env.RENEW_WEBHOOK_SECRET ?? "";
 const echoWebhookSecret = process.env.ECHO_WEBHOOK_SECRET ?? "";
+const wristbandWebhookSecret = process.env.WRISTBAND_WEBHOOK_SECRET ?? "";
 
 // membership webhook
 export async function membershipWebhook(req: Request, res: Response) {
@@ -178,6 +179,53 @@ export async function echoWebhook(req: Request, res: Response) {
       await Prisma.echo.update({
         where: {
           id: id,
+        },
+        data: {
+          status: "PAID",
+        },
+      });
+    }
+    return res.status(200).json({ received: true });
+  } catch (error: any) {
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
+
+// wristband webhook
+export async function wristbandWebhook(req: Request, res: Response) {
+  const sig = req.headers["stripe-signature"] as string;
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      sig,
+      wristbandWebhookSecret,
+    );
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
+      const transaction = await Prisma.pulsetrack.findFirst({
+        where: {
+          transactionId: session.id,
+        },
+      });
+      if (!transaction) {
+        return res.status(404).json({ error: "Transaction not found" });
+      }
+      const id = transaction?.id as string;
+      await Prisma.pulsetrack.update({
+        where: {
+          id: id,
+        },
+        data: {
+          active: "ACTIVATE",
+        },
+      });
+      await Prisma.wristbandItem.updateMany({
+        where: {
+          brandtapId: id,
         },
         data: {
           status: "PAID",
