@@ -586,7 +586,7 @@ export async function onboardingUser(req: Request, res: Response) {
         if (value && typeof value === "string")
           card.set(`x-socialprofile;type=${key.toLowerCase()}`, value);
       }
-      const fileDir = path.join(__dirname, "../public");
+      const fileDir = path.join(__dirname, "../../public");
       if (!fs.existsSync(fileDir)) fs.mkdirSync(fileDir, { recursive: true });
       const fileName = `${landerName || "contact"}_${Date.now()}.vcf`;
       const filePath = path.join(fileDir, fileName);
