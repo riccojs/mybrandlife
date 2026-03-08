@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { useOnboard } from "../hook/useOnboard";
 import { useEffect, useRef, useState } from "react";
 import SendInfo from "../component/Send.info";
@@ -11,6 +11,8 @@ import { usePlausible } from "../hook/usePlausible";
 import { getSocialIcon } from "../utils/socialIcons";
 import { motion } from "framer-motion";
 import QRCode from "react-qr-code";
+import { useScan } from "../hook/useScan";
+import GpsPermission from "../component/Gps.permission";
 
 interface OnboardType {
   id: string;
@@ -53,39 +55,34 @@ interface UserType {
 }
 
 function Wireframe() {
+  const [isShowInfo, setIsShowInfo] = useState<boolean>(false);
+  const [searchParams] = useSearchParams();
+  const idPrefix = searchParams.get("idprefix") as string;
   const qrRef = useRef<HTMLDivElement | null>(null);
 
   const handleDownload = () => {
     const svg = qrRef.current?.querySelector("svg");
     if (!svg) return;
-
     const serializer = new XMLSerializer();
     const svgStr = serializer.serializeToString(svg);
-
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
     const img = new Image();
-
     const blob = new Blob([svgStr], {
       type: "image/svg+xml;charset=utf-8",
     });
-
     const url = URL.createObjectURL(blob);
-
     img.onload = () => {
       canvas.width = img.width;
       canvas.height = img.height;
       ctx?.drawImage(img, 0, 0);
-
       URL.revokeObjectURL(url);
-
       const pngUrl = canvas.toDataURL("image/png");
       const link = document.createElement("a");
       link.href = pngUrl;
       link.download = "qr-code.png";
       link.click();
     };
-
     img.src = url;
   };
 
@@ -96,7 +93,6 @@ function Wireframe() {
 
   usePlausible(onboard?.user?.landerName);
 
-  const [isShowInfo, setIsShowInfo] = useState<boolean>(false);
   const {
     tagLine,
     logo,
@@ -127,6 +123,22 @@ function Wireframe() {
   } = user || {};
 
   const { data } = useCheckEchoConnectionQuery(userId);
+  const { isShow, setIsShow, scanId } = useScan(idPrefix, userId);
+
+  const formatHref = (value: string) => {
+    if (!value) return "#";
+    const trimmed = value.trim();
+    if (trimmed.includes("@") && !trimmed.startsWith("http")) {
+      return `mailto:${trimmed}`;
+    }
+    if (/^[+0-9\s-]+$/.test(trimmed)) {
+      return `tel:${trimmed.replace(/\s/g, "")}`;
+    }
+    if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+      return trimmed;
+    }
+    return `https://${trimmed}`;
+  };
 
   useEffect(() => {
     if (!isLoading && !onboard) {
@@ -187,7 +199,7 @@ function Wireframe() {
             </a>
             {services?.length > 0 && (
               <div>
-                <h2 className="text-white text-3xl font-medium text-right">
+                <h2 className="text-white text-xl md:text-3xl font-medium text-right">
                   Service Offered
                 </h2>
                 <ul
@@ -204,7 +216,7 @@ function Wireframe() {
                   {services?.map((item) => (
                     <li
                       key={item.id}
-                      className="text-md font-normal text-white"
+                      className="text-sm md:text-md font-normal text-white"
                     >
                       {item.title}
                     </li>
@@ -292,7 +304,7 @@ function Wireframe() {
               </p>
             </div>
             <div>
-              <p className="text-white text-center text-lg font-normal">
+              <p className="text-white text-center text-sm md:text-lg font-normal">
                 {funnySaying}
               </p>
             </div>
@@ -373,12 +385,15 @@ function Wireframe() {
                 {buttonSet?.map((item) => {
                   const { id, name, url } = item;
                   const Icon = getSocialIcon(name, url);
-
+                  const formattedHref = formatHref(url);
                   return (
                     <motion.a
                       key={id}
-                      href={url}
-                      target="_blank"
+                      href={formattedHref}
+                      target={
+                        formattedHref.startsWith("http") ? "_blank" : undefined
+                      }
+                      rel="noopener noreferrer"
                       onClick={() =>
                         track("ButtonClick", {
                           props: {
@@ -400,7 +415,7 @@ function Wireframe() {
                       }}
                     >
                       {Icon && <Icon className="text-lg md:text-2xl" />}
-                      <span className="text-md">{name}</span>
+                      <span className="text-sm md:text-md">{name}</span>
                     </motion.a>
                   );
                 })}
@@ -570,6 +585,13 @@ function Wireframe() {
           isShowInfo={isShowInfo}
           setIsShowInfo={setIsShowInfo}
           id={id}
+        />
+      )}
+      {isShow && (
+        <GpsPermission
+          isShowInfo={isShow}
+          setIsShowInfo={setIsShow}
+          scanId={scanId}
         />
       )}
     </section>
