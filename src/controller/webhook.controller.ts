@@ -225,7 +225,7 @@ export async function wristbandWebhook(req: Request, res: Response) {
       });
       await Prisma.wristbandItem.updateMany({
         where: {
-          brandtapId: id,
+          pulsetrackId: id,
         },
         data: {
           status: "PAID",

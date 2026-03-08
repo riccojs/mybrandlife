@@ -238,10 +238,11 @@ export async function register(req: Request, res: Response) {
     discountType,
     referalCode,
   } = req.body;
+  const normalizedEmail = email.trim().toLowerCase();
   try {
     const existUser = await Prisma.user.findUnique({
       where: {
-        email: email,
+        email: normalizedEmail,
       },
     });
     const existUserByLandname = await Prisma.user.findUnique({
@@ -270,7 +271,7 @@ export async function register(req: Request, res: Response) {
           planPrice: Number(planPrice),
           planOldPrice: Number(planOldPrice),
           frequency,
-          email,
+          email: normalizedEmail,
           password: hash || "",
           landerName,
           midName,
@@ -335,7 +336,7 @@ export async function register(req: Request, res: Response) {
           },
         });
       }
-      await registerEmail(landerName, email, newUser.id, domain);
+      await registerEmail(landerName, normalizedEmail, newUser.id, domain);
       let resData;
       if (discountType === "LIFETIME") {
         resData = {
@@ -379,11 +380,11 @@ export async function register(req: Request, res: Response) {
 // login User
 export async function login(req: Request, res: Response) {
   const { email, password } = req.body;
-
+  const normalizedEmail = email.trim().toLowerCase();
   try {
     const existUser = await Prisma.user.findUnique({
       where: {
-        email: email,
+        email: normalizedEmail,
       },
     });
 

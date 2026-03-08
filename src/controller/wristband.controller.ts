@@ -63,7 +63,13 @@ export async function getAllWristband(req: Request, res: Response) {
 
 // get all wristband
 export async function getAllWristbandItem(req: Request, res: Response) {
-  const { statusBy = "", userId = "", modeBy = "" } = req.query;
+  const {
+    statusBy = "",
+    userId = "",
+    modeBy = "",
+    searchBy = "",
+    pulsetrackId = "",
+  } = req.query;
   const pageNumber = req.query.page
     ? parseInt(req.query.page as string, 10)
     : 1;
@@ -80,6 +86,15 @@ export async function getAllWristbandItem(req: Request, res: Response) {
   }
   if (modeBy) {
     filter.mode = modeBy;
+  }
+  if (pulsetrackId) {
+    filter.pulsetrackId = pulsetrackId;
+  }
+  if (searchBy) {
+    filter.title = {
+      contains: searchBy,
+      mode: "insensitive",
+    };
   }
   try {
     const wristband = await Prisma.wristbandItem.findMany({
@@ -304,6 +319,7 @@ export async function deleteWristbandItem(req: Request, res: Response) {
 export async function updateWristbandItemStatus(req: Request, res: Response) {
   const { status } = req.body;
   const id = req.params.id as string;
+
   try {
     const existOrder = await Prisma.wristbandItem.findUnique({
       where: {

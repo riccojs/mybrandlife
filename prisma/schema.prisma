@@ -50,6 +50,7 @@ model user {
   pulsetracks     pulsetrack[]
   pulsetrackDatas pulsetrackData[]
   wristbands      wristbandItem[]
+  trackExport     trackExport[]
   create_at       DateTime         @default(now())
   update_at       DateTime         @updatedAt
 }
@@ -328,27 +329,29 @@ model pulsetrack {
   baseDomain         String
   basePath           String
   idPrefix           Int?             @unique
-  uniqeId            String?          @unique
   active             BrandtapStatus   @default(PENDING)
   transactionId      String?
   subTotal           Float            @default(0)
   total              Float            @default(0)
   expediteProduction Float            @default(0)
   expediteShipping   Float            @default(0)
+  city               String?
+  zip                Int?
+  address            String?
   lander             user             @relation(fields: [landerId], references: [id], onDelete: Cascade)
   wristbands         wristbandItem[]
   pulsetrackData     pulsetrackData[]
+  trackExports       trackExport[]
   create_at          DateTime         @default(now())
   update_at          DateTime         @updatedAt
 }
 
 model wristbandItem {
   id                String               @id @default(uuid())
-  brandtapId        String?
+  pulsetrackId      String?
   wristbandId       String
   userId            String
-  idPrefix          String?
-  uniqeId           String?              @unique
+  idPrefix          Int?
   title             String
   price             Float
   quantity          Int
@@ -366,7 +369,7 @@ model wristbandItem {
   complete_at       DateTime?
   qrCode            String
   mode              WristbandMode
-  pulsetrack        pulsetrack?          @relation(fields: [brandtapId], references: [id], onDelete: Cascade)
+  pulsetrack        pulsetrack?          @relation(fields: [pulsetrackId], references: [id], onDelete: Cascade)
   wristband         wristband            @relation(fields: [wristbandId], references: [id], onDelete: Cascade)
   user              user                 @relation(fields: [userId], references: [id], onDelete: Cascade)
   create_at         DateTime             @default(now())
@@ -375,10 +378,9 @@ model wristbandItem {
 
 model pulsetrackData {
   id               String     @id @default(uuid())
-  brandtapId       String
+  pulsetrackId     String
   landerId         String
-  brandtapIdPrefix String
-  tapIdRaw         String
+  idPrefix         Int
   occurredAt       DateTime
   landingUrl       String
   referrer         String
@@ -398,15 +400,28 @@ model pulsetrackData {
   geoCity          String
   geoRegion        String
   geoCountry       String
-  gpsLat           Float
-  gpsLan           Float
-  gpsAccuracy      Int
-  gpsTimestamp     DateTime
-  gpsConsent       Boolean
-  pulsetrack       pulsetrack @relation(fields: [brandtapId], references: [id], onDelete: Cascade)
+  gpsLat           Float?
+  gpsLan           Float?
+  gpsAccuracy      Float?
+  gpsTimestamp     DateTime?
+  gpsConsent       Boolean    @default(false)
+  pulsetrack       pulsetrack @relation(fields: [pulsetrackId], references: [id], onDelete: Cascade)
   lander           user       @relation(fields: [landerId], references: [id], onDelete: Cascade)
   create_at        DateTime   @default(now())
   update_at        DateTime   @updatedAt
+}
+
+model trackExport {
+  id           String     @id @default(uuid())
+  landerId     String
+  pulsetrackId String?
+  name         String
+  status       String
+  action       String
+  pulsetrack   pulsetrack? @relation(fields: [pulsetrackId], references: [id], onDelete: Cascade)
+  lander       user       @relation(fields: [landerId], references: [id], onDelete: Cascade)
+  create_at    DateTime   @default(now())
+  update_at    DateTime   @updatedAt
 }
 
 // enum
@@ -541,6 +556,6 @@ enum OrderWristbandStatus {
 }
 
 enum WristbandMode {
-  BRANDTAP
+  PULSETRACK
   GLOBAL
 }

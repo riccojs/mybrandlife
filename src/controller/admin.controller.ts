@@ -23,6 +23,7 @@ const {
 // admin registers
 export async function register(req: Request, res: Response) {
   const { email, password } = req.body;
+  const normalizedEmail = email.trim().toLowerCase();
   try {
     bcrypt.hash(password, 10, async function (err, hash) {
       await Prisma.admin.create({
@@ -30,7 +31,7 @@ export async function register(req: Request, res: Response) {
           username: "ricco",
           firstName: "Jhon",
           lastName: "Troemel",
-          email: email,
+          email: normalizedEmail,
           phone: "+1715574-6890",
           address: "United State",
           password: hash || "",
@@ -53,11 +54,11 @@ export async function register(req: Request, res: Response) {
 // login admin
 export async function login(req: Request, res: Response) {
   const { email, password, secureKey } = req.body;
-
+  const normalizedEmail = email.trim().toLowerCase();
   try {
     const existUser = await Prisma.admin.findUnique({
       where: {
-        email: email,
+        email: normalizedEmail,
       },
     });
 

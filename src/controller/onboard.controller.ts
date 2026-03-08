@@ -755,7 +755,7 @@ export async function updateTempleteMedias(req: Request, res: Response) {
           `${basePath}${files[fieldName][0].filename}`;
       }
     }
-    console.log(medias.logo);
+
     const updateUserTemplete = await Prisma.userTemplete.update({
       where: { id },
       data: {

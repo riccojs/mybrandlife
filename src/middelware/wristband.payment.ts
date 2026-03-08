@@ -12,8 +12,8 @@ async function wristbandPayment(
   userId: string,
   total: number,
 ) {
-  const successUrl = `${baseURL}/dashboard/brandtap/order/${brandtapId}/success`;
-  const cancelUrl = `${baseURL}/dashboard/brandtap/order/${brandtapId}`;
+  const successUrl = `${baseURL}/pulsetrack/orders/success/${brandtapId}`;
+  const cancelUrl = `${baseURL}/pulsetrack/projects/${brandtapId}`;
   try {
     const existUser = await Prisma.user.findUnique({
       where: { id: userId },
