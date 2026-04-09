@@ -17,7 +17,7 @@ const router = express.Router();
 
 router.get("/", publicSecretAuth, getAllWristband);
 router.get("/item", auth, getAllWristbandItem);
-router.get("/item/:id", auth, getOneWristbandItem);
+router.get("/item/:id", publicSecretAuth, getOneWristbandItem);
 router.get("/:id", auth, getOneWristband);
 router.post("/", auth, profile, createWristband);
 router.patch("/:id", auth, profile, updateWristband);

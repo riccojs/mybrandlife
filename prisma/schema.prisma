@@ -412,16 +412,23 @@ model pulsetrackData {
 }
 
 model trackExport {
-  id           String     @id @default(uuid())
+  id           String      @id @default(uuid())
   landerId     String
   pulsetrackId String?
   name         String
   status       String
   action       String
   pulsetrack   pulsetrack? @relation(fields: [pulsetrackId], references: [id], onDelete: Cascade)
-  lander       user       @relation(fields: [landerId], references: [id], onDelete: Cascade)
-  create_at    DateTime   @default(now())
-  update_at    DateTime   @updatedAt
+  lander       user        @relation(fields: [landerId], references: [id], onDelete: Cascade)
+  create_at    DateTime    @default(now())
+  update_at    DateTime    @updatedAt
+}
+
+model setting {
+  id          String   @id @default(uuid())
+  maintenance Boolean  @default(false)
+  create_at   DateTime @default(now())
+  update_at   DateTime @updatedAt
 }
 
 // enum

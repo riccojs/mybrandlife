@@ -34,17 +34,17 @@ export async function getAllReferral(req: Request, res: Response) {
       take: limitNumber,
       where: filter,
     });
-    const totalReffal = await Prisma.referralCode.count({
+    const totalReferral = await Prisma.referralCode.count({
       where: filter,
     });
-    const totalPage = Math.ceil(totalReffal / limitNumber);
+    const totalPage = Math.ceil(totalReferral / limitNumber);
     res.status(200).json({
       status: SUCCESS_STATUS,
       message: QUERY_SUCCESSFUL_MESSAGE,
       data: {
         referral,
         totalPage,
-        totalReffal,
+        totalReferral,
         currentPage: pageNumber,
       },
     });

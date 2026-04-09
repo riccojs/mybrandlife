@@ -51,6 +51,22 @@ export async function register(req: Request, res: Response) {
   }
 }
 
+// get setting
+export async function getSetting(req: Request, res: Response) {
+  try {
+    const setting = await Prisma.setting.findFirst();
+    res.status(200).json({
+      status: QUERY_SUCCESSFUL_MESSAGE,
+      setting,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
+
 // login admin
 export async function login(req: Request, res: Response) {
   const { email, password, secureKey } = req.body;
@@ -203,6 +219,39 @@ export async function update(req: Request, res: Response) {
           : existAdmin?.profile,
       },
     });
+    res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: UPDATE_SUCCESSFUL_MESSAGE,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
+
+// update setting
+export async function updateSetting(req: Request, res: Response) {
+  const { maintenance } = req.body;
+  try {
+    const existsetting = await Prisma.setting.findFirst();
+    if (existsetting) {
+      await Prisma.setting.update({
+        where: {
+          id: existsetting?.id,
+        },
+        data: {
+          maintenance: maintenance,
+        },
+      });
+    } else {
+      await Prisma.setting.create({
+        data: {
+          maintenance: maintenance,
+        },
+      });
+    }
     res.status(200).json({
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
