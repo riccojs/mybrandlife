@@ -14,5 +14,5 @@ createRoot(document.getElementById("root")!).render(
         <App />
       </PostHogProvider>
     </Provider>
-  </StrictMode>
+  </StrictMode>,
 );

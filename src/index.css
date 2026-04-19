@@ -50,7 +50,9 @@ body {
 .hover-effect {
   position: relative;
   transform: perspective(500px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1);
-  transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+  transition:
+    transform 0.4s ease-in-out,
+    box-shadow 0.4s ease-in-out;
   will-change: transform;
   box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.041);
 }

@@ -25,6 +25,7 @@ interface OnboardType {
   vcfFile: string;
   offerings: string;
   enableEcho: boolean;
+  enableSpin: boolean;
   merchendiseUrl: string;
   merchendiseStatus: boolean;
   buttonSet: ButtonsType[];
@@ -113,6 +114,7 @@ function Wireframe() {
     enableEvent,
     merchendiseStatus,
     customPlatfrom,
+    enableSpin,
   } = onboard || {};
 
   const {
@@ -295,6 +297,36 @@ function Wireframe() {
                 </button>
               )}
             </div>
+            {enableSpin && (
+              <div className="mt-5">
+                <button
+                  className="flex justify-center px-4 gap-2 items-center w-full h-8 md:h-12 
+             rounded-lg hover:scale-105 duration-300 transition-all cursor-pointer 
+             border border-white hover:shadow-[0_0_14px_rgba(255,255,255,0.90)]"
+                  style={{
+                    backgroundImage: `linear-gradient(to right, ${officialColor}, #fff)`,
+                  }}
+                  onClick={() =>
+                    track("ButtonClick", {
+                      props: {
+                        buttonName: "Download Info",
+                        lander: landerName,
+                        currentDomain: window.location.hostname,
+                      },
+                    })
+                  }
+                >
+                  <i className="fa-solid fa-atom text-xl"></i>
+                  <a
+                    className="text-xs md:text-base font-normal"
+                    target="_blank"
+                    href={`/${landerName}/spin`}
+                  >
+                    Lucky Spin
+                  </a>
+                </button>
+              </div>
+            )}
             <div className="mt-4 mb-2 md:my-4">
               <h2 className="uppercase text-white text-xl md:text-3xl font-medium text-center">
                 {tagLine}

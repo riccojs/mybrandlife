@@ -3,8 +3,8 @@ import { useGetOneOnboardQuery } from "../redux/features/onboard/onboardApi";
 
 export function useOnboard() {
   const params = useParams();
-  // const domain = "myinfluencerlife.me";
-  const domain = window.location.hostname;
+  const domain = "myinfluencerlife.me";
+  // const domain = window.location.hostname;
   const name = params?.name;
   const { data, isLoading, isError } = useGetOneOnboardQuery({ name, domain });
   const onboard = !isError && data?.onboard ? data.onboard : null;
