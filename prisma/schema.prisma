@@ -51,6 +51,7 @@ model user {
   pulsetrackDatas pulsetrackData[]
   wristbands      wristbandItem[]
   trackExport     trackExport[]
+  spiningGroups   spiningGroup[]
   create_at       DateTime         @default(now())
   update_at       DateTime         @updatedAt
 }
@@ -125,6 +126,7 @@ model userTemplete {
   userId            String
   enableEvent       Boolean          @default(false)
   enableEcho        Boolean          @default(false)
+  enableSpin        Boolean          @default(false)
   buttonSet         buttonSet[]
   customPlatfrom    customPlatfrom[]
   services          services[]
@@ -431,6 +433,27 @@ model setting {
   update_at   DateTime @updatedAt
 }
 
+model spiningGroup {
+  id           String        @id @default(uuid())
+  groupType    SpinCategory  @unique
+  isEnable     Boolean       @default(false)
+  landerId     String  
+  lander       user          @relation(fields: [landerId], references: [id], onDelete: Cascade)
+  spiningItems spiningItem[]
+  create_at    DateTime      @default(now())
+  update_at    DateTime      @updatedAt
+}
+
+model spiningItem {
+  id        String       @id @default(uuid())
+  name      String
+  url       String
+  groupId   String
+  group     spiningGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  create_at DateTime     @default(now())
+  update_at DateTime     @updatedAt
+}
+
 // enum
 enum CodeType {
   MONTHLY
@@ -565,4 +588,12 @@ enum OrderWristbandStatus {
 enum WristbandMode {
   PULSETRACK
   GLOBAL
+}
+
+enum SpinCategory {
+  PEOPLE
+  CLUBS
+  HOTELS
+  RESTAURANTS
+  ALL
 }

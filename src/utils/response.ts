@@ -69,6 +69,9 @@ export const response = {
   USER_ASSIGNED_SUCCESSFUL: "User assigned successful",
   WRISTBAND_CREATE_SUCCESSFUL: "Wristband create successful",
   INVALID_EXPORT_FILE_TYPE: "Invalid type. Allowed: csv or pdf",
+  SPIN_UPDATE_SUCCESSFUL: "Spin update successful",
+  SPIN_GROUP_CREATE_SUCCESSFUL: "Group create successful",
+  DUPLICAT_GROUP_MESSAGE: "Duplicate group error",
 };
 
 export default response;
