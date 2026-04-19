@@ -6,7 +6,9 @@ export const spinApi = apiSlice.injectEndpoints({
       query: ({ page, limit, searchBy, landerId }) => ({
         url: `/api/spin/group?limit=${limit}&page=${page}&searchBy=${searchBy}&landerId=${landerId}`,
         method: "GET",
-        credentials: "include",
+        headers: {
+          "x-api-key": import.meta.env.VITE_APP_PUBLIC_API_KEY,
+        },
       }),
       providesTags: ["spin"],
     }),
