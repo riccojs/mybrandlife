@@ -15,7 +15,7 @@ import {
 import publicSecretAuth from "../middelware/public.secret.auth.js";
 const router = express.Router();
 
-router.get("/group", auth, getAllGroup);
+router.get("/group", publicSecretAuth, getAllGroup);
 router.get("/group/item/:id", auth, getOneGroupItem);
 router.get("/group/:id", auth, getOneGroup);
 router.post("/group", auth, createGroup);
