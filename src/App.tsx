@@ -8,7 +8,6 @@ import PaymentSuccess from "./pages/Payment.success";
 import RequestTv from "./pages/Request.tv";
 import { useClarity } from "./hook/useClarity";
 import RedirectRoute from "./Redirect.route";
-import SpinPage from "./pages/Spin.page";
 
 function App() {
   useFavicon();
@@ -21,7 +20,6 @@ function App() {
         <Route path="/:name" element={<Wireframe />} />
         <Route path="/payment/success/:name" element={<PaymentSuccess />} />
         <Route path="/:name/request_tv" element={<RequestTv />} />
-        <Route path="/:name/spin" element={<SpinPage />} />
         <Route path="/" element={<RedirectRoute />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>

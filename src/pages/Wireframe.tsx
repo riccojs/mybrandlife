@@ -13,6 +13,8 @@ import { motion } from "framer-motion";
 import QRCode from "react-qr-code";
 import { useScan } from "../hook/useScan";
 import GpsPermission from "../component/Gps.permission";
+import type { SpinType } from "../utils/spin.type";
+import Spining from "../component/Spining";
 
 interface OnboardType {
   id: string;
@@ -53,6 +55,7 @@ interface UserType {
   stripeAccountId: string;
   id: string;
   package: string;
+  spinings: SpinType[];
 }
 
 function Wireframe() {
@@ -297,36 +300,7 @@ function Wireframe() {
                 </button>
               )}
             </div>
-            {enableSpin && (
-              <div className="mt-5">
-                <button
-                  className="flex justify-center px-4 gap-2 items-center w-full h-8 md:h-12 
-             rounded-lg hover:scale-105 duration-300 transition-all cursor-pointer 
-             border border-white hover:shadow-[0_0_14px_rgba(255,255,255,0.90)]"
-                  style={{
-                    backgroundImage: `linear-gradient(to right, ${officialColor}, #fff)`,
-                  }}
-                  onClick={() =>
-                    track("ButtonClick", {
-                      props: {
-                        buttonName: "Download Info",
-                        lander: landerName,
-                        currentDomain: window.location.hostname,
-                      },
-                    })
-                  }
-                >
-                  <i className="fa-solid fa-atom text-xl"></i>
-                  <a
-                    className="text-xs md:text-base font-normal"
-                    target="_blank"
-                    href={`/${landerName}/spin`}
-                  >
-                    Lucky Spin
-                  </a>
-                </button>
-              </div>
-            )}
+
             <div className="mt-4 mb-2 md:my-4">
               <h2 className="uppercase text-white text-xl md:text-3xl font-medium text-center">
                 {tagLine}
@@ -484,6 +458,9 @@ function Wireframe() {
                     </motion.a>
                   );
                 })}
+                {enableSpin && (
+                  <Spining user={user} officialColor={officialColor} />
+                )}
               </div>
             </div>
             <div className="mt-6">
