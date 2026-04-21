@@ -70,7 +70,7 @@ export const response = {
   WRISTBAND_CREATE_SUCCESSFUL: "Wristband create successful",
   INVALID_EXPORT_FILE_TYPE: "Invalid type. Allowed: csv or pdf",
   SPIN_UPDATE_SUCCESSFUL: "Spin update successful",
-  SPIN_GROUP_CREATE_SUCCESSFUL: "Group create successful",
+  SPIN_GROUP_CREATE_SUCCESSFUL: "Spin create successful",
   DUPLICAT_GROUP_MESSAGE: "Duplicate group error",
 };
 

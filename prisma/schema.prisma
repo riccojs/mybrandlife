@@ -51,7 +51,7 @@ model user {
   pulsetrackDatas pulsetrackData[]
   wristbands      wristbandItem[]
   trackExport     trackExport[]
-  spiningGroups   spiningGroup[]
+  spinings        spining[]
   create_at       DateTime         @default(now())
   update_at       DateTime         @updatedAt
 }
@@ -433,23 +433,14 @@ model setting {
   update_at   DateTime @updatedAt
 }
 
-model spiningGroup {
-  id           String        @id @default(uuid())
-  groupType    SpinCategory  @unique
-  isEnable     Boolean       @default(false)
-  landerId     String  
-  lander       user          @relation(fields: [landerId], references: [id], onDelete: Cascade)
-  spiningItems spiningItem[]
-  create_at    DateTime      @default(now())
-  update_at    DateTime      @updatedAt
-}
-
-model spiningItem {
+model spining {
   id        String       @id @default(uuid())
-  name      String
+  groupType SpinCategory
+  title     String
   url       String
-  groupId   String
-  group     spiningGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  isEnable  Boolean      @default(false)
+  landerId  String
+  lander    user         @relation(fields: [landerId], references: [id], onDelete: Cascade)
   create_at DateTime     @default(now())
   update_at DateTime     @updatedAt
 }

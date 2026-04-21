@@ -188,7 +188,11 @@ export async function getOneOboard(req: Request, res: Response) {
       include: {
         buttonSet: true,
         services: true,
-        user: true,
+        user: {
+          include: {
+            spinings: true,
+          },
+        },
         customPlatfrom: true,
       },
     });
