@@ -209,7 +209,7 @@ export default function SpinPicker({ id }: { id: string }) {
 
   return (
     <div className="w-full min-h-[50vh] flex justify-center">
-      <div className="relative w-[90%] max-w-full md:max-w-[600px] h-full bg-white p-8 rounded-2xl">
+      <div className="relative w-[90%] max-w-full h-full bg-white p-8 rounded-2xl">
         <h2 className="text-[#96c94b] uppercase text-5xl font-bold text-center mb-5">
           Spining Now
         </h2>
@@ -233,7 +233,7 @@ export default function SpinPicker({ id }: { id: string }) {
                 <canvas ref={canvasRef} />
                 <img
                   src={SpinIcon}
-                  className="absolute w-6 md:w-14 top-[45%] -right-3 md:right-[-20px]"
+                  className="absolute w-6 md:w-14 top-[45%] -right-5"
                 />
                 <button
                   onClick={spin}
