@@ -231,7 +231,7 @@ function Wireframe() {
             )}
           </div>
         </div>
-        <div className="w-full h-[1px] bg-slate-400 animate-pulse"></div>
+        <div className="w-full h-1 bg-slate-400 animate-pulse"></div>
         <div
           className="w-full py-10 min-h-[80vh] h-full"
           style={
@@ -473,7 +473,7 @@ function Wireframe() {
             </div>
           </div>
         </div>
-        <div className="w-full h-[1px] bg-slate-400 animate-pulse"></div>
+        <div className="w-full h-1 bg-slate-400 animate-pulse"></div>
         <div className="bg-black py-10">
           <div className="container">
             <p className="text-white text-xs md:text-md font-normal text-center capitalize">
