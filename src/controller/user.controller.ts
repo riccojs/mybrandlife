@@ -91,13 +91,8 @@ export async function getAllUser(req: Request, res: Response) {
 
 // get all user by admin
 export async function getAllUserByAdmin(req: Request, res: Response) {
-  const { status } = req.query;
   try {
-    const userStatus = status as ActivationStatus;
     const users = await Prisma.user.findMany({
-      where: {
-        status: userStatus,
-      },
       include: {
         userTemplete: true,
       },
