@@ -21,6 +21,7 @@ const {
 const frontendUrl = process.env.FRONTEND_CORS_URL;
 import PDFDocument from "pdfkit";
 import { Parser } from "json2csv";
+import pulsetrackEmail from "../lib/pulsetrack.email.js";
 
 // get all pulsetrack
 export async function getAllPulsetrack(req: Request, res: Response) {
@@ -516,6 +517,9 @@ export async function createPulsetrackPayment(req: Request, res: Response) {
       where: {
         id: pulsetrackId,
       },
+      include: {
+        lander: true,
+      },
     });
     if (!existPulsetrack) {
       return res.status(401).json({
@@ -524,6 +528,15 @@ export async function createPulsetrackPayment(req: Request, res: Response) {
       });
     }
     const payment = await wristbandPayment(pulsetrackId, userId, total);
+    const userName = existPulsetrack?.lander?.username ?? "";
+    await pulsetrackEmail(
+      userName,
+      total,
+      existPulsetrack?.landerId,
+      city,
+      zip,
+      address,
+    );
     await Prisma.pulsetrack.update({
       where: {
         id: pulsetrackId,

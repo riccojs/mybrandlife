@@ -18,30 +18,51 @@ const plausibleSiteId = process.env.PLUSIBLE_SITE_ID ?? "";
 // get all partner
 export async function getAllPartner(req: Request, res: Response) {
   const { searchBy = "" } = req.query;
+
   const pageNumber = req.query.page
     ? parseInt(req.query.page as string, 10)
     : 1;
+
   const limitNumber = req.query.limit
     ? parseInt(req.query.limit as string, 10)
     : 10;
+
   const skip = (pageNumber - 1) * limitNumber;
+
   let filter: any = {};
+
   if (searchBy) {
-    filter.title = {
-      contains: searchBy,
-      mode: "insensitive",
+    filter = {
+      OR: [
+        {
+          title: {
+            contains: searchBy,
+            mode: "insensitive",
+          },
+        },
+        {
+          description: {
+            contains: searchBy,
+            mode: "insensitive",
+          },
+        },
+      ],
     };
   }
+
   try {
     const partner = await Prisma.partners.findMany({
-      skip: skip,
+      skip,
       take: limitNumber,
       where: filter,
     });
+
     const totalPartner = await Prisma.partners.count({
       where: filter,
     });
+
     const totalPage = Math.ceil(totalPartner / limitNumber);
+
     res.status(200).json({
       status: SUCCESS_STATUS,
       message: QUERY_SUCCESSFUL_MESSAGE,

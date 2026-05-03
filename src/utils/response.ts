@@ -2,7 +2,7 @@ export const response = {
   HOME_ROUTE_MESSAGE: "Home route",
   UNAUTHORIZE_ERROR_MESSAGE: "Unauthorize user!",
   ROUTE_NOT_FOUND_MESSAGE: "Route not found!",
-  USER_ALREADY_EXIST_MESSAGE: "User already exist!",
+  USER_ALREADY_EXIST_MESSAGE: "Email already exist!",
   REGISTRATION_SUCCESS_MESSAGE: "Successful, redirect to payment",
   EMAIL_VERIFICATION_CODE_RESPONSE: "Verify Your Email for My Brand Life",
   NAME_RESPONSE: "The My Brand Life Team",

@@ -586,5 +586,5 @@ enum SpinCategory {
   CLUBS
   HOTELS
   RESTAURANTS
-  ALL
+  OTHER
 }

@@ -93,6 +93,11 @@ export async function getAllUser(req: Request, res: Response) {
 export async function getAllUserByAdmin(req: Request, res: Response) {
   try {
     const users = await Prisma.user.findMany({
+      where: {
+        userTemplete: {
+          some: {},
+        },
+      },
       include: {
         userTemplete: true,
       },
