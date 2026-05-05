@@ -96,10 +96,9 @@ model userTemplete {
   tagLine           String?
   offerings         String?
   funnySaying       String?
-  logo              String?
-  portrait          String?
-  banner            String?
-  background        String?
+  headerImage       String?
+  logoImage         String?
+  bodyImage         String?
   epkFile           String?
   favicon           String?
   heading           String?
@@ -275,16 +274,32 @@ model tokens {
 }
 
 model referralCode {
-  id        String   @id @default(uuid())
-  code      String   @unique
+  id        String     @id @default(uuid())
+  code      String     @unique
   type      CodeType
   value     Int
   joined    Int?
-  active    Boolean  @default(false)
-  userId    String?  @unique
-  user      user?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  create_at DateTime @default(now())
-  update_at DateTime @updatedAt
+  active    Boolean    @default(false)
+  userId    String?    @unique
+  user      user?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joinUsers joinUser[]
+  create_at DateTime   @default(now())
+  update_at DateTime   @updatedAt
+}
+
+model joinUser {
+  id             String       @id @default(uuid())
+  code           String
+  referralcodeId String
+  firstName      String
+  lastName       String
+  midName        String
+  email          String
+  phone          String
+  landerName     String
+  referralCode   referralCode @relation(fields: [referralcodeId], references: [id], onDelete: Cascade)
+  create_at      DateTime     @default(now())
+  update_at      DateTime     @updatedAt
 }
 
 model partners {
@@ -340,6 +355,7 @@ model pulsetrack {
   city               String?
   zip                Int?
   address            String?
+  state              String?
   lander             user             @relation(fields: [landerId], references: [id], onDelete: Cascade)
   wristbands         wristbandItem[]
   pulsetrackData     pulsetrackData[]

@@ -433,10 +433,9 @@ export async function onboardingUser(req: Request, res: Response) {
     const basePath = fileProtocol(req);
     const files = req.files as Record<string, Express.Multer.File[]>;
     let medias = {
-      portrait: "",
-      logo: "",
-      banner: "",
-      background: "",
+      headerImage: "",
+      logoImage: "",
+      bodyImage: "",
       epkFile: "",
     };
     for (const fieldName in files) {
@@ -475,10 +474,9 @@ export async function onboardingUser(req: Request, res: Response) {
         tagLine,
         offerings,
         funnySaying,
-        portrait: medias.portrait,
-        logo: medias.logo,
-        banner: medias.banner,
-        background: medias.background,
+        headerImage: medias.headerImage,
+        logoImage: medias.logoImage,
+        bodyImage: medias.bodyImage,
         epkFile: medias.epkFile,
         layout: layoutDetection,
         userId,
@@ -747,10 +745,9 @@ export async function updateTempleteMedias(req: Request, res: Response) {
     const files = req.files as Record<string, Express.Multer.File[]>;
     type MediaKeys = keyof typeof existTemplate;
     const medias: any = {
-      portrait: "",
-      logo: "",
-      banner: "",
-      background: "",
+      headerImage: "",
+      logoImage: "",
+      bodyImage: "",
       epkFile: "",
     };
     for (const fieldName in files) {
@@ -763,10 +760,9 @@ export async function updateTempleteMedias(req: Request, res: Response) {
     const updateUserTemplete = await Prisma.userTemplete.update({
       where: { id },
       data: {
-        portrait: medias.portrait || existTemplate.portrait,
-        logo: medias.logo || existTemplate.logo,
-        banner: medias.banner || existTemplate.banner,
-        background: medias.background || existTemplate.background,
+        headerImage: medias.headerImage || existTemplate.headerImage,
+        logoImage: medias.logoImage || existTemplate.logoImage,
+        bodyImage: medias.bodyImage || existTemplate.bodyImage,
         epkFile: medias.epkFile || existTemplate.epkFile,
       },
     });
@@ -859,7 +855,7 @@ export async function updateTempleteInfos(req: Request, res: Response) {
       card.set("tel", phone || "");
       const adrString = `${addressOne ?? ""}, ${addressTow ?? ""}`;
       card.set("adr", adrString);
-      const portraitPath = existTemplete?.logo;
+      const portraitPath = existTemplete?.logoImage;
       if (portraitPath) {
         const portraitData = await getBase64Image(portraitPath);
         if (portraitData) {

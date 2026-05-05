@@ -510,7 +510,7 @@ export async function togglePulsetrack(req: Request, res: Response) {
 
 // create pulsetrack payment
 export async function createPulsetrackPayment(req: Request, res: Response) {
-  const { total, pulsetrackId, userId, address, city, zip } = req.body;
+  const { total, pulsetrackId, userId, address, city, zip, state } = req.body;
 
   try {
     const existPulsetrack = await Prisma.pulsetrack.findUnique({
@@ -546,6 +546,7 @@ export async function createPulsetrackPayment(req: Request, res: Response) {
         address: address,
         city: city,
         zip: Number(zip),
+        state: state,
       },
     });
     res.status(200).json({

@@ -324,6 +324,19 @@ export async function register(req: Request, res: Response) {
             joined: joining ? joining + 1 : 1,
           },
         });
+        const referralCodeId = existReferal ? existReferal?.id : "";
+        await Prisma.joinUser.create({
+          data: {
+            code: referalCode,
+            referralcodeId: referralCodeId,
+            firstName: firstName,
+            lastName: lastName,
+            midName: midName,
+            email: email,
+            phone: phone,
+            landerName: landerName,
+          },
+        });
       }
       if (packageType === "gold" && frequency === "yearly") {
         await Prisma.referralCode.create({

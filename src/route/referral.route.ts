@@ -6,10 +6,12 @@ import {
   createReferral,
   updateReferral,
   deleteReferral,
+  getAllReferralUser,
 } from "../controller/referral.controller.js";
 const router = express.Router();
 
 router.get("/", auth, getAllReferral);
+router.get("/user", auth, getAllReferralUser);
 router.get("/:id", auth, getOneReferral);
 router.post("/", auth, createReferral);
 router.patch("/:id", auth, updateReferral);

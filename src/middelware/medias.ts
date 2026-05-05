@@ -25,15 +25,10 @@ const upload = multer({
 });
 
 const medias = upload.fields([
-  { name: "logo", maxCount: 1 },
-  { name: "portrait", maxCount: 1 },
-  { name: "banner", maxCount: 1 },
-  { name: "background", maxCount: 1 },
+  { name: "headerImage", maxCount: 1 },
+  { name: "logoImage", maxCount: 1 },
+  { name: "bodyImage", maxCount: 1 },
   { name: "epkFile", maxCount: 1 },
-  { name: "favicon", maxCount: 1 },
-  { name: "FooterBg", maxCount: 1 },
-  { name: "ContentBg", maxCount: 1 },
-  { name: "headerBg", maxCount: 1 },
 ]);
 
 export default medias;

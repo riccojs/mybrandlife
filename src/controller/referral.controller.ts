@@ -56,6 +56,51 @@ export async function getAllReferral(req: Request, res: Response) {
   }
 }
 
+export async function getAllReferralUser(req: Request, res: Response) {
+  const { searchBy = "", referralId = "" } = req.query;
+  const pageNumber = req.query.page
+    ? parseInt(req.query.page as string, 10)
+    : 1;
+  const limitNumber = req.query.limit
+    ? parseInt(req.query.limit as string, 10)
+    : 10;
+  const skip = (pageNumber - 1) * limitNumber;
+  let filter: any = {};
+  if (searchBy) {
+    filter.landerName = {
+      contains: searchBy,
+      mode: "insensitive",
+    };
+    filter.referralcodeId = referralId;
+  }
+  try {
+    const user = await Prisma.joinUser.findMany({
+      skip: skip,
+      take: limitNumber,
+      where: filter,
+    });
+    const totalUser = await Prisma.joinUser.count({
+      where: filter,
+    });
+    const totalPage = Math.ceil(totalUser / limitNumber);
+    res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: QUERY_SUCCESSFUL_MESSAGE,
+      data: {
+        user,
+        totalPage,
+        totalUser,
+        currentPage: pageNumber,
+      },
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
+
 // get one referral
 export async function getOneReferral(req: Request, res: Response) {
   const id = req.params.id as string;
