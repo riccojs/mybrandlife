@@ -57,21 +57,21 @@ export async function getAllReferral(req: Request, res: Response) {
 }
 
 export async function getAllReferralUser(req: Request, res: Response) {
-  const { searchBy = "", referralId = "" } = req.query;
+  const { searchBy = "", code = "" } = req.query;
   const pageNumber = req.query.page
     ? parseInt(req.query.page as string, 10)
     : 1;
   const limitNumber = req.query.limit
     ? parseInt(req.query.limit as string, 10)
     : 10;
+
   const skip = (pageNumber - 1) * limitNumber;
-  let filter: any = {};
+  let filter: any = { code: code };
   if (searchBy) {
     filter.landerName = {
       contains: searchBy,
       mode: "insensitive",
     };
-    filter.referralcodeId = referralId;
   }
   try {
     const user = await Prisma.joinUser.findMany({
