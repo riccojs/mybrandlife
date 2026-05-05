@@ -19,9 +19,9 @@ import Spining from "../component/Spining";
 interface OnboardType {
   id: string;
   tagLine: string;
-  logo: string;
-  portrait: string;
-  background: string;
+  headerImage: string;
+  logoImage: string;
+  bodyImage: string;
   funnySaying: string;
   bio: string;
   vcfFile: string;
@@ -99,9 +99,9 @@ function Wireframe() {
 
   const {
     tagLine,
-    logo,
-    portrait,
-    background,
+    logoImage,
+    headerImage,
+    bodyImage,
     buttonSet,
     services,
     bio,
@@ -159,9 +159,9 @@ function Wireframe() {
         <div
           className="py-5"
           style={
-            portrait
+            headerImage
               ? {
-                  backgroundImage: `url(${portrait})`,
+                  backgroundImage: `url(${headerImage})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center center",
                   backgroundRepeat: "no-repeat",
@@ -181,10 +181,10 @@ function Wireframe() {
                     }`}
           >
             <a href={`/${landerName}`}>
-              {logo ? (
+              {logoImage ? (
                 <img
-                  src={logo}
-                  alt={logo}
+                  src={logoImage}
+                  alt={logoImage}
                   onClick={() =>
                     track("ButtonClick", {
                       props: {
@@ -235,9 +235,9 @@ function Wireframe() {
         <div
           className="w-full py-10 min-h-[80vh] h-full"
           style={
-            background
+            bodyImage
               ? {
-                  backgroundImage: `url(${background})`,
+                  backgroundImage: `url(${bodyImage})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center center",
                   backgroundRepeat: "no-repeat",
