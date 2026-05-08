@@ -6,7 +6,7 @@ export const response = {
   REGISTRATION_SUCCESS_MESSAGE: "Successful, redirect to payment",
   EMAIL_VERIFICATION_CODE_RESPONSE: "Verify Your Email for My Brand Life",
   NAME_RESPONSE: "The My Brand Life Team",
-  OUTRO_RESPONSE: "©2025 My Brand Life. All rights reserved.",
+  OUTRO_RESPONSE: "©2025 MyBrandLife.me. All rights reserved.",
   USE_VERIFICATION_CODE_TO_VERIFY_EMAIL_RESPONSE:
     "Welcome to My Brand Life! Please use the following confirmation code to verify your email address.",
   SINGNATURE_RESPONSE: "Kind regards",

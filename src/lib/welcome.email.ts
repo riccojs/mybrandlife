@@ -23,7 +23,7 @@ async function welcomeEmail(companyName: string, email: string) {
   const mailGenerator = new Mailgen({
     theme: "default",
     product: {
-      name: NAME_RESPONSE,
+      name: "The MyBrandLife.me Team",
       link: corsUrl,
       copyright: OUTRO_RESPONSE,
     },
@@ -33,8 +33,7 @@ async function welcomeEmail(companyName: string, email: string) {
     body: {
       name: companyName,
       intro: `
-        Congratulations! Your account has been successfully verified.  
-        You're now ready to start exploring all features of ${NAME_RESPONSE}.
+        Congratulations! Your account has been successfully verified. You're now ready to start exploring all features of TheMyBrandLife.me suite of features, products, and applications.
       `,
       dictionary: {
         message: `
@@ -51,7 +50,7 @@ async function welcomeEmail(companyName: string, email: string) {
           If you have any questions, feel free to reach out.
         </p>
         <p style="font-size: 14px; color: #4285F4;">
-          <a href="${corsUrl}">${NAME_RESPONSE}</a>
+          <a href="${corsUrl}">The MyBrandLife.me Team</a>
         </p>
         <p style="font-size: 14px; color: #4285F4;">Email: ${supportMail}</p>
       `,
@@ -63,7 +62,7 @@ async function welcomeEmail(companyName: string, email: string) {
   await transporter.sendMail({
     from: USER,
     to: email,
-    subject: "Welcome to " + NAME_RESPONSE + "!",
+    subject: "Welcome to the MyBrandLife.me Family",
     html: emailBody,
   });
 }

@@ -497,6 +497,18 @@ enum WristbandName {
   BLUE
   WHITE
   ORANGE
+  PURPLE
+  PINK
+  SILVER
+  GRAY
+  GOLD
+  TEAL
+  NEON_GREEN
+  NEON_PINK
+  NAVY
+  BROWN
+  TAN
+  CLEAR
 }
 
 enum ButtonName {
