@@ -7,53 +7,55 @@ datasource db {
 }
 
 model user {
-  id              String           @id @default(uuid())
-  username        String?
-  firstName       String
-  midName         String
-  lastName        String
-  email           String           @unique
-  secondEmail     String?
-  password        String
-  phone           String?
-  profile         String?
-  addressOne      String
-  addressTow      String?
-  landerName      String           @unique
-  nickName        String?
-  aggreement      Boolean
-  package         String
-  frequency       String
-  status          ActivationStatus @default(PENDING)
-  domain          String
-  planKey         String
-  planPrice       Float
-  planOldPrice    Float
-  planId          String           @default(uuid())
-  discount        Int?
-  discountType    CodeType?
-  calendarId      String?
-  stripeAccountId String?
-  accessToken     String?
-  refreshToken    String?
-  ShowCalendar    Boolean          @default(false)
-  enableDirectory Boolean          @default(true)
-  events          event[]
-  slots           slot[]
-  echos           echo[]
-  membership      userMembership?
-  otpModel        otpModel[]
-  userTemplete    userTemplete[]
-  discounts       discount[]
-  tokens          tokens[]
-  referrals       referralCode?
-  pulsetracks     pulsetrack[]
-  pulsetrackDatas pulsetrackData[]
-  wristbands      wristbandItem[]
-  trackExport     trackExport[]
-  spinings        spining[]
-  create_at       DateTime         @default(now())
-  update_at       DateTime         @updatedAt
+  id               String           @id @default(uuid())
+  username         String?
+  firstName        String
+  midName          String
+  lastName         String
+  email            String           @unique
+  secondEmail      String?
+  password         String
+  phone            String?
+  profile          String?
+  addressOne       String
+  addressTow       String?
+  landerName       String           @unique
+  nickName         String?
+  aggreement       Boolean
+  package          String
+  frequency        String
+  status           ActivationStatus @default(PENDING)
+  domain           String
+  planKey          String
+  planPrice        Float
+  planOldPrice     Float
+  planId           String           @default(uuid())
+  discount         Int?
+  discountType     CodeType?
+  calendarId       String?
+  stripeAccountId  String?
+  accessToken      String?
+  refreshToken     String?
+  referalCode      String?
+  ShowCalendar     Boolean          @default(false)
+  enableDirectory  Boolean          @default(true)
+  enableBrandshare Boolean          @default(false)
+  events           event[]
+  slots            slot[]
+  echos            echo[]
+  membership       userMembership?
+  otpModel         otpModel[]
+  userTemplete     userTemplete[]
+  discounts        discount[]
+  tokens           tokens[]
+  referrals        referralCode?
+  pulsetracks      pulsetrack[]
+  pulsetrackDatas  pulsetrackData[]
+  wristbands       wristbandItem[]
+  trackExport      trackExport[]
+  spinings         spining[]
+  create_at        DateTime         @default(now())
+  update_at        DateTime         @updatedAt
 }
 
 model admin {
@@ -119,7 +121,9 @@ model userTemplete {
   FooterBg          String?
   merchendiseUrl    String?
   merchendiseStatus Boolean?
+  merchendiseLogo   String?
   songRequest       String?
+  privateDomain     String?
   verify            Boolean?         @default(false)
   status            ActivationStatus @default(PENDING)
   userId            String
@@ -279,6 +283,11 @@ model referralCode {
   type      CodeType
   value     Int
   joined    Int?
+  limit     Int?
+  expire_in DateTime?
+  label     String?
+  link      String?
+  logo      String?
   active    Boolean    @default(false)
   userId    String?    @unique
   user      user?      @relation(fields: [userId], references: [id], onDelete: Cascade)

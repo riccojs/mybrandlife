@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Prisma } from "../utils/prisma.js";
 import status from "../utils/status.js";
 import response from "../utils/response.js";
+import alertEmail from "../lib/alert.email.js";
 const { SUCCESS_STATUS, ERROR_STATUS } = status;
 const {
   QUERY_SUCCESSFUL_MESSAGE,
@@ -83,6 +84,15 @@ export async function createReport(req: Request, res: Response) {
         reason: reason,
       },
     });
+    await alertEmail(
+      "User Report Submitted",
+      "New User Bug Report",
+      `A user has submitted a bug report.
+    Details:
+    - Issue: ${comment}
+    - Reason: ${reason}
+    Please review the admin dashboard and take any necessary follow-up action.`,
+    );
     return res.status(201).json({
       status: SUCCESS_STATUS,
       message: REPORT_SUBMIT_SUCCESSFUL_MESSAGE,

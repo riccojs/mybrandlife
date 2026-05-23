@@ -37,6 +37,7 @@ import getBase64Image from "../lib/getBase64Image.js";
 import { fileURLToPath } from "url";
 import { ButtonName } from "@prisma/client";
 import fileProtocol from "./fileProtocol.js";
+import alertEmail from "../lib/alert.email.js";
 const card = new VCard();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -82,6 +83,44 @@ export async function getAllOnboard(req: Request, res: Response) {
         onboard,
         totalPage,
         totalOnboard,
+        currentPage: page,
+      },
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
+
+// get all onboard Requests
+export async function getAllOnboardRequests(req: Request, res: Response) {
+  const { templateId } = req.query;
+  const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
+  const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 10;
+  const skip = (page - 1) * page;
+  const filter: any = { templateId: templateId };
+  try {
+    const requests = await Prisma.templateInfo.findMany({
+      skip,
+      take: limit,
+      where: filter,
+      include: {
+        templete: true,
+      },
+    });
+    const totalRequests = await Prisma.templateInfo.count({
+      where: filter,
+    });
+    const totalPage = Math.ceil(totalRequests / limit);
+    res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: QUERY_SUCCESSFUL_MESSAGE,
+      data: {
+        requests,
+        totalPage,
+        totalRequests,
         currentPage: page,
       },
     });
@@ -163,26 +202,34 @@ export async function getAllOnboardByAdmin(req: Request, res: Response) {
 }
 
 // get one onboard by lander domain and name
-export async function getOneOboard(req: Request, res: Response) {
+export async function getOneOnboard(req: Request, res: Response) {
   const { domain } = req.query;
   const name = req.params.name as string;
   const domainName = domain as string;
   try {
-    const eixstUser = await Prisma.user.findUnique({
+    let brandshare;
+    const existUser = await Prisma.user.findUnique({
       where: {
         landerName: name,
         domain: domainName,
       },
     });
-    if (!eixstUser) {
+    if (existUser?.referalCode) {
+      brandshare = await Prisma.referralCode.findUnique({
+        where: {
+          code: existUser?.referalCode,
+        },
+      });
+    }
+    if (!existUser) {
       return res.status(404).json({
         status: ERROR_STATUS,
         message: DATA_NOT_FOUND_MESSAGE,
       });
     }
-    const existOnoard = await Prisma.userTemplete.findFirst({
+    const existOnboard = await Prisma.userTemplete.findFirst({
       where: {
-        userId: eixstUser?.id,
+        userId: existUser?.id,
         status: "ACTIVATE",
       },
       include: {
@@ -196,7 +243,7 @@ export async function getOneOboard(req: Request, res: Response) {
         customPlatfrom: true,
       },
     });
-    if (!existOnoard) {
+    if (!existOnboard) {
       return res.status(404).json({
         status: ERROR_STATUS,
         message: DATA_NOT_FOUND_MESSAGE,
@@ -205,7 +252,38 @@ export async function getOneOboard(req: Request, res: Response) {
     res.status(200).json({
       status: SUCCESS_STATUS,
       message: QUERY_SUCCESSFUL_MESSAGE,
-      onboard: existOnoard,
+      onboard: {
+        ...existOnboard,
+        brandshare: brandshare ?? null,
+      },
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
+
+// get one onboard by lander domain and name
+export async function getOneOnboardRequests(req: Request, res: Response) {
+  const id = req.params.id as string;
+  try {
+    const existRequest = await Prisma.templateInfo.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!existRequest) {
+      return res.status(404).json({
+        status: ERROR_STATUS,
+        message: DATA_NOT_FOUND_MESSAGE,
+      });
+    }
+    res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: QUERY_SUCCESSFUL_MESSAGE,
+      request: existRequest,
     });
   } catch (error: any) {
     res.status(500).json({
@@ -253,25 +331,52 @@ export async function getOneOboardById(req: Request, res: Response) {
 // check discount code
 export async function checkDiscountCode(req: Request, res: Response) {
   const { code } = req.body;
+
   try {
     const existReferal = await Prisma.referralCode.findUnique({
-      where: {
-        code: code,
-      },
+      where: { code },
     });
+
     if (!existReferal) {
       return res.status(404).json({
         status: ERROR_STATUS,
         message: INCORRECT_REFERRAL_CODE_MESSAGE,
       });
     }
-    if (!existReferal?.active) {
-      return res.status(404).json({
+
+    if (!existReferal.active) {
+      return res.status(400).json({
         status: ERROR_STATUS,
         message: REFERRAL_CODE_EXPIRED,
       });
     }
-    res.status(200).json({
+
+    // check limit
+    if (
+      existReferal.limit &&
+      existReferal.joined &&
+      existReferal.joined >= existReferal.limit
+    ) {
+      return res.status(400).json({
+        status: ERROR_STATUS,
+        message: REFERRAL_CODE_EXPIRED,
+      });
+    }
+
+    // check expiry date
+    if (existReferal.expire_in) {
+      const expireDate = new Date(existReferal.expire_in);
+      const today = new Date();
+
+      if (expireDate < today) {
+        return res.status(400).json({
+          status: ERROR_STATUS,
+          message: REFERRAL_CODE_EXPIRED,
+        });
+      }
+    }
+
+    return res.status(200).json({
       status: SUCCESS_STATUS,
       message: VALID_REFERRAL_CODE_MESSAGE,
       discount: existReferal.value,
@@ -279,7 +384,7 @@ export async function checkDiscountCode(req: Request, res: Response) {
       discountCode: existReferal.code,
     });
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
     });
@@ -602,6 +707,11 @@ export async function onboardingUser(req: Request, res: Response) {
     res
       .status(200)
       .json({ status: SUCCESS_STATUS, message: ONBOARDING_SUCCESSFUL_MESSAGE });
+    await alertEmail(
+      "User Onboarding Completed",
+      "New User Successfully Onboarded",
+      `${existUser?.landerName} has successfully completed onboarding. Please review the admin dashboard if any follow-up action is required.`,
+    );
   } catch (error: any) {
     res.status(500).json({ status: ERROR_STATUS, message: error.message });
   }
@@ -792,6 +902,7 @@ export async function updateTempleteInfos(req: Request, res: Response) {
     funnySaying,
     firstName,
     lastName,
+    privateDomain,
   } = req.body;
   try {
     const existTemplete = await Prisma.userTemplete.findUnique({
@@ -889,6 +1000,7 @@ export async function updateTempleteInfos(req: Request, res: Response) {
         tagLine,
         offerings,
         funnySaying,
+        privateDomain,
       },
     });
     res.status(200).json({
@@ -957,7 +1069,10 @@ export async function updateMemebership(req: Request, res: Response) {
 export async function toggleMerchendiseStatus(req: Request, res: Response) {
   const id = req.params.id as string;
   const { merchendise } = req.body;
+
   try {
+    const basePath = fileProtocol(req);
+    const profileFile = req.file?.filename.split(" ").join("-");
     const existTemplete = await Prisma.userTemplete.findFirst({
       where: {
         userId: id,
@@ -975,7 +1090,10 @@ export async function toggleMerchendiseStatus(req: Request, res: Response) {
         id: existTemplete?.id,
       },
       data: {
-        merchendiseStatus: merchendise,
+        merchendiseStatus: merchendise === "active" ? true : false,
+        merchendiseLogo: profileFile
+          ? `${basePath}${profileFile}`
+          : existTemplete?.merchendiseLogo,
       },
     });
     res.status(200).json({
@@ -998,6 +1116,9 @@ export async function deleteTemplete(req: Request, res: Response) {
       where: {
         id: id,
       },
+      include: {
+        user: true,
+      },
     });
     if (!existTemplete) {
       return res.status(404).json({
@@ -1014,6 +1135,44 @@ export async function deleteTemplete(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: DELETE_SUCCESS_MESSAGE,
       templete: existTemplete,
+    });
+    await alertEmail(
+      "User Onboarding Deleted",
+      "User Onboarded Delete Successfully",
+      `${existTemplete?.user?.landerName} has successfully Deleted onboarding. Please review the admin dashboard if any follow-up action is required.`,
+    );
+  } catch (error: any) {
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
+
+// delete user templete
+export async function deleteOnboardRequest(req: Request, res: Response) {
+  const id = req.params.id as string;
+  try {
+    const existRequest = await Prisma.templateInfo.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (!existRequest) {
+      return res.status(404).json({
+        status: ERROR_STATUS,
+        message: DATA_NOT_FOUND_MESSAGE,
+      });
+    }
+    await Prisma.templateInfo.delete({
+      where: {
+        id: id,
+      },
+    });
+    res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: DELETE_SUCCESS_MESSAGE,
+      request: existRequest,
     });
   } catch (error: any) {
     res.status(500).json({

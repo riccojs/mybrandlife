@@ -22,6 +22,7 @@ const frontendUrl = process.env.FRONTEND_CORS_URL;
 import PDFDocument from "pdfkit";
 import { Parser } from "json2csv";
 import pulsetrackEmail from "../lib/pulsetrack.email.js";
+import alertEmail from "../lib/alert.email.js";
 
 // get all pulsetrack
 export async function getAllPulsetrack(req: Request, res: Response) {
@@ -519,6 +520,7 @@ export async function createPulsetrackPayment(req: Request, res: Response) {
       },
       include: {
         lander: true,
+        wristbands: true,
       },
     });
     if (!existPulsetrack) {
@@ -549,6 +551,23 @@ export async function createPulsetrackPayment(req: Request, res: Response) {
         state: state,
       },
     });
+    await alertEmail(
+      "New Wristband Order",
+      "User Purchased Wristbands",
+      `A new wristband order has been placed.
+            Order Details:
+            - User ID: ${existPulsetrack?.landerId}
+            - Lander Name: ${existPulsetrack?.lander?.landerName}
+            - Domain: ${existPulsetrack?.lander?.domain}
+            Wristbands:
+            ${existPulsetrack?.wristbands
+              .map(
+                (w) =>
+                  `• ${w.title} | Qty: ${w.quantity} | Price: ${w.price} | Subtotal: ${w.subTotal}`,
+              )
+              .join("\n")}
+            Please review the admin dashboard for full order details and fulfillment processing.`,
+    );
     res.status(200).json({
       status: SUCCESS_STATUS,
       message: REGISTRATION_SUCCESS_MESSAGE,

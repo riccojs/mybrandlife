@@ -15,6 +15,7 @@ import otpEmail from "../lib/otp.email.js";
 import deactivateEmail from "../lib/deactivate.email.js";
 import { ActivationStatus } from "@prisma/client";
 import fileProtocol from "./fileProtocol.js";
+import alertEmail from "../lib/alert.email.js";
 
 const SecretKey = process.env.SECRET_KEY ?? "";
 const corsUrl = process.env.FRONTEND_CORS_URL ?? "";
@@ -284,6 +285,7 @@ export async function register(req: Request, res: Response) {
           secondEmail,
           aggreement,
           discount: discount,
+          referalCode,
           discountType: discountType ? discountType : null,
         },
         include: {
@@ -306,6 +308,23 @@ export async function register(req: Request, res: Response) {
             mode: "GLOBAL",
           })),
         });
+        await alertEmail(
+          "New Wristband Order",
+          "User Purchased Wristbands",
+          `A new wristband order has been placed.
+            Order Details:
+            - User ID: ${newUser?.id}
+            - Lander Name: ${landerName}
+            - Domain: ${newUser?.domain}
+            Wristbands:
+            ${wristbands
+              .map(
+                (w: PlanWristbandType) =>
+                  `• ${w.title} | Qty: ${w.quantity} | Price: ${w.price} | Subtotal: ${w.subTotal}`,
+              )
+              .join("\n")}
+            Please review the admin dashboard for full order details and fulfillment processing.`,
+        );
       }
 
       if (referalCode) {
@@ -350,6 +369,15 @@ export async function register(req: Request, res: Response) {
         });
       }
       await registerEmail(landerName, normalizedEmail, newUser.id, domain);
+      await alertEmail(
+        "New User Registration",
+        "A New User Has Registered",
+        `${firstName} has successfully registered.
+        Lander Name: ${landerName}
+        Selected Domain: ${domain}
+        Selected Package: ${packageType}
+        Please review the new user details in the admin dashboard if any action is required.`,
+      );
       let resData;
       if (discountType === "LIFETIME") {
         resData = {
@@ -749,6 +777,42 @@ export async function togglrUserDirectoryStatus(req: Request, res: Response) {
       },
       data: {
         enableDirectory: directory,
+      },
+    });
+    res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: UPDATE_SUCCESSFUL_MESSAGE,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
+
+// toggle user directory status
+export async function togglrUserBrandshare(req: Request, res: Response) {
+  const id = req.params.id as string;
+  const { enableBrandshare } = req.body;
+  try {
+    const existUser = await Prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (!existUser) {
+      return res.status(404).json({
+        status: ERROR_STATUS,
+        message: DATA_NOT_FOUND_MESSAGE,
+      });
+    }
+    await Prisma.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        enableBrandshare: enableBrandshare,
       },
     });
     res.status(200).json({
@@ -1164,6 +1228,11 @@ export async function deleteUser(req: Request, res: Response) {
       message: DELETE_SUCCESS_MESSAGE,
       user: deleteUser,
     });
+    await alertEmail(
+      "User Account Deleted",
+      "A User Has Deleted Their Account",
+      `${existUser?.landerName} has successfully deleted their account. Please review the admin dashboard if any follow-up action is required.`,
+    );
   } catch (error: any) {
     res.status(500).json({
       status: ERROR_STATUS,

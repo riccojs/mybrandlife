@@ -15,6 +15,7 @@ import {
   getOneUser,
   getAllUserByAdmin,
   togglrUserDirectoryStatus,
+  togglrUserBrandshare,
   verifyUserByAdmin,
   updateUser,
   updateUserByAdmin,
@@ -43,6 +44,7 @@ router.post("/send/otp", publicSecretAuth, sendResetOtp);
 router.post("/reset", publicSecretAuth, reset);
 router.post("/find", publicSecretAuth, findLanderName);
 router.patch("/directory/:id", auth, togglrUserDirectoryStatus);
+router.patch("/brandshare/:id", auth, togglrUserBrandshare);
 router.patch("/verify/admin", auth, verifyUserByAdmin);
 router.patch("/:id", auth, profile, updateUser);
 router.patch("/admin/update/:id", auth, profile, updateUserByAdmin);

@@ -20,6 +20,7 @@ export const response = {
   UPDATE_SUCCESSFUL_MESSAGE: "Update successful",
   ONBOARDING_SUCCESSFUL_MESSAGE: "Onboard submit successful",
   INCORRECT_REFERRAL_CODE_MESSAGE: "Incorrect referral code!",
+  BRANDSHARE_CODE_ALREADY_EXIST: "BrandShare code already exist!",
   VALID_REFERRAL_CODE_MESSAGE: "Referral code Valid",
   TOKEN_EXPIRED_MESSAGE: "This code expired. Request a new one.",
   VERIFY_SUCCESSFUL_MESSAGE: "Email verified! Redirecting…",

@@ -10,7 +10,7 @@ import {
   checkDiscountCode,
   requestADomain,
   getAllOnboard,
-  getOneOboard,
+  getOneOnboard,
   recreatePayment,
   getOneOboardById,
   updateMemebership,
@@ -23,15 +23,21 @@ import {
   updateCustomPlatform,
   deleteTempleteButton,
   deleteCustomButton,
+  getAllOnboardRequests,
+  getOneOnboardRequests,
+  deleteOnboardRequest,
 } from "../controller/onboard.controller.js";
 import medias from "../middelware/medias.js";
+import profile from "../middelware/profile.js";
 const router = express.Router();
 
 router.get("/", auth, getAllOnboard);
 router.get("/admin", auth, getAllOnboardByAdmin);
 router.get("/default", auth, getAllOnboardByDefault);
+router.get("/requests", auth, getAllOnboardRequests);
 router.get("/:id", auth, getOneOboardById);
-router.get("/wirframe/:name", publicSecretAuth, getOneOboard);
+router.get("/wirframe/:name", publicSecretAuth, getOneOnboard);
+router.get("/requests/:id", auth, getOneOnboardRequests);
 router.post("/", auth, medias, onboardingUser);
 router.post("/recreate/:id", auth, recreatePayment);
 router.post("/request", publicSecretAuth, requestADomain);
@@ -43,9 +49,10 @@ router.put("/social/:id", auth, updateTempleteSocial);
 router.put("/custom/platform/:id", auth, updateCustomPlatform);
 router.put("/info/:id", auth, updateTempleteInfos);
 router.put("/membership/:id", auth, updateMemebership);
-router.put("/merchendise/:id", auth, toggleMerchendiseStatus);
+router.put("/merchendise/:id", profile, auth, toggleMerchendiseStatus);
 router.put("/verify/:id", auth, verifyOnboard);
 router.delete("/:id", auth, deleteTemplete);
+router.delete("/requests/:id", auth, deleteOnboardRequest);
 router.delete("/social/:id", auth, deleteTempleteButton);
 router.delete("/custom/:id", auth, deleteCustomButton);
 

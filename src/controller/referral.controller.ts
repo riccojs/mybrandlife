@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Prisma } from "../utils/prisma.js";
 import status from "../utils/status.js";
 import response from "../utils/response.js";
+import fileProtocol from "./fileProtocol.js";
 const { SUCCESS_STATUS, ERROR_STATUS } = status;
 const {
   QUERY_SUCCESSFUL_MESSAGE,
@@ -9,11 +10,12 @@ const {
   REFERRAL_CODE_CREATE_SUCCESSFUL,
   UPDATE_SUCCESSFUL_MESSAGE,
   DELETE_SUCCESS_MESSAGE,
+  BRANDSHARE_CODE_ALREADY_EXIST,
 } = response;
 
 // get all referral
 export async function getAllReferral(req: Request, res: Response) {
-  const { searchBy = "" } = req.query;
+  const { searchBy = "", type = "", sort = "" } = req.query;
   const pageNumber = req.query.page
     ? parseInt(req.query.page as string, 10)
     : 1;
@@ -28,11 +30,32 @@ export async function getAllReferral(req: Request, res: Response) {
       mode: "insensitive",
     };
   }
+
+  let orderBy: any = {
+    create_at: "desc",
+  };
+
+  if (sort === "old") {
+    orderBy = {
+      create_at: "asc",
+    };
+  }
+
+  if (sort === "new") {
+    orderBy = {
+      create_at: "desc",
+    };
+  }
+
+  if (type) {
+    filter.type = type;
+  }
   try {
     const referral = await Prisma.referralCode.findMany({
       skip: skip,
       take: limitNumber,
       where: filter,
+      orderBy,
     });
     const totalReferral = await Prisma.referralCode.count({
       where: filter,
@@ -131,14 +154,33 @@ export async function getOneReferral(req: Request, res: Response) {
 
 // create referral
 export async function createReferral(req: Request, res: Response) {
-  const { code, type, value, active } = req.body;
+  const { code, type, value, active, limit, expire_in, label, link } = req.body;
   try {
+    const basePath = fileProtocol(req);
+    const profileFile = req.file?.filename.split(" ").join("-");
+
+    const existCode = await Prisma.referralCode.findUnique({
+      where: {
+        code,
+      },
+    });
+    if (existCode) {
+      return res.status(404).json({
+        status: ERROR_STATUS,
+        message: BRANDSHARE_CODE_ALREADY_EXIST,
+      });
+    }
     const newReferral = await Prisma.referralCode.create({
       data: {
         code: code,
         type: type,
         value: Number(value),
-        active: active,
+        active: active === "active" ? true : false,
+        limit: Number(limit),
+        expire_in: expire_in ? new Date(expire_in) : null,
+        label: label,
+        link: link,
+        logo: `${basePath}${profileFile}`,
       },
     });
     return res.status(201).json({
@@ -157,8 +199,11 @@ export async function createReferral(req: Request, res: Response) {
 // update referral
 export async function updateReferral(req: Request, res: Response) {
   const id = req.params.id as string;
-  const { code, type, value, joined, active } = req.body;
+  const { code, type, value, active, limit, expire_in, label, link } = req.body;
   try {
+    const basePath = fileProtocol(req);
+    const profileFile = req.file?.filename.split(" ").join("-");
+
     const existReferral = await Prisma.referralCode.findUnique({
       where: {
         id: id,
@@ -178,8 +223,12 @@ export async function updateReferral(req: Request, res: Response) {
         code: code,
         type: type,
         value: Number(value),
-        joined: Number(joined),
-        active: active,
+        active: active === "active" ? true : false,
+        limit: Number(limit),
+        expire_in: expire_in ? new Date(expire_in) : null,
+        label: label,
+        link: link,
+        logo: profileFile ? `${basePath}${profileFile}` : existReferral?.logo,
       },
     });
     return res.status(201).json({
