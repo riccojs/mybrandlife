@@ -26,6 +26,7 @@ interface OnboardType {
   bio: string;
   vcfFile: string;
   offerings: string;
+  privateDomain: string;
   enableEcho: boolean;
   enableSpin: boolean;
   merchendiseUrl: string;
@@ -37,6 +38,12 @@ interface OnboardType {
   layout: string;
   officialColor: string;
   enableEvent: boolean;
+  brandshare: {
+    logo: string;
+    label: string;
+    link: string;
+    code: string;
+  };
 }
 
 interface ButtonsType {
@@ -56,6 +63,7 @@ interface UserType {
   id: string;
   package: string;
   spinings: SpinType[];
+  enableBrandshare: boolean;
 }
 
 function Wireframe() {
@@ -118,6 +126,8 @@ function Wireframe() {
     merchendiseStatus,
     customPlatfrom,
     enableSpin,
+    brandshare,
+    privateDomain,
   } = onboard || {};
 
   const {
@@ -125,6 +135,7 @@ function Wireframe() {
     calendarId,
     id: userId,
     package: packageName,
+    enableBrandshare,
   } = user || {};
 
   const { data } = useCheckEchoConnectionQuery(userId);
@@ -150,6 +161,10 @@ function Wireframe() {
       window.location.href = "https://mybrandlife.me";
     }
   }, [onboard, isLoading]);
+
+  const qrBase = privateDomain
+    ? privateDomain
+    : `https://${window.location.hostname}`;
 
   return isLoading ? (
     <Spiner />
@@ -566,9 +581,7 @@ function Wireframe() {
               ref={qrRef}
               className="bg-amber-50 overflow-hidden w-24 p-2 h-24 min-w-24 flex flex-col gap-2 rounded-xl justify-center items-center"
             >
-              <QRCode
-                value={`https://${window.location.hostname}/${landerName}`}
-              />
+              <QRCode value={`${qrBase}/${landerName}`} />
             </div>
 
             <button
@@ -587,6 +600,24 @@ function Wireframe() {
               Download
             </button>
           </div>
+          {enableBrandshare && (
+            <div className="flex flex-col justify-center items-center gap-2 mt-5">
+              <p className="text-white text-sm">{brandshare?.label}</p>
+              <a href={brandshare?.link} target="_blank">
+                {brandshare?.logo ? (
+                  <img
+                    src={brandshare?.logo}
+                    className="w-14 h-14 object-cover rounded-full"
+                    alt=""
+                  />
+                ) : (
+                  <p className="w-14 h-14 min-w-14 bg-slate-200 flex justify-center items-center uppercase rounded-full">
+                    {brandshare?.code?.slice(0, 1)}
+                  </p>
+                )}
+              </a>
+            </div>
+          )}
         </div>
       </div>
       {isShowInfo && (
