@@ -41,8 +41,8 @@ export async function paymentCreator(user: UserType, code: string) {
       throw new Error(DATA_NOT_FOUND_MESSAGE);
     }
     const { username, email } = existUser;
-    // const priceId = myBrandLife[planKey];
-    const priceId = testPlan;
+    const priceId = myBrandLife[planKey];
+    // const priceId = testPlan;
     if (!priceId) {
       return { pageUrl: "", message: INVALID_PLAN_MESSAGE };
     }
