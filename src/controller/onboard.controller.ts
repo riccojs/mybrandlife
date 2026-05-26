@@ -31,7 +31,12 @@ import {
   mangoDomains,
   orangeDomains,
 } from "../utils/domains.js";
-import { ButtonSetType, LayoutDetection, UserType } from "../utils/types.js";
+import {
+  ButtonSetType,
+  LayoutDetection,
+  PlanWristbandType,
+  UserType,
+} from "../utils/types.js";
 import { paymentCreator } from "../middelware/payment.creator.js";
 import getBase64Image from "../lib/getBase64Image.js";
 import { fileURLToPath } from "url";
@@ -516,11 +521,17 @@ export async function onboardingUser(req: Request, res: Response) {
     vfrCreate,
     merchendiseUrl,
     customPlatform,
+    wristbands,
     ...socialLinks
   } = req.body;
 
   try {
-    const existUser = await Prisma.user.findUnique({ where: { id: userId } });
+    const existUser = await Prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        address: true,
+      },
+    });
     const existOnboard = await Prisma.userTemplete.findFirst({
       where: { userId },
     });
@@ -674,15 +685,15 @@ export async function onboardingUser(req: Request, res: Response) {
 
     // vCard creation
     if (vfrCreate === "yes") {
-      const { midName, email, phone, addressOne, addressTow, landerName } =
-        existUser;
+      const { midName, email, phone, address, landerName } = existUser;
       card.set("fn", midName || "");
       card.set("note", offerings);
       card.set("org", landerName || "");
       card.set("title", tagLine || "");
       card.set("email", email || "");
       card.set("tel", phone || "");
-      const adrString = `${addressOne ?? ""}, ${addressTow ?? ""}`;
+      const primaryAddress = address?.find((item) => item.type === "PRIMARY");
+      const adrString = `${primaryAddress?.streetOne ?? ""}, ${primaryAddress?.streetTow ?? ""}`;
       card.set("adr", adrString);
       const portraitPath = files?.logo?.[0]?.path;
       if (portraitPath && fs.existsSync(portraitPath)) {
@@ -704,6 +715,44 @@ export async function onboardingUser(req: Request, res: Response) {
         data: { vcfFile: fileUrl },
       });
     }
+
+    const getWristband = JSON.parse(wristbands);
+
+    if (getWristband?.length > 0) {
+      await Prisma.wristbandItem.createMany({
+        data: getWristband.map((wristband: PlanWristbandType) => ({
+          wristbandId: wristband?.wristbandId,
+          userId: existUser?.id,
+          title: wristband.title,
+          price: wristband.price,
+          quantity: wristband.quantity,
+          subTotal: wristband.subTotal,
+          banner: wristband.banner,
+          color: wristband.color,
+          trackingNumber: `${existUser?.landerName}-${wristband.color}`,
+          qrCode: `https://${existUser?.domain}/${existUser?.landerName}`,
+          mode: "GLOBAL",
+        })),
+      });
+      await alertEmail(
+        "New Wristband Order",
+        "User Purchased Wristbands",
+        `A new wristband order has been placed.
+            Order Details:
+            - User ID: ${existUser?.id}
+            - Lander Name: ${existUser?.landerName}
+            - Domain: ${existUser?.domain}
+            Wristbands:
+            ${getWristband
+              .map(
+                (w: PlanWristbandType) =>
+                  `• ${w.title} | Qty: ${w.quantity} | Price: ${w.price} | Subtotal: ${w.subTotal}`,
+              )
+              .join("\n")}
+            Please review the admin dashboard for full order details and fulfillment processing.`,
+      );
+    }
+
     res
       .status(200)
       .json({ status: SUCCESS_STATUS, message: ONBOARDING_SUCCESSFUL_MESSAGE });
@@ -907,7 +956,15 @@ export async function updateTempleteInfos(req: Request, res: Response) {
   try {
     const existTemplete = await Prisma.userTemplete.findUnique({
       where: { id },
-      include: { services: true, user: true, buttonSet: true },
+      include: {
+        services: true,
+        user: {
+          include: {
+            address: true,
+          },
+        },
+        buttonSet: true,
+      },
     });
     if (!existTemplete) {
       return res.status(404).json({
@@ -956,15 +1013,16 @@ export async function updateTempleteInfos(req: Request, res: Response) {
 
     // create vfc file
     if (existTemplete?.user) {
-      const { midName, email, phone, addressOne, addressTow, landerName } =
+      const { midName, email, phone, address, landerName } =
         existTemplete?.user;
+      const primaryAddress = address?.find((item) => item.type === "PRIMARY");
+      const adrString = `${primaryAddress?.streetOne ?? ""}, ${primaryAddress?.streetTow ?? ""}`;
       card.set("fn", midName ?? "");
       card.set("note", offerings);
       card.set("org", landerName || "");
       card.set("title", tagLine || "");
       card.set("email", email || "");
       card.set("tel", phone || "");
-      const adrString = `${addressOne ?? ""}, ${addressTow ?? ""}`;
       card.set("adr", adrString);
       const portraitPath = existTemplete?.logoImage;
       if (portraitPath) {

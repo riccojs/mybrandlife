@@ -133,6 +133,7 @@ export async function getOneUser(req: Request, res: Response) {
             mode: "GLOBAL",
           },
         },
+        address: true,
       },
     });
     if (!existUser) {
@@ -228,16 +229,16 @@ export async function register(req: Request, res: Response) {
     password,
     landerName,
     midName,
-    addressOne,
-    addressTow,
     nickName,
     phone,
     secondEmail,
     aggreement,
-    wristbands,
     discount,
     discountType,
     referalCode,
+    phoneCode,
+    primaryAddress,
+    shippingAddress,
   } = req.body;
   const normalizedEmail = email.trim().toLowerCase();
   try {
@@ -263,6 +264,25 @@ export async function register(req: Request, res: Response) {
         message: LANDER_ALREADY_EXIST_MESSAGE,
       });
     }
+    const getPrimaryAddress = primaryAddress as {
+      state: string;
+      city: string;
+      country: string;
+      zip: string;
+      streetOne: string;
+      streetTow: string;
+      type: "PRIMARY";
+    };
+    const getShippingAddress = shippingAddress as {
+      state: string;
+      city: string;
+      country: string;
+      zip: string;
+      streetOne: string;
+      streetTow: string;
+      type: "PRIMARY";
+    };
+
     bcrypt.hash(password, 10, async function (err, hash) {
       const newUser = await Prisma.user.create({
         data: {
@@ -278,8 +298,6 @@ export async function register(req: Request, res: Response) {
           midName,
           firstName,
           lastName,
-          addressOne,
-          addressTow,
           nickName,
           phone,
           secondEmail,
@@ -287,46 +305,40 @@ export async function register(req: Request, res: Response) {
           discount: discount,
           referalCode,
           discountType: discountType ? discountType : null,
+          phoneCode,
         },
         include: {
           membership: true,
         },
       });
-      if (wristbands?.length > 0) {
-        await Prisma.wristbandItem.createMany({
-          data: wristbands.map((wristband: PlanWristbandType) => ({
-            wristbandId: wristband?.wristbandId,
+      if (getPrimaryAddress) {
+        await Prisma.address.create({
+          data: {
+            country: getPrimaryAddress?.country,
+            city: getPrimaryAddress?.city,
+            state: getPrimaryAddress?.state,
+            zip: getPrimaryAddress?.zip,
+            streetOne: getPrimaryAddress?.streetOne,
+            streetTow: getPrimaryAddress?.streetTow,
             userId: newUser?.id,
-            title: wristband.title,
-            price: wristband.price,
-            quantity: wristband.quantity,
-            subTotal: wristband.subTotal,
-            banner: wristband.banner,
-            color: wristband.color,
-            trackingNumber: `${landerName}-${wristband.color}`,
-            qrCode: `https://${newUser?.domain}/${landerName}`,
-            mode: "GLOBAL",
-          })),
+            type: "PRIMARY",
+          },
         });
-        await alertEmail(
-          "New Wristband Order",
-          "User Purchased Wristbands",
-          `A new wristband order has been placed.
-            Order Details:
-            - User ID: ${newUser?.id}
-            - Lander Name: ${landerName}
-            - Domain: ${newUser?.domain}
-            Wristbands:
-            ${wristbands
-              .map(
-                (w: PlanWristbandType) =>
-                  `• ${w.title} | Qty: ${w.quantity} | Price: ${w.price} | Subtotal: ${w.subTotal}`,
-              )
-              .join("\n")}
-            Please review the admin dashboard for full order details and fulfillment processing.`,
-        );
       }
-
+      if (getShippingAddress) {
+        await Prisma.address.create({
+          data: {
+            country: getShippingAddress?.country,
+            city: getShippingAddress?.city,
+            state: getShippingAddress?.state,
+            zip: getShippingAddress?.zip,
+            streetOne: getShippingAddress?.streetOne,
+            streetTow: getShippingAddress?.streetTow,
+            userId: newUser?.id,
+            type: "SHIPPING",
+          },
+        });
+      }
       if (referalCode) {
         const existReferal = await Prisma.referralCode.findUnique({
           where: {
@@ -613,6 +625,7 @@ export async function logged(req: Request, res: Response) {
         include: {
           userTemplete: true,
           membership: true,
+          address: true,
         },
       });
     }
@@ -873,8 +886,6 @@ export async function updateUser(req: Request, res: Response) {
     firstName,
     username,
     phone,
-    addressOne,
-    addressTow,
   } = req.body;
   const id = req.params.id as string;
   try {
@@ -903,8 +914,6 @@ export async function updateUser(req: Request, res: Response) {
         lastName: lastName,
         secondEmail: secondEmail,
         phone: phone,
-        addressOne: addressOne,
-        addressTow: addressTow,
         landerName: landerName,
         nickName: nickName,
         profile: profileFile ? `${basePath}${profileFile}` : existUser?.profile,
@@ -932,8 +941,6 @@ export async function updateUserByAdmin(req: Request, res: Response) {
     email,
     secondEmail,
     phone,
-    addressOne,
-    addressTow,
     landerName,
     nickName,
     package: packageName,
@@ -973,8 +980,6 @@ export async function updateUserByAdmin(req: Request, res: Response) {
         lastName: lastName,
         secondEmail: secondEmail,
         phone: phone,
-        addressOne: addressOne,
-        addressTow: addressTow,
         discountType: discountType ? discountType : null,
         landerName: landerName,
         nickName: nickName,

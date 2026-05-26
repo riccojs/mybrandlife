@@ -180,7 +180,7 @@ export async function createReferral(req: Request, res: Response) {
         expire_in: expire_in ? new Date(expire_in) : null,
         label: label,
         link: link,
-        logo: `${basePath}${profileFile}`,
+        logo: profileFile ? `${basePath}${profileFile}` : null,
       },
     });
     return res.status(201).json({

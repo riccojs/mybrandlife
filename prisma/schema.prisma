@@ -16,9 +16,8 @@ model user {
   secondEmail      String?
   password         String
   phone            String?
+  phoneCode        String?
   profile          String?
-  addressOne       String
-  addressTow       String?
   landerName       String           @unique
   nickName         String?
   aggreement       Boolean
@@ -54,6 +53,7 @@ model user {
   wristbands       wristbandItem[]
   trackExport      trackExport[]
   spinings         spining[]
+  address          address[]
   create_at        DateTime         @default(now())
   update_at        DateTime         @updatedAt
 }
@@ -70,8 +70,24 @@ model admin {
   password  String
   secureKey String
   status    ActivationStatus @default(ACTIVATE)
-  create_at DateTime         @default(now())
-  update_at DateTime         @updatedAt
+
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt
+}
+
+model address {
+  id        String      @id @default(uuid())
+  state     String
+  city      String
+  country   String
+  zip       String
+  streetOne String
+  streetTow String
+  type      AddressType
+  userId    String
+  user      user        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  create_at DateTime    @default(now())
+  update_at DateTime    @updatedAt
 }
 
 model userMembership {
@@ -624,4 +640,9 @@ enum SpinCategory {
   HOTELS
   RESTAURANTS
   OTHER
+}
+
+enum AddressType {
+  PRIMARY
+  SHIPPING
 }
