@@ -487,6 +487,24 @@ function Wireframe() {
               </p>
             </div>
           </div>
+          {enableBrandshare && (
+            <div className="flex flex-col justify-center items-center gap-2 mt-5">
+              <p className="text-white text-sm">{brandshare?.label}</p>
+              <a href={brandshare?.link} target="_blank">
+                {brandshare?.logo ? (
+                  <img
+                    src={brandshare?.logo}
+                    className="w-14 h-14 object-cover rounded-full"
+                    alt=""
+                  />
+                ) : (
+                  <p className="w-14 h-14 min-w-14 bg-slate-200 flex justify-center items-center uppercase rounded-full">
+                    {brandshare?.code?.slice(0, 1)}
+                  </p>
+                )}
+              </a>
+            </div>
+          )}
         </div>
         <div className="w-full h-1 bg-slate-400 animate-pulse"></div>
         <div className="bg-black py-10">
@@ -600,24 +618,6 @@ function Wireframe() {
               Download
             </button>
           </div>
-          {enableBrandshare && (
-            <div className="flex flex-col justify-center items-center gap-2 mt-5">
-              <p className="text-white text-sm">{brandshare?.label}</p>
-              <a href={brandshare?.link} target="_blank">
-                {brandshare?.logo ? (
-                  <img
-                    src={brandshare?.logo}
-                    className="w-14 h-14 object-cover rounded-full"
-                    alt=""
-                  />
-                ) : (
-                  <p className="w-14 h-14 min-w-14 bg-slate-200 flex justify-center items-center uppercase rounded-full">
-                    {brandshare?.code?.slice(0, 1)}
-                  </p>
-                )}
-              </a>
-            </div>
-          )}
         </div>
       </div>
       {isShowInfo && (
