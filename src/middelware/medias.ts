@@ -29,6 +29,7 @@ const medias = upload.fields([
   { name: "logoImage", maxCount: 1 },
   { name: "bodyImage", maxCount: 1 },
   { name: "epkFile", maxCount: 1 },
+  { name: "merchendiselogo", maxCount: 1 },
 ]);
 
 export default medias;

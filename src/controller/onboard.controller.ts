@@ -553,6 +553,7 @@ export async function onboardingUser(req: Request, res: Response) {
       logoImage: "",
       bodyImage: "",
       epkFile: "",
+      merchendiselogo: "",
     };
     for (const fieldName in files) {
       if (medias.hasOwnProperty(fieldName) && files[fieldName]?.[0]) {
@@ -594,6 +595,7 @@ export async function onboardingUser(req: Request, res: Response) {
         logoImage: medias.logoImage,
         bodyImage: medias.bodyImage,
         epkFile: medias.epkFile,
+        merchendiseLogo: medias.merchendiselogo,
         layout: layoutDetection,
         userId,
         headerBgType: "COLOR",
@@ -716,7 +718,7 @@ export async function onboardingUser(req: Request, res: Response) {
       });
     }
 
-    const getWristband = JSON.parse(wristbands);
+    const getWristband = wristbands ? JSON.parse(wristbands) : [];
 
     if (getWristband?.length > 0) {
       await Prisma.wristbandItem.createMany({

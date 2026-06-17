@@ -35,6 +35,9 @@ export const domains = [
   "myvibelife",
   "myagentlife",
   "myinsurancelife",
+  "myinsurancelife",
+  "myphotolife",
+  "myphotographylife",
 ];
 
 export const centerPositionDomains = [
@@ -63,6 +66,7 @@ export const leftPositionDomains = [
   "mysaloonlife",
   "mygymlife",
   "myagentlife",
+  "myphotolife",
 ];
 
 export const rightPositionDomains = [
@@ -80,6 +84,7 @@ export const rightPositionDomains = [
   "mysalonlife",
   "mybandlife",
   "myvibelife",
+  "myphotographylife",
 ];
 
 export const redDomains = [
@@ -107,6 +112,7 @@ export const blueDomains = [
   "mynightlife",
   "myeventlife",
   "myinsurancelife",
+  "myphotographylife",
 ];
 
 export const limeDomains = [
@@ -133,6 +139,7 @@ export const orangeDomains = [
   "mysalonlife",
   "mystudentlife",
   "myvibelife",
+  "myphotolife",
 ];
 
 export const greenDomains = ["myworldlife"];

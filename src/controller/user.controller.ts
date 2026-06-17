@@ -16,6 +16,7 @@ import deactivateEmail from "../lib/deactivate.email.js";
 import { ActivationStatus } from "@prisma/client";
 import fileProtocol from "./fileProtocol.js";
 import alertEmail from "../lib/alert.email.js";
+import defaultWristband from "../middelware/default.wristband.js";
 
 const SecretKey = process.env.SECRET_KEY ?? "";
 const corsUrl = process.env.FRONTEND_CORS_URL ?? "";
@@ -415,6 +416,9 @@ export async function register(req: Request, res: Response) {
         };
         resData = await paymentCreator(userData, referalCode);
       }
+      if (packageType === "silver" || packageType === "gold") {
+        await defaultWristband(newUser, "621ea9bb-70fe-4b53-8a98-08e197c9a24e");
+      }
       return res.status(201).json({
         status: SUCCESS_STATUS,
         message: REGISTRATION_SUCCESS_MESSAGE,
@@ -454,11 +458,6 @@ export async function login(req: Request, res: Response) {
         message: USER_UNVERIFYED_MESSAGE,
       });
     }
-    const existTemplate = await Prisma.userTemplete.findFirst({
-      where: {
-        userId: existUser?.id,
-      },
-    });
     const matchPassword = await bcrypt.compare(password, existUser.password);
     const token = jwt.sign(
       { email: existUser.email, id: existUser.id, role: "USER" },
@@ -479,14 +478,9 @@ export async function login(req: Request, res: Response) {
       maxAge: 7 * 24 * 60 * 60 * 1000,
       path: "/",
     });
-
-    const findStatus = existTemplate?.verify;
-    const responseUrl = findStatus ? "/dashboard" : "/build-your-lander";
-
     res.status(200).json({
       status: SUCCESS_STATUS,
       message: LOGIN_SUCCESS_MESSAGE,
-      url: responseUrl,
     });
   } catch (error: any) {
     res.status(500).json({

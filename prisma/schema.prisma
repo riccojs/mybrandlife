@@ -38,7 +38,7 @@ model user {
   referalCode      String?
   ShowCalendar     Boolean          @default(false)
   enableDirectory  Boolean          @default(true)
-  enableBrandshare Boolean          @default(false)
+  enableBrandshare Boolean          @default(true)
   events           event[]
   slots            slot[]
   echos            echo[]

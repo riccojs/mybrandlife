@@ -26,6 +26,7 @@ import WristbandRouter from "./route/wristband.route.js";
 import WebhookRouter from "./route/webhook.route.js";
 import PulsetrackRouter from "./route/pulsetrack.route.js";
 import SpinRouter from "./route/spin.route.js";
+import { closeBrandshare } from "./middelware/close.brandshare.js";
 const allowedOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(",").map((o) => o.trim())
   : [];
@@ -35,8 +36,8 @@ const publicPath = process.env.PUBLIC_PATH as string;
 app.use("/webhook", WebhookRouter);
 app.use(cookieParser());
 app.use(express.json());
-app.use("/public", express.static(publicPath));
 app.use(express.urlencoded({ extended: true }));
+app.use("/public", express.static(publicPath));
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -55,6 +56,10 @@ app.use(
 // expired membership
 cron.schedule("0 0 * * *", () => {
   closeMembership();
+});
+
+cron.schedule("* * * * *", () => {
+  closeBrandshare();
 });
 
 // all routes
