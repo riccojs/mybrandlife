@@ -489,12 +489,17 @@ function Wireframe() {
           </div>
           {enableBrandshare && (
             <div className="flex flex-col justify-center items-center gap-2 mt-5">
-              <p className="text-white text-sm">{brandshare?.label}</p>
+              <a
+                href={brandshare?.link}
+                className="text-white text-sm hover:underline"
+              >
+                {brandshare?.label}
+              </a>
               <a href={brandshare?.link} target="_blank">
                 {brandshare?.logo ? (
                   <img
                     src={brandshare?.logo}
-                    className="w-14 h-14 object-cover rounded-full"
+                    className="w-24 h-24 object-cover rounded-full"
                     alt=""
                   />
                 ) : (
