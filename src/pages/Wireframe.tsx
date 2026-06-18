@@ -503,7 +503,7 @@ function Wireframe() {
                     alt=""
                   />
                 ) : (
-                  <p className="w-14 h-14 min-w-14 bg-slate-200 flex justify-center items-center uppercase rounded-full">
+                  <p className="w-14 h-14 text-3xl min-w-14 bg-slate-200 flex justify-center items-center uppercase rounded-full">
                     {brandshare?.code?.slice(0, 1)}
                   </p>
                 )}
