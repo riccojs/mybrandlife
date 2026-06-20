@@ -91,3 +91,11 @@ export interface PlanWristbandType {
   shipped_at: string;
   delivered_at: string;
 }
+
+export interface ActivityLogType {
+  userId: string;
+  action: string;
+  status: string;
+  endpoint: string;
+  method: string;
+}

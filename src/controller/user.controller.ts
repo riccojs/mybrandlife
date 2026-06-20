@@ -6,21 +6,21 @@ import bcrypt from "bcryptjs";
 import membershipCreator from "../middelware/membership.creator.js";
 import { paymentCreator } from "../middelware/payment.creator.js";
 import { registerEmail } from "../lib/register.email.js";
-import { PlanWristbandType, UserType } from "../utils/types.js";
+import { UserType } from "../utils/types.js";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import welcomeEmail from "../lib/welcome.email.js";
 import { v4 as uuidv4 } from "uuid";
 import resetEmail from "../lib/reset.email.js";
 import otpEmail from "../lib/otp.email.js";
 import deactivateEmail from "../lib/deactivate.email.js";
-import { ActivationStatus } from "@prisma/client";
 import fileProtocol from "./fileProtocol.js";
 import alertEmail from "../lib/alert.email.js";
 import defaultWristband from "../middelware/default.wristband.js";
+import activityLog from "../middelware/activity.log.js";
 
 const SecretKey = process.env.SECRET_KEY ?? "";
 const corsUrl = process.env.FRONTEND_CORS_URL ?? "";
-const { SUCCESS_STATUS, ERROR_STATUS } = status;
+const { SUCCESS_STATUS, ERROR_STATUS, LOG_SUCCESS, LOG_FAILED } = status;
 const {
   QUERY_SUCCESSFUL_MESSAGE,
   USER_ALREADY_EXIST_MESSAGE,
@@ -83,7 +83,21 @@ export async function getAllUser(req: Request, res: Response) {
         currentPage: page,
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Get All User",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -111,7 +125,21 @@ export async function getAllUserByAdmin(req: Request, res: Response) {
       users,
       templates,
     });
+    await activityLog({
+      userId: "",
+      action: "Get All User",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -148,7 +176,21 @@ export async function getOneUser(req: Request, res: Response) {
       message: QUERY_SUCCESSFUL_MESSAGE,
       user: existUser,
     });
+    await activityLog({
+      userId: id,
+      action: "Get One User",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: id,
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -176,7 +218,21 @@ export async function findLanderName(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: LANDERNAME_AVAILABLE_MESSAGE,
     });
+    await activityLog({
+      userId: "",
+      action: "Find Lander Name",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -207,7 +263,21 @@ export async function getOneUserByLandername(req: Request, res: Response) {
       message: QUERY_SUCCESSFUL_MESSAGE,
       user: existUser,
     });
+    await activityLog({
+      userId: existUser?.id,
+      action: "Get Lander Details",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -419,6 +489,13 @@ export async function register(req: Request, res: Response) {
       if (packageType === "silver" || packageType === "gold") {
         await defaultWristband(newUser, "621ea9bb-70fe-4b53-8a98-08e197c9a24e");
       }
+      await activityLog({
+        userId: "",
+        action: "Register User",
+        status: LOG_SUCCESS,
+        endpoint: req.originalUrl,
+        method: req.method,
+      });
       return res.status(201).json({
         status: SUCCESS_STATUS,
         message: REGISTRATION_SUCCESS_MESSAGE,
@@ -427,6 +504,13 @@ export async function register(req: Request, res: Response) {
       });
     });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -482,7 +566,21 @@ export async function login(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: LOGIN_SUCCESS_MESSAGE,
     });
+    await activityLog({
+      userId: existUser?.id,
+      action: "Login User",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -518,6 +616,13 @@ export async function logout(req: Request, res: Response) {
           message: DATA_NOT_FOUND_MESSAGE,
         });
       }
+      await activityLog({
+        userId: existUser?.id,
+        action: "Logout User",
+        status: LOG_SUCCESS,
+        endpoint: req.originalUrl,
+        method: req.method,
+      });
     }
     res.cookie("token", "", {
       httpOnly: true,
@@ -530,6 +635,13 @@ export async function logout(req: Request, res: Response) {
       message: LOGOUT_SUCCESSFUL_MESSAGE,
     });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -583,10 +695,24 @@ export async function verify(req: Request, res: Response) {
     const lander = existUser.landerName ?? "";
     const email = existUser.email ?? "";
     await welcomeEmail(lander, email);
+    await activityLog({
+      userId: existUser?.id,
+      action: "Verify User",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     return res.status(200).json({
       message: VERIFY_SUCCESSFUL_MESSAGE,
     });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -629,6 +755,13 @@ export async function logged(req: Request, res: Response) {
         message: DATA_NOT_FOUND_MESSAGE,
       });
     }
+    await activityLog({
+      userId: userData?.id,
+      action: "Logged User",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     return res.status(200).json({
       status: SUCCESS_STATUS,
       message: QUERY_SUCCESSFUL_MESSAGE,
@@ -637,8 +770,15 @@ export async function logged(req: Request, res: Response) {
         role: decoded.role,
       },
     });
-  } catch (err) {
-    res.status(401).json({ message: INVALID_TOKEN_MESSAGE });
+  } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+    res.status(500).json({ message: INVALID_TOKEN_MESSAGE });
   }
 }
 
@@ -667,11 +807,25 @@ export async function sendResetCode(req: Request, res: Response) {
     const resetURL = `${corsUrl}/auth/reset-password/${resetToken}`;
     const landerName = existUser.landerName ? existUser.landerName : "";
     await resetEmail(landerName, email, resetURL);
+    await activityLog({
+      userId: existUser?.id,
+      action: "Send Reset Code",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     return res.status(200).json({
       status: SUCCESS_STATUS,
       message: RESET_LINK_SEND_SUCCESSFUL,
     });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     return res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -700,7 +854,21 @@ export async function sendResetOtp(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: OTP_CODE_SEND_MESSAGE,
     });
+    await activityLog({
+      userId: existUser?.id,
+      action: "Send OTP Code",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -748,6 +916,13 @@ export async function reset(req: Request, res: Response) {
           token: token,
         },
       });
+      await activityLog({
+        userId: existUser?.id,
+        action: "Reset User",
+        status: LOG_SUCCESS,
+        endpoint: req.originalUrl,
+        method: req.method,
+      });
       res.status(201).json({
         status: SUCCESS_STATUS,
         message: UPDATE_SUCCESSFUL_MESSAGE,
@@ -755,6 +930,13 @@ export async function reset(req: Request, res: Response) {
       });
     });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -790,7 +972,21 @@ export async function togglrUserDirectoryStatus(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: existUser?.id,
+      action: "Toggle User Directory Status",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -826,7 +1022,21 @@ export async function togglrUserBrandshare(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: existUser?.id,
+      action: "Toggle User Brandshare Status",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -861,7 +1071,21 @@ export async function verifyUserByAdmin(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: VERIFY_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: existUser?.id,
+      action: "Verify User",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -917,7 +1141,21 @@ export async function updateUser(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: existUser?.id,
+      action: "Update User",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -984,7 +1222,21 @@ export async function updateUserByAdmin(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: existUser?.id,
+      action: "Update User",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -1029,8 +1281,22 @@ export async function updatePassword(req: Request, res: Response) {
         status: SUCCESS_STATUS,
         message: UPDATE_SUCCESSFUL_MESSAGE,
       });
+      await activityLog({
+        userId: existUser?.id,
+        action: "Update User Password",
+        status: LOG_SUCCESS,
+        endpoint: req.originalUrl,
+        method: req.method,
+      });
     });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       error: error.message,
@@ -1067,8 +1333,22 @@ export async function updateUserPasswordByAdmin(req: Request, res: Response) {
         status: SUCCESS_STATUS,
         message: UPDATE_SUCCESSFUL_MESSAGE,
       });
+      await activityLog({
+        userId: existUser?.id,
+        action: "Update User Password",
+        status: LOG_SUCCESS,
+        endpoint: req.originalUrl,
+        method: req.method,
+      });
     });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       error: error.message,
@@ -1110,7 +1390,21 @@ export async function updateUserMembership(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: existUser?.id,
+      action: "Update User Membership",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -1194,7 +1488,21 @@ export async function togglrUserActivation(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: ACCOUNT_IS_DEACTIVATE_MESSAGE,
     });
+    await activityLog({
+      userId: existUser?.id,
+      action: "Toggle User Activation",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -1232,7 +1540,21 @@ export async function deleteUser(req: Request, res: Response) {
       "A User Has Deleted Their Account",
       `${existUser?.landerName} has successfully deleted their account. Please review the admin dashboard if any follow-up action is required.`,
     );
+    await activityLog({
+      userId: existUser?.id,
+      action: "Delete User",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,

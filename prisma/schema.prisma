@@ -70,7 +70,6 @@ model admin {
   password  String
   secureKey String
   status    ActivationStatus @default(ACTIVATE)
-
   create_at DateTime @default(now())
   update_at DateTime @updatedAt
 }
@@ -484,6 +483,17 @@ model spining {
   lander    user         @relation(fields: [landerId], references: [id], onDelete: Cascade)
   create_at DateTime     @default(now())
   update_at DateTime     @updatedAt
+}
+
+model activityLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  action    String
+  status    String
+  endpoint  String
+  method    String
+  createdAt DateTime @default(now())
+  update_at DateTime @updatedAt
 }
 
 // enum

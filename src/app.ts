@@ -4,8 +4,6 @@ import cors from "cors";
 import response from "./utils/response.js";
 import status from "./utils/status.js";
 import cookieParser from "cookie-parser";
-import cron from "node-cron";
-import { closeMembership } from "./middelware/close.membership.js";
 import auth from "./middelware/auth.js";
 import errorHandler from "./middelware/error.handler.js";
 const app = express();
@@ -26,7 +24,7 @@ import WristbandRouter from "./route/wristband.route.js";
 import WebhookRouter from "./route/webhook.route.js";
 import PulsetrackRouter from "./route/pulsetrack.route.js";
 import SpinRouter from "./route/spin.route.js";
-import { closeBrandshare } from "./middelware/close.brandshare.js";
+import CornRouter from "./route/corn.route.js";
 const allowedOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(",").map((o) => o.trim())
   : [];
@@ -53,15 +51,6 @@ app.use(
   }),
 );
 
-// expired membership
-cron.schedule("0 0 * * *", () => {
-  closeMembership();
-});
-
-cron.schedule("* * * * *", () => {
-  closeBrandshare();
-});
-
 // all routes
 app.use("/api/auth", UserRouter);
 app.use("/api/auth/admin", AdminRouter);
@@ -76,6 +65,7 @@ app.use("/api/report", ReportRouter);
 app.use("/api/wristband", WristbandRouter);
 app.use("/api/pulsetrack", PulsetrackRouter);
 app.use("/api/spin", SpinRouter);
+app.use("/api/corn", CornRouter);
 
 // Home Route
 app.get("/", auth, (req, res) => {
