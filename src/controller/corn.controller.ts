@@ -1,9 +1,14 @@
+import { Request, Response } from "express";
 import { ActivationStatus } from "@prisma/client";
 import { Prisma } from "../utils/prisma.js";
 import { MembershipStatus } from "../utils/types.js";
+import status from "../utils/status.js";
+import response from "../utils/response.js";
+const { SUCCESS_STATUS, ERROR_STATUS } = status;
+const { UPDATE_SUCCESSFUL_MESSAGE } = response;
 
 // expired brandshare
-export const expiredBrandshare = async () => {
+export const expiredBrandshare = async (req: Request, res: Response) => {
   try {
     const now = new Date();
     await Prisma.referralCode.updateMany({
@@ -50,13 +55,20 @@ export const expiredBrandshare = async () => {
         },
       });
     }
-  } catch (error) {
-    console.error("[Referral Cron Error]", error);
+    res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: UPDATE_SUCCESSFUL_MESSAGE,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
   }
 };
 
 // expired brandshare
-export async function expiredMembership(): Promise<void> {
+export async function expiredMembership(req: Request, res: Response) {
   try {
     const memberships = await Prisma.userMembership.findMany({
       where: { expired: false },
@@ -82,20 +94,38 @@ export async function expiredMembership(): Promise<void> {
         });
       }
     }
+    res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: UPDATE_SUCCESSFUL_MESSAGE,
+    });
   } catch (error: any) {
-    console.error(error?.message);
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
   }
 }
 
 // delete activity log
-export const deleteActivityLog = async () => {
-  await Prisma.activityLog.deleteMany({
-    where: {
-      createdAt: {
-        lt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+export const deleteActivityLog = async (req: Request, res: Response) => {
+  try {
+    await Prisma.activityLog.deleteMany({
+      where: {
+        createdAt: {
+          lt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+        },
       },
-    },
-  });
+    });
+    res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: UPDATE_SUCCESSFUL_MESSAGE,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
 };
 
 // helper membsership
