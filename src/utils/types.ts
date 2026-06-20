@@ -35,7 +35,7 @@ export type ActivationStatus =
   | "ACTIVATE"
   | "DEACTIVATE"
   | "SUSPEND";
-export type MembershipStatus = "ACTIVE" | "EXPIRED" | "PENDING";
+export type MembershipStatus = "ACTIVATE" | "EXPIRED" | "PENDING";
 export type LayoutDetection = "LEFT" | "RIGHT" | "CENTER";
 export interface ButtonSetType {
   name: ButtonNames;

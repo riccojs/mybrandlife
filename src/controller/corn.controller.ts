@@ -134,7 +134,7 @@ function calculateExpiry(
   duration: "monthly" | "yearly",
   status: MembershipStatus,
 ): Date {
-  if (status !== "ACTIVE") {
+  if (status !== "ACTIVATE") {
     throw new Error("Membership is not active");
   }
   const start = new Date(activateAt);
