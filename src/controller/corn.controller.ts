@@ -141,7 +141,7 @@ export const deleteActivityLog = async (req: Request, res: Response) => {
   try {
     await Prisma.activityLog.deleteMany({
       where: {
-        createdAt: {
+        create_at: {
           lt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
         },
       },
