@@ -5,8 +5,9 @@ import response from "../utils/response.js";
 import bcrypt from "bcryptjs";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import fileProtocol from "./fileProtocol.js";
+import activityLog from "../middelware/activity.log.js";
 const SecretKey = process.env.SECRET_KEY ?? "";
-const { SUCCESS_STATUS, ERROR_STATUS } = status;
+const { SUCCESS_STATUS, ERROR_STATUS, LOG_SUCCESS, LOG_FAILED } = status;
 const {
   DATA_NOT_FOUND_MESSAGE,
   INVALID_SECURE_KEY_MESSAGE,
@@ -19,6 +20,107 @@ const {
   UPDATE_SUCCESSFUL_MESSAGE,
   DELETE_SUCCESS_MESSAGE,
 } = response;
+
+// get all pulsetrack
+export async function getAllActivities(req: Request, res: Response) {
+  const { searchBy = "", statusBy = "", methodBy = "" } = req.query;
+  const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
+  const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 10;
+  const skip = (page - 1) * limit;
+  let filter: any = {};
+  if (searchBy) {
+    filter.userId = {
+      contains: searchBy,
+      mode: "insensitive",
+    };
+  }
+  if (statusBy) {
+    filter.status = statusBy;
+  }
+  if (methodBy) {
+    filter.method = methodBy;
+  }
+  try {
+    const activities = await Prisma.activityLog.findMany({
+      skip: skip,
+      take: limit,
+      where: filter,
+    });
+    const totalActivities = await Prisma.activityLog.count({ where: filter });
+    const totalPage = Math.ceil(totalActivities / limit);
+    res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: QUERY_SUCCESSFUL_MESSAGE,
+      data: {
+        activities,
+        totalPage,
+        totalActivities,
+        currentPage: page,
+      },
+    });
+    await activityLog({
+      userId: "",
+      action: "Get all activities",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+  } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
+
+// get one referral
+export async function getOneActivities(req: Request, res: Response) {
+  const id = req.params.id as string;
+  try {
+    const existActivities = await Prisma.activityLog.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (!existActivities) {
+      return res.status(404).json({
+        status: ERROR_STATUS,
+        message: DATA_NOT_FOUND_MESSAGE,
+      });
+    }
+    res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: QUERY_SUCCESSFUL_MESSAGE,
+      activities: existActivities,
+    });
+    await activityLog({
+      userId: existActivities?.userId ? existActivities?.userId : "",
+      action: "Get one activities",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+  } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
 
 // admin registers
 export async function register(req: Request, res: Response) {
@@ -38,12 +140,26 @@ export async function register(req: Request, res: Response) {
           secureKey: "riccojs@89#",
         },
       });
+      await activityLog({
+        userId: "",
+        action: "Register admin",
+        status: LOG_SUCCESS,
+        endpoint: req.originalUrl,
+        method: req.method,
+      });
       return res.status(201).json({
         status: SUCCESS_STATUS,
         message: QUERY_SUCCESSFUL_MESSAGE,
       });
     });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -59,7 +175,21 @@ export async function getSetting(req: Request, res: Response) {
       status: QUERY_SUCCESSFUL_MESSAGE,
       setting,
     });
+    await activityLog({
+      userId: "",
+      action: "Get app settings",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -72,28 +202,28 @@ export async function login(req: Request, res: Response) {
   const { email, password, secureKey } = req.body;
   const normalizedEmail = email.trim().toLowerCase();
   try {
-    const existUser = await Prisma.admin.findUnique({
+    const existAdmin = await Prisma.admin.findUnique({
       where: {
         email: normalizedEmail,
       },
     });
 
-    if (!existUser) {
+    if (!existAdmin) {
       return res.status(404).json({
         status: ERROR_STATUS,
         message: DATA_NOT_FOUND_MESSAGE,
       });
     }
 
-    if (existUser?.secureKey !== secureKey) {
+    if (existAdmin?.secureKey !== secureKey) {
       return res.status(400).json({
         status: ERROR_STATUS,
         message: INVALID_SECURE_KEY_MESSAGE,
       });
     }
-    const matchPassword = await bcrypt.compare(password, existUser.password);
+    const matchPassword = await bcrypt.compare(password, existAdmin.password);
     const token = jwt.sign(
-      { email: existUser.email, id: existUser.id, role: "ADMIN" },
+      { email: existAdmin.email, id: existAdmin.id, role: "ADMIN" },
       SecretKey,
       { expiresIn: "7d" },
     );
@@ -114,7 +244,21 @@ export async function login(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: LOGIN_SUCCESS_MESSAGE,
     });
+    await activityLog({
+      userId: existAdmin?.id,
+      action: "Login admin",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -140,12 +284,26 @@ export async function logged(req: Request, res: Response) {
     const user = await Prisma.admin.findUnique({
       where: { id: decoded.id },
     });
+    await activityLog({
+      userId: user ? user?.id : "",
+      action: "Logged admin",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     return res.status(200).json({
       status: SUCCESS_STATUS,
       message: QUERY_SUCCESSFUL_MESSAGE,
       user: user,
     });
-  } catch (err) {
+  } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(401).json({ message: INVALID_TOKEN_MESSAGE });
   }
 }
@@ -175,7 +333,21 @@ export async function logout(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: LOGOUT_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: existUser?.id,
+      action: "Logout admin",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -223,7 +395,21 @@ export async function update(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: existAdmin?.id,
+      action: "Update admin",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -256,7 +442,21 @@ export async function updateSetting(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: "",
+      action: "Update app setting",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -288,7 +488,67 @@ export async function deleteAdmin(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: DELETE_SUCCESS_MESSAGE,
     });
+    await activityLog({
+      userId: existAdmin?.id,
+      action: "Delete admin account",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
+
+// delete admin
+export async function deleteActivities(req: Request, res: Response) {
+  const id = req.params.id as string;
+  try {
+    const existActivities = await Prisma.activityLog.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (!existActivities) {
+      return res.status(404).json({
+        status: ERROR_STATUS,
+        message: DATA_NOT_FOUND_MESSAGE,
+      });
+    }
+    await Prisma.activityLog.delete({
+      where: {
+        id: id,
+      },
+    });
+    res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: DELETE_SUCCESS_MESSAGE,
+    });
+    await activityLog({
+      userId: existActivities?.userId ? existActivities?.userId : "",
+      action: "Delete activities",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+  } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,

@@ -4,7 +4,8 @@ import status from "../utils/status.js";
 import response from "../utils/response.js";
 import axios from "axios";
 import fileProtocol from "./fileProtocol.js";
-const { SUCCESS_STATUS, ERROR_STATUS } = status;
+import activityLog from "../middelware/activity.log.js";
+const { SUCCESS_STATUS, ERROR_STATUS, LOG_SUCCESS, LOG_FAILED } = status;
 const {
   QUERY_SUCCESSFUL_MESSAGE,
   DATA_NOT_FOUND_MESSAGE,
@@ -73,7 +74,21 @@ export async function getAllPartner(req: Request, res: Response) {
         currentPage: pageNumber,
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Get all partner",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -90,6 +105,17 @@ export async function getPlausibleData(req: Request, res: Response) {
       where: { landerName: landername },
     });
     if (!existLander) {
+      return res.status(404).json({
+        status: ERROR_STATUS,
+        message: DATA_NOT_FOUND_MESSAGE,
+      });
+    }
+    const existUser = await Prisma.user.findUnique({
+      where: {
+        landerName: landername,
+      },
+    });
+    if (!existUser) {
       return res.status(404).json({
         status: ERROR_STATUS,
         message: DATA_NOT_FOUND_MESSAGE,
@@ -179,7 +205,21 @@ export async function getPlausibleData(req: Request, res: Response) {
       devices: devices.data.results,
       countries: countries.data.results,
     });
+    await activityLog({
+      userId: existUser?.id,
+      action: "Get plausible data",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -207,7 +247,21 @@ export async function getOnePartner(req: Request, res: Response) {
       message: QUERY_SUCCESSFUL_MESSAGE,
       partner: existPartner,
     });
+    await activityLog({
+      userId: "",
+      action: "Get one partner",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -244,12 +298,26 @@ export async function createPartner(req: Request, res: Response) {
         recipentLabel: recipentLabel ? recipentLabel : "",
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Create partner",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     return res.status(201).json({
       status: SUCCESS_STATUS,
       message: PARTNER_CREATE_SUCCESSFUL_MESSAGE,
       partner: newPartner,
     });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     return res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -297,12 +365,26 @@ export async function updatePartner(req: Request, res: Response) {
           : existPartner?.recipentLabel,
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Update partner",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     return res.status(201).json({
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
       partner: updatePartner,
     });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -335,7 +417,21 @@ export async function deletePartner(req: Request, res: Response) {
       message: DELETE_SUCCESS_MESSAGE,
       partner: deletePart,
     });
+    await activityLog({
+      userId: "",
+      action: "Delete partner",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,

@@ -7,8 +7,9 @@ import echoPaymentcreator from "../middelware/echo.paymentcreator.js";
 import Stripe from "stripe";
 import { getIo } from "../middelware/socket.js";
 import notificationEmail from "../lib/notification.email.js";
+import activityLog from "../middelware/activity.log.js";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
-const { SUCCESS_STATUS, ERROR_STATUS } = status;
+const { SUCCESS_STATUS, ERROR_STATUS, LOG_SUCCESS, LOG_FAILED } = status;
 const {
   QUERY_SUCCESSFUL_MESSAGE,
   DATA_NOT_FOUND_MESSAGE,
@@ -60,7 +61,21 @@ export async function getAllEcho(req: Request, res: Response) {
         currentPage: page,
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Get all echo",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -87,12 +102,37 @@ export async function getAllEchoByLander(req: Request, res: Response) {
         create_at: "desc",
       },
     });
+    const existUser = await Prisma.user.findUnique({
+      where: {
+        landerName: lander,
+      },
+    });
+    if (!existUser) {
+      return res.status(404).json({
+        status: ERROR_STATUS,
+        message: DATA_NOT_FOUND_MESSAGE,
+      });
+    }
     res.status(200).json({
       status: SUCCESS_STATUS,
       message: QUERY_SUCCESSFUL_MESSAGE,
       echo: echo,
     });
+    await activityLog({
+      userId: existUser?.id,
+      action: "Get all echo by lander",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -120,7 +160,21 @@ export async function getOneEcho(req: Request, res: Response) {
       message: QUERY_SUCCESSFUL_MESSAGE,
       echo: existEcho,
     });
+    await activityLog({
+      userId: existEcho?.userId,
+      action: "Get one echo",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -194,7 +248,21 @@ export async function createEcho(req: Request, res: Response) {
       message: FORM_SUBMITION_SUCCESSFUL_MESSAGE,
       pageUrl: data?.pageUrl,
     });
+    await activityLog({
+      userId: userId,
+      action: "Create echo",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -237,7 +305,21 @@ export async function updateEcho(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: existEcho?.userId,
+      action: "Update echo",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -269,7 +351,21 @@ export async function deleteEcho(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: DELETE_SUCCESS_MESSAGE,
     });
+    await activityLog({
+      userId: existEcho?.userId,
+      action: "Delete echo",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -288,6 +384,12 @@ export async function connectStripeAccount(req: Request, res: Response) {
         id: id,
       },
     });
+    if (!existUser) {
+      return res.json(404).json({
+        status: ERROR_STATUS,
+        message: DATA_NOT_FOUND_MESSAGE,
+      });
+    }
     if (existUser && !existUser.stripeAccountId) {
       const newAccount = await stripe.accounts.create({
         type: "express",
@@ -317,7 +419,21 @@ export async function connectStripeAccount(req: Request, res: Response) {
       message: CONNECTION_REDIRECT_MESSAGE,
       url: accountLink.url,
     });
+    await activityLog({
+      userId: existUser?.id,
+      action: "Connect stripe account",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -361,7 +477,21 @@ export async function checkStripeConnection(req: Request, res: Response) {
       stripeAccountId: existUser.stripeAccountId,
       accountStatus: account.requirements,
     });
+    await activityLog({
+      userId: existUser?.id,
+      action: "Check stripe connection",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -371,12 +501,12 @@ export async function checkStripeConnection(req: Request, res: Response) {
 
 // update status event
 export async function toggleEcho(req: Request, res: Response) {
-  const id = req.params.id as string;
+  const userId = req.params.id as string;
   const { status } = req.body;
   try {
     const existTemplete = await Prisma.userTemplete.findFirst({
       where: {
-        userId: id,
+        userId: userId,
       },
     });
     if (!existTemplete) {
@@ -398,7 +528,21 @@ export async function toggleEcho(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: userId,
+      action: "Toggle echo status",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -471,7 +615,21 @@ export async function updateEchoStatus(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: existEcho?.userId,
+      action: "Update echo status",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,

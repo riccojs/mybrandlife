@@ -4,7 +4,8 @@ import response from "../utils/response.js";
 import { Prisma } from "../utils/prisma.js";
 import status from "../utils/status.js";
 import webhookEmail from "../lib/webhook.email.js";
-const { ERROR_STATUS } = status;
+import activityLog from "../middelware/activity.log.js";
+const { ERROR_STATUS, LOG_FAILED, LOG_SUCCESS } = status;
 const {
   USER_ID_MISSING_IN_SUBSCRIPTION,
   CUSTOMER_HAS_BEEN_DELETED,
@@ -85,9 +86,24 @@ export async function membershipWebhook(req: Request, res: Response) {
         email ?? "",
         `Your membership has been activated. Please check your user dashboard to see your selected plan. You have chosen ${plan} plan.`,
       );
+      await activityLog({
+        userId: userId,
+        action: "Fire membership webhook",
+        status: LOG_SUCCESS,
+        endpoint: req.originalUrl,
+        method: req.method,
+      });
     }
+
     return res.status(200).json({ received: true });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -152,9 +168,24 @@ export async function renewalWebhook(req: Request, res: Response) {
         email ?? "",
         `Your membership has been successfully renewed. You can view the details of your selected plan in your user dashboard. You are now subscribed to the ${planKey} plan.`,
       );
+      await activityLog({
+        userId: existUser?.id ? existUser?.id : "",
+        action: "Fire membership renewal webhook",
+        status: LOG_SUCCESS,
+        endpoint: req.originalUrl,
+        method: req.method,
+      });
     }
+
     return res.status(200).json({ received: true });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({ status: ERROR_STATUS, message: error.message });
   }
 }
@@ -184,9 +215,23 @@ export async function echoWebhook(req: Request, res: Response) {
           status: "PAID",
         },
       });
+      await activityLog({
+        userId: transaction?.userId,
+        action: "Fire echo webhook",
+        status: LOG_SUCCESS,
+        endpoint: req.originalUrl,
+        method: req.method,
+      });
     }
     return res.status(200).json({ received: true });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -231,9 +276,23 @@ export async function wristbandWebhook(req: Request, res: Response) {
           status: "PAID",
         },
       });
+      await activityLog({
+        userId: transaction?.landerId,
+        action: "Fire wristband webhook",
+        status: LOG_SUCCESS,
+        endpoint: req.originalUrl,
+        method: req.method,
+      });
     }
     return res.status(200).json({ received: true });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,

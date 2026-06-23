@@ -6,7 +6,8 @@ import { google } from "googleapis";
 import parseTimeString from "../lib/parse.timestring.js";
 import notificationEmail from "../lib/notification.email.js";
 import addAmPm from "../lib/add.amPm.js";
-const { SUCCESS_STATUS, ERROR_STATUS } = status;
+import activityLog from "../middelware/activity.log.js";
+const { SUCCESS_STATUS, ERROR_STATUS, LOG_SUCCESS, LOG_FAILED } = status;
 const {
   DATA_NOT_FOUND_MESSAGE,
   QUERY_SUCCESSFUL_MESSAGE,
@@ -64,7 +65,21 @@ export async function getAllEvent(req: Request, res: Response) {
         currentPage: page,
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Get all brandbook",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -103,7 +118,21 @@ export async function getAllSlot(req: Request, res: Response) {
         currentPage: page,
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Get all brandbook stots",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -123,12 +152,32 @@ export async function getAllSlotByLander(req: Request, res: Response) {
         user: true,
       },
     });
+    if (slot?.length === 0) {
+      return res.status(200).json({
+        status: ERROR_STATUS,
+        message: DATA_NOT_FOUND_MESSAGE,
+      });
+    }
     res.status(200).json({
       status: SUCCESS_STATUS,
       message: QUERY_SUCCESSFUL_MESSAGE,
       slot: slot,
     });
+    await activityLog({
+      userId: userId,
+      action: "Get all brandbook slot by lander",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -156,7 +205,21 @@ export async function getOneEvent(req: Request, res: Response) {
       message: DELETE_SUCCESS_MESSAGE,
       event: existEvent,
     });
+    await activityLog({
+      userId: existEvent?.userId,
+      action: "Get one brandbook",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -219,7 +282,21 @@ export async function createEvent(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: BOOKING_SUBMIT_SUCCESSFUL,
     });
+    await activityLog({
+      userId: userId,
+      action: "Create brandbook",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -253,7 +330,21 @@ export async function createSlot(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: FORM_SUBMITION_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: userId,
+      action: "Create brandbook slot",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -277,7 +368,21 @@ export async function goolgeAuth(req: Request, res: Response) {
       state: JSON.stringify({ userId }),
     });
     res.redirect(url);
+    await activityLog({
+      userId: userId,
+      action: "Request google authentication",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -319,7 +424,21 @@ export async function googleAuthCallback(req: Request, res: Response) {
       },
     });
     res.redirect(`${process.env.FRONTEND_CORS_URL}/google/connect/success`);
+    await activityLog({
+      userId: userId,
+      action: "Callback google authentication",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -329,12 +448,12 @@ export async function googleAuthCallback(req: Request, res: Response) {
 
 // update status event
 export async function toggleEvent(req: Request, res: Response) {
-  const id = req.params.id as string;
+  const userId = req.params.id as string;
   const { status } = req.body;
   try {
     const existTemplete = await Prisma.userTemplete.findFirst({
       where: {
-        userId: id,
+        userId: userId,
       },
     });
     if (!existTemplete) {
@@ -356,7 +475,21 @@ export async function toggleEvent(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: userId,
+      action: "Toggle brandbook status",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -388,7 +521,21 @@ export async function deleteSlot(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: DELETE_SUCCESS_MESSAGE,
     });
+    await activityLog({
+      userId: existSlot?.userId,
+      action: "Create brandbook slot",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -444,7 +591,21 @@ export async function updateEventStatus(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: existEvent?.userId,
+      action: "Update brandbook status",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -457,12 +618,12 @@ export async function updateEvent(req: Request, res: Response) {
   const { name, email, date, time, note, status } = req.body;
   const id = req.params.id as string;
   try {
-    const existEcho = await Prisma.event.findUnique({
+    const existEvent = await Prisma.event.findUnique({
       where: {
         id: id,
       },
     });
-    if (!existEcho) {
+    if (!existEvent) {
       return res.status(404).json({
         status: ERROR_STATUS,
         message: DATA_NOT_FOUND_MESSAGE,
@@ -481,11 +642,26 @@ export async function updateEvent(req: Request, res: Response) {
         status,
       },
     });
+
     res.status(200).json({
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: existEvent?.userId,
+      action: "Update brandbook",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -517,7 +693,21 @@ export async function deleteEvent(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: DELETE_SUCCESS_MESSAGE,
     });
+    await activityLog({
+      userId: existEvent?.userId,
+      action: "Delete brandbook",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,

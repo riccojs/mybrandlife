@@ -3,7 +3,8 @@ import { Prisma } from "../utils/prisma.js";
 import status from "../utils/status.js";
 import response from "../utils/response.js";
 import fileProtocol from "./fileProtocol.js";
-const { SUCCESS_STATUS, ERROR_STATUS } = status;
+import activityLog from "../middelware/activity.log.js";
+const { SUCCESS_STATUS, ERROR_STATUS, LOG_FAILED, LOG_SUCCESS } = status;
 const {
   QUERY_SUCCESSFUL_MESSAGE,
   DATA_NOT_FOUND_MESSAGE,
@@ -71,7 +72,21 @@ export async function getAllReferral(req: Request, res: Response) {
         currentPage: pageNumber,
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Get all brandshare",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -79,6 +94,7 @@ export async function getAllReferral(req: Request, res: Response) {
   }
 }
 
+// get all brandshare
 export async function getAllReferralUser(req: Request, res: Response) {
   const { searchBy = "", code = "" } = req.query;
   const pageNumber = req.query.page
@@ -116,7 +132,21 @@ export async function getAllReferralUser(req: Request, res: Response) {
         currentPage: pageNumber,
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Get all brandshare by user",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -144,7 +174,21 @@ export async function getOneReferral(req: Request, res: Response) {
       message: QUERY_SUCCESSFUL_MESSAGE,
       referral: existReferral,
     });
+    await activityLog({
+      userId: existReferral?.userId ? existReferral?.userId : "",
+      action: "Get one brandshare",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -183,12 +227,26 @@ export async function createReferral(req: Request, res: Response) {
         logo: profileFile ? `${basePath}${profileFile}` : null,
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Create brandshare",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     return res.status(201).json({
       status: SUCCESS_STATUS,
       message: REFERRAL_CODE_CREATE_SUCCESSFUL,
       referral: newReferral,
     });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -231,12 +289,26 @@ export async function updateReferral(req: Request, res: Response) {
         logo: profileFile ? `${basePath}${profileFile}` : existReferral?.logo,
       },
     });
+    await activityLog({
+      userId: existReferral?.userId ? existReferral?.userId : "",
+      action: "Update brandshare",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     return res.status(201).json({
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
       referral: updateReferral,
     });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -269,7 +341,21 @@ export async function deleteReferral(req: Request, res: Response) {
       message: DELETE_SUCCESS_MESSAGE,
       referral: deleteReferral,
     });
+    await activityLog({
+      userId: existReferral?.userId ? existReferral?.userId : "",
+      action: "Delete brandshare",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,

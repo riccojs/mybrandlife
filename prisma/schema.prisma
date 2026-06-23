@@ -492,7 +492,7 @@ model activityLog {
   status    String
   endpoint  String
   method    String
-  createdAt DateTime @default(now())
+  create_at DateTime @default(now())
   update_at DateTime @updatedAt
 }
 

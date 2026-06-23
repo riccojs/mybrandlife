@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Prisma } from "../utils/prisma.js";
 import status from "../utils/status.js";
 import response from "../utils/response.js";
-const { SUCCESS_STATUS, ERROR_STATUS } = status;
+const { SUCCESS_STATUS, ERROR_STATUS, LOG_SUCCESS, LOG_FAILED } = status;
 const {
   QUERY_SUCCESSFUL_MESSAGE,
   DATA_NOT_FOUND_MESSAGE,
@@ -43,6 +43,7 @@ import { fileURLToPath } from "url";
 import { ButtonName } from "@prisma/client";
 import fileProtocol from "./fileProtocol.js";
 import alertEmail from "../lib/alert.email.js";
+import activityLog from "../middelware/activity.log.js";
 const card = new VCard();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -91,7 +92,21 @@ export async function getAllOnboard(req: Request, res: Response) {
         currentPage: page,
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Get all onboard",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -129,7 +144,21 @@ export async function getAllOnboardRequests(req: Request, res: Response) {
         currentPage: page,
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Get all onboard request",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -146,7 +175,21 @@ export async function getAllOnboardByDefault(req: Request, res: Response) {
       message: QUERY_SUCCESSFUL_MESSAGE,
       onboard,
     });
+    await activityLog({
+      userId: "",
+      action: "Get all onboard by default",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -198,7 +241,21 @@ export async function getAllOnboardByAdmin(req: Request, res: Response) {
         currentPage: pageNumber,
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Get all onboard bt admin",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -262,7 +319,21 @@ export async function getOneOnboard(req: Request, res: Response) {
         brandshare: brandshare ?? null,
       },
     });
+    await activityLog({
+      userId: existUser?.id,
+      action: "Get one onboard",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -290,7 +361,21 @@ export async function getOneOnboardRequests(req: Request, res: Response) {
       message: QUERY_SUCCESSFUL_MESSAGE,
       request: existRequest,
     });
+    await activityLog({
+      userId: "",
+      action: "Get one onboard request",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -325,7 +410,21 @@ export async function getOneOboardById(req: Request, res: Response) {
       message: QUERY_SUCCESSFUL_MESSAGE,
       onboard: existOnoard,
     });
+    await activityLog({
+      userId: existOnoard?.userId,
+      action: "Get one onboard by id",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -355,8 +454,6 @@ export async function checkDiscountCode(req: Request, res: Response) {
         message: REFERRAL_CODE_EXPIRED,
       });
     }
-
-    // check limit
     if (
       existReferal.limit &&
       existReferal.joined &&
@@ -367,8 +464,6 @@ export async function checkDiscountCode(req: Request, res: Response) {
         message: REFERRAL_CODE_EXPIRED,
       });
     }
-
-    // check expiry date
     if (existReferal.expire_in) {
       const expireDate = new Date(existReferal.expire_in);
       const today = new Date();
@@ -381,6 +476,14 @@ export async function checkDiscountCode(req: Request, res: Response) {
       }
     }
 
+    await activityLog({
+      userId: existReferal?.userId ? existReferal?.userId : "",
+      action: "Check discount code",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+
     return res.status(200).json({
       status: SUCCESS_STATUS,
       message: VALID_REFERRAL_CODE_MESSAGE,
@@ -389,6 +492,13 @@ export async function checkDiscountCode(req: Request, res: Response) {
       discountCode: existReferal.code,
     });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     return res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -423,7 +533,21 @@ export async function verifyOnboard(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: USER_VERIFY_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: existOnboard?.userId,
+      action: "Verify onboard",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -446,7 +570,21 @@ export async function requestADomain(req: Request, res: Response) {
       message: REQUEST_SUBMIT_SUCCESSFUL_MESSAGE,
       request: newRequest,
     });
+    await activityLog({
+      userId: "",
+      action: "Request domain",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -475,7 +613,21 @@ export async function requestInfo(req: Request, res: Response) {
       message: REQUEST_SUBMIT_SUCCESSFUL_MESSAGE,
       request: newRequest,
     });
+    await activityLog({
+      userId: "",
+      action: "Request info",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -500,7 +652,21 @@ export async function requestInfoLocation(req: Request, res: Response) {
       message: REQUEST_SUBMIT_SUCCESSFUL_MESSAGE,
       request: newRequest,
     });
+    await activityLog({
+      userId: "",
+      action: "Request info location",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -763,23 +929,37 @@ export async function onboardingUser(req: Request, res: Response) {
       "New User Successfully Onboarded",
       `${existUser?.landerName} has successfully completed onboarding. Please review the admin dashboard if any follow-up action is required.`,
     );
+    await activityLog({
+      userId: userId,
+      action: "Onboard user",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({ status: ERROR_STATUS, message: error.message });
   }
 }
 
 // recreate payment
 export async function recreatePayment(req: Request, res: Response) {
-  const id = req.params.id as string;
+  const userId = req.params.id as string;
   try {
     const existUser = await Prisma.user.findUnique({
       where: {
-        id: id,
+        id: userId,
       },
     });
     const existTemplate = await Prisma.userTemplete.findFirst({
       where: {
-        userId: id,
+        userId: userId,
       },
     });
     if (!existUser || !existTemplate) {
@@ -802,7 +982,21 @@ export async function recreatePayment(req: Request, res: Response) {
       message: QUERY_SUCCESSFUL_MESSAGE,
       pageUrl: resData.pageUrl,
     });
+    await activityLog({
+      userId: userId,
+      action: "Recreate onboard payment",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -841,7 +1035,21 @@ export async function updateTempleteSocial(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: existTemplete?.userId,
+      action: "Update onboard social info",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -880,7 +1088,21 @@ export async function updateCustomPlatform(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: existTemplete?.userId,
+      action: "Upate onboard custom platform",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -932,7 +1154,21 @@ export async function updateTempleteMedias(req: Request, res: Response) {
       message: UPDATE_SUCCESSFUL_MESSAGE,
       userTemplete: updateUserTemplete,
     });
+    await activityLog({
+      userId: existTemplate?.userId,
+      action: "Update onboard media",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -1067,7 +1303,21 @@ export async function updateTempleteInfos(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: existTemplete?.userId,
+      action: "Update onboard infos",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -1078,11 +1328,11 @@ export async function updateTempleteInfos(req: Request, res: Response) {
 // update membership
 export async function updateMemebership(req: Request, res: Response) {
   const { packageType, planKey, planPrice, planOldPrice, frequency } = req.body;
-  const id = req.params.id as string;
+  const userId = req.params.id as string;
   try {
     const existUser = await Prisma.user.findUnique({
       where: {
-        id: id,
+        id: userId,
       },
     });
     if (!existUser) {
@@ -1093,7 +1343,7 @@ export async function updateMemebership(req: Request, res: Response) {
     }
     await Prisma.user.update({
       where: {
-        id: id,
+        id: userId,
       },
       data: {
         frequency: frequency,
@@ -1117,7 +1367,21 @@ export async function updateMemebership(req: Request, res: Response) {
       message: REGISTRATION_SUCCESS_MESSAGE,
       pageUrl: resData.pageUrl,
     });
+    await activityLog({
+      userId: userId,
+      action: "Update membership",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -1127,7 +1391,7 @@ export async function updateMemebership(req: Request, res: Response) {
 
 // toggle merchendise status
 export async function toggleMerchendiseStatus(req: Request, res: Response) {
-  const id = req.params.id as string;
+  const userId = req.params.id as string;
   const { merchendise } = req.body;
 
   try {
@@ -1135,7 +1399,7 @@ export async function toggleMerchendiseStatus(req: Request, res: Response) {
     const profileFile = req.file?.filename.split(" ").join("-");
     const existTemplete = await Prisma.userTemplete.findFirst({
       where: {
-        userId: id,
+        userId: userId,
       },
     });
 
@@ -1160,7 +1424,21 @@ export async function toggleMerchendiseStatus(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: userId,
+      action: "Toggle merchendise status",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -1201,7 +1479,21 @@ export async function deleteTemplete(req: Request, res: Response) {
       "User Onboarded Delete Successfully",
       `${existTemplete?.user?.landerName} has successfully Deleted onboarding. Please review the admin dashboard if any follow-up action is required.`,
     );
+    await activityLog({
+      userId: existTemplete?.userId,
+      action: "Delete onboard",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -1234,7 +1526,21 @@ export async function deleteOnboardRequest(req: Request, res: Response) {
       message: DELETE_SUCCESS_MESSAGE,
       request: existRequest,
     });
+    await activityLog({
+      userId: "",
+      action: "Delete onboard request",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -1255,7 +1561,21 @@ export async function deleteTempleteButton(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: DELETE_SUCCESS_MESSAGE,
     });
+    await activityLog({
+      userId: "",
+      action: "Delete onboard buttons",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -1276,7 +1596,21 @@ export async function deleteCustomButton(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: DELETE_SUCCESS_MESSAGE,
     });
+    await activityLog({
+      userId: "",
+      action: "Delete onboard custom button",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,

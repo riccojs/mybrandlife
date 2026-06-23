@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import { Prisma } from "../utils/prisma.js";
 import status from "../utils/status.js";
 import response from "../utils/response.js";
-const { SUCCESS_STATUS, ERROR_STATUS } = status;
+import activityLog from "../middelware/activity.log.js";
+const { SUCCESS_STATUS, ERROR_STATUS, LOG_SUCCESS, LOG_FAILED } = status;
 const {
   QUERY_SUCCESSFUL_MESSAGE,
   DATA_NOT_FOUND_MESSAGE,
@@ -47,7 +48,21 @@ export async function getAllSpining(req: Request, res: Response) {
         currentPage: page,
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Get all spining",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -78,7 +93,21 @@ export async function getOneSpining(req: Request, res: Response) {
       message: QUERY_SUCCESSFUL_MESSAGE,
       spining: existSpining,
     });
+    await activityLog({
+      userId: existSpining?.landerId,
+      action: "Get one spining",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -88,12 +117,12 @@ export async function getOneSpining(req: Request, res: Response) {
 
 // toggle spin
 export async function toggleSpin(req: Request, res: Response) {
-  const id = req.params.id as string;
+  const userId = req.params.id as string;
   const { status } = req.body;
   try {
     const existTemplete = await Prisma.userTemplete.findFirst({
       where: {
-        userId: id,
+        userId: userId,
       },
     });
     if (!existTemplete) {
@@ -115,7 +144,21 @@ export async function toggleSpin(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: userId,
+      action: "Toggle spining",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -141,7 +184,21 @@ export async function createSpining(req: Request, res: Response) {
       message: SPIN_GROUP_CREATE_SUCCESSFUL,
       spining: newSpining,
     });
+    await activityLog({
+      userId: landerId,
+      action: "Create spining",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -180,7 +237,21 @@ export async function updateSpining(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: existSpining?.landerId,
+      action: "Update spining",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -212,7 +283,21 @@ export async function deleteSpining(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: DELETE_SUCCESS_MESSAGE,
     });
+    await activityLog({
+      userId: existSpining?.landerId,
+      action: "Delete spining",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,

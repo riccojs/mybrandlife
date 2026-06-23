@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import status from "../utils/status.js";
 import response from "../utils/response.js";
 import wristbandPayment from "../middelware/wristband.payment.js";
-const { SUCCESS_STATUS, ERROR_STATUS } = status;
+const { SUCCESS_STATUS, ERROR_STATUS, LOG_SUCCESS, LOG_FAILED } = status;
 const {
   QUERY_SUCCESSFUL_MESSAGE,
   DATA_NOT_FOUND_MESSAGE,
@@ -23,6 +23,7 @@ import PDFDocument from "pdfkit";
 import { Parser } from "json2csv";
 import pulsetrackEmail from "../lib/pulsetrack.email.js";
 import alertEmail from "../lib/alert.email.js";
+import activityLog from "../middelware/activity.log.js";
 
 // get all pulsetrack
 export async function getAllPulsetrack(req: Request, res: Response) {
@@ -69,7 +70,21 @@ export async function getAllPulsetrack(req: Request, res: Response) {
         currentPage: page,
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Get all pulsetrack",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -109,7 +124,21 @@ export async function getDefaultPulsetrack(req: Request, res: Response) {
       wristband,
       analytics,
     });
+    await activityLog({
+      userId: "",
+      action: "Get default pulsetrack",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -142,7 +171,21 @@ export async function getOnePulsetrack(req: Request, res: Response) {
       message: QUERY_SUCCESSFUL_MESSAGE,
       pulsetrack: existPulsetrack,
     });
+    await activityLog({
+      userId: "",
+      action: "Get one pulsetrack",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -173,7 +216,21 @@ export async function getPulsetrackCart(req: Request, res: Response) {
       message: QUERY_SUCCESSFUL_MESSAGE,
       wristband,
     });
+    await activityLog({
+      userId: "",
+      action: "Get pulsetrack cart item",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -220,7 +277,21 @@ export async function createPulsetrack(req: Request, res: Response) {
       message: PULSETRACK_CREATE_SUCCESSFUL,
       pulsetrack: newPulsetrack,
     });
+    await activityLog({
+      userId: "",
+      action: "Create pulsetrack id",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -247,7 +318,21 @@ export async function checkPulsetrack(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: PULSETRACK_ID_VALID_MESSAGE,
     });
+    await activityLog({
+      userId: "",
+      action: "Check pulsetrack id",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -285,11 +370,25 @@ export async function updatePulsetrack(req: Request, res: Response) {
         name: name,
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Update pulsetrack",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     return res.status(201).json({
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -319,11 +418,25 @@ export async function updatePulsetrackStatus(req: Request, res: Response) {
         active: status,
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Update pulsetrack status",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     return res.status(201).json({
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -355,7 +468,21 @@ export async function deletePulsetrack(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: DELETE_SUCCESS_MESSAGE,
     });
+    await activityLog({
+      userId: "",
+      action: "Delete pulsetrack",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -393,7 +520,21 @@ export async function assignedPulsetrackWristband(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: USER_ASSIGNED_SUCCESSFUL,
     });
+    await activityLog({
+      userId: "",
+      action: "Assign pulsetrack wristband user",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -490,18 +631,39 @@ export async function togglePulsetrack(req: Request, res: Response) {
           expediteShipping: 0,
         },
       });
+      await activityLog({
+        userId: "",
+        action: "Toggle pulsetrack status",
+        status: LOG_SUCCESS,
+        endpoint: req.originalUrl,
+        method: req.method,
+      });
       return res.status(200).json({
         status: SUCCESS_STATUS,
         message: UPDATE_SUCCESSFUL_MESSAGE,
         brandtap: updateBrandtap,
       });
     } else {
+      await activityLog({
+        userId: "",
+        action: "Toggle pulsetrack status",
+        status: LOG_SUCCESS,
+        endpoint: req.originalUrl,
+        method: req.method,
+      });
       return res.status(401).json({
         status: ERROR_STATUS,
         message: DATA_NOT_FOUND_MESSAGE,
       });
     }
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -573,7 +735,21 @@ export async function createPulsetrackPayment(req: Request, res: Response) {
       message: REGISTRATION_SUCCESS_MESSAGE,
       pageUrl: payment.pageUrl,
     });
+    await activityLog({
+      userId: "",
+      action: "Create pulsetrack payment",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -627,7 +803,21 @@ export async function deleteCartItem(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: DELETE_SUCCESS_MESSAGE,
     });
+    await activityLog({
+      userId: "",
+      action: "Delete pulsetrack cart item",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -667,11 +857,25 @@ export async function toggleExtraPulsetrackCost(req: Request, res: Response) {
         total: Number(total.toFixed(2)),
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Toggle extra pulsetrack cost",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     return res.status(200).json({
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     return res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -751,12 +955,26 @@ export async function savePulsetrackScan(req: Request, res: Response) {
         geoCountry,
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Save pulsetrack scan",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     return res.status(201).json({
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
       pulsetrack: newScanData,
     });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     return res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -797,7 +1015,21 @@ export async function saveGpsPulsetrackScan(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: "",
+      action: "Save gps pulsetrack scan",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     return res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -896,9 +1128,24 @@ export async function exportPulsetrackData(req: Request, res: Response) {
       });
       doc.end();
       exportStatus = "success";
+      await activityLog({
+        userId: "",
+        action: "Export pulsetrack data",
+        status: LOG_SUCCESS,
+        endpoint: req.originalUrl,
+        method: req.method,
+      });
       return;
     }
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+
     return res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -946,7 +1193,21 @@ export async function getAllExportData(req: Request, res: Response) {
         currentPage: page,
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Pulsetrack export data",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,

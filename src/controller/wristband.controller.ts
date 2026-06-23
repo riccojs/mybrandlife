@@ -4,7 +4,8 @@ import status from "../utils/status.js";
 import response from "../utils/response.js";
 import ShippingEmail from "../lib/shipping.email.js";
 import fileProtocol from "./fileProtocol.js";
-const { SUCCESS_STATUS, ERROR_STATUS } = status;
+import activityLog from "../middelware/activity.log.js";
+const { SUCCESS_STATUS, ERROR_STATUS, LOG_SUCCESS, LOG_FAILED } = status;
 const {
   QUERY_SUCCESSFUL_MESSAGE,
   DATA_NOT_FOUND_MESSAGE,
@@ -53,7 +54,21 @@ export async function getAllWristband(req: Request, res: Response) {
         currentPage: pageNumber,
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Get all wristband",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -116,7 +131,21 @@ export async function getAllWristbandItem(req: Request, res: Response) {
         currentPage: pageNumber,
       },
     });
+    await activityLog({
+      userId: "",
+      action: "Get all wristband item",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -144,7 +173,21 @@ export async function getOneWristbandItem(req: Request, res: Response) {
       message: QUERY_SUCCESSFUL_MESSAGE,
       wistband: existWristband,
     });
+    await activityLog({
+      userId: existWristband?.userId,
+      action: "Get one wristband item",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -172,7 +215,21 @@ export async function getOneWristband(req: Request, res: Response) {
       message: QUERY_SUCCESSFUL_MESSAGE,
       wristband: existWristband,
     });
+    await activityLog({
+      userId: "",
+      action: "Get one wristband",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -202,7 +259,21 @@ export async function createWristband(req: Request, res: Response) {
       message: WRISTBAND_CREATE_SUCCESSFUL,
       wristband: newWristband,
     });
+    await activityLog({
+      userId: "",
+      action: "Create wristband",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -243,7 +314,21 @@ export async function updateWristband(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
+    await activityLog({
+      userId: "",
+      action: "Update wristband",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -275,7 +360,21 @@ export async function deleteWristband(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: DELETE_SUCCESS_MESSAGE,
     });
+    await activityLog({
+      userId: "",
+      action: "Delete wristband",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -307,7 +406,21 @@ export async function deleteWristbandItem(req: Request, res: Response) {
       status: SUCCESS_STATUS,
       message: DELETE_SUCCESS_MESSAGE,
     });
+    await activityLog({
+      userId: existWristband?.userId,
+      action: "Delete wristband item",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
@@ -386,11 +499,25 @@ export async function updateWristbandItemStatus(req: Request, res: Response) {
         status,
       );
     }
+    await activityLog({
+      userId: existOrder?.userId,
+      action: "Update wristband item status",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     return res.status(201).json({
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
     });
   } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
