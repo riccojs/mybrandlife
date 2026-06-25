@@ -487,7 +487,7 @@ function Wireframe() {
               </p>
             </div>
           </div>
-          {enableBrandshare && (
+          {enableBrandshare && brandshare && (
             <div className="flex flex-col justify-center items-center gap-2 mt-5">
               <a
                 href={brandshare?.link}
@@ -504,7 +504,7 @@ function Wireframe() {
                   />
                 ) : (
                   <p className="w-14 h-14 text-3xl min-w-14 bg-slate-200 flex justify-center items-center uppercase rounded-full">
-                    {brandshare?.code?.slice(0, 1)}
+                    {brandshare?.code}
                   </p>
                 )}
               </a>
