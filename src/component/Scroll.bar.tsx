@@ -114,7 +114,7 @@ function ScrollBar() {
   return (
     <div className="w-full xl:w-9/12 2xl:w-10/12 h-full">
       <div className="h-full overflow-auto">
-        <table className="my-table table-auto w-full min-w-[1200px] border-collapse">
+        <table className="my-table table-auto w-full min-w-300 border-collapse">
           <thead className="sticky top-0 z-20 bg-black border-b border-gray-500">
             <tr className="text-white font-normal">
               <th>Name</th>
