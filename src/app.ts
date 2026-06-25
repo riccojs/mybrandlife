@@ -23,6 +23,7 @@ import ReportRouter from "./route/report.route.js";
 import WristbandRouter from "./route/wristband.route.js";
 import WebhookRouter from "./route/webhook.route.js";
 import PulsetrackRouter from "./route/pulsetrack.route.js";
+import NotificationRouter from "./route/notification.route.js";
 import SpinRouter from "./route/spin.route.js";
 import CornRouter from "./route/corn.route.js";
 const allowedOrigins = process.env.CORS_ORIGIN
@@ -66,6 +67,7 @@ app.use("/api/wristband", WristbandRouter);
 app.use("/api/pulsetrack", PulsetrackRouter);
 app.use("/api/spin", SpinRouter);
 app.use("/api/corn", CornRouter);
+app.use("/api/notification", NotificationRouter);
 
 // Home Route
 app.get("/", auth, (req, res) => {

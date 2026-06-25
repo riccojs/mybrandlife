@@ -17,6 +17,7 @@ import fileProtocol from "./fileProtocol.js";
 import alertEmail from "../lib/alert.email.js";
 import defaultWristband from "../middelware/default.wristband.js";
 import activityLog from "../middelware/activity.log.js";
+import notificationCreator from "../middelware/notification.createor.js";
 
 const SecretKey = process.env.SECRET_KEY ?? "";
 const corsUrl = process.env.FRONTEND_CORS_URL ?? "";
@@ -496,6 +497,13 @@ export async function register(req: Request, res: Response) {
         endpoint: req.originalUrl,
         method: req.method,
       });
+      await notificationCreator({
+        title: `${newUser?.lastName} has been registered successfully.`,
+        redirectUrl: `/admin/user/${newUser?.id}`,
+        profile: null,
+        seen: false,
+        userId: newUser?.id,
+      });
       return res.status(201).json({
         status: SUCCESS_STATUS,
         message: REGISTRATION_SUCCESS_MESSAGE,
@@ -701,6 +709,13 @@ export async function verify(req: Request, res: Response) {
       status: LOG_SUCCESS,
       endpoint: req.originalUrl,
       method: req.method,
+    });
+    await notificationCreator({
+      title: `${existUser?.landerName} has been verify successfully`,
+      redirectUrl: `/admin/user/${existUser?.id}`,
+      profile: existUser?.profile ? existUser?.profile : null,
+      seen: false,
+      userId: existUser?.id,
     });
     return res.status(200).json({
       message: VERIFY_SUCCESSFUL_MESSAGE,
@@ -1148,6 +1163,13 @@ export async function updateUser(req: Request, res: Response) {
       endpoint: req.originalUrl,
       method: req.method,
     });
+    await notificationCreator({
+      title: `${existUser?.landerName} has been update his profile`,
+      redirectUrl: `/admin/user/${existUser?.id}`,
+      profile: existUser?.profile ? existUser?.profile : null,
+      seen: false,
+      userId: existUser?.id,
+    });
   } catch (error: any) {
     await activityLog({
       userId: "",
@@ -1228,6 +1250,13 @@ export async function updateUserByAdmin(req: Request, res: Response) {
       status: LOG_SUCCESS,
       endpoint: req.originalUrl,
       method: req.method,
+    });
+    await notificationCreator({
+      title: `Admin has been update ${existUser?.landerName} profile`,
+      redirectUrl: `/admin/user/${existUser?.id}`,
+      profile: existUser?.profile ? existUser?.profile : null,
+      seen: false,
+      userId: existUser?.id,
     });
   } catch (error: any) {
     await activityLog({
@@ -1495,6 +1524,24 @@ export async function togglrUserActivation(req: Request, res: Response) {
       endpoint: req.originalUrl,
       method: req.method,
     });
+    if (status === "DEACTIVATE") {
+      await notificationCreator({
+        title: `${existUser?.landerName} has been deactivated`,
+        redirectUrl: `/admin/user/${existUser?.id}`,
+        profile: existUser?.profile ? existUser?.profile : null,
+        seen: false,
+        userId: existUser?.id,
+      });
+    }
+    if (status === "SUSPEND") {
+      await notificationCreator({
+        title: `${existUser?.landerName} has been suspended`,
+        redirectUrl: `/admin/user/${existUser?.id}`,
+        profile: existUser?.profile ? existUser?.profile : null,
+        seen: false,
+        userId: existUser?.id,
+      });
+    }
   } catch (error: any) {
     await activityLog({
       userId: "",
@@ -1546,6 +1593,13 @@ export async function deleteUser(req: Request, res: Response) {
       status: LOG_SUCCESS,
       endpoint: req.originalUrl,
       method: req.method,
+    });
+    await notificationCreator({
+      title: `${existUser?.landerName} account has been deleted`,
+      redirectUrl: "/admin/user",
+      profile: existUser?.profile ? existUser?.profile : null,
+      seen: false,
+      userId: existUser?.id,
     });
   } catch (error: any) {
     await activityLog({

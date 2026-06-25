@@ -44,6 +44,7 @@ import { ButtonName } from "@prisma/client";
 import fileProtocol from "./fileProtocol.js";
 import alertEmail from "../lib/alert.email.js";
 import activityLog from "../middelware/activity.log.js";
+import notificationCreator from "../middelware/notification.createor.js";
 const card = new VCard();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -577,6 +578,13 @@ export async function requestADomain(req: Request, res: Response) {
       endpoint: req.originalUrl,
       method: req.method,
     });
+    await notificationCreator({
+      title: "You've receive a domain request",
+      redirectUrl: `/admin/domain_request?view=${newRequest?.id}`,
+      profile: null,
+      seen: false,
+      userId: null,
+    });
   } catch (error: any) {
     await activityLog({
       userId: "",
@@ -619,6 +627,13 @@ export async function requestInfo(req: Request, res: Response) {
       status: LOG_SUCCESS,
       endpoint: req.originalUrl,
       method: req.method,
+    });
+    await notificationCreator({
+      title: `${name} submit info successfully`,
+      redirectUrl: `/admin/onboard/update/${templateId}`,
+      profile: null,
+      seen: false,
+      userId: null,
     });
   } catch (error: any) {
     await activityLog({
@@ -936,6 +951,13 @@ export async function onboardingUser(req: Request, res: Response) {
       endpoint: req.originalUrl,
       method: req.method,
     });
+    await notificationCreator({
+      title: `${existUser?.landerName} has been onboard successfully`,
+      redirectUrl: `/admin/onboard/update/${newTemplate?.id}`,
+      profile: existUser?.profile ? existUser?.profile : null,
+      seen: false,
+      userId: existUser?.id,
+    });
   } catch (error: any) {
     await activityLog({
       userId: "",
@@ -989,6 +1011,13 @@ export async function recreatePayment(req: Request, res: Response) {
       endpoint: req.originalUrl,
       method: req.method,
     });
+    await notificationCreator({
+      title: `${existUser?.landerName} has been recreate payment`,
+      redirectUrl: `/admin/onboard/update/${existTemplate?.id}`,
+      profile: existUser?.profile ? existUser?.profile : null,
+      seen: false,
+      userId: existUser?.id,
+    });
   } catch (error: any) {
     await activityLog({
       userId: "",
@@ -1012,6 +1041,9 @@ export async function updateTempleteSocial(req: Request, res: Response) {
     const existTemplete = await Prisma.userTemplete.findUnique({
       where: {
         id: id,
+      },
+      include: {
+        user: true,
       },
     });
     if (!existTemplete) {
@@ -1042,6 +1074,15 @@ export async function updateTempleteSocial(req: Request, res: Response) {
       endpoint: req.originalUrl,
       method: req.method,
     });
+    await notificationCreator({
+      title: `${existTemplete?.user?.landerName} onboard has been update successfully`,
+      redirectUrl: `/admin/onboard/update/${existTemplete?.id}`,
+      profile: existTemplete?.user?.profile
+        ? existTemplete?.user?.profile
+        : null,
+      seen: false,
+      userId: existTemplete?.user?.id,
+    });
   } catch (error: any) {
     await activityLog({
       userId: "",
@@ -1065,6 +1106,9 @@ export async function updateCustomPlatform(req: Request, res: Response) {
     const existTemplete = await Prisma.userTemplete.findUnique({
       where: {
         id: id,
+      },
+      include: {
+        user: true,
       },
     });
     if (!existTemplete) {
@@ -1095,6 +1139,15 @@ export async function updateCustomPlatform(req: Request, res: Response) {
       endpoint: req.originalUrl,
       method: req.method,
     });
+    await notificationCreator({
+      title: `${existTemplete?.user?.landerName} onboard has been update successfully`,
+      redirectUrl: `/admin/onboard/update/${existTemplete?.id}`,
+      profile: existTemplete?.user?.profile
+        ? existTemplete?.user?.profile
+        : null,
+      seen: false,
+      userId: existTemplete?.user?.id,
+    });
   } catch (error: any) {
     await activityLog({
       userId: "",
@@ -1116,6 +1169,9 @@ export async function updateTempleteMedias(req: Request, res: Response) {
   try {
     const existTemplate = await Prisma.userTemplete.findUnique({
       where: { id },
+      include: {
+        user: true,
+      },
     });
     if (!existTemplate) {
       return res.status(404).json({
@@ -1160,6 +1216,15 @@ export async function updateTempleteMedias(req: Request, res: Response) {
       status: LOG_SUCCESS,
       endpoint: req.originalUrl,
       method: req.method,
+    });
+    await notificationCreator({
+      title: `${existTemplate?.user?.landerName} onboard has been update successfully`,
+      redirectUrl: `/admin/onboard/update/${existTemplate?.id}`,
+      profile: existTemplate?.user?.profile
+        ? existTemplate?.user?.profile
+        : null,
+      seen: false,
+      userId: existTemplate?.user?.id,
     });
   } catch (error: any) {
     await activityLog({
@@ -1310,6 +1375,15 @@ export async function updateTempleteInfos(req: Request, res: Response) {
       endpoint: req.originalUrl,
       method: req.method,
     });
+    await notificationCreator({
+      title: `${existTemplete?.user?.landerName} onboard has been update successfully`,
+      redirectUrl: `/admin/onboard/update/${existTemplete?.id}`,
+      profile: existTemplete?.user?.profile
+        ? existTemplete?.user?.profile
+        : null,
+      seen: false,
+      userId: existTemplete?.user?.id,
+    });
   } catch (error: any) {
     await activityLog({
       userId: "",
@@ -1373,6 +1447,13 @@ export async function updateMemebership(req: Request, res: Response) {
       status: LOG_SUCCESS,
       endpoint: req.originalUrl,
       method: req.method,
+    });
+    await notificationCreator({
+      title: `${existUser?.landerName} membership has been update successfully`,
+      redirectUrl: `/admin/user/${existUser?.id}`,
+      profile: existUser?.profile ? existUser?.profile : null,
+      seen: false,
+      userId: existUser?.id,
     });
   } catch (error: any) {
     await activityLog({
@@ -1485,6 +1566,15 @@ export async function deleteTemplete(req: Request, res: Response) {
       status: LOG_SUCCESS,
       endpoint: req.originalUrl,
       method: req.method,
+    });
+    await notificationCreator({
+      title: `${existTemplete?.user?.landerName} onboard has been delete successfully`,
+      redirectUrl: "/admin/onboard",
+      profile: existTemplete?.user?.profile
+        ? existTemplete?.user?.profile
+        : null,
+      seen: false,
+      userId: existTemplete?.user?.id,
     });
   } catch (error: any) {
     await activityLog({

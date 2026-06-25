@@ -70,8 +70,8 @@ model admin {
   password  String
   secureKey String
   status    ActivationStatus @default(ACTIVATE)
-  create_at DateTime @default(now())
-  update_at DateTime @updatedAt
+  create_at DateTime         @default(now())
+  update_at DateTime         @updatedAt
 }
 
 model address {
@@ -494,6 +494,17 @@ model activityLog {
   method    String
   create_at DateTime @default(now())
   update_at DateTime @updatedAt
+}
+
+model notification {
+  id          String           @id @default(uuid())
+  title       String
+  redirectUrl String
+  profile     String?
+  seen        Boolean          @default(false)
+  userId      String?
+  create_at   DateTime         @default(now())
+  update_at   DateTime         @updatedAt
 }
 
 // enum

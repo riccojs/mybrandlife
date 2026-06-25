@@ -93,9 +93,17 @@ export interface PlanWristbandType {
 }
 
 export interface ActivityLogType {
-  userId: string;
+  userId: string | null;
   action: string;
   status: string;
   endpoint: string;
   method: string;
+}
+
+export interface NotificationType {
+  title: string;
+  redirectUrl: string;
+  profile: string | null;
+  seen: boolean;
+  userId: string | null;
 }

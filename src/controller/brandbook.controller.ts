@@ -7,6 +7,7 @@ import parseTimeString from "../lib/parse.timestring.js";
 import notificationEmail from "../lib/notification.email.js";
 import addAmPm from "../lib/add.amPm.js";
 import activityLog from "../middelware/activity.log.js";
+import notificationCreator from "../middelware/notification.createor.js";
 const { SUCCESS_STATUS, ERROR_STATUS, LOG_SUCCESS, LOG_FAILED } = status;
 const {
   DATA_NOT_FOUND_MESSAGE,
@@ -202,7 +203,7 @@ export async function getOneEvent(req: Request, res: Response) {
     }
     res.status(200).json({
       status: SUCCESS_STATUS,
-      message: DELETE_SUCCESS_MESSAGE,
+      message: QUERY_SUCCESSFUL_MESSAGE,
       event: existEvent,
     });
     await activityLog({
@@ -245,7 +246,7 @@ export async function createEvent(req: Request, res: Response) {
         message: GOOGLE_CALENDAR_NOT_CONNECTED,
       });
     }
-    await Prisma.event.create({
+    const newBrandbook = await Prisma.event.create({
       data: {
         name,
         email,
@@ -288,6 +289,13 @@ export async function createEvent(req: Request, res: Response) {
       status: LOG_SUCCESS,
       endpoint: req.originalUrl,
       method: req.method,
+    });
+    await notificationCreator({
+      title: `${name} create brandbook successfully`,
+      redirectUrl: `/admin/brandbook?view=${newBrandbook?.id}`,
+      profile: null,
+      seen: false,
+      userId: null,
     });
   } catch (error: any) {
     await activityLog({
@@ -553,6 +561,9 @@ export async function updateEventStatus(req: Request, res: Response) {
       where: {
         id: id,
       },
+      include: {
+        user: true,
+      },
     });
     if (!existEvent) {
       return res.status(404).json({
@@ -590,6 +601,13 @@ export async function updateEventStatus(req: Request, res: Response) {
     res.status(200).json({
       status: SUCCESS_STATUS,
       message: UPDATE_SUCCESSFUL_MESSAGE,
+    });
+    await notificationCreator({
+      title: `${existEvent?.user?.landerName} ${status} brandbook status successfully`,
+      redirectUrl: `/admin/brandbook?view=${existEvent?.id}`,
+      profile: existEvent?.user?.profile ? existEvent?.user?.profile : null,
+      seen: false,
+      userId: existEvent?.user?.id,
     });
     await activityLog({
       userId: existEvent?.userId,
@@ -677,6 +695,9 @@ export async function deleteEvent(req: Request, res: Response) {
       where: {
         id: id,
       },
+      include: {
+        user: true,
+      },
     });
     if (!existEvent) {
       return res.status(404).json({
@@ -699,6 +720,13 @@ export async function deleteEvent(req: Request, res: Response) {
       status: LOG_SUCCESS,
       endpoint: req.originalUrl,
       method: req.method,
+    });
+    await notificationCreator({
+      title: `${existEvent?.user?.landerName} delete brandbook successfully`,
+      redirectUrl: `/admin/brandbook?view=${existEvent?.id}`,
+      profile: existEvent?.user?.profile ? existEvent?.user?.profile : null,
+      seen: false,
+      userId: existEvent?.user?.id,
     });
   } catch (error: any) {
     await activityLog({

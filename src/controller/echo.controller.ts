@@ -8,6 +8,7 @@ import Stripe from "stripe";
 import { getIo } from "../middelware/socket.js";
 import notificationEmail from "../lib/notification.email.js";
 import activityLog from "../middelware/activity.log.js";
+import notificationCreator from "../middelware/notification.createor.js";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
 const { SUCCESS_STATUS, ERROR_STATUS, LOG_SUCCESS, LOG_FAILED } = status;
 const {
@@ -186,6 +187,7 @@ export async function getOneEcho(req: Request, res: Response) {
 export async function createEcho(req: Request, res: Response) {
   const { name, email, message, tip, userId, city, shoutOut } = req.body;
   try {
+    let newEcho;
     const existUser = await Prisma.user.findUnique({
       where: {
         id: userId,
@@ -206,7 +208,7 @@ export async function createEcho(req: Request, res: Response) {
         existUser?.landerName ?? "",
         existUser.domain ?? "",
       );
-      await Prisma.echo.create({
+      newEcho = await Prisma.echo.create({
         data: {
           name: name,
           email: email,
@@ -222,7 +224,7 @@ export async function createEcho(req: Request, res: Response) {
         },
       });
     } else {
-      await Prisma.echo.create({
+      newEcho = await Prisma.echo.create({
         data: {
           name: name,
           email: email,
@@ -254,6 +256,13 @@ export async function createEcho(req: Request, res: Response) {
       status: LOG_SUCCESS,
       endpoint: req.originalUrl,
       method: req.method,
+    });
+    await notificationCreator({
+      title: `${name} echo submit successfully`,
+      redirectUrl: `/admin/echo?view=${newEcho?.id}`,
+      profile: null,
+      seen: false,
+      userId: null,
     });
   } catch (error: any) {
     await activityLog({
@@ -335,6 +344,9 @@ export async function deleteEcho(req: Request, res: Response) {
       where: {
         id: id,
       },
+      include: {
+        user: true,
+      },
     });
     if (!existEcho) {
       return res.status(404).json({
@@ -357,6 +369,13 @@ export async function deleteEcho(req: Request, res: Response) {
       status: LOG_SUCCESS,
       endpoint: req.originalUrl,
       method: req.method,
+    });
+    await notificationCreator({
+      title: `${existEcho?.user?.landerName} delete echo successfully`,
+      redirectUrl: `/admin/echo?view=${existEcho?.id}`,
+      profile: existEcho?.user?.profile ? existEcho?.user?.profile : null,
+      seen: false,
+      userId: existEcho?.user?.id,
     });
   } catch (error: any) {
     await activityLog({
@@ -560,6 +579,9 @@ export async function updateEchoStatus(req: Request, res: Response) {
       where: {
         id: id,
       },
+      include: {
+        user: true,
+      },
     });
     if (!existEcho) {
       return res.status(404).json({
@@ -621,6 +643,13 @@ export async function updateEchoStatus(req: Request, res: Response) {
       status: LOG_SUCCESS,
       endpoint: req.originalUrl,
       method: req.method,
+    });
+    await notificationCreator({
+      title: `${existEcho?.user?.landerName} ${status} echo successfully`,
+      redirectUrl: `/admin/echo?view=${existEcho?.id}`,
+      profile: existEcho?.user?.profile ? existEcho?.user?.profile : null,
+      seen: false,
+      userId: existEcho?.user?.id,
     });
   } catch (error: any) {
     await activityLog({
