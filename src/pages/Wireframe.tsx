@@ -62,8 +62,10 @@ interface UserType {
   stripeAccountId: string;
   id: string;
   package: string;
+  privateDomain: string;
   spinings: SpinType[];
   enableBrandshare: boolean;
+  enablePrivateDomain: boolean;
 }
 
 function Wireframe() {
@@ -127,7 +129,6 @@ function Wireframe() {
     customPlatfrom,
     enableSpin,
     brandshare,
-    privateDomain,
   } = onboard || {};
 
   const {
@@ -136,6 +137,8 @@ function Wireframe() {
     id: userId,
     package: packageName,
     enableBrandshare,
+    privateDomain,
+    enablePrivateDomain,
   } = user || {};
 
   const { data } = useCheckEchoConnectionQuery(userId);
@@ -162,9 +165,10 @@ function Wireframe() {
     }
   }, [onboard, isLoading]);
 
-  const qrBase = privateDomain
-    ? privateDomain
-    : `https://${window.location.hostname}`;
+  const qrBase =
+    privateDomain && enablePrivateDomain
+      ? privateDomain
+      : `https://${window.location.hostname}`;
 
   return isLoading ? (
     <Spiner />
