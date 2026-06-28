@@ -301,9 +301,7 @@ export async function register(req: Request, res: Response) {
     password,
     landerName,
     midName,
-    nickName,
     phone,
-    secondEmail,
     aggreement,
     discount,
     discountType,
@@ -311,6 +309,7 @@ export async function register(req: Request, res: Response) {
     phoneCode,
     primaryAddress,
     shippingAddress,
+    privateDomain,
   } = req.body;
   const normalizedEmail = email.trim().toLowerCase();
   try {
@@ -360,24 +359,23 @@ export async function register(req: Request, res: Response) {
         data: {
           domain: `${domain}.me`,
           package: packageType,
-          planKey,
+          planKey: planKey,
           planPrice: Number(planPrice),
           planOldPrice: Number(planOldPrice),
-          frequency,
+          frequency: frequency,
           email: normalizedEmail,
           password: hash || "",
-          landerName,
-          midName,
-          firstName,
-          lastName,
-          nickName,
-          phone,
-          secondEmail,
-          aggreement,
+          landerName: landerName,
+          midName: midName,
+          firstName: firstName,
+          lastName: lastName,
+          phone: phone,
+          aggreement: aggreement,
           discount: discount,
-          referalCode,
+          referalCode: referalCode,
           discountType: discountType ? discountType : null,
-          phoneCode,
+          phoneCode: phoneCode,
+          privateDomain: privateDomain,
         },
         include: {
           membership: true,
@@ -498,7 +496,7 @@ export async function register(req: Request, res: Response) {
         method: req.method,
       });
       await notificationCreator({
-        title: `${newUser?.lastName} has been registered successfully.`,
+        title: `${newUser?.firstName} has been registered successfully.`,
         redirectUrl: `/admin/user/${newUser?.id}`,
         profile: null,
         seen: false,
@@ -1111,14 +1109,15 @@ export async function verifyUserByAdmin(req: Request, res: Response) {
 // update user
 export async function updateUser(req: Request, res: Response) {
   const {
-    landerName,
-    midName,
-    nickName,
-    secondEmail,
-    lastName,
     firstName,
+    midName,
+    lastName,
     username,
     phone,
+    landerName,
+    privateDomain,
+    phoneCode,
+    enablePrivateDomain,
   } = req.body;
   const id = req.params.id as string;
   try {
@@ -1145,11 +1144,12 @@ export async function updateUser(req: Request, res: Response) {
         firstName: firstName,
         midName: midName,
         lastName: lastName,
-        secondEmail: secondEmail,
         phone: phone,
         landerName: landerName,
-        nickName: nickName,
         profile: profileFile ? `${basePath}${profileFile}` : existUser?.profile,
+        privateDomain: privateDomain,
+        phoneCode: phoneCode,
+        enablePrivateDomain: enablePrivateDomain === "true" ? true : false,
       },
     });
     res.status(200).json({
@@ -1193,10 +1193,11 @@ export async function updateUserByAdmin(req: Request, res: Response) {
     midName,
     lastName,
     email,
-    secondEmail,
+    enablePrivateDomain,
     phone,
     landerName,
-    nickName,
+    privateDomain,
+    phoneCode,
     package: packageName,
     frequency,
     status,
@@ -1232,12 +1233,13 @@ export async function updateUserByAdmin(req: Request, res: Response) {
         status: status,
         domain: domain,
         lastName: lastName,
-        secondEmail: secondEmail,
         phone: phone,
         discountType: discountType ? discountType : null,
         landerName: landerName,
-        nickName: nickName,
         profile: profileFile ? `${basePath}${profileFile}` : existUser?.profile,
+        phoneCode: phoneCode,
+        privateDomain: privateDomain,
+        enablePrivateDomain: enablePrivateDomain === "true" ? true : false,
       },
     });
     res.status(200).json({

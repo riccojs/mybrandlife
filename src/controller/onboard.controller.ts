@@ -117,11 +117,36 @@ export async function getAllOnboard(req: Request, res: Response) {
 
 // get all onboard Requests
 export async function getAllOnboardRequests(req: Request, res: Response) {
-  const { templateId } = req.query;
+  const { templateId, searchBy } = req.query;
   const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
   const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 10;
-  const skip = (page - 1) * page;
-  const filter: any = { templateId: templateId };
+  const skip = (page - 1) * limit;
+  const filter: any = {};
+  if (templateId) {
+    filter.templateId = templateId;
+  }
+  if (searchBy) {
+    filter.OR = [
+      {
+        name: {
+          contains: searchBy as string,
+          mode: "insensitive",
+        },
+      },
+      {
+        email: {
+          contains: searchBy as string,
+          mode: "insensitive",
+        },
+      },
+      {
+        note: {
+          contains: searchBy as string,
+          mode: "insensitive",
+        },
+      },
+    ];
+  }
   try {
     const requests = await Prisma.templateInfo.findMany({
       skip,
@@ -1254,7 +1279,6 @@ export async function updateTempleteInfos(req: Request, res: Response) {
     funnySaying,
     firstName,
     lastName,
-    privateDomain,
   } = req.body;
   try {
     const existTemplete = await Prisma.userTemplete.findUnique({
@@ -1279,7 +1303,6 @@ export async function updateTempleteInfos(req: Request, res: Response) {
       where: { id: existTemplete.userId },
       data: {
         midName,
-        nickName,
         firstName,
         lastName,
       },
@@ -1361,7 +1384,6 @@ export async function updateTempleteInfos(req: Request, res: Response) {
         tagLine,
         offerings,
         funnySaying,
-        privateDomain,
       },
     });
     res.status(200).json({
