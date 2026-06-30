@@ -6,6 +6,7 @@ import status from "../utils/status.js";
 import webhookEmail from "../lib/webhook.email.js";
 import activityLog from "../middelware/activity.log.js";
 import alertEmail from "../lib/alert.email.js";
+import notificationCreator from "../middelware/notification.createor.js";
 const { ERROR_STATUS, LOG_FAILED, LOG_SUCCESS } = status;
 const {
   USER_ID_MISSING_IN_SUBSCRIPTION,
@@ -329,7 +330,7 @@ export async function extraWristbandWebhook(req: Request, res: Response) {
       if (!transaction) {
         return res.status(404).json({ error: "Transaction not found" });
       }
-      const { id, domain, landerName } = transaction?.user || {};
+      const { id, domain, landerName, profile } = transaction?.user || {};
 
       await Prisma.wristbandItem.updateMany({
         where: {
@@ -364,7 +365,15 @@ export async function extraWristbandWebhook(req: Request, res: Response) {
         endpoint: req.originalUrl,
         method: req.method,
       });
+      await notificationCreator({
+        title: `${landerName} has successfully paid for the extra wristband.`,
+        redirectUrl: `/admin/ordered_wristband/confirmation/${session.id}`,
+        profile: profile ? profile : null,
+        seen: false,
+        userId: id,
+      });
     }
+
     return res.status(200).json({ received: true });
   } catch (error: any) {
     await activityLog({
