@@ -3,7 +3,7 @@ import {
   membershipWebhook,
   echoWebhook,
   renewalWebhook,
-  wristbandWebhook,
+  pulsetrackwristbandWebhook,
   extraWristbandWebhook,
 } from "../controller/webhook.controller.js";
 const router = express.Router();
@@ -18,7 +18,7 @@ router.post("/echo", express.raw({ type: "application/json" }), echoWebhook);
 router.post(
   "/wristband",
   express.raw({ type: "application/json" }),
-  wristbandWebhook,
+  pulsetrackwristbandWebhook,
 );
 router.post(
   "/extrawristband",

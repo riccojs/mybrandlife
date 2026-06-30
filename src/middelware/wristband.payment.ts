@@ -8,12 +8,12 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
 const baseURL = process.env.FRONTEND_CORS_URL;
 
 async function wristbandPayment(
-  brandtapId: string,
+  pulsetrackId: string,
   userId: string,
   total: number,
 ) {
-  const successUrl = `${baseURL}/pulsetrack/orders/success/${brandtapId}`;
-  const cancelUrl = `${baseURL}/pulsetrack/projects/${brandtapId}`;
+  const successUrl = `${baseURL}/pulsetrack/orders/success/${pulsetrackId}`;
+  const cancelUrl = `${baseURL}/pulsetrack/projects/${pulsetrackId}`;
   try {
     const existUser = await Prisma.user.findUnique({
       where: { id: userId },
@@ -50,7 +50,7 @@ async function wristbandPayment(
       success_url: successUrl,
       cancel_url: cancelUrl,
       metadata: {
-        brandtapId,
+        pulsetrackId,
         userId,
       },
     });

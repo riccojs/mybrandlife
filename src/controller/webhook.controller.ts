@@ -19,6 +19,7 @@ const membershipWebhookSecret = process.env.MEMBERSHIP_WEBHOOK_SECRET ?? "";
 const renewalWebhookSecret = process.env.RENEW_WEBHOOK_SECRET ?? "";
 const echoWebhookSecret = process.env.ECHO_WEBHOOK_SECRET ?? "";
 const wristbandWebhookSecret = process.env.WRISTBAND_WEBHOOK_SECRET ?? "";
+const baseURL = process.env.FRONTEND_CORS_URL;
 
 // membership webhook
 export async function membershipWebhook(req: Request, res: Response) {
@@ -242,7 +243,7 @@ export async function echoWebhook(req: Request, res: Response) {
 }
 
 // wristband webhook
-export async function wristbandWebhook(req: Request, res: Response) {
+export async function pulsetrackwristbandWebhook(req: Request, res: Response) {
   const sig = req.headers["stripe-signature"] as string;
   let event;
   try {
@@ -256,6 +257,9 @@ export async function wristbandWebhook(req: Request, res: Response) {
       const transaction = await Prisma.pulsetrack.findFirst({
         where: {
           transactionId: session.id,
+        },
+        include: {
+          lander: true,
         },
       });
       if (!transaction) {
@@ -284,6 +288,15 @@ export async function wristbandWebhook(req: Request, res: Response) {
         status: LOG_SUCCESS,
         endpoint: req.originalUrl,
         method: req.method,
+      });
+      await notificationCreator({
+        title: `${transaction?.lander?.landerName} has successfully paid for the pulsetrack wristband.`,
+        redirectUrl: `${baseURL}/admin/pulsetrack/orders/success/${id}`,
+        profile: transaction?.lander?.profile
+          ? transaction?.lander?.profile
+          : null,
+        seen: false,
+        userId: id,
       });
     }
     return res.status(200).json({ received: true });
