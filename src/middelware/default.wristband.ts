@@ -1,14 +1,16 @@
 import { Prisma } from "../utils/prisma.js";
 
-async function defaultWristband(
-  user: { id: string; landerName: string; domain: string },
-  wristbandId: string,
-) {
-  const existWristband = await Prisma.wristband.findUnique({
+async function defaultWristband(user: {
+  id: string;
+  landerName: string;
+  domain: string;
+}) {
+  const existWristband = await Prisma.wristband.findFirst({
     where: {
-      id: wristbandId,
+      color: "BLACK",
     },
   });
+  const wristbandId = existWristband?.id ?? "";
   if (existWristband) {
     await Prisma.wristbandItem.createMany({
       data: {

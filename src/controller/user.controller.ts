@@ -486,7 +486,7 @@ export async function register(req: Request, res: Response) {
         resData = await paymentCreator(userData, referalCode);
       }
       if (packageType === "silver" || packageType === "gold") {
-        await defaultWristband(newUser, "621ea9bb-70fe-4b53-8a98-08e197c9a24e");
+        await defaultWristband(newUser);
       }
       await activityLog({
         userId: "",

@@ -16,6 +16,7 @@ const {
   UPDATE_SUCCESSFUL_MESSAGE,
   REGISTRATION_SUCCESS_MESSAGE,
   DELETE_SUCCESS_MESSAGE,
+  ONBOARDING_SUCCESSFUL_REDIRECT_MESSAGE,
 } = response;
 import fs from "fs";
 import path from "path";
@@ -45,6 +46,7 @@ import fileProtocol from "./fileProtocol.js";
 import alertEmail from "../lib/alert.email.js";
 import activityLog from "../middelware/activity.log.js";
 import notificationCreator from "../middelware/notification.createor.js";
+import extraWristbandPayment from "../middelware/extrawristband.payment.js";
 const card = new VCard();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -925,45 +927,27 @@ export async function onboardingUser(req: Request, res: Response) {
     }
 
     const getWristband = wristbands ? JSON.parse(wristbands) : [];
-
+    let paymentUrl;
     if (getWristband?.length > 0) {
-      await Prisma.wristbandItem.createMany({
-        data: getWristband.map((wristband: PlanWristbandType) => ({
-          wristbandId: wristband?.wristbandId,
-          userId: existUser?.id,
-          title: wristband.title,
-          price: wristband.price,
-          quantity: wristband.quantity,
-          subTotal: wristband.subTotal,
-          banner: wristband.banner,
-          color: wristband.color,
-          trackingNumber: `${existUser?.landerName}-${wristband.color}`,
-          qrCode: `https://${existUser?.domain}/${existUser?.landerName}`,
-          mode: "GLOBAL",
-        })),
-      });
-      await alertEmail(
-        "New Wristband Order",
-        "User Purchased Wristbands",
-        `A new wristband order has been placed.
-            Order Details:
-            - User ID: ${existUser?.id}
-            - Lander Name: ${existUser?.landerName}
-            - Domain: ${existUser?.domain}
-            Wristbands:
-            ${getWristband
-              .map(
-                (w: PlanWristbandType) =>
-                  `• ${w.title} | Qty: ${w.quantity} | Price: ${w.price} | Subtotal: ${w.subTotal}`,
-              )
-              .join("\n")}
-            Please review the admin dashboard for full order details and fulfillment processing.`,
-      );
+      const user = {
+        id: existUser?.id ?? "",
+        username: existUser?.username ?? "",
+        landerName: existUser?.landerName,
+        domain: existUser?.domain,
+        email: existUser?.email,
+      };
+      paymentUrl = await extraWristbandPayment(getWristband, user);
+    } else {
+      paymentUrl = null;
     }
 
-    res
-      .status(200)
-      .json({ status: SUCCESS_STATUS, message: ONBOARDING_SUCCESSFUL_MESSAGE });
+    res.status(201).json({
+      status: SUCCESS_STATUS,
+      message: paymentUrl
+        ? ONBOARDING_SUCCESSFUL_REDIRECT_MESSAGE
+        : ONBOARDING_SUCCESSFUL_MESSAGE,
+      pageUrl: paymentUrl,
+    });
     await alertEmail(
       "User Onboarding Completed",
       "New User Successfully Onboarded",
@@ -1271,7 +1255,6 @@ export async function updateTempleteInfos(req: Request, res: Response) {
   const id = req.params.id as string;
   const {
     midName,
-    nickName,
     bio,
     tagLine,
     businessServiced = [],

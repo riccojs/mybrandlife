@@ -5,6 +5,7 @@ import response from "../utils/response.js";
 import ShippingEmail from "../lib/shipping.email.js";
 import fileProtocol from "./fileProtocol.js";
 import activityLog from "../middelware/activity.log.js";
+import { WristbandMode } from "@prisma/client";
 const { SUCCESS_STATUS, ERROR_STATUS, LOG_SUCCESS, LOG_FAILED } = status;
 const {
   QUERY_SUCCESSFUL_MESSAGE,
@@ -153,6 +154,123 @@ export async function getAllWristbandItem(req: Request, res: Response) {
   }
 }
 
+// get all wristband
+export async function getAllWristbandItemByMode(req: Request, res: Response) {
+  const { statusBy = "", userId = "", searchBy = "", modeBy = "" } = req.query;
+  const pageNumber = req.query.page
+    ? parseInt(req.query.page as string, 10)
+    : 1;
+  const limitNumber = req.query.limit
+    ? parseInt(req.query.limit as string, 10)
+    : 10;
+  const skip = (pageNumber - 1) * limitNumber;
+  let filter: any = {
+    mode: {
+      in: [WristbandMode.GLOBAL, WristbandMode.EXTRA],
+    },
+  };
+  if (statusBy) {
+    filter.status = statusBy;
+  }
+  if (userId) {
+    filter.userId = userId;
+  }
+  if (modeBy) {
+    filter.mode = modeBy;
+  }
+  if (searchBy) {
+    filter.title = {
+      contains: searchBy,
+      mode: "insensitive",
+    };
+  }
+  try {
+    const wristband = await Prisma.wristbandItem.findMany({
+      skip: skip,
+      take: limitNumber,
+      where: filter,
+      include: {
+        user: true,
+      },
+    });
+    const totalWristband = await Prisma.wristbandItem.count({
+      where: filter,
+    });
+    const totalPage = Math.ceil(totalWristband / limitNumber);
+    res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: QUERY_SUCCESSFUL_MESSAGE,
+      data: {
+        wristband,
+        totalPage,
+        totalWristband,
+        currentPage: pageNumber,
+      },
+    });
+    await activityLog({
+      userId: "",
+      action: "Get all wristband item",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+  } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
+
+export async function getAllOrderedWristband(req: Request, res: Response) {
+  const id = req.params.id as string;
+  try {
+    const existWristband = await Prisma.wristbandItem.findMany({
+      where: {
+        transactionId: id,
+        mode: "EXTRA",
+      },
+    });
+    if (!existWristband) {
+      return res.status(404).json({
+        status: ERROR_STATUS,
+        message: DATA_NOT_FOUND_MESSAGE,
+      });
+    }
+    res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: QUERY_SUCCESSFUL_MESSAGE,
+      wristband: existWristband,
+    });
+    await activityLog({
+      userId: "",
+      action: "Get all ordered wristband item",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+  } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
+
 // get one wristband
 export async function getOneWristbandItem(req: Request, res: Response) {
   const id = req.params.id as string;
@@ -176,6 +294,51 @@ export async function getOneWristbandItem(req: Request, res: Response) {
     await activityLog({
       userId: existWristband?.userId,
       action: "Get one wristband item",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+  } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
+
+// get one wristband by id
+export async function getOneWristbandItemById(req: Request, res: Response) {
+  const id = req.params.id as string;
+  try {
+    const existWristband = await Prisma.wristbandItem.findFirst({
+      where: {
+        id: id,
+      },
+      include: {
+        user: true,
+      },
+    });
+    if (!existWristband) {
+      return res.status(404).json({
+        status: ERROR_STATUS,
+        message: DATA_NOT_FOUND_MESSAGE,
+      });
+    }
+    res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: QUERY_SUCCESSFUL_MESSAGE,
+      wristband: existWristband,
+    });
+    await activityLog({
+      userId: existWristband?.userId,
+      action: "Get one wristband item by id",
       status: LOG_SUCCESS,
       endpoint: req.originalUrl,
       method: req.method,
@@ -449,56 +612,59 @@ export async function updateWristbandItemStatus(req: Request, res: Response) {
       });
     }
     const { email, firstName, lastName, phone } = existOrder?.user;
-    if (status === "SHIPPED") {
-      await Prisma.wristbandItem.update({
-        where: { id: id },
-        data: {
-          status: status,
-          shipped_at: new Date(),
-        },
-      });
-      await ShippingEmail(
-        email,
-        firstName,
-        lastName,
-        `${phone}`,
-        existOrder?.trackingNumber ?? "",
-        "SHIPPED",
-      );
-    }
-    if (status === "DELIVERED") {
-      await Prisma.wristbandItem.update({
-        where: { id: id },
-        data: {
-          status: status,
-          delivered_at: new Date(),
-        },
-      });
-      await ShippingEmail(
-        email,
-        firstName,
-        lastName,
-        `${phone}`,
-        existOrder?.trackingNumber ?? "",
-        "DELIVERED",
-      );
-    }
-    if (status !== "SHIPPED" || status !== "DELIVERED") {
-      await Prisma.wristbandItem.update({
-        where: { id: id },
-        data: {
-          status: status,
-        },
-      });
-      await ShippingEmail(
-        email,
-        firstName,
-        lastName,
-        `${phone}`,
-        existOrder?.trackingNumber ?? "",
+
+    const statusConfig = {
+      SHIPPED: {
+        dateField: "shipped_at",
+        emailStatus: "SHIPPED",
+      },
+      DELIVERED: {
+        dateField: "delivered_at",
+        emailStatus: "DELIVERED",
+      },
+      COMPLETE: {
+        dateField: "complete_at",
+        emailStatus: "COMPLETE",
+      },
+      INPRODUCTION: {
+        dateField: "inproduction_at",
+        emailStatus: "INPRODUCTION",
+      },
+      CANCELED: {
+        dateField: "cancel_at",
+        emailStatus: "CANCELED",
+      },
+      REFUNDED: {
+        dateField: "refund_at",
+        emailStatus: "REFUNDED",
+      },
+      DISABLED: {
+        dateField: "disable_at",
+        emailStatus: "DISABLED",
+      },
+      PAID: {
+        dateField: "paid_at",
+        emailStatus: "PAID",
+      },
+    };
+    const config = statusConfig[status as keyof typeof statusConfig];
+    await Prisma.wristbandItem.update({
+      where: {
+        id,
+      },
+      data: {
         status,
-      );
-    }
+        [config.dateField]: new Date(),
+      },
+    });
+    await ShippingEmail(
+      email,
+      firstName,
+      lastName,
+      `${phone}`,
+      existOrder?.trackingNumber ?? "",
+      config.emailStatus,
+    );
     await activityLog({
       userId: existOrder?.userId,
       action: "Update wristband item status",

@@ -5,6 +5,7 @@ import { Prisma } from "../utils/prisma.js";
 import status from "../utils/status.js";
 import webhookEmail from "../lib/webhook.email.js";
 import activityLog from "../middelware/activity.log.js";
+import alertEmail from "../lib/alert.email.js";
 const { ERROR_STATUS, LOG_FAILED, LOG_SUCCESS } = status;
 const {
   USER_ID_MISSING_IN_SUBSCRIPTION,
@@ -278,6 +279,86 @@ export async function wristbandWebhook(req: Request, res: Response) {
       });
       await activityLog({
         userId: transaction?.landerId,
+        action: "Fire wristband webhook",
+        status: LOG_SUCCESS,
+        endpoint: req.originalUrl,
+        method: req.method,
+      });
+    }
+    return res.status(200).json({ received: true });
+  } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
+
+// Extra wristband webhook
+export async function extraWristbandWebhook(req: Request, res: Response) {
+  const sig = req.headers["stripe-signature"] as string;
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      sig,
+      wristbandWebhookSecret,
+    );
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
+      const transaction = await Prisma.wristbandItem.findFirst({
+        where: {
+          transactionId: session.id,
+        },
+        include: {
+          user: true,
+        },
+      });
+      const findAllWristband = await Prisma.wristbandItem.findMany({
+        where: {
+          transactionId: session?.id,
+        },
+      });
+      if (!transaction) {
+        return res.status(404).json({ error: "Transaction not found" });
+      }
+      const { id, domain, landerName } = transaction?.user || {};
+
+      await Prisma.wristbandItem.updateMany({
+        where: {
+          transactionId: session?.id,
+        },
+        data: {
+          status: "PAID",
+          paid_at: new Date(),
+        },
+      });
+      await alertEmail(
+        "New Wristband Order",
+        "User Purchased Wristbands",
+        `A new wristband order has been placed.
+            Order Details:
+            - User ID: ${id}
+            - Lander Name: ${landerName}
+            - Domain: ${domain}
+            Wristbands:
+            ${findAllWristband
+              .map(
+                (w) =>
+                  `• ${w.title} | Qty: ${w.quantity} | Price: ${w.price} | Subtotal: ${w.subTotal}`,
+              )
+              .join("\n")}
+            Please review the admin dashboard for full order details and fulfillment processing.`,
+      );
+      await activityLog({
+        userId: id,
         action: "Fire wristband webhook",
         status: LOG_SUCCESS,
         endpoint: req.originalUrl,

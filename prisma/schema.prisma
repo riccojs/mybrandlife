@@ -405,9 +405,15 @@ model wristbandItem {
   status            OrderWristbandStatus @default(PENDING)
   shippingCarrier   String?
   trackingNumber    String
+  paid_at           DateTime?
   shipped_at        DateTime?
   delivered_at      DateTime?
   complete_at       DateTime?
+  inproduction_at   DateTime?
+  cancel_at         DateTime?
+  refund_at         DateTime?
+  disable_at        DateTime?
+  transactionId     String?
   qrCode            String
   mode              WristbandMode
   pulsetrack        pulsetrack?          @relation(fields: [pulsetrackId], references: [id], onDelete: Cascade)
@@ -652,6 +658,7 @@ enum OrderWristbandStatus {
 enum WristbandMode {
   PULSETRACK
   GLOBAL
+  EXTRA
 }
 
 enum SpinCategory {

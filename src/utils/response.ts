@@ -19,6 +19,7 @@ export const response = {
   QUERY_SUCCESSFUL_MESSAGE: "Query successful",
   UPDATE_SUCCESSFUL_MESSAGE: "Update successful",
   ONBOARDING_SUCCESSFUL_MESSAGE: "Onboard submit successful",
+  ONBOARDING_SUCCESSFUL_REDIRECT_MESSAGE: "Successful, redirect to payment",
   INCORRECT_REFERRAL_CODE_MESSAGE: "Incorrect referral code!",
   BRANDSHARE_CODE_ALREADY_EXIST: "BrandShare code already exist!",
   VALID_REFERRAL_CODE_MESSAGE: "Referral code Valid",

@@ -4,6 +4,7 @@ import {
   echoWebhook,
   renewalWebhook,
   wristbandWebhook,
+  extraWristbandWebhook,
 } from "../controller/webhook.controller.js";
 const router = express.Router();
 
@@ -18,6 +19,11 @@ router.post(
   "/wristband",
   express.raw({ type: "application/json" }),
   wristbandWebhook,
+);
+router.post(
+  "/extrawristband",
+  express.raw({ type: "application/json" }),
+  extraWristbandWebhook,
 );
 
 export default router;
