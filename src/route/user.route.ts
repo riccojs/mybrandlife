@@ -24,6 +24,7 @@ import {
   updateUserMembership,
   togglrUserActivation,
   deleteUser,
+  updateUserAddress,
 } from "../controller/user.controller.js";
 import publicSecretAuth from "../middelware/public.secret.auth.js";
 import profile from "../middelware/profile.js";
@@ -48,6 +49,7 @@ router.patch("/brandshare/:id", auth, togglrUserBrandshare);
 router.patch("/verify/admin", auth, verifyUserByAdmin);
 router.patch("/:id", auth, profile, updateUser);
 router.patch("/admin/update/:id", auth, profile, updateUserByAdmin);
+router.patch("/update/address/:id", auth, profile, updateUserAddress);
 router.patch("/password/:id", auth, updatePassword);
 router.patch("/password/admin/:id", auth, updateUserPasswordByAdmin);
 router.patch("/membership/:id", auth, updateUserMembership);

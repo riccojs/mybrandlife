@@ -28,7 +28,7 @@ const {
   LANDER_ALREADY_EXIST_MESSAGE,
   REGISTRATION_SUCCESS_MESSAGE,
   DATA_NOT_FOUND_MESSAGE,
-  USER_UNVERIFYED_MESSAGE,
+  USER_SUSPEND_MESSAGE,
   PASSWORD_NOT_MATCH_MESSAGE,
   LOGIN_SUCCESS_MESSAGE,
   TOKEN_EXPIRED_MESSAGE,
@@ -43,8 +43,9 @@ const {
   UPDATE_SUCCESSFUL_MESSAGE,
   LANDERNAME_ALREADY_EXIST,
   LANDERNAME_AVAILABLE_MESSAGE,
-  ACCOUNT_IS_DEACTIVATE_MESSAGE,
+  USER_ACTIVATE_MESSAGE,
   DELETE_SUCCESS_MESSAGE,
+  USER_DEACTIVATE_MESSAGE,
 } = response;
 
 // get all user
@@ -542,10 +543,16 @@ export async function login(req: Request, res: Response) {
       });
     }
 
-    if (existUser?.status !== "ACTIVATE") {
+    if (existUser?.status === "SUSPEND") {
       return res.status(400).json({
         status: ERROR_STATUS,
-        message: USER_UNVERIFYED_MESSAGE,
+        message: USER_SUSPEND_MESSAGE,
+      });
+    }
+    if (existUser?.status === "DEACTIVATE") {
+      return res.status(400).json({
+        status: ERROR_STATUS,
+        message: USER_DEACTIVATE_MESSAGE,
       });
     }
     const matchPassword = await bcrypt.compare(password, existUser.password);
@@ -759,6 +766,7 @@ export async function logged(req: Request, res: Response) {
           userTemplete: true,
           membership: true,
           address: true,
+          pulsetrackDatas: true,
         },
       });
     }
@@ -1185,6 +1193,72 @@ export async function updateUser(req: Request, res: Response) {
   }
 }
 
+// update user
+export async function updateUserAddress(req: Request, res: Response) {
+  const { country, city, zip, state, streetOne, streetTow, type } = req.body;
+  const id = req.params.id as string;
+  try {
+    const existUser = await Prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        address: true,
+      },
+    });
+    const findAddress = existUser?.address?.find((item) => item.type === type);
+    if (!existUser) {
+      return res.status(404).json({
+        status: ERROR_STATUS,
+        message: DATA_NOT_FOUND_MESSAGE,
+      });
+    }
+    await Prisma.address.update({
+      where: {
+        id: findAddress?.id,
+      },
+      data: {
+        country: country,
+        city: city,
+        state: state,
+        zip: zip,
+        streetOne: streetOne,
+        streetTow: streetTow,
+      },
+    });
+    res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: UPDATE_SUCCESSFUL_MESSAGE,
+    });
+    await activityLog({
+      userId: existUser?.id,
+      action: "Update User Address",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+    await notificationCreator({
+      title: `${existUser?.landerName} has been update his address`,
+      redirectUrl: `/admin/user/${existUser?.id}`,
+      profile: existUser?.profile ? existUser?.profile : null,
+      seen: false,
+      userId: existUser?.id,
+    });
+  } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
+
 // update user admin
 export async function updateUserByAdmin(req: Request, res: Response) {
   const {
@@ -1200,7 +1274,6 @@ export async function updateUserByAdmin(req: Request, res: Response) {
     phoneCode,
     package: packageName,
     frequency,
-    status,
     domain,
     discountType,
   } = req.body;
@@ -1230,7 +1303,6 @@ export async function updateUserByAdmin(req: Request, res: Response) {
         email: email,
         package: packageName,
         frequency: frequency,
-        status: status,
         domain: domain,
         lastName: lastName,
         phone: phone,
@@ -1494,7 +1566,12 @@ export async function togglrUserActivation(req: Request, res: Response) {
           userId: id,
         },
         data: {
-          status: status,
+          status:
+            status === "DEACTIVATE"
+              ? "DEACTIVATE"
+              : status === "ACTIVATE"
+                ? "PENDING"
+                : "CANCELED",
         },
       });
     }
@@ -1509,7 +1586,12 @@ export async function togglrUserActivation(req: Request, res: Response) {
           userId: id,
         },
         data: {
-          status: status,
+          status:
+            status === "DEACTIVATE"
+              ? "DEACTIVATE"
+              : status === "ACTIVATE"
+                ? "PENDING"
+                : "CANCELED",
         },
       });
     }
@@ -1517,7 +1599,12 @@ export async function togglrUserActivation(req: Request, res: Response) {
     await deactivateEmail(landerName, existUser?.email);
     res.status(200).json({
       status: SUCCESS_STATUS,
-      message: ACCOUNT_IS_DEACTIVATE_MESSAGE,
+      message:
+        status === "SUSPEND"
+          ? USER_SUSPEND_MESSAGE
+          : status === "DEACTIVATE"
+            ? USER_DEACTIVATE_MESSAGE
+            : USER_ACTIVATE_MESSAGE,
     });
     await activityLog({
       userId: existUser?.id,

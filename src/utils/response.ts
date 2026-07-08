@@ -74,6 +74,9 @@ export const response = {
   SPIN_UPDATE_SUCCESSFUL: "Spin update successful",
   SPIN_GROUP_CREATE_SUCCESSFUL: "Spin create successful",
   DUPLICAT_GROUP_MESSAGE: "Duplicate group error",
+  USER_SUSPEND_MESSAGE: "Account Suspended",
+  USER_DEACTIVATE_MESSAGE: "Account Deactivated",
+  USER_ACTIVATE_MESSAGE: "Account Activated",
 };
 
 export default response;
