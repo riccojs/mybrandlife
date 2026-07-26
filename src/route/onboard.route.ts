@@ -26,6 +26,8 @@ import {
   getAllOnboardRequests,
   getOneOnboardRequests,
   deleteOnboardRequest,
+  createTempleteSocial,
+  createTempleteCustom,
 } from "../controller/onboard.controller.js";
 import medias from "../middelware/medias.js";
 import profile from "../middelware/profile.js";
@@ -40,6 +42,8 @@ router.get("/wirframe/:name", publicSecretAuth, getOneOnboard);
 router.get("/requests/:id", auth, getOneOnboardRequests);
 router.post("/", auth, medias, onboardingUser);
 router.post("/recreate/:id", auth, recreatePayment);
+router.post("/social/:id", auth, createTempleteSocial);
+router.post("/custom/:id", auth, createTempleteCustom);
 router.post("/request", publicSecretAuth, requestADomain);
 router.post("/request/info", publicSecretAuth, requestInfo);
 router.post("/request/info/location", publicSecretAuth, requestInfoLocation);

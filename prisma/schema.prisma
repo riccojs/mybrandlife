@@ -39,6 +39,7 @@ model user {
   enableDirectory     Boolean          @default(true)
   enableBrandshare    Boolean          @default(true)
   enablePrivateDomain Boolean          @default(true)
+  enablevcf           Boolean          @default(true)
   events              event[]
   slots               slot[]
   echos               echo[]
@@ -138,6 +139,8 @@ model userTemplete {
   merchendiseStatus Boolean?
   merchendiseLogo   String?
   songRequest       String?
+  services_label    String?
+  about_label       String?
   verify            Boolean?         @default(false)
   status            ActivationStatus @default(PENDING)
   userId            String

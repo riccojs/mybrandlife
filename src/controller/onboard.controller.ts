@@ -155,7 +155,11 @@ export async function getAllOnboardRequests(req: Request, res: Response) {
       take: limit,
       where: filter,
       include: {
-        templete: true,
+        templete: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
     const totalRequests = await Prisma.templateInfo.count({
@@ -376,6 +380,13 @@ export async function getOneOnboardRequests(req: Request, res: Response) {
     const existRequest = await Prisma.templateInfo.findUnique({
       where: {
         id,
+      },
+      include: {
+        templete: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
     if (!existRequest) {
@@ -1107,6 +1118,151 @@ export async function updateTempleteSocial(req: Request, res: Response) {
   }
 }
 
+// create templete social
+export async function createTempleteSocial(req: Request, res: Response) {
+  const id = req.params.id as string;
+  const { socialLinks } = req.body;
+
+  try {
+    const existTemplete = await Prisma.userTemplete.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    if (!existTemplete) {
+      return res.status(404).json({
+        status: ERROR_STATUS,
+        message: DATA_NOT_FOUND_MESSAGE,
+      });
+    }
+
+    if (!socialLinks || typeof socialLinks !== "object") {
+      return res.status(400).json({
+        status: ERROR_STATUS,
+        message: "Invalid social links.",
+      });
+    }
+
+    await Promise.all(
+      Object.entries(socialLinks).map(([name, url]) =>
+        Prisma.buttonSet.create({
+          data: {
+            name: name as ButtonName,
+            url: String(url),
+            templateId: existTemplete.id,
+          },
+        }),
+      ),
+    );
+
+    res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: UPDATE_SUCCESSFUL_MESSAGE,
+    });
+
+    await activityLog({
+      userId: existTemplete.userId,
+      action: "Create onboard social button",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+
+    await notificationCreator({
+      title: `${existTemplete.user?.landerName} onboard has been updated successfully`,
+      redirectUrl: `/admin/onboard/update/${existTemplete.id}`,
+      profile: existTemplete.user?.profile ?? null,
+      seen: false,
+      userId: existTemplete.user?.id,
+    });
+  } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
+
+// create templete social
+export async function createTempleteCustom(req: Request, res: Response) {
+  const id = req.params.id as string;
+  const { customPlatform } = req.body;
+
+  try {
+    const existTemplete = await Prisma.userTemplete.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    if (!existTemplete) {
+      return res.status(404).json({
+        status: ERROR_STATUS,
+        message: DATA_NOT_FOUND_MESSAGE,
+      });
+    }
+    if (customPlatform) {
+      await Promise.all(
+        customPlatform.map((custom: ButtonSetType) =>
+          Prisma.customPlatfrom.create({
+            data: {
+              name: custom.name,
+              url: custom.url,
+              templateId: existTemplete.id,
+            },
+          }),
+        ),
+      );
+    }
+    res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: UPDATE_SUCCESSFUL_MESSAGE,
+    });
+    await activityLog({
+      userId: existTemplete.userId,
+      action: "Create onboard custom button",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+    await notificationCreator({
+      title: `${existTemplete.user?.landerName} onboard has been updated successfully`,
+      redirectUrl: `/admin/onboard/update/${existTemplete.id}`,
+      profile: existTemplete.user?.profile ?? null,
+      seen: false,
+      userId: existTemplete.user?.id,
+    });
+  } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
+
 // update templete social media
 export async function updateCustomPlatform(req: Request, res: Response) {
   const id = req.params.id as string;
@@ -1262,6 +1418,11 @@ export async function updateTempleteInfos(req: Request, res: Response) {
     funnySaying,
     firstName,
     lastName,
+    services_label,
+    about_label,
+    enablePrivateDomain,
+    privateDomain,
+    enablevcf,
   } = req.body;
   try {
     const existTemplete = await Prisma.userTemplete.findUnique({
@@ -1288,6 +1449,9 @@ export async function updateTempleteInfos(req: Request, res: Response) {
         midName,
         firstName,
         lastName,
+        privateDomain,
+        enablePrivateDomain,
+        enablevcf,
       },
     });
     const existingServices = existTemplete.services;
@@ -1367,6 +1531,8 @@ export async function updateTempleteInfos(req: Request, res: Response) {
         tagLine,
         offerings,
         funnySaying,
+        services_label,
+        about_label,
       },
     });
     res.status(200).json({
