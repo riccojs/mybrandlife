@@ -15,7 +15,7 @@ import { useScan } from "../hook/useScan";
 import GpsPermission from "../component/Gps.permission";
 import type { SpinType } from "../utils/spin.type";
 import Spining from "../component/Spining";
-
+import MBLLogo from "../assets/MBL_Logo_CROP.png";
 interface OnboardType {
   id: string;
   tagLine: string;
@@ -31,6 +31,9 @@ interface OnboardType {
   enableSpin: boolean;
   merchendiseUrl: string;
   merchendiseStatus: boolean;
+  about_label: string;
+  services_label: string;
+
   buttonSet: ButtonsType[];
   services: ServiceType[];
   customPlatfrom: { name: string; url: string; id: string }[];
@@ -66,6 +69,7 @@ interface UserType {
   spinings: SpinType[];
   enableBrandshare: boolean;
   enablePrivateDomain: boolean;
+  enablevcf: boolean;
 }
 
 function Wireframe() {
@@ -129,6 +133,8 @@ function Wireframe() {
     customPlatfrom,
     enableSpin,
     brandshare,
+    services_label,
+    about_label,
   } = onboard || {};
 
   const {
@@ -138,6 +144,7 @@ function Wireframe() {
     package: packageName,
     enableBrandshare,
     privateDomain,
+    enablevcf,
     enablePrivateDomain,
   } = user || {};
 
@@ -224,7 +231,7 @@ function Wireframe() {
             {services?.length > 0 && (
               <div>
                 <h2 className="text-white text-xl md:text-3xl font-medium text-right">
-                  Service Offered
+                  {services_label ? services_label : "Service Offered"}
                 </h2>
                 <ul
                   className={`mt-1 flex flex-col  ${
@@ -289,7 +296,7 @@ function Wireframe() {
                   Submit your info
                 </p>
               </button>
-              {vcfFile && (
+              {enablevcf && (
                 <button
                   className="flex justify-center px-4 gap-2 items-center w-full h-8 md:h-12 
              rounded-lg hover:scale-105 duration-300 transition-all cursor-pointer 
@@ -484,7 +491,7 @@ function Wireframe() {
             </div>
             <div className="mt-6">
               <h2 className="text-xl font-medium text-white text-center capitalize">
-                About {landerName}
+                {about_label ? about_label : "About"} {landerName}
               </h2>
               <p className="text-gray-200 mt-3 text-md font-normal text-center w-full  m-auto">
                 {bio}
@@ -559,25 +566,7 @@ function Wireframe() {
                 </a>
               </li>
             </ul>
-            <p className="text-white text-xs md:text-sm font-normal text-center block mt-5">
-              Want to build your brand?{" "}
-              <a
-                href={`https://mybrandlife.me/pricing`}
-                target="_blank"
-                className="hover:text-blue-200 underline"
-                onClick={() =>
-                  track("ButtonClick", {
-                    props: {
-                      buttonName: "Select Plan",
-                      lander: landerName,
-                      currentDomain: window.location.hostname,
-                    },
-                  })
-                }
-              >
-                Select your plan and Join Now
-              </a>
-            </p>
+
             {packageName === "gold" && (
               <div className="flex justify-center mt-5">
                 <button className="flex items-center gap-3 py-3 rounded-lg justify-center text-white text-center bg-[#cf3832] px-6">
@@ -626,6 +615,28 @@ function Wireframe() {
             >
               Download
             </button>
+          </div>
+          <div className="flex flex-col gap-3 items-center mt-8">
+            <button
+              onClick={() =>
+                window.open(
+                  "https://MyBrandLife.me",
+                  "_blank",
+                  "noopener,noreferrer",
+                )
+              }
+              className="text-white text-sm font-medium text-center cursor-pointer"
+            >
+              Powered By MyBrandLife!
+            </button>
+            <a
+              href="https://MyBrandLife.me/pricing"
+              className="text-white text-sm font-medium text-center cursor-pointer"
+              target="_blank"
+            >
+              Join the community get your lander here!
+            </a>
+            <img src={MBLLogo} className="w-24 h-24" alt="" />
           </div>
         </div>
       </div>
