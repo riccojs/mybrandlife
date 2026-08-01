@@ -916,14 +916,10 @@ export async function onboardingUser(req: Request, res: Response) {
       const primaryAddress = address?.find((item) => item.type === "PRIMARY");
       const adrString = `${primaryAddress?.streetOne ?? ""}, ${primaryAddress?.streetTow ?? ""}`;
       card.set("adr", adrString);
-      const portraitPath = files?.logo?.[0]?.path;
+      const portraitPath = files?.logoImage?.[0]?.path;
       if (portraitPath && fs.existsSync(portraitPath)) {
         const portraitData = fs.readFileSync(portraitPath).toString("base64");
         card.set("photo", portraitData, { encoding: "b", type: "JPEG" });
-      }
-      for (const [key, value] of Object.entries(socialLinks)) {
-        if (value && typeof value === "string")
-          card.set(`x-socialprofile;type=${key.toLowerCase()}`, value);
       }
       const fileDir = path.join(__dirname, "../../public");
       if (!fs.existsSync(fileDir)) fs.mkdirSync(fileDir, { recursive: true });
@@ -1507,17 +1503,13 @@ export async function updateTempleteInfos(req: Request, res: Response) {
           });
         }
       }
-      for (const [key, value] of Object.entries(existTemplete?.buttonSet)) {
-        if (value && typeof value === "string") {
-          card.set(`x-socialprofile;type=${key.toLowerCase()}`, value);
-        }
-      }
-      const fileDir = path.join(__dirname, "../public");
+      const basePath = fileProtocol(req);
+      const fileDir = path.join(__dirname, "../../public");
       if (!fs.existsSync(fileDir)) fs.mkdirSync(fileDir, { recursive: true });
       const fileName = `${landerName || "contact"}_${Date.now()}.vcf`;
-      const filePath = path.join(__dirname, "../public", fileName);
+      const filePath = path.join(fileDir, fileName);
       fs.writeFileSync(filePath, card.toString(), "utf-8");
-      const fileUrl = `${req.protocol}://${req.get("host")}/public/${fileName}`;
+      const fileUrl = `${basePath}${fileName}`;
       await Prisma.userTemplete.update({
         where: { id: id },
         data: { vcfFile: fileUrl },
