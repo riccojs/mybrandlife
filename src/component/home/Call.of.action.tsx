@@ -4,7 +4,7 @@ import { useAuth } from "../../hook/useAuth";
 
 function CallOfAction() {
   const { user, isLoading } = useAuth() as {
-    user: { role: string };
+    user: { landerName: string };
     isLoading: boolean | null;
   };
   const redirectUrl = import.meta.env.VITE_APP_REDIRECT_ROUTE;

@@ -8,8 +8,10 @@ import { useAuth } from "../../hook/useAuth";
 function Header() {
   const [isShow, setIsShow] = useState<boolean>(false);
   const { user, isLoading } = useAuth() as {
-    user: { role: string };
-    isLoading: boolean | null;
+    user: {
+      landerName: string;
+    };
+    isLoading: boolean;
   };
   const redirectUrl = import.meta.env.VITE_APP_REDIRECT_ROUTE;
 

@@ -3,7 +3,7 @@ import { useAuth } from "../hook/useAuth";
 import { LayoutDashboard } from "lucide-react";
 
 function AboutUsPage() {
-  const { user } = useAuth() as { user: { role: string } | null };
+  const { user } = useAuth() as { user: { landerName: string } | null };
   const redirectUrl = import.meta.env.VITE_APP_REDIRECT_ROUTE;
 
   return (

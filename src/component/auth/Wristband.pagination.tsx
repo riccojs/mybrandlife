@@ -16,7 +16,7 @@ function WristbandPagination({
   return (
     <div className="flex gap-2 flex-wrap mt-5">
       <button
-        className="text-black text-base border border-gray-200 bg-[#fff] px-3 py-1 rounded-md cursor-pointer"
+        className="text-black text-base border border-gray-200 bg-white px-3 py-1 rounded-md cursor-pointer"
         onClick={() => handlePageChange(page - 1)}
         disabled={page === 1}
         type="button"

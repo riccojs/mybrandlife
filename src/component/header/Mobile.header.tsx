@@ -10,7 +10,7 @@ interface Types {
 
 function MobileHeader({ isShow, setIsShow }: Types) {
   const { user, isLoading } = useAuth() as {
-    user: { role: string };
+    user: { landerName: string };
     isLoading: boolean | null;
   };
   const redirectUrl = import.meta.env.VITE_APP_REDIRECT_ROUTE;

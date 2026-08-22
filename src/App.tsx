@@ -22,6 +22,7 @@ import TermsCondition from "./pages/Terms.condition";
 import PrivacyPolicy from "./pages/Privacy.policy";
 import MarketingPage from "./pages/Marketing.page";
 import WistbandTracking from "./pages/Wistband.tracking";
+import ErrorPage from "./pages/Error.page";
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
         <Route element={<GeneralRoute />}>
           <Route path="/follow-us" element={<FollowUs />} />
         </Route>
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Toaster />
     </BrowserRouter>
