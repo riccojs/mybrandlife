@@ -50,7 +50,7 @@ function MobileHeader({ navbar, setNavbar }: Types) {
   const location = useLocation();
   const [openMenu, setOpenMenu] = useState("");
   const { user, isLoading } = useAuth() as {
-    user: { id: string; domain: string; role: string; package: string } | null;
+    user: { id: string; domain: string; package: string } | null;
     isLoading: boolean;
   };
   const { data } = useGetAllOnboardQuery({

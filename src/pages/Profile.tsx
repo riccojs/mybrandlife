@@ -14,7 +14,6 @@ interface UserType {
   landerName: string | null;
   domain: string | null;
   email: string | null;
-  role: string | null;
   phone: string | null;
   status: string | null;
   midName: string | null;
@@ -36,7 +35,6 @@ function Profile() {
     email,
     phone,
     profile,
-    role,
     midName,
     username,
     status,
@@ -160,14 +158,6 @@ function Profile() {
                     </p>
                   </span>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <p>Role</p>
-                  <span className="bg-[#F1F1F1] flex gap-2 items-center border border-gray-200 rounded-md">
-                    <i className="fa-solid fa-ruler-vertical border-r border-gray-300 py-3 px-4 text-2xl"></i>
-                    <p className="text-bold text-md p-3">{role}</p>
-                  </span>
-                </div>
-
                 <div className="flex flex-col gap-1">
                   <p>Membership Domain</p>
                   <span className="bg-[#F1F1F1] flex gap-2 items-center border border-gray-200 rounded-md">

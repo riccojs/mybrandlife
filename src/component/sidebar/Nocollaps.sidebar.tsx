@@ -46,7 +46,6 @@ function NoCollapsSidebar() {
   const { user, isLoading } = useAuth() as {
     user: {
       domain: string;
-      role: string;
       package: string;
       id: string;
     } | null;

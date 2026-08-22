@@ -12,7 +12,7 @@ function AuthRoute() {
   const [navbar, setNavbar] = useState(false);
   const redirectUrl = import.meta.env.VITE_APP_REDIRECT_ROUTE;
   const { user, isLoading } = useAuth() as {
-    user: { role: string } | null;
+    user: { landerName: string } | null;
     isLoading: boolean;
   };
 

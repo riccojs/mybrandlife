@@ -43,7 +43,7 @@ import { userMenu } from "../../utils/menu.data";
 function CollapsSidebar() {
   const redirectUrl = import.meta.env.VITE_APP_REDIRECT_ROUTE;
   const { user, isLoading } = useAuth() as {
-    user: { domain: string; role: string; package: string; id: string };
+    user: { domain: string; package: string; id: string };
     isLoading: boolean | null;
   };
   const location = useLocation();

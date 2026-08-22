@@ -25,6 +25,7 @@ import Echos from "./pages/Echos";
 import SpinList from "./pages/Spin-list";
 import OrderedWristband from "./pages/Ordered.wristband";
 import OrderedWristbandView from "./pages/Ordered.wristband.view";
+import ErrorPage from "./pages/Error.page";
 
 function App() {
   return (
@@ -60,6 +61,7 @@ function App() {
             <Route path="export" element={<ExportData />} />
             <Route path="setting" element={<Dashboard />} />
           </Route>
+          <Route path="*" element={<ErrorPage />} />
         </Route>
       </Routes>
       <Toaster />
