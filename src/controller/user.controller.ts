@@ -567,7 +567,6 @@ export async function login(req: Request, res: Response) {
         message: PASSWORD_NOT_MATCH_MESSAGE,
       });
     }
-
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
