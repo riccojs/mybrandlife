@@ -6,7 +6,9 @@ import SelectComponent from "../ui/Select.component";
 import useBodyScroll from "../../hook/userBodyscroll";
 
 function WelcomePopup() {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(() => {
+    return localStorage.getItem("welcome_popup_seen") !== "true";
+  });
   const [showTab, setShowTab] = useState(false);
   const [createReport, { isLoading }] = useCreateReportMutation();
   const [report, setReport] = useState({
@@ -14,7 +16,7 @@ function WelcomePopup() {
     reason: "",
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     createReport(report)
       .unwrap()
@@ -29,12 +31,6 @@ function WelcomePopup() {
         toast.error(errorMessage);
       });
   };
-
-  const hasSeen = localStorage.getItem("welcome_popup_seen");
-
-  if (!hasSeen) {
-    setShow(true);
-  }
 
   const handleClose = () => {
     localStorage.setItem("welcome_popup_seen", "true");
