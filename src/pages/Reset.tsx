@@ -12,6 +12,7 @@ interface TypesOf {
 }
 
 function Reset() {
+  const redirectUrl = import.meta.env.VITE_APP_REDIRECT_ROUTE;
   const [resetUser, { isLoading }] = useSendResetCodeMutation();
   const [user, setUser] = useState<TypesOf>({
     email: "",
@@ -96,19 +97,21 @@ function Reset() {
               <p className="mt-4 text-center text-xs leading-5 text-black/50">
                 By signing up, you acknowledge that you have read and
                 understood, and agree to Atlassian's{" "}
-                <Link
-                  to="/terms-condition"
+                <a
+                  href={`${redirectUrl}/terms-condition`}
+                  target="_blank"
                   className="text-[#cf3832] underline underline-offset-2"
                 >
                   Terms
-                </Link>{" "}
+                </a>{" "}
                 and{" "}
-                <Link
-                  to="/privacy-policy"
+                <a
+                  href={`${redirectUrl}/privacy-policy`}
+                  target="_blank"
                   className="text-[#cf3832] underline underline-offset-2"
                 >
                   Privacy Policy
-                </Link>
+                </a>
                 .
               </p>
             </form>

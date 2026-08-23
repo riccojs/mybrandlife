@@ -1,7 +1,6 @@
-import { useNavigate } from "react-router";
 import HeaderProfile from "./Header.profile";
 import { useEffect, useRef, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useLogoutMutation } from "../../redux/features/auth/authApi";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useAuth } from "../../hook/useAuth";
@@ -36,7 +35,6 @@ interface UserAuth {
 }
 
 function Header({ setSidebard, sidebar, setNavbar }: Types) {
-  const navigate = useNavigate();
   const [logout, { isLoading }] = useLogoutMutation();
   const [isProfile, setIsProfile] = useState(false);
   const [isNotify, setIsNotify] = useState(false);
@@ -72,21 +70,13 @@ function Header({ setSidebard, sidebar, setNavbar }: Types) {
   }, []);
 
   const handleLogout = () => {
-    let role;
-    if (secureKey) {
-      role = "ADMIN";
-    } else {
-      role = "USER";
-    }
     const userData = {
       email: email,
-      role: role,
     };
     logout(userData)
       .unwrap()
       .then((res) => {
         toast.success(res.message);
-        navigate("/");
       })
       .catch((error) => {
         const err = error as FetchBaseQueryError;
@@ -209,7 +199,6 @@ function Header({ setSidebard, sidebar, setNavbar }: Types) {
           )}
         </div>
       </div>
-      <Toaster />
     </header>
   );
 }

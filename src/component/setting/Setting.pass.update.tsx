@@ -1,6 +1,5 @@
 import { useState } from "react";
-
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { ArrowRight } from "lucide-react";
 import { useUpdatePasswordMutation } from "../../redux/features/auth/authApi";
@@ -98,7 +97,6 @@ function SettingPassUpdate({ id }: { id: string | null }) {
         onConfirm={handleSubmit}
         loading={isLoading}
       />
-      <Toaster />
     </form>
   );
 }

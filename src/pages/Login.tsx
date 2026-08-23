@@ -14,6 +14,7 @@ interface TypesOf {
 }
 
 function Login() {
+  const redirectUrl = import.meta.env.VITE_APP_REDIRECT_ROUTE;
   const [login, { isLoading }] = useLoginMutation();
   const [user, setUser] = useState<TypesOf>({
     email: "",
@@ -122,32 +123,24 @@ function Login() {
               <p className="mt-4 text-center text-xs leading-5 text-black/50">
                 By signing up, you acknowledge that you have read and
                 understood, and agree to Atlassian's{" "}
-                <Link
-                  to="/terms-condition"
+                <a
+                  href={`${redirectUrl}/terms-condition`}
+                  target="_blank"
                   className="text-[#cf3832] underline underline-offset-2"
                 >
                   Terms
-                </Link>{" "}
+                </a>{" "}
                 and{" "}
-                <Link
-                  to="/privacy-policy"
+                <a
+                  href={`${redirectUrl}/privacy-policy`}
+                  target="_blank"
                   className="text-[#cf3832] underline underline-offset-2"
                 >
                   Privacy Policy
-                </Link>
+                </a>
                 .
               </p>
             </form>
-          </div>
-
-          <div className="mt-12 text-center text-[13px]">
-            <span>Don't have any account? </span>
-            <Link
-              to="/auth/register"
-              className="font-medium text-[#cf3832] underline underline-offset-2"
-            >
-              Sign Up
-            </Link>
           </div>
         </div>
       </div>
