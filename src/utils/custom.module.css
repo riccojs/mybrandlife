@@ -1,0 +1,33 @@
+.customTable td,
+.customTable th {
+  text-align: left;
+  padding: 10px 20px;
+}
+
+.subTable td,
+.subTable th {
+  text-align: left;
+  padding: 10px 20px;
+}
+
+.subTable tbody tr {
+  border-top: 1px solid #b4b4b4;
+}
+
+@media screen and (min-width: 768px) {
+  .customTable td,
+  .customTable th {
+    text-align: left;
+    padding: 10px 20px;
+  }
+
+  .subTable td,
+  .subTable th {
+    text-align: left;
+    padding: 20px 30px;
+  }
+
+  .subTable tbody tr {
+    border-top: 1px solid #b4b4b4;
+  }
+}

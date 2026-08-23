@@ -26,6 +26,12 @@ import SpinList from "./pages/Spin-list";
 import OrderedWristband from "./pages/Ordered.wristband";
 import OrderedWristbandView from "./pages/Ordered.wristband.view";
 import ErrorPage from "./pages/Error.page";
+import CreateOnboard from "./pages/Create-onboard";
+import UpdateOnboard from "./pages/Update.onboard";
+import WristbandOrderConfirmation from "./pages/Wristband.order.confirmation";
+import GoogleConnectsuccess from "./pages/Google.connectsuccess";
+import StripeConnectsuccess from "./pages/Stripe.connectSuccess";
+import TipPaymentSuccess from "./pages/Tip.paymenstsuccess";
 
 function App() {
   return (
@@ -34,23 +40,40 @@ function App() {
       <Routes>
         <Route element={<AuthRoute />}>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/brandtrack" element={<Brandtrack />} />
+          <Route path="/build-your-lander" element={<CreateOnboard />} />
+          <Route path="/onboard/:id" element={<UpdateOnboard />} />
+          <Route path="/brandbook" element={<Brandbook />} />
+          <Route path="/spin" element={<SpinList />} />
+          <Route path="/brandbook/slot" element={<CreateSlot />} />
+          <Route path="/echo" element={<Echos />} />
+          <Route path="/onboard/update/:id" element={<SIngleOnboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/setting" element={<Setting />} />
           <Route path="/subscription" element={<Subscription />} />
-          <Route path="/brandtrack" element={<Brandtrack />} />
-          <Route path="/brandshare" element={<JoinUserList />} />
           <Route path="/onboard" element={<OnboardingList />} />
-          <Route path="/onboard/update/:id" element={<SIngleOnboard />} />
-          <Route path="/brandbook" element={<Brandbook />} />
-          <Route path="/brandbook/slot" element={<CreateSlot />} />
-          <Route path="/echo" element={<Echos />} />
-          <Route path="/spin" element={<SpinList />} />
+          <Route path="/brandshare" element={<JoinUserList />} />
           <Route path="/ordered-wristband" element={<OrderedWristband />} />
           <Route
             path="/ordered-wristband/:id"
             element={<OrderedWristbandView />}
           />
-
+          <Route
+            path="/ordered_wristband/confirmation/:id"
+            element={<WristbandOrderConfirmation />}
+          />
+          <Route
+            path="/google/connect/success"
+            element={<GoogleConnectsuccess />}
+          />
+          <Route
+            path="/stripe/connect/success"
+            element={<StripeConnectsuccess />}
+          />
+          <Route
+            path="/stripe/tip/payment/success"
+            element={<TipPaymentSuccess />}
+          />
           <Route path="/pulsetrack" element={<Pulsetrack />}>
             <Route index element={<PulsetrackDashboard />} />
             <Route path="projects" element={<ProjectList />} />
