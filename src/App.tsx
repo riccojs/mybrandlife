@@ -8,6 +8,7 @@ import PaymentSuccess from "./pages/Payment.success";
 import RequestTv from "./pages/Request.tv";
 import { useClarity } from "./hook/useClarity";
 import RedirectRoute from "./Redirect.route";
+import MaintenanceRoute from "./route/Maintenance.route";
 
 function App() {
   useFavicon();
@@ -15,14 +16,16 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/error" element={<ErrorPage />} />
-        <Route path="/:name" element={<Wireframe />} />
-        <Route path="/payment/success/:name" element={<PaymentSuccess />} />
-        <Route path="/:name/request_tv" element={<RequestTv />} />
-        <Route path="/" element={<RedirectRoute />} />
-        <Route path="*" element={<ErrorPage />} />
-      </Routes>
+      <MaintenanceRoute>
+        <Routes>
+          <Route path="/error" element={<ErrorPage />} />
+          <Route path="/:name" element={<Wireframe />} />
+          <Route path="/payment/success/:name" element={<PaymentSuccess />} />
+          <Route path="/:name/request_tv" element={<RequestTv />} />
+          <Route path="/" element={<RedirectRoute />} />
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+      </MaintenanceRoute>
       <Toaster />
     </BrowserRouter>
   );
