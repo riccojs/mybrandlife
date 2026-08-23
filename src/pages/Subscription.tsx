@@ -167,7 +167,9 @@ function Subscription() {
                   <h3 className="text-2xl font-bold text-emerald-800 uppercase">
                     {pkgType}
                   </h3>
-                  <span className="text-[10px] font-bold tracking-wide bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">
+                  <span
+                    className={`text-[10px] font-bold tracking-wide px-2 py-0.5 rounded-full ${status === "ACTIVATE" ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-700"}`}
+                  >
                     {status}
                   </span>
                 </div>
