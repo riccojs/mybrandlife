@@ -138,7 +138,6 @@ function NoCollapsSidebar() {
     if (!child.requiredPackage) {
       return true;
     }
-
     return packageLevel[userPackage] >= packageLevel[child.requiredPackage];
   };
 
@@ -146,18 +145,11 @@ function NoCollapsSidebar() {
     children: (typeof userMenu)[number]["children"],
   ) => {
     return children.filter((child) => {
-      /**
-       * Onboard / Build Your Lander
-       */
       if (child.name === "Onboard" || child.name === "Build Your Lander") {
         return isBuildMode
           ? child.name === "Build Your Lander"
           : child.name === "Onboard";
       }
-
-      /**
-       * Package based access
-       */
       return canAccessRoute(child);
     });
   };

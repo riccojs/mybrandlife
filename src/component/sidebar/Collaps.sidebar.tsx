@@ -46,6 +46,11 @@ function CollapsSidebar() {
     user: { domain: string; package: string; id: string };
     isLoading: boolean | null;
   };
+  const packageLevel: Record<string, number> = {
+    bronze: 1,
+    silver: 2,
+    gold: 3,
+  };
   const location = useLocation();
   const [showNav, setShowNav] = useState("");
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -129,6 +134,30 @@ function CollapsSidebar() {
     });
   };
 
+  const userPackage = (user?.package ?? "bronze").toLowerCase();
+
+  const canAccessRoute = (child: {
+    requiredPackage?: "bronze" | "silver" | "gold";
+  }) => {
+    if (!child.requiredPackage) {
+      return true;
+    }
+    return packageLevel[userPackage] >= packageLevel[child.requiredPackage];
+  };
+
+  const getVisibleChildren = (
+    children: (typeof userMenu)[number]["children"],
+  ) => {
+    return children.filter((child) => {
+      if (child.name === "Onboard" || child.name === "Build Your Lander") {
+        return isBuildMode
+          ? child.name === "Build Your Lander"
+          : child.name === "Onboard";
+      }
+      return canAccessRoute(child);
+    });
+  };
+
   return (
     <div className="">
       <div className="flex justify-center items-center py-2">
@@ -143,76 +172,78 @@ function CollapsSidebar() {
       <div className="mt-5" ref={menuRef}>
         <nav className="mt-5">
           <ul className="flex flex-col gap-4">
-            {userMenu?.map((menu) => (
-              <li className="flex justify-center">
-                <div className="relative z-50">
-                  <button
-                    onClick={() => handleToggle(menu.name)}
-                    className={`border cursor-pointer border-gray-300 shadow-sm rounded-md w-12 h-12 flex justify-center items-center ${
-                      isMenuActive(menu)
-                        ? "text-[#000000] bg-[#96c94b]"
-                        : "text-[#212529]"
-                    }`}
-                  >
-                    <img src={menu?.icon} alt="" className="w-8" />
-                  </button>
-                  <AnimatePresence>
-                    {showNav === menu.name && (
-                      <motion.div
-                        initial={{ opacity: 0, x: -10, scale: 0.95 }}
-                        animate={{ opacity: 1, x: 0, scale: 1 }}
-                        exit={{ opacity: 0, x: -10, scale: 0.95 }}
-                        transition={{
-                          duration: 0.18,
-                          ease: "easeOut",
-                        }}
-                        className="absolute flex flex-col gap-1 left-full top-0 ml-3 w-64 bg-white shadow-lg rounded-md p-3 z-50"
-                      >
-                        {menu.children
-                          .filter((child) => {
-                            if (
-                              child.name === "Onboard" ||
-                              child.name === "Build Your Lander"
-                            ) {
-                              return isBuildMode
-                                ? child.name === "Build Your Lander"
-                                : child.name === "Onboard";
-                            }
-                            return true;
-                          })
-                          .map((child) => (
-                            <li key={child.name}>
-                              <NavLink
-                                to={
-                                  user?.package !== "gold" && child.restrict
-                                    ? "/"
-                                    : child?.path
-                                }
-                                end={child.path === "/"}
-                                onClick={() => setShowNav("")}
-                                className={({ isActive }) =>
-                                  `flex gap-2 rounded-lg items-center py-2 px-4 ${
-                                    isActive
-                                      ? "bg-[#96c94b] text-black"
-                                      : "text-[#212529]"
-                                  } ${
-                                    user?.package !== "gold" && child.restrict
-                                      ? "bg-gray-200 opacity-60"
-                                      : "hover:text-[#000000] hover:bg-[#96c94b]"
-                                  }`
-                                }
-                              >
-                                <img src={child.icon} alt="" className="w-6" />
-                                <p>{child.name}</p>
-                              </NavLink>
-                            </li>
-                          ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </li>
-            ))}
+            {userMenu?.map((menu) => {
+              const visibleChildren = getVisibleChildren(menu.children);
+              if (visibleChildren.length === 0) {
+                return null;
+              }
+              return (
+                <li className="flex justify-center">
+                  <div className="relative z-50">
+                    <button
+                      onClick={() => handleToggle(menu.name)}
+                      className={`border cursor-pointer border-gray-300 shadow-sm rounded-md w-12 h-12 flex justify-center items-center ${
+                        isMenuActive(menu)
+                          ? "text-[#000000] bg-[#96c94b]"
+                          : "text-[#212529]"
+                      }`}
+                    >
+                      <img src={menu?.icon} alt="" className="w-8" />
+                    </button>
+                    <AnimatePresence>
+                      {showNav === menu.name && (
+                        <motion.div
+                          initial={{ opacity: 0, x: -10, scale: 0.95 }}
+                          animate={{ opacity: 1, x: 0, scale: 1 }}
+                          exit={{ opacity: 0, x: -10, scale: 0.95 }}
+                          transition={{
+                            duration: 0.18,
+                            ease: "easeOut",
+                          }}
+                          className="absolute flex flex-col gap-1 left-full top-0 ml-3 w-64 bg-white shadow-lg rounded-md p-3 z-50"
+                        >
+                          {menu.children
+                            .filter((child) => {
+                              if (
+                                child.name === "Onboard" ||
+                                child.name === "Build Your Lander"
+                              ) {
+                                return isBuildMode
+                                  ? child.name === "Build Your Lander"
+                                  : child.name === "Onboard";
+                              }
+                              return canAccessRoute(child);
+                            })
+                            .map((child) => (
+                              <li key={child.name}>
+                                <NavLink
+                                  to={child?.path}
+                                  end={child.path === "/"}
+                                  onClick={() => setShowNav("")}
+                                  className={({ isActive }) =>
+                                    `flex gap-2 rounded-lg items-center py-2 px-4 ${
+                                      isActive
+                                        ? "bg-[#96c94b] text-black"
+                                        : "text-[#212529]"
+                                    }`
+                                  }
+                                >
+                                  <img
+                                    src={child.icon}
+                                    alt=""
+                                    className="w-6"
+                                  />
+                                  <p>{child.name}</p>
+                                </NavLink>
+                              </li>
+                            ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </nav>
       </div>
