@@ -36,7 +36,8 @@ import PrivateRoute from "./route/Private.route";
 import Login from "./pages/Login";
 import Reset from "./pages/Reset";
 import ResetPassword from "./pages/Reset.password";
-import AccessRoute from "./route/Access.route";
+import GoldRoute from "./route/Gold.route";
+import SilverRoute from "./route/Silver.route";
 
 function App() {
   return (
@@ -57,7 +58,21 @@ function App() {
           <Route path="/setting" element={<Setting />} />
           <Route path="/subscription" element={<Subscription />} />
           <Route path="/onboard" element={<OnboardingList />} />
-          <Route element={<AccessRoute />}>
+          <Route element={<SilverRoute />}>
+            <Route path="/brandbook" element={<Brandbook />} />
+            <Route path="/brandbook/slot" element={<CreateSlot />} />
+            <Route path="/spin" element={<SpinList />} />
+            <Route path="/ordered-wristband" element={<OrderedWristband />} />
+            <Route
+              path="/ordered-wristband/:id"
+              element={<OrderedWristbandView />}
+            />
+            <Route
+              path="/ordered-wristband/confirmation/:id"
+              element={<WristbandOrderConfirmation />}
+            />
+          </Route>
+          <Route element={<GoldRoute />}>
             <Route path="/brandbook/slot" element={<CreateSlot />} />
             <Route path="/echo" element={<Echos />} />
             <Route path="/brandbook" element={<Brandbook />} />
@@ -69,7 +84,7 @@ function App() {
               element={<OrderedWristbandView />}
             />
             <Route
-              path="/ordered_wristband/confirmation/:id"
+              path="/ordered-wristband/confirmation/:id"
               element={<WristbandOrderConfirmation />}
             />
             <Route
@@ -85,17 +100,20 @@ function App() {
               element={<TipPaymentSuccess />}
             />
             <Route path="/brandshare" element={<JoinUserList />} />
-          </Route>
 
-          <Route path="/pulsetrack" element={<Pulsetrack />}>
-            <Route index element={<PulsetrackDashboard />} />
-            <Route path="projects" element={<ProjectList />} />
-            <Route path="projects/:id" element={<WristbandStore />} />
-            <Route path="projects/wristband/:id" element={<WristbandList />} />
-            <Route path="orders" element={<OrderList />} />
-            <Route path="orders/success/:id" element={<OrderSummery />} />
-            <Route path="export" element={<ExportData />} />
-            <Route path="setting" element={<Dashboard />} />
+            <Route path="/pulsetrack" element={<Pulsetrack />}>
+              <Route index element={<PulsetrackDashboard />} />
+              <Route path="projects" element={<ProjectList />} />
+              <Route path="projects/:id" element={<WristbandStore />} />
+              <Route
+                path="projects/wristband/:id"
+                element={<WristbandList />}
+              />
+              <Route path="orders" element={<OrderList />} />
+              <Route path="orders/success/:id" element={<OrderSummery />} />
+              <Route path="export" element={<ExportData />} />
+              <Route path="setting" element={<Dashboard />} />
+            </Route>
           </Route>
         </Route>
         <Route path="*" element={<ErrorPage />} />

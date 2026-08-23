@@ -1,17 +1,6 @@
-import { NavLink, Outlet, useNavigate } from "react-router";
-import { useEffect } from "react";
-import { useAuth } from "../hook/useAuth";
+import { NavLink, Outlet } from "react-router";
 
 function Pulsetrack() {
-  const { user } = useAuth();
-
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (user?.package !== "gold") {
-      navigate("/dashboard");
-    }
-  }, [user, navigate]);
-
   return (
     <section>
       <div className="bg-white p-5 border-b border-gray-200">

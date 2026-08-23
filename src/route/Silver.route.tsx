@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router";
 import { useAuth } from "../hook/useAuth";
 import Spiner from "../component/Spiner";
 
-function AccessRoute() {
+function SilverRoute() {
   const { user, isLoading } = useAuth() as {
     user: {
       package?: string;
@@ -15,10 +15,10 @@ function AccessRoute() {
   if (!user) {
     return <Navigate to="/auth/login" replace />;
   }
-  if (user.package !== "gold") {
+  if (user.package !== "silver" && user.package !== "gold") {
     return <Navigate to="/" replace />;
   }
   return <Outlet />;
 }
 
-export default AccessRoute;
+export default SilverRoute;

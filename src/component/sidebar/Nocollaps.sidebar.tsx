@@ -43,6 +43,11 @@ import { userMenu } from "../../utils/menu.data";
 
 function NoCollapsSidebar() {
   const redirectUrl = import.meta.env.VITE_APP_REDIRECT_ROUTE;
+  const packageLevel: Record<string, number> = {
+    bronze: 1,
+    silver: 2,
+    gold: 3,
+  };
   const { user, isLoading } = useAuth() as {
     user: {
       domain: string;
@@ -125,6 +130,38 @@ function NoCollapsSidebar() {
     setOpenMenu(activeMenu?.name ?? "");
   }, [location.pathname]);
 
+  const userPackage = (user?.package ?? "bronze").toLowerCase();
+
+  const canAccessRoute = (child: {
+    requiredPackage?: "bronze" | "silver" | "gold";
+  }) => {
+    if (!child.requiredPackage) {
+      return true;
+    }
+
+    return packageLevel[userPackage] >= packageLevel[child.requiredPackage];
+  };
+
+  const getVisibleChildren = (
+    children: (typeof userMenu)[number]["children"],
+  ) => {
+    return children.filter((child) => {
+      /**
+       * Onboard / Build Your Lander
+       */
+      if (child.name === "Onboard" || child.name === "Build Your Lander") {
+        return isBuildMode
+          ? child.name === "Build Your Lander"
+          : child.name === "Onboard";
+      }
+
+      /**
+       * Package based access
+       */
+      return canAccessRoute(child);
+    });
+  };
+
   return (
     <div className="">
       <div className="flex justify-center items-center py-2">
@@ -142,87 +179,76 @@ function NoCollapsSidebar() {
         </h2>
         <nav className="mt-5">
           <ul className="flex flex-col gap-1">
-            {userMenu.map((menu) => (
-              <li key={menu.name} className="px-4">
-                <button
-                  onClick={() => handleToggle(menu.name)}
-                  className={`flex items-center cursor-pointer justify-between w-full py-2 px-4 rounded-lg ${openMenu === menu.name ? "bg-[#96c94b]" : ""}`}
-                >
-                  <div className="flex items-center gap-2">
-                    <img src={menu?.icon} alt="" className="w-6" />
-                    <p className="font-medium">{menu.name}</p>
-                  </div>
-                  <span>
-                    {openMenu === menu.name ? (
-                      <IoIosArrowUp />
-                    ) : (
-                      <IoIosArrowDown />
-                    )}
-                  </span>
-                </button>
-                <AnimatePresence>
-                  {openMenu === menu.name && (
-                    <motion.ul
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                      className="ml-3 mt-2 flex flex-col gap-1 overflow-hidden"
-                    >
-                      {menu.children
-                        .filter((child) => {
-                          if (
-                            child.name === "Onboard" ||
-                            child.name === "Build Your Lander"
-                          ) {
-                            return isBuildMode
-                              ? child.name === "Build Your Lander"
-                              : child.name === "Onboard";
-                          }
-                          return true;
-                        })
-                        .map((child) => (
-                          <li className="">
-                            <NavLink
-                              to={
-                                user?.package !== "gold" && child.restrict
-                                  ? "/"
-                                  : child?.path
-                              }
-                              end={child.path === "/"}
-                              className={({ isActive }) =>
-                                `flex gap-2 rounded-lg items-center py-2 px-4 ${
-                                  isActive
-                                    ? " text-[#000000] bg-[#96c94b]"
-                                    : " text-[#212529]"
-                                } ${
-                                  user?.package !== "gold" && child.restrict
-                                    ? "bg-gray-200 opacity-60"
-                                    : "hover:text-[#000000] hover:bg-[#96c94b]"
-                                }`
-                              }
-                            >
-                              <img src={child?.icon} alt="" className="w-6" />
-                              {user?.package !== "gold" && child.restrict ? (
-                                <p className="font-medium text-base">
-                                  {child.name}{" "}
-                                  <span className="text-xs font-normal text-red-500">
-                                    Gold Only
-                                  </span>
-                                </p>
-                              ) : (
+            {userMenu.map((menu) => {
+              const visibleChildren = getVisibleChildren(menu.children);
+              if (visibleChildren.length === 0) {
+                return null;
+              }
+              return (
+                <li key={menu.name} className="px-4">
+                  <button
+                    onClick={() => handleToggle(menu.name)}
+                    className={`flex items-center cursor-pointer justify-between w-full py-2 px-4 rounded-lg ${openMenu === menu.name ? "bg-[#96c94b]" : ""}`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <img src={menu?.icon} alt="" className="w-6" />
+                      <p className="font-medium">{menu.name}</p>
+                    </div>
+                    <span>
+                      {openMenu === menu.name ? (
+                        <IoIosArrowUp />
+                      ) : (
+                        <IoIosArrowDown />
+                      )}
+                    </span>
+                  </button>
+                  <AnimatePresence>
+                    {openMenu === menu.name && (
+                      <motion.ul
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="ml-3 mt-2 flex flex-col gap-1 overflow-hidden"
+                      >
+                        {menu.children
+                          .filter((child) => {
+                            if (
+                              child.name === "Onboard" ||
+                              child.name === "Build Your Lander"
+                            ) {
+                              return isBuildMode
+                                ? child.name === "Build Your Lander"
+                                : child.name === "Onboard";
+                            }
+                            return canAccessRoute(child);
+                          })
+                          .map((child) => (
+                            <li className="">
+                              <NavLink
+                                to={child?.path}
+                                end={child.path === "/"}
+                                className={({ isActive }) =>
+                                  `flex gap-2 rounded-lg items-center py-2 px-4 ${
+                                    isActive
+                                      ? " text-[#000000] bg-[#96c94b]"
+                                      : " text-[#212529]"
+                                  }`
+                                }
+                              >
+                                <img src={child?.icon} alt="" className="w-6" />
                                 <p className="font-medium text-base">
                                   {child.name}
                                 </p>
-                              )}
-                            </NavLink>
-                          </li>
-                        ))}
-                    </motion.ul>
-                  )}
-                </AnimatePresence>
-              </li>
-            ))}
+                              </NavLink>
+                            </li>
+                          ))}
+                      </motion.ul>
+                    )}
+                  </AnimatePresence>
+                </li>
+              );
+            })}
           </ul>
         </nav>
       </div>

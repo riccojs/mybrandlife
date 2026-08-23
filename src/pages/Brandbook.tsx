@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router";
+import React, { useState } from "react";
+import { Link, useSearchParams } from "react-router";
 import { RiCalendarEventFill } from "react-icons/ri";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
@@ -31,7 +31,6 @@ interface UserType {
 function Brandbook() {
   const { user } = useAuth() as { user: UserType | null };
   const templete = user?.userTemplete?.[0];
-  const navigate = useNavigate();
   const { enableEvent } = templete || {};
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page") || 1;
@@ -95,12 +94,6 @@ function Brandbook() {
         toast.error(errorMessage);
       });
   };
-
-  useEffect(() => {
-    if (user?.package !== "gold") {
-      navigate("/dashboard");
-    }
-  }, [user, navigate]);
 
   // decide what to render
   let content;

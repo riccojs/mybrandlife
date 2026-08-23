@@ -12,12 +12,34 @@ import WistbandIcon from "../assets/menu-icons/ristband.svg";
 import SubscribeIcon from "../assets/app-icons/subscription.svg";
 import SpinIcon from "../assets/menu-icons/spin.svg";
 
-export const userMenu = [
+export type PackageType = "bronze" | "silver" | "gold";
+
+export interface MenuChild {
+  name: string;
+  path: string;
+  icon: string;
+  requiredPackage?: PackageType;
+}
+
+export interface UserMenu {
+  name: string;
+  icon: string;
+  children: MenuChild[];
+}
+
+export const userMenu: UserMenu[] = [
   {
     name: "Dashboard",
     icon: DashboardIcon,
-    children: [{ name: "Dashboard", path: "/", icon: DashboardIcon }],
+    children: [
+      {
+        name: "Dashboard",
+        path: "/",
+        icon: DashboardIcon,
+      },
+    ],
   },
+
   {
     name: "Management",
     icon: UserIcon,
@@ -32,18 +54,29 @@ export const userMenu = [
         name: "BrandBook",
         path: "/brandbook",
         icon: BrandbookIcon,
-        restrict: true,
+        requiredPackage: "silver",
       },
-      { name: "Echo", path: "/echo", icon: EchoIcon, restrict: true },
-      { name: "SPIN", path: "spin", icon: SpinIcon, restrict: true },
+      {
+        name: "Echo",
+        path: "/echo",
+        icon: EchoIcon,
+        requiredPackage: "gold",
+      },
+      {
+        name: "SPIN",
+        path: "/spin",
+        icon: SpinIcon,
+        requiredPackage: "silver",
+      },
       {
         name: "Ordered Wristband",
-        path: "ordered-wristband",
+        path: "/ordered-wristband",
         icon: WistbandIcon,
-        restrict: true,
+        requiredPackage: "silver",
       },
     ],
   },
+
   {
     name: "Analytics",
     icon: ReportIcon,
@@ -52,22 +85,23 @@ export const userMenu = [
         name: "BrandTrack",
         path: "/brandtrack",
         icon: ReportIcon,
-        restrict: true,
+        requiredPackage: "gold",
       },
       {
         name: "Pulsetrack",
         path: "/pulsetrack",
         icon: PulsetrackIcon,
-        restrict: true,
+        requiredPackage: "gold",
       },
       {
         name: "BrandShare",
         path: "/brandshare",
         icon: RefaralIcon,
-        restrict: true,
+        requiredPackage: "gold",
       },
     ],
   },
+
   {
     name: "Subscription",
     icon: SubscribeIcon,
@@ -79,6 +113,7 @@ export const userMenu = [
       },
     ],
   },
+
   {
     name: "Account",
     icon: SettingIcon,
