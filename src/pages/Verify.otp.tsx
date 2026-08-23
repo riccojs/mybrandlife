@@ -11,6 +11,7 @@ import { LoaderCircle } from "lucide-react";
 
 const VerifyEmail = () => {
   const [code, setCode] = useState<string[]>(["", "", "", "", "", ""]);
+  const redirectUrl = import.meta.env.VITE_APP_REDIRECT_ROUTE;
   const [hasResent, setHasResent] = useState(false);
   const [timeLeft, setTimeLeft] = useState(2);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -40,7 +41,7 @@ const VerifyEmail = () => {
         toast.success(res.message);
         setCode(["", "", "", "", "", ""]);
         localStorage.removeItem("email");
-        navigate("/dashboard");
+        window.location.href = redirectUrl;
       })
       .catch((error) => {
         const err = error as FetchBaseQueryError;
@@ -131,7 +132,7 @@ const VerifyEmail = () => {
 
   useEffect(() => {
     if (!email) {
-      navigate("/auth/login");
+      navigate("/");
     }
   }, [email, navigate]);
 

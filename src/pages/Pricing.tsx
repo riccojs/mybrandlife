@@ -20,7 +20,6 @@ import domainData from "../utils/domainData";
 import PriceSelector from "../component/Price.selector";
 import LottieAnimation from "../component/Lottie.animation";
 import domainFeatures from "../utils/domain.features";
-import { useAuth } from "../hook/useAuth";
 import BPSLOGO from "../assets/BPS-Logo-Wide.png";
 import { useGetOneUserByLandernameQuery } from "../redux/features/auth/authApi";
 import PowerPdf from "../assets/files/Price_Features_Power.pdf";
@@ -38,7 +37,6 @@ function Pricing() {
   const [searchParams] = useSearchParams();
   const code = searchParams.get("affiliate");
   const { isSuccess, isError } = useGetOneUserByLandernameQuery(code);
-  const { user } = useAuth();
   const [showTab, setShowTab] = useState<boolean>(false);
   const [merchendiseTab, setMerchendiseTab] = useState<boolean>(false);
   const [conTab, setConTab] = useState<boolean>(false);
@@ -283,10 +281,7 @@ function Pricing() {
                           bronzePlanFeatures?.planKey ?? "",
                         )
                       }
-                      disabled={user ? true : false}
-                      className={`w-full text-black text-md font-normal px-5 py-2 rounded-lg transition-all duration-300 active:scale-105 cursor-pointer ${
-                        user ? "bg-gray-300" : "bg-[#cbf38b]"
-                      }`}
+                      className="w-full bg-[#cbf38b] text-black text-md font-normal px-5 py-2 rounded-lg transition-all duration-300 active:scale-105 cursor-pointer"
                     >
                       Choose Now
                     </button>
@@ -387,10 +382,7 @@ function Pricing() {
                           silverPlanFeatures?.planKey ?? "",
                         )
                       }
-                      disabled={user ? true : false}
-                      className={`w-full text-black text-md font-normal px-5 py-2 rounded-lg transition-all duration-300 active:scale-105 cursor-pointer ${
-                        user ? "bg-gray-300" : "bg-[#cbf38b]"
-                      }`}
+                      className="w-full bg-[#cbf38b] text-black text-md font-normal px-5 py-2 rounded-lg transition-all duration-300 active:scale-105 cursor-pointer"
                     >
                       Choose Now
                     </button>
@@ -491,10 +483,7 @@ function Pricing() {
                         GoldPlanFeatures?.planKey ?? "",
                       )
                     }
-                    disabled={user ? true : false}
-                    className={`w-full text-black text-md font-normal px-5 py-2 rounded-lg transition-all duration-300 active:scale-105 cursor-pointer ${
-                      user ? "bg-gray-300" : "bg-[#cbf38b]"
-                    }`}
+                    className="w-full bg-[#cbf38b] text-black text-md font-normal px-5 py-2 rounded-lg transition-all duration-300 active:scale-105 cursor-pointer"
                   >
                     Choose Now
                   </button>

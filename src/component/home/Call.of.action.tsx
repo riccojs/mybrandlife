@@ -1,12 +1,7 @@
 import { Link } from "react-router";
-import { LayoutDashboard, Rocket } from "lucide-react";
-import { useAuth } from "../../hook/useAuth";
+import { Rocket } from "lucide-react";
 
 function CallOfAction() {
-  const { user, isLoading } = useAuth() as {
-    user: { landerName: string };
-    isLoading: boolean | null;
-  };
   const redirectUrl = import.meta.env.VITE_APP_REDIRECT_ROUTE;
 
   return (
@@ -33,39 +28,25 @@ function CallOfAction() {
             more, your brand connects seamlessly online and offline - unlocking
             endless ways to engage your world.
           </p>
-          {isLoading ? (
-            <div className="w-72 h-12 rounded-full bg-slate-200 animate-pulse"></div>
-          ) : user ? (
+          <div className="flex gap-3 items-center mb-5">
+            <Link
+              to="/pricing"
+              className="flex active:scale-[0.98] items-center gap-2 px-10 py-4 rounded-full hover:bg-[#589c28] text-white text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25"
+            >
+              <Rocket className="w-5 h-5 fill-current" />
+              Register Your Brand
+            </Link>
+          </div>
+          <p className="text-sm text-black font-normal">
+            Already have an account?{" "}
             <a
               href={redirectUrl}
               target="_blank"
-              className="flex active:scale-[0.98] items-center gap-2 px-10 py-4 rounded-full hover:bg-[#589c28] text-white text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25"
+              className="text-[#bb2d28] font-medium hover:underline"
             >
-              <LayoutDashboard className="w-4 h-4 fill-current" />
-              Dashboard
+              Log In
             </a>
-          ) : (
-            <>
-              <div className="flex gap-3 items-center mb-5">
-                <Link
-                  to="/pricing"
-                  className="flex active:scale-[0.98] items-center gap-2 px-10 py-4 rounded-full hover:bg-[#589c28] text-white text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25"
-                >
-                  <Rocket className="w-5 h-5 fill-current" />
-                  Register Your Brand
-                </Link>
-              </div>
-              <p className="text-sm text-black font-normal">
-                Already have an account?{" "}
-                <Link
-                  to="/auth/login"
-                  className="text-[#bb2d28] font-medium hover:underline"
-                >
-                  Log In
-                </Link>
-              </p>
-            </>
-          )}
+          </p>
         </div>
       </div>
     </section>

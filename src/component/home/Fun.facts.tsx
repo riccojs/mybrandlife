@@ -1,15 +1,7 @@
 import { Link } from "react-router";
 import Logo from "../../assets/logo.png";
-import { useAuth } from "../../hook/useAuth";
-import { LayoutDashboard } from "lucide-react";
 
 function FunFacts() {
-  const { user, isLoading } = useAuth() as {
-    user: { landerName: string };
-    isLoading: boolean | null;
-  };
-  const redirectUrl = import.meta.env.VITE_APP_REDIRECT_ROUTE;
-
   return (
     <section className="my-10">
       <div className="w-10/12 lg:w-7/12 m-auto bg-[#FFF3E3] h-5 rounded-t-lg"></div>
@@ -28,25 +20,12 @@ function FunFacts() {
             <img src={Logo} alt="" className="w-24" />
             <p className="w-full h-2 bg-[#96c94b] rounded-full"></p>
           </div>
-          {isLoading ? (
-            <div className="w-52 h-14 mt-5 m-auto rounded-full bg-slate-200 animate-pulse"></div>
-          ) : user ? (
-            <a
-              href={redirectUrl}
-              target="_blank"
-              className="flex active:scale-[0.98] w-fit items-center gap-2 px-10 py-4 rounded-full hover:bg-[#589c28] text-white text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25 mx-auto mt-5"
-            >
-              <LayoutDashboard className="w-4 h-4 fill-current" />
-              Dashboard
-            </a>
-          ) : (
-            <Link
-              to="/pricing"
-              className="flex active:scale-[0.98] w-fit items-center gap-2 px-10 py-4 rounded-full hover:bg-[#589c28] text-white text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25 mx-auto mt-5"
-            >
-              <p>See Our Offerings</p>
-            </Link>
-          )}
+          <Link
+            to="/pricing"
+            className="flex active:scale-[0.98] w-fit items-center gap-2 px-10 py-4 rounded-full hover:bg-[#589c28] text-white text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25 mx-auto mt-5"
+          >
+            <p>See Our Offerings</p>
+          </Link>
         </div>
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-1">

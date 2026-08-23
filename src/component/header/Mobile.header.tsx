@@ -1,7 +1,6 @@
 import { Link, NavLink } from "react-router";
 import Logo from "../../assets/MBL_Logo_CROP.png";
-import { LayoutDashboard, Rocket, Users } from "lucide-react";
-import { useAuth } from "../../hook/useAuth";
+import { Rocket, Users } from "lucide-react";
 
 interface Types {
   isShow: boolean;
@@ -9,10 +8,6 @@ interface Types {
 }
 
 function MobileHeader({ isShow, setIsShow }: Types) {
-  const { user, isLoading } = useAuth() as {
-    user: { landerName: string };
-    isLoading: boolean | null;
-  };
   const redirectUrl = import.meta.env.VITE_APP_REDIRECT_ROUTE;
 
   return (
@@ -140,53 +135,31 @@ function MobileHeader({ isShow, setIsShow }: Types) {
             </li>
           </ul>
         </div>
-        {isLoading ? (
-          <div className="items-center flex flex-col gap-2 px-2 mt-5">
-            <div className="w-full h-10 rounded-full bg-slate-200 animate-pulse"></div>
-            <div className="w-full h-10 rounded-full bg-slate-200 animate-pulse"></div>
-          </div>
-        ) : user ? (
-          <div className="items-center flex flex-col gap-2 px-2 mt-5">
-            <a
-              href={redirectUrl}
-              target="_blank"
-              onClick={() => setIsShow(false)}
-              className="flex items-center bg-[#65B32E] shadow-[#65B32E]/25 active:scale-[0.98] justify-center gap-2 px-5 py-2.5 w-full rounded-full hover:bg-[#589c28] text-white text-sm font-medium shadow-lg transition-all"
-            >
-              <LayoutDashboard className="w-4 h-4 fill-current" />
-              Dashboard
-            </a>
-          </div>
-        ) : (
-          <div className="items-center flex flex-col gap-2 px-2 mt-5">
-            <NavLink
-              to="/auth/login"
-              onClick={() => setIsShow(false)}
-              className={({ isActive }) =>
-                `active:scale-[0.98] flex justify-center items-center gap-3 px-5 py-2.5 w-full rounded-full border border-gray-200 text-sm font-bold text-gray-800 hover:bg-gray-50 transition-all ${
-                  isActive ? "text-[#96c94b]" : "text-[#bb2d28]"
-                }`
-              }
-            >
-              <Users className="w-4 h-4 text-gray-600" />
-              Login
-            </NavLink>
-            <NavLink
-              to="/pricing"
-              onClick={() => setIsShow(false)}
-              className={({ isActive }) =>
-                `flex items-center active:scale-[0.98] justify-center gap-2 px-5 py-2.5 w-full rounded-full hover:bg-[#589c28] text-white text-sm font-medium shadow-lg transition-all ${
-                  isActive
-                    ? "bg-[#bb2d28] text-white shadow-[#bb2d28]/25"
-                    : "bg-[#65B32E] text-black shadow-[#65B32E]/25"
-                }`
-              }
-            >
-              <Rocket className="w-4 h-4 fill-current" />
-              Register Your Brand
-            </NavLink>
-          </div>
-        )}
+        <div className="items-center flex flex-col gap-2 px-2 mt-5">
+          <a
+            href={redirectUrl}
+            onClick={() => setIsShow(false)}
+            target="_blank"
+            className="active:scale-[0.98] flex justify-center items-center gap-3 px-5 py-2.5 w-full rounded-full border border-gray-200 text-sm font-bold text-gray-800 hover:bg-gray-50 transition-all"
+          >
+            <Users className="w-4 h-4 text-gray-600" />
+            Login
+          </a>
+          <NavLink
+            to="/pricing"
+            onClick={() => setIsShow(false)}
+            className={({ isActive }) =>
+              `flex items-center active:scale-[0.98] justify-center gap-2 px-5 py-2.5 w-full rounded-full hover:bg-[#589c28] text-white text-sm font-medium shadow-lg transition-all ${
+                isActive
+                  ? "bg-[#bb2d28] text-white shadow-[#bb2d28]/25"
+                  : "bg-[#65B32E] text-black shadow-[#65B32E]/25"
+              }`
+            }
+          >
+            <Rocket className="w-4 h-4 fill-current" />
+            Register Your Brand
+          </NavLink>
+        </div>
         <div className="absolute bottom-5 left-5">
           <div className="flex gap-3 items-center justify-center mb-3">
             <a

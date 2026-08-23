@@ -1,11 +1,6 @@
 import { Link } from "react-router";
-import { useAuth } from "../hook/useAuth";
-import { LayoutDashboard } from "lucide-react";
 
 function AboutUsPage() {
-  const { user } = useAuth() as { user: { landerName: string } | null };
-  const redirectUrl = import.meta.env.VITE_APP_REDIRECT_ROUTE;
-
   return (
     <section className="py-10">
       <div className="container flex flex-col gap-10 relative">
@@ -148,23 +143,12 @@ function AboutUsPage() {
             </Link>
           </div>
           <div className="flex justify-center items-center mt-3">
-            {user ? (
-              <a
-                href={redirectUrl}
-                target="_blank"
-                className="flex active:scale-[0.98] w-fit items-center gap-2 px-10 py-4 rounded-full hover:bg-[#589c28] text-white text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25 mt-5"
-              >
-                <LayoutDashboard className="w-4 h-4 fill-current" />
-                Dashboard
-              </a>
-            ) : (
-              <Link
-                className="flex cursor-pointer w-fit active:scale-[0.98] items-center gap-2 px-10 py-4 rounded-full hover:bg-[#589c28] text-white text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25"
-                to="/pricing"
-              >
-                Register Your Brand
-              </Link>
-            )}
+            <Link
+              className="flex cursor-pointer w-fit active:scale-[0.98] items-center gap-2 px-10 py-4 rounded-full hover:bg-[#589c28] text-white text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25"
+              to="/pricing"
+            >
+              Register Your Brand
+            </Link>
           </div>
         </div>
         <div className="flex flex-col gap-2">
@@ -259,23 +243,12 @@ function AboutUsPage() {
               “future release” instead.{" "}
             </li>
           </ul>
-          {user ? (
-            <a
-              href={redirectUrl}
-              target="_blank"
-              className="flex active:scale-[0.98] w-fit items-center gap-2 px-10 py-4 rounded-full hover:bg-[#589c28] text-white text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25 mt-5"
-            >
-              <LayoutDashboard className="w-4 h-4 fill-current" />
-              Dashboard
-            </a>
-          ) : (
-            <Link
-              className="flex w-fit cursor-pointer active:scale-[0.98] items-center gap-2 px-10 py-4 rounded-full hover:bg-[#589c28] text-white text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25"
-              to="/pricing"
-            >
-              Register Your Brand
-            </Link>
-          )}
+          <Link
+            className="flex w-fit cursor-pointer active:scale-[0.98] items-center gap-2 px-10 py-4 rounded-full hover:bg-[#589c28] text-white text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25"
+            to="/pricing"
+          >
+            Register Your Brand
+          </Link>
         </div>
         <div className="flex flex-col gap-2">
           <h2 className="text-2xl font-medium">Start With One Page</h2>
@@ -289,23 +262,12 @@ function AboutUsPage() {
               story, and start building a stronger presence today.
             </li>
           </ul>
-          {user ? (
-            <a
-              href={redirectUrl}
-              target="_blank"
-              className="flex active:scale-[0.98] w-fit items-center gap-2 px-10 py-4 rounded-full hover:bg-[#589c28] text-white text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25 mt-5"
-            >
-              <LayoutDashboard className="w-4 h-4 fill-current" />
-              Dashboard
-            </a>
-          ) : (
-            <Link
-              className="flex cursor-pointer w-fit active:scale-[0.98] items-center gap-2 px-10 py-4 rounded-full hover:bg-[#589c28] text-white text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25"
-              to="/pricing"
-            >
-              Register Your Brand
-            </Link>
-          )}
+          <Link
+            className="flex cursor-pointer w-fit active:scale-[0.98] items-center gap-2 px-10 py-4 rounded-full hover:bg-[#589c28] text-white text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25"
+            to="/pricing"
+          >
+            Register Your Brand
+          </Link>
         </div>
       </div>
     </section>

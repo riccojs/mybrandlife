@@ -2,12 +2,8 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router";
 import ScrollToTop from "./component/Scroll.toTop";
 import WelcomePopup from "./component/popups/Welcome.popup";
-import AuthRoute from "./route/Auth.route";
-import Login from "./pages/Login";
 import { Toaster } from "react-hot-toast";
 import Register from "./pages/Register";
-import Reset from "./pages/Reset";
-import ResetPassword from "./pages/Reset.password";
 import VerifyOtp from "./pages/Verify.otp";
 import PublicRoute from "./route/Public.route";
 import HomePage from "./pages/Home.page";
@@ -30,13 +26,6 @@ function App() {
       <ScrollToTop />
       <WelcomePopup />
       <Routes>
-        <Route element={<AuthRoute />}>
-          <Route path="/auth/login" element={<Login />} />
-          <Route path="/auth/register" element={<Register />} />
-          <Route path="/auth/reset" element={<Reset />} />
-          <Route path="/auth/reset/:token" element={<ResetPassword />} />
-          <Route path="/auth/verify" element={<VerifyOtp />} />
-        </Route>
         <Route element={<PublicRoute />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/pricing" element={<Pricing />} />
@@ -48,6 +37,8 @@ function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/marketing" element={<MarketingPage />} />
           <Route path="/wistband/tracking" element={<WistbandTracking />} />
+          <Route path="/auth/register" element={<Register />} />
+          <Route path="/auth/verify" element={<VerifyOtp />} />
         </Route>
         <Route element={<GeneralRoute />}>
           <Route path="/follow-us" element={<FollowUs />} />

@@ -2,17 +2,11 @@ import Logo from "../../assets/MBL_Logo_CROP.png";
 import { NavLink } from "react-router";
 import MobileHeader from "./Mobile.header";
 import React, { useState } from "react";
-import { LayoutDashboard, Rocket, Users } from "lucide-react";
-import { useAuth } from "../../hook/useAuth";
+import { Rocket, Users } from "lucide-react";
 
 function Header() {
   const [isShow, setIsShow] = useState<boolean>(false);
-  const { user, isLoading } = useAuth() as {
-    user: {
-      landerName: string;
-    };
-    isLoading: boolean;
-  };
+
   const redirectUrl = import.meta.env.VITE_APP_REDIRECT_ROUTE;
 
   return (
@@ -145,50 +139,29 @@ function Header() {
               </li>
             </ul>
           </div>
-          {isLoading ? (
-            <div className="gap-5 items-center lg:flex hidden">
-              <div className="w-24 h-10 rounded-full bg-slate-200 animate-pulse"></div>
-              <div className="w-40 h-10 rounded-full bg-slate-200 animate-pulse"></div>
-            </div>
-          ) : user ? (
-            <div className="items-center hidden lg:flex flex-col gap-2 px-2">
-              <a
-                href={redirectUrl}
-                target="_blank"
-                className="flex items-center bg-[#65B32E] shadow-[#65B32E]/25 active:scale-[0.98] justify-center gap-2 px-5 py-2.5 w-full rounded-full hover:bg-[#589c28] text-white text-sm font-medium shadow-lg transition-all"
-              >
-                <LayoutDashboard className="w-4 h-4 fill-current" />
-                Dashboard
-              </a>
-            </div>
-          ) : (
-            <div className="gap-5 items-center lg:flex hidden">
-              <NavLink
-                to="/auth/login"
-                className={({ isActive }) =>
-                  `hidden active:scale-[0.98] md:flex items-center gap-3 px-5 py-2.5 rounded-full border border-gray-200 text-sm font-bold text-gray-800 hover:bg-gray-50 transition-all ${
-                    isActive ? "text-[#96c94b]" : "text-[#bb2d28]"
-                  }`
-                }
-              >
-                <Users className="w-4 h-4 text-gray-600" />
-                Login
-              </NavLink>
-              <NavLink
-                to="/pricing"
-                className={({ isActive }) =>
-                  `flex items-center active:scale-[0.98] gap-2 px-5 py-2.5 rounded-full hover:bg-[#589c28] text-white text-sm font-medium shadow-lg transition-all ${
-                    isActive
-                      ? "bg-[#bb2d28] text-white shadow-[#bb2d28]/25"
-                      : "bg-[#65B32E] text-black shadow-[#65B32E]/25"
-                  }`
-                }
-              >
-                <Rocket className="w-4 h-4 fill-current" />
-                Register Your Brand
-              </NavLink>
-            </div>
-          )}
+          <div className="gap-5 items-center lg:flex hidden">
+            <a
+              href={redirectUrl}
+              target="_blank"
+              className="hidden active:scale-[0.98] md:flex items-center gap-3 px-5 py-2.5 rounded-full border border-gray-200 text-sm font-bold text-gray-800 hover:bg-gray-50 transition-all"
+            >
+              <Users className="w-4 h-4 text-gray-600" />
+              Login
+            </a>
+            <NavLink
+              to="/pricing"
+              className={({ isActive }) =>
+                `flex items-center active:scale-[0.98] gap-2 px-5 py-2.5 rounded-full hover:bg-[#589c28] text-white text-sm font-medium shadow-lg transition-all ${
+                  isActive
+                    ? "bg-[#bb2d28] text-white shadow-[#bb2d28]/25"
+                    : "bg-[#65B32E] text-black shadow-[#65B32E]/25"
+                }`
+              }
+            >
+              <Rocket className="w-4 h-4 fill-current" />
+              Register Your Brand
+            </NavLink>
+          </div>
         </div>
       </header>
       <MobileHeader isShow={isShow} setIsShow={setIsShow} />

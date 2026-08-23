@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useGetAllUserByAdminQuery } from "../redux/features/auth/authApi";
-import { useAuth } from "../hook/useAuth";
 import type { UserDataType } from "../utils/user.types";
 
 export default function DirectoryPage() {
   const [query, setQuery] = useState("");
   const [showTable, setShowTable] = useState(false);
-  const { user: userData } = useAuth();
   const [showBox, setShowBox] = useState(true);
   const boxRef = useRef<HTMLDivElement | null>(null);
   const { data } = useGetAllUserByAdminQuery();
@@ -18,8 +16,6 @@ export default function DirectoryPage() {
 
     return user.filter((entry) => {
       if (!entry.enableDirectory) return false;
-      if (entry.id === userData?.id) return false;
-
       return (
         entry?.firstName?.toLowerCase()?.includes(q) ||
         entry?.landerName?.toLowerCase()?.includes(q) ||
