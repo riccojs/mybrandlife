@@ -602,40 +602,26 @@ export async function login(req: Request, res: Response) {
 
 // logout User
 export async function logout(req: Request, res: Response) {
-  const { email, role } = req.body;
+  const { email } = req.body;
   try {
-    if (role === "ADMIN") {
-      const existAdmin = await Prisma.admin.findUnique({
-        where: {
-          email: email,
-        },
-      });
-      if (!existAdmin) {
-        return res.status(404).json({
-          status: ERROR_STATUS,
-          message: DATA_NOT_FOUND_MESSAGE,
-        });
-      }
-    } else {
-      const existUser = await Prisma.user.findUnique({
-        where: {
-          email: email,
-        },
-      });
-      if (!existUser) {
-        return res.status(404).json({
-          status: ERROR_STATUS,
-          message: DATA_NOT_FOUND_MESSAGE,
-        });
-      }
-      await activityLog({
-        userId: existUser?.id,
-        action: "Logout User",
-        status: LOG_SUCCESS,
-        endpoint: req.originalUrl,
-        method: req.method,
+    const existUser = await Prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if (!existUser) {
+      return res.status(404).json({
+        status: ERROR_STATUS,
+        message: DATA_NOT_FOUND_MESSAGE,
       });
     }
+    await activityLog({
+      userId: existUser?.id,
+      action: "Logout User",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
     res.cookie("token", "", {
       httpOnly: true,
       expires: new Date(0),
