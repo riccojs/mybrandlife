@@ -186,7 +186,7 @@ function NoCollapsSidebar() {
                             <NavLink
                               to={
                                 user?.package !== "gold" && child.restrict
-                                  ? "/dashboard"
+                                  ? "/"
                                   : child?.path
                               }
                               end={child.path === "/"}

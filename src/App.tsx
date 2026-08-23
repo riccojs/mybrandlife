@@ -32,6 +32,11 @@ import WristbandOrderConfirmation from "./pages/Wristband.order.confirmation";
 import GoogleConnectsuccess from "./pages/Google.connectsuccess";
 import StripeConnectsuccess from "./pages/Stripe.connectSuccess";
 import TipPaymentSuccess from "./pages/Tip.paymenstsuccess";
+import PrivateRoute from "./route/Private.route";
+import Login from "./pages/Login";
+import Reset from "./pages/Reset";
+import ResetPassword from "./pages/Reset.password";
+import AccessRoute from "./route/Access.route";
 
 function App() {
   return (
@@ -39,41 +44,49 @@ function App() {
       <ScrollToTop />
       <Routes>
         <Route element={<AuthRoute />}>
+          <Route path="/auth/login" element={<Login />} />
+          <Route path="/auth/reset" element={<Reset />} />
+          <Route path="/auth/reset/:token" element={<ResetPassword />} />
+        </Route>
+        <Route element={<PrivateRoute />}>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/brandtrack" element={<Brandtrack />} />
           <Route path="/build-your-lander" element={<CreateOnboard />} />
           <Route path="/onboard/:id" element={<UpdateOnboard />} />
-          <Route path="/brandbook" element={<Brandbook />} />
-          <Route path="/spin" element={<SpinList />} />
-          <Route path="/brandbook/slot" element={<CreateSlot />} />
-          <Route path="/echo" element={<Echos />} />
           <Route path="/onboard/update/:id" element={<SIngleOnboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/setting" element={<Setting />} />
           <Route path="/subscription" element={<Subscription />} />
           <Route path="/onboard" element={<OnboardingList />} />
-          <Route path="/brandshare" element={<JoinUserList />} />
-          <Route path="/ordered-wristband" element={<OrderedWristband />} />
-          <Route
-            path="/ordered-wristband/:id"
-            element={<OrderedWristbandView />}
-          />
-          <Route
-            path="/ordered_wristband/confirmation/:id"
-            element={<WristbandOrderConfirmation />}
-          />
-          <Route
-            path="/google/connect/success"
-            element={<GoogleConnectsuccess />}
-          />
-          <Route
-            path="/stripe/connect/success"
-            element={<StripeConnectsuccess />}
-          />
-          <Route
-            path="/stripe/tip/payment/success"
-            element={<TipPaymentSuccess />}
-          />
+          <Route element={<AccessRoute />}>
+            <Route path="/brandbook/slot" element={<CreateSlot />} />
+            <Route path="/echo" element={<Echos />} />
+            <Route path="/brandbook" element={<Brandbook />} />
+            <Route path="/brandtrack" element={<Brandtrack />} />
+            <Route path="/spin" element={<SpinList />} />
+            <Route path="/ordered-wristband" element={<OrderedWristband />} />
+            <Route
+              path="/ordered-wristband/:id"
+              element={<OrderedWristbandView />}
+            />
+            <Route
+              path="/ordered_wristband/confirmation/:id"
+              element={<WristbandOrderConfirmation />}
+            />
+            <Route
+              path="/google/connect/success"
+              element={<GoogleConnectsuccess />}
+            />
+            <Route
+              path="/stripe/connect/success"
+              element={<StripeConnectsuccess />}
+            />
+            <Route
+              path="/stripe/tip/payment/success"
+              element={<TipPaymentSuccess />}
+            />
+            <Route path="/brandshare" element={<JoinUserList />} />
+          </Route>
+
           <Route path="/pulsetrack" element={<Pulsetrack />}>
             <Route index element={<PulsetrackDashboard />} />
             <Route path="projects" element={<ProjectList />} />
@@ -84,8 +97,8 @@ function App() {
             <Route path="export" element={<ExportData />} />
             <Route path="setting" element={<Dashboard />} />
           </Route>
-          <Route path="*" element={<ErrorPage />} />
         </Route>
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Toaster />
     </BrowserRouter>
