@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useParams } from "react-router";
 import { useUpdatePasswordByAdminMutation } from "../../redux/features/auth/authApi";
@@ -87,7 +87,6 @@ function UserpassUpdate() {
         >
           Save
         </button>
-        <Toaster />
       </form>
       <WarningPopup
         open={open}

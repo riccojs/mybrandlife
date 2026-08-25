@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 import HeaderProfile from "./Header.profile";
 import { useEffect, useRef, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useLogoutMutation } from "../../redux/features/auth/authApi";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useAuth } from "../../hook/useAuth";
@@ -199,7 +199,6 @@ function Header({ setSidebard, sidebar, setNavbar }: Types) {
           )}
         </div>
       </div>
-      <Toaster />
     </header>
   );
 }
