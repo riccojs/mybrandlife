@@ -85,6 +85,7 @@ function SidebarNoCollaps() {
                           <li key={index}>
                             <NavLink
                               to={child?.path}
+                              end={child.path === "/"}
                               className={({ isActive }) =>
                                 `flex gap-2 rounded-lg items-center hover:text-[#000000] hover:bg-[#96c94b] py-2 px-4 ${
                                   isActive

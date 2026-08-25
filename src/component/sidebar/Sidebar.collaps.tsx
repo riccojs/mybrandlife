@@ -26,9 +26,13 @@ function SidebarCollaps() {
   }, []);
 
   const isMenuActive = (menu: { children: { path: string }[] }) => {
-    return menu.children.some((child) =>
-      location.pathname.includes(child.path),
-    );
+    return menu.children.some((child) => {
+      if (child.path === "/") {
+        return location.pathname === "/";
+      }
+
+      return location.pathname.startsWith(child.path);
+    });
   };
 
   return (
@@ -70,6 +74,7 @@ function SidebarCollaps() {
                           <li key={child.name}>
                             <NavLink
                               to={child.path}
+                              end={child.path === "/"}
                               className={({ isActive }) =>
                                 `flex gap-2 rounded-lg items-center hover:bg-[#96c94b] hover:text-black py-2 px-4 ${
                                   isActive
