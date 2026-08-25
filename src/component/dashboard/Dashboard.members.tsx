@@ -83,7 +83,7 @@ function DashboardMembers({ data, isLoading }: DataTypes) {
     <div className="border border-gray-200 p-5 rounded-md bg-white w-full lg:w-6/12">
       <span className="flex justify-between items-center">
         <h2 className="text-medium text-xl">Recent Join Users</h2>
-        <Link to="/admin/user" className="text-red-500">
+        <Link to="/user" className="text-red-500">
           See all
         </Link>
       </span>

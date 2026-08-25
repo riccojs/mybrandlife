@@ -81,7 +81,7 @@ function DashboardTemplates({ data, isLoading }: DataTypes) {
     <div className="border border-gray-200 p-5 rounded-md bg-white w-full lg:w-6/12">
       <span className="flex justify-between items-center">
         <h2 className="text-medium text-xl">Recent Onboarding</h2>
-        <Link to="/admin/onboard" className="text-red-500">
+        <Link to="/onboard" className="text-red-500">
           See all
         </Link>
       </span>

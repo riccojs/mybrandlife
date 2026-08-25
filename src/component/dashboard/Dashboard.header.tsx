@@ -48,11 +48,11 @@ function DashboardHeader() {
           designed for efficiency.
         </p>
         <div className="flex gap-3 items-center">
-          <Link to={"/admin/onboard"} className="w-fit primary-btn mt-5">
+          <Link to={"/onboard"} className="w-fit primary-btn mt-5">
             Check all Onboards
           </Link>
           <Link
-            to={"/admin/user"}
+            to={"/user"}
             className="w-fit py-2 px-4 bg-white border-2 rounded-lg border-[#96c94b] mt-5"
           >
             Check all Users
