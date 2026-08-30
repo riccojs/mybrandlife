@@ -233,7 +233,7 @@ export async function login(req: Request, res: Response) {
         message: PASSWORD_NOT_MATCH_MESSAGE,
       });
     }
-    res.cookie("token", token, {
+    res.cookie("adminToken", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
@@ -272,7 +272,7 @@ export async function logged(req: Request, res: Response) {
     id: string;
     email: string;
   }
-  const token = req.cookies.token;
+  const token = req.cookies.adminToken;
   if (!token)
     return res.status(401).json({
       status: ERROR_STATUS,
@@ -323,11 +323,12 @@ export async function logout(req: Request, res: Response) {
         message: DATA_NOT_FOUND_MESSAGE,
       });
     }
-    res.cookie("token", "", {
+    res.cookie("adminToken", "", {
       httpOnly: true,
       expires: new Date(0),
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
+      path: "/",
     });
     res.status(200).json({
       status: SUCCESS_STATUS,

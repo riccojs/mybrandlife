@@ -567,7 +567,7 @@ export async function login(req: Request, res: Response) {
         message: PASSWORD_NOT_MATCH_MESSAGE,
       });
     }
-    res.cookie("token", token, {
+    res.cookie("userToken", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
@@ -622,11 +622,12 @@ export async function logout(req: Request, res: Response) {
       endpoint: req.originalUrl,
       method: req.method,
     });
-    res.cookie("token", "", {
+    res.cookie("userToken", "", {
       httpOnly: true,
       expires: new Date(0),
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
+      path: "/",
     });
     res.status(200).json({
       status: SUCCESS_STATUS,
@@ -732,7 +733,7 @@ export async function logged(req: Request, res: Response) {
     email: string;
     role: "USER" | "ADMIN";
   }
-  const token = req.cookies.token;
+  const token = req.cookies.userToken;
   if (!token)
     return res.status(401).json({
       status: ERROR_STATUS,

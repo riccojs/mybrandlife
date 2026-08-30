@@ -19,7 +19,7 @@ declare module "express-serve-static-core" {
 
 const auth = (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = req.cookies?.token;
+    const token = req.cookies?.userToken || req.cookies?.adminToken;
     if (!token) {
       return res.status(401).json({
         status: ERROR_STATUS,
