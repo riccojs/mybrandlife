@@ -188,16 +188,8 @@ function Register() {
       toast.error("Shipping address is incomplete!");
       return;
     }
-    const userData = {
-      ...user,
-      domain: domain,
-      packageType: pkgType,
-      frequency: frequencie,
-      planKey: planKey,
-      planPrice: planPrice,
-      planOldPrice: planOldPrice,
-    };
-    register(userData)
+
+    register(user)
       .unwrap()
       .then((res) => {
         toast.success(res.message);

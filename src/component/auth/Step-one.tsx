@@ -62,6 +62,9 @@ function StepOne({ notes, user, setUser }: Types) {
       domain: value,
       packageType: "",
       frequency: "",
+      planKey: "",
+      planPrice: 0,
+      planOldPrice: 0,
     }));
   };
   const handlePackageSelect = (value: string) => {
@@ -69,13 +72,19 @@ function StepOne({ notes, user, setUser }: Types) {
       ...prev,
       packageType: value,
       frequency: "",
+      planKey: "",
+      planPrice: 0,
+      planOldPrice: 0,
     }));
   };
 
-  const update = (key: string, value: string) => {
+  const update = (freq: Frequency) => {
     setUser((prev) => ({
       ...prev,
-      [key]: value,
+      frequency: freq.key,
+      planKey: freq.planKey,
+      planPrice: freq.price,
+      planOldPrice: freq.oldPrice,
     }));
   };
 
@@ -126,11 +135,12 @@ function StepOne({ notes, user, setUser }: Types) {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {availableFrequencies.map((freq) => (
               <BillingOption
+                key={freq?.key}
                 title={freq?.key}
                 price={freq?.price}
                 badge={freq?.key === "yearly" ? "Best Value" : ""}
                 selected={frequency === freq?.key}
-                onClick={() => update("frequency", freq?.key)}
+                onClick={() => update(freq)}
               />
             ))}
           </div>
