@@ -70,7 +70,7 @@ export async function paymentCreator(user: UserType, code: string) {
       discounts: promoId ? [{ promotion_code: promoId }] : [],
       success_url: successUrl,
       cancel_url: failedUrl,
-      automatic_tax: { enabled: true },
+      automatic_tax: { enabled: false },
       customer_update: { address: "auto" },
       subscription_data: { metadata: { userId: id, planId: planId } },
     });
