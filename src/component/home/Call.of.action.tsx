@@ -33,7 +33,7 @@ function CallOfAction() {
               to="/pricing"
               className="flex active:scale-[0.98] items-center gap-2 px-8 py-3 rounded-full hover:bg-[#589c28] text-white text-xs md:text-sm font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25"
             >
-              <Rocket className="w-3 md:w-4 h-3 md:-4 fill-current" />
+              <Rocket className="w-3 md:w-4 h-3 md:h-4 fill-current" />
               Register Your Brand
             </Link>
           </div>

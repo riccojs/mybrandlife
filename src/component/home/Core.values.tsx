@@ -7,7 +7,7 @@ function CoreValues() {
         <h2 className="text-black text-lg md:text-3xl xl:text-4xl font-bold text-center">
           Our Core Values
         </h2>
-        <p className="text-sm md:text-md text-black text-center font-normal w-full md:w-10/12 m-auto py-2">
+        <p className="text-sm md:text-base text-black text-center font-normal w-full md:w-10/12 m-auto py-2">
           Our core values power every step of your journey. With My Brand Life,
           you'll build a presence that's personal, impactful, and unforgettable.
           By uniting all your social platforms under one brand, we connect you
@@ -25,7 +25,7 @@ function CoreValues() {
               <h2 className="text-black text-md md:text-xl font-medium">
                 Empower Your Brand
               </h2>
-              <p className="text-black text-sm md:text-md font-normal">
+              <p className="text-black text-sm md:text-base font-normal">
                 Bring all your platforms and tools together in one place. A
                 single hub makes your brand clear, consistent, and easy to find.
               </p>
@@ -40,7 +40,7 @@ function CoreValues() {
               <h2 className="text-black text-md md:text-xl font-medium">
                 Connect With People
               </h2>
-              <p className="text-black text-sm md:text-md font-normal">
+              <p className="text-black text-sm md:text-base font-normal">
                 Stay connected with your audience through smart features that
                 make it simple to talk, share, and build real relationships.
               </p>
@@ -55,7 +55,7 @@ function CoreValues() {
               <h2 className="text-black text-md md:text-xl font-medium">
                 Build Your Presence
               </h2>
-              <p className="text-black text-sm md:text-md font-normal">
+              <p className="text-black text-sm md:text-base font-normal">
                 Grow your reach with tools that keep you visible, memorable, and
                 connected wherever your audience is.
               </p>

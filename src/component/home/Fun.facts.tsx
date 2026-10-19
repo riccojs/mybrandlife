@@ -29,7 +29,7 @@ function FunFacts() {
         </div>
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-1">
-            <h2 className="text-sm md:text-md font-bold text-black">
+            <h2 className="text-sm md:text-base font-bold text-black">
               Digital First Impressions
             </h2>
             <p className="text-xs md:text-sm font-normal text-black">
@@ -39,7 +39,7 @@ function FunFacts() {
             </p>
           </div>
           <div className="flex flex-col gap-1">
-            <h2 className="text-sm md:text-md font-bold text-black">
+            <h2 className="text-sm md:text-base font-bold text-black">
               The Power of Consistency
             </h2>
             <p className="text-xs md:text-sm font-normal text-black">
@@ -49,7 +49,7 @@ function FunFacts() {
             </p>
           </div>
           <div className="flex flex-col gap-1">
-            <h2 className="text-sm md:text-md font-bold text-black">
+            <h2 className="text-sm md:text-base font-bold text-black">
               The Social Media Clock
             </h2>
             <p className="text-xs md:text-sm font-normal text-black">
@@ -59,7 +59,7 @@ function FunFacts() {
             </p>
           </div>
           <div className="flex flex-col gap-1">
-            <h2 className="text-sm md:text-md font-bold text-black">
+            <h2 className="text-sm md:text-base font-bold text-black">
               Email Still Wins
             </h2>
             <p className="text-xs md:text-sm font-normal text-black">
