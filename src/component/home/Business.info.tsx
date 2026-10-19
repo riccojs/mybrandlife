@@ -2,22 +2,22 @@ import Image from "../../assets/YBYLYP.png";
 
 function BusinessInfo() {
   return (
-    <section className="py-10 bg-white">
+    <section className=" bg-white">
       <div className="container">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 items-center">
           <div>
-            <img src={Image} alt="" />
+            <img src={Image} alt="" className="w-32 md:w-52 xl:w-fit m-auto" />
           </div>
           <div>
-            <h2 className="text-black text-2xl font-medium">
+            <h2 className="text-black text-lg md:text-2xl font-medium">
               What's on MyBrandLife Radar?
             </h2>
-            <p className="text-black text-md font-normal mt-3">
+            <p className="text-black text-sm md:text-md font-normal mt-3">
               MyBrandLife is built to grow with you. New tools, features, and
               partner services are being developed to make building your brand
               easier, more connected, and more valuable over time.
             </p>
-            <div className="flex flex-col gap-3 my-5">
+            <div className="flex flex-col gap-3 my-5 text-sm md:text-md">
               <span className="flex gap-2 items-start">
                 <i className="fa-solid fa-check text-[#96c94b] mt-1"></i>
                 <p>

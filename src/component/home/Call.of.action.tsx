@@ -8,18 +8,18 @@ function CallOfAction() {
     <section>
       <div className="container">
         <div className="flex flex-col items-center mt-5">
-          <h2 className="text-black text-4xl font-bold text-center">
+          <h2 className="text-black text-lg md:text-3xl xl:text-4xl font-bold text-center">
             Your Brand, Your Life, Your Way
           </h2>
 
-          <p className="text-black text-md font-normal text-center my-5 w-10/12">
+          <p className="text-black text-sm md:text-base font-normal text-center my-2 md:my-5 w-full md:w-10/12">
             At MyBrandLife, our mission is to empower individuals and businesses
             by providing tailored, industry-specific landing pages that enhance
             their online presence and engagement. We strive to simplify the
             digital experience, enabling our users to showcase their unique
             brands effectively and effortlessly.
           </p>
-          <p className="text-black text-md font-normal text-center my-5 w-10/12">
+          <p className="text-black text-sm md:text-base font-normal text-center my-2 md:my-5 w-full md:w-10/12">
             My Brand Life delivers tailored brand landers for every
             niche—empowering you to build a cohesive identity that connects with
             your audience. Whether you're a creative, coach, entrepreneur,
@@ -28,12 +28,12 @@ function CallOfAction() {
             more, your brand connects seamlessly online and offline - unlocking
             endless ways to engage your world.
           </p>
-          <div className="flex gap-3 items-center mb-5">
+          <div className="flex gap-3 items-center mb-5 md:mt-0 mt-2">
             <Link
               to="/pricing"
-              className="flex active:scale-[0.98] items-center gap-2 px-10 py-4 rounded-full hover:bg-[#589c28] text-white text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25"
+              className="flex active:scale-[0.98] items-center gap-2 px-8 py-3 rounded-full hover:bg-[#589c28] text-white text-xs md:text-sm font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25"
             >
-              <Rocket className="w-5 h-5 fill-current" />
+              <Rocket className="w-3 md:w-4 h-3 md:-4 fill-current" />
               Register Your Brand
             </Link>
           </div>

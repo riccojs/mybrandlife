@@ -90,7 +90,7 @@ function StepFour({ user, handleChange, setUser }: Types) {
             />
           </div>
           {packageType === "gold" && frequency === "yearly" && (
-            <p className="text-black text-sm rounded-lg font-normal bg-amber-100 p-2 border-l-2 border-amber-400">
+            <p className="text-black bg-amber-50 p-3 text-[13px] rounded-xl">
               NOTE: BrandShare codes are case-sensitive. Please enter the code
               exactly as provided.
             </p>
@@ -98,7 +98,7 @@ function StepFour({ user, handleChange, setUser }: Types) {
           {packageType === "gold" && frequency === "yearly" && (
             <p
               onClick={handleCheck}
-              className={`h-12 w-60 flex justify-center items-center rounded-full  text-sm font-semibold text-black shadow-sm transition duration-200 active:scale-[1.01] ${isLoading ? "bg-[#6fa420] cursor-not-allowed" : "bg-[#96c94b] hover:bg-[#88c133] cursor-pointer"}`}
+              className={`h-12 w-60 flex justify-center items-center rounded-full  text-sm font-normal text-black shadow-sm transition duration-200 active:scale-[1.01] ${isLoading ? "bg-slate-300 cursor-not-allowed" : "bg-slate-200 hover:bg-slate-300 cursor-pointer"}`}
             >
               {isLoading ? (
                 <LoaderCircle className="animate-spin" />

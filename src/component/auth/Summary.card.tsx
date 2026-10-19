@@ -17,7 +17,9 @@ const SummaryCard = ({
 
       <div>
         <p className="text-[12px] font-semibold text-[#687083]">{label}</p>
-        <p className={`mt-0.5 text-[14px] font-bold ${valueClassName}`}>
+        <p
+          className={`mt-0.5 text-[14px] font-bold ${valueClassName} uppercase`}
+        >
           {value}
         </p>
       </div>

@@ -5,9 +5,9 @@ import { Link } from "react-router";
 
 function BrandList() {
   return (
-    <section className="my-10">
+    <section className="my-5 md:my-10">
       <div className="container">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-10">
           <div className="hover-effect">
             <Link to="/pricing">
               <img src={ImageOne} alt="Build-Your-Brand" />

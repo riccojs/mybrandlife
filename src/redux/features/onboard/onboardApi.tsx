@@ -83,6 +83,9 @@ export const onboardApi = apiSlice.injectEndpoints({
         url: "/api/onboard/request/info",
         method: "POST",
         body: user,
+        headers: {
+          "x-api-key": import.meta.env.VITE_APP_PUBLIC_API_KEY,
+        },
       }),
       invalidatesTags: ["update"],
     }),
@@ -91,6 +94,9 @@ export const onboardApi = apiSlice.injectEndpoints({
         url: "/api/onboard/request/info/location",
         method: "POST",
         body: data,
+        headers: {
+          "x-api-key": import.meta.env.VITE_APP_PUBLIC_API_KEY,
+        },
       }),
       invalidatesTags: ["update"],
     }),

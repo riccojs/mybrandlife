@@ -69,11 +69,6 @@ export const saasLinks = [
     url: "/pricing",
   },
   {
-    id: 2,
-    name: "Login",
-    url: "/auth/login",
-  },
-  {
     id: 3,
     name: "Wristband Tracking",
     url: "/wistband/tracking",

@@ -59,17 +59,17 @@ export default function PartnersPage() {
   return (
     <section className="bg-[#ffffff] flex flex-col">
       <div className="container min-h-screen">
-        <div className="px-4 py-10 md:px-6 md:py-14">
-          <header className="mb-8">
-            <h1 className="text-2xl text-black font-medium tracking-tight md:text-3xl">
-              Our Awesome Partners and Affiliates!
+        <div className="pt-5 md:pt-14">
+          <header className="mb-5 md:mb-8">
+            <h1 className="text-lg text-black font-medium tracking-tight md:text-3xl">
+              Our awesome partners and affiliates!
             </h1>
-            <p className="mt-2 text-base text-neutral-500 max-w-2xl">
-              From our Apps, and Domains to POS and more let our partners become
-              your partners, click below.
+            <p className="mt-2 text-sm md:text-base text-neutral-500 max-w-2xl">
+              From our apps and domains to POS and more, let our partners become
+              your partners. Click below.
             </p>
           </header>
-          <div className="mb-5 flex gap-5">
+          <div className="mb-5 flex gap-2 md:gap-5">
             <input
               type="text"
               value={search}
@@ -79,7 +79,7 @@ export default function PartnersPage() {
                 searchParams.set("page", "1");
                 setSearchParams(searchParams);
               }}
-              className="text-md font-normal text-black border border-gray-300 rounded-full w-full py-3 px-5"
+              className="text-sm md:text-md font-normal text-black border border-gray-300 outline-none ring-0 rounded-lg w-full py-2 md:py-3 px-2 md:px-5 focus:border-[#96c94b] focus:ring focus:ring-[#96c94b]"
               placeholder="Searches the title, description, and keywords"
             />
             <button
@@ -88,23 +88,23 @@ export default function PartnersPage() {
                 searchParams.delete("page");
                 setSearchParams(searchParams);
               }}
-              className="flex cursor-pointer active:scale-[0.98] items-center gap-2 px-10 py-4 rounded-full hover:bg-[#589c28] text-white text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25"
+              className="flex cursor-pointer active:scale-[0.98] items-center gap-2 px-5 md:px-10 py-2 md:py-3 rounded-lg hover:bg-[#589c28] text-white text-sm md:text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25"
             >
               Reset
             </button>
           </div>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">{content}</div>
         </div>
-      </div>
-      <div className="flex justify-center w-full mb-5">
-        {totalItems > limit && (
-          <Pagination
-            handlePageChange={handlePageChange}
-            page={page}
-            totalItems={totalItems}
-            itemsPerPage={limit}
-          />
-        )}
+        <div className="flex justify-center w-full my-5">
+          {totalItems > limit && (
+            <Pagination
+              handlePageChange={handlePageChange}
+              page={page}
+              totalItems={totalItems}
+              itemsPerPage={limit}
+            />
+          )}
+        </div>
       </div>
 
       {openFormPartner && (
@@ -145,7 +145,7 @@ function PartnerCard({
   };
 
   return (
-    <article className="flex gap-4 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm items-center">
+    <article className="flex md:flex-row flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm items-center">
       <div className="flex w-24 flex-none items-center justify-center">
         <div className="h-18 w-18 rounded-full flex items-center justify-center overflow-hidden">
           {logo ? (
@@ -159,14 +159,18 @@ function PartnerCard({
           )}
         </div>
       </div>
-      <div className="flex flex-1 flex-col">
-        <h2 className="text-sm font-medium text-black md:text-lg">{title}</h2>
-        <p className="text-xs text-neutral-500 md:text-base">{description}</p>
+      <div className="flex flex-1 flex-col items-center md:items-start gap-2 md:gap-1">
+        <h2 className="text-center md:text-left text-md font-medium text-black md:text-lg">
+          {title}
+        </h2>
+        <p className="text-sm text-neutral-500 md:text-base text-center md:text-left">
+          {description}
+        </p>
         {type === "LINKTYPE" ? (
           <button
             type="button"
             onClick={handleClick}
-            className="inline-flex ease-in-out duration-150 active:scale-105 items-center rounded-full border border-[#cf3832] py-3 px-6 text-xs font-semibold text-[#cf3832] hover:bg-[#cf37324a] cursor-pointer w-fit mt-2"
+            className="inline-flex ease-in-out duration-150 active:scale-105 items-center rounded-full border border-[#cf3832] py-2 md:py-3 px-6 text-xs font-semibold text-[#cf3832] hover:bg-[#cf37324a] cursor-pointer w-fit mt-2"
           >
             {linkText}
           </button>
@@ -178,7 +182,7 @@ function PartnerCard({
               setRecipentMail(recipent);
               setPartnerTitle(title);
             }}
-            className="inline-flex items-center ease-in-out duration-150 active:scale-105 rounded-full border border-[#cf3832] py-3 px-6 text-xs font-semibold text-[#cf3832] hover:bg-[#cf37324a] cursor-pointer w-fit mt-2"
+            className="inline-flex items-center ease-in-out duration-150 active:scale-105 rounded-full border border-[#cf3832] py-2 md:py-3 px-6 text-xs font-semibold text-[#cf3832] hover:bg-[#cf37324a] cursor-pointer w-fit mt-2"
           >
             {recipentLabel}
           </button>
@@ -210,13 +214,6 @@ function PartnerFormModal({
               with My Brand Life.
             </p>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-full cursor-pointer border border-neutral-700 px-2 py-1 text-xs text-neutral-500 hover:bg-gray-200"
-          >
-            ✕
-          </button>
         </div>
 
         <SendPartneremail

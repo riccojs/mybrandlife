@@ -41,7 +41,7 @@ function Pagination({
           key={index}
           className={`text-base border border-gray-200 w-10 h-10 rounded-md  cursor-pointer ${
             page === index
-              ? "bg-lime-500 font-bold text-white"
+              ? "bg-[#96c94b] font-bold text-white"
               : "bg-white text-black"
           }`}
           onClick={() => handlePageChange(index)}

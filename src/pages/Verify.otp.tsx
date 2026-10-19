@@ -6,7 +6,7 @@ import {
 } from "../redux/features/auth/authApi";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import toast from "react-hot-toast";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { LoaderCircle } from "lucide-react";
 
 const VerifyEmail = () => {
@@ -137,7 +137,7 @@ const VerifyEmail = () => {
   }, [email, navigate]);
 
   return (
-    <section className="min-h-screen bg-white px-4 py-8 sm:px-6 lg:px-8">
+    <section className="min-h-screen bg-white px-4 py-3 md:py-8 sm:px-6 lg:px-8">
       <div className="z-10 mx-auto w-full max-w-200">
         <section className="rounded-xl border border-gray-200 bg-white px-5 py-8 shadow-lg sm:px-10 sm:py-10 lg:px-14">
           <div className="mb-1 flex justify-center px-2 sm:mb-2">
@@ -174,14 +174,14 @@ const VerifyEmail = () => {
               </div>
             </div>
           </div>
-          <h1 className="text-center text-[30px] font-semibold tracking-[-1px] text-[#172039] sm:text-[24px]">
+          <h1 className="text-center text-xl md:text-3xl font-semibold tracking-[-1px] text-[#172039] sm:text-[24px]">
             Check your <span className="text-[#54a928]">email inbox.</span>
           </h1>
-          <div className="mt-3 flex items-center gap-4 rounded-[9px] border-l-[3px] border-amber-300 bg-amber-100 p-3">
+          <div className="text-black bg-amber-50 p-3 rounded-xl flex gap-2">
             <div className="text-[#f2ad00]">
               <FiAlertTriangle size={21} strokeWidth={2.5} />
             </div>
-            <p className="text-sm font-medium leading-5 text-[#20252c]">
+            <p className="text-xs md:text-sm font-normal leading-5 text-[#20252c]">
               If the verification code is not visible in your primary inbox,
               please check your junk or spam folder.
             </p>
@@ -193,7 +193,7 @@ const VerifyEmail = () => {
               Please enter the code below to proceed. If you did not receive the
               code, you can resend it after 2:00 min.
             </p>
-            <p className="text-sm leading-6 text-[#283144] sm:text-[15px]">
+            <p className="text-sm leading-6 text-[#283144] sm:text-base font-medium mt-2">
               Note: You have only one opportunity to request a new code.
             </p>
           </div>
@@ -229,7 +229,7 @@ const VerifyEmail = () => {
           <div className="flex justify-center items-center w-full mt-5">
             {isLoading && <LoaderCircle className="animate-spin" size={30} />}
           </div>
-          <div className="mt-6 flex items-center justify-center gap-2 text-[14px] sm:text-[15px]">
+          <div className="mt-0 md:mt-6 flex items-center justify-center gap-2 text-[14px] sm:text-[15px]">
             <span className="text-[#283144]">Didn't receive the code?</span>
             <button
               type="button"
@@ -258,27 +258,28 @@ const VerifyEmail = () => {
               <FiHeadphones size={21} />
             </div>
             <div>
-              <p className="text-sm leading-5 text-[#343b46] sm:text-[14px]">
+              <p className="text-xs leading-5 text-[#343b46] sm:text-[14px]">
                 If you still do not receive a code after resending, please
                 contact our support team.
               </p>
               <a
                 href="mailto:support@mybrandlife.me"
-                className="mt-0.5 inline-block text-sm font-semibold text-[#4b9e25] hover:underline sm:text-[15px]"
+                className="mt-0.5 inline-block text-xs font-semibold text-[#4b9e25] hover:underline sm:text-[15px]"
               >
                 info@mybrandlife.me
               </a>
             </div>
           </div>
         </section>
-        <div className="mt-12 text-center text-[13px]">
+        <div className="mt-6 md:mt-12 text-center text-[13px]">
           <span>Already Verified OTP? </span>
-          <Link
-            to="/auth/login"
+          <a
+            href={redirectUrl}
+            target="_blank"
             className="font-medium text-[#cf3832] underline underline-offset-2"
           >
             Sign In
-          </Link>
+          </a>
         </div>
       </div>
     </section>

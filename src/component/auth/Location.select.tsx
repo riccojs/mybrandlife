@@ -105,15 +105,18 @@ export default function LocationSelect({ onChange, value, disabled }: Props) {
         }}
         placeholder="Select Your Country"
         styles={{
-          control: (base) => ({
+          control: (base, state) => ({
             ...base,
             height: 45,
             borderRadius: 10,
-            borderColor: "#d1d5db",
-            boxShadow: "none",
+            borderColor: state.isFocused ? "#96c94b" : "#d1d5db",
+            boxShadow: state.isFocused ? "0 0 0 1px #96c94b" : "none",
             backgroundColor: "#ffffff",
             fontSize: "14px",
             fontWeight: "normal",
+            "&:hover": {
+              borderColor: state.isFocused ? "#96c94b" : "#9ca3af",
+            },
           }),
           menu: (base) => ({
             ...base,
@@ -140,15 +143,18 @@ export default function LocationSelect({ onChange, value, disabled }: Props) {
         }}
         placeholder="Select Your State"
         styles={{
-          control: (base) => ({
+          control: (base, state) => ({
             ...base,
             height: 45,
             borderRadius: 10,
-            borderColor: "#d1d5db",
-            boxShadow: "none",
+            borderColor: state.isFocused ? "#96c94b" : "#d1d5db",
+            boxShadow: state.isFocused ? "0 0 0 1px #96c94b" : "none",
             backgroundColor: "#ffffff",
             fontSize: "14px",
             fontWeight: "normal",
+            "&:hover": {
+              borderColor: state.isFocused ? "#96c94b" : "#9ca3af",
+            },
           }),
           menu: (base) => ({
             ...base,
@@ -173,15 +179,18 @@ export default function LocationSelect({ onChange, value, disabled }: Props) {
         isDisabled={!state || disabled}
         placeholder="Select Your City"
         styles={{
-          control: (base) => ({
+          control: (base, state) => ({
             ...base,
             height: 45,
             borderRadius: 10,
-            borderColor: "#d1d5db",
-            boxShadow: "none",
+            borderColor: state.isFocused ? "#96c94b" : "#d1d5db",
+            boxShadow: state.isFocused ? "0 0 0 1px #96c94b" : "none",
             backgroundColor: "#ffffff",
             fontSize: "14px",
             fontWeight: "normal",
+            "&:hover": {
+              borderColor: state.isFocused ? "#96c94b" : "#9ca3af",
+            },
           }),
           menu: (base) => ({
             ...base,

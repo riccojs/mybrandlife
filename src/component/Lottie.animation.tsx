@@ -22,8 +22,11 @@ function LottieAnimation() {
   }, []);
 
   return (
-    <div className="container py-5">
-      <div ref={containerRef} className="w-full aspect-square" />
+    <div className="container">
+      <div
+        ref={containerRef}
+        className="w-full aspect-square h-52 md:h-100 xl:h-200"
+      />
     </div>
   );
 }

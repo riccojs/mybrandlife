@@ -11,7 +11,7 @@ function TermsCondition() {
 
   return (
     <section className="py-10 print:py-0">
-      <div className="container flex flex-col gap-10 relative">
+      <div className="container flex flex-col gap-5 md:gap-10 relative">
         <div className="absolute top-0 right-0 print:hidden">
           <button
             onClick={handlePrint}
@@ -22,14 +22,14 @@ function TermsCondition() {
           </button>
         </div>
 
-        <div className="flex flex-col gap-2 border-b border-gray-400 pb-5">
-          <h2 className="text-xl font-medium">
-            🧾 My Brand Life — Terms and Conditions
+        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5">
+          <h2 className="text-lg md:text-xl font-medium">
+            My Brand Life — Terms and Conditions
           </h2>
-          <h3 className="text-base font-normal">
+          <h3 className="text-sm md:text-base font-normal">
             <strong>Last Updated:</strong> October 28, 2025
           </h3>
-          <p className="text-base font-normal">
+          <p className="text-sm md:text-base font-normal">
             Welcome to <strong>My Brand Life</strong>, operated by{" "}
             <strong>My Brand Life LLC</strong> (“Company,” “we,” “our,” or
             “us”). By accessing or using any part of our platform — including
@@ -37,18 +37,20 @@ function TermsCondition() {
             mybartendinglife.me, mydevlife.me) — you agree to these Terms and
             Conditions.
           </p>
-          <p className="text-base font-normal">
+          <p className="text-sm md:text-base font-normal">
             If you do not agree, you may not use the platform.
           </p>
         </div>
-        <div className="flex flex-col gap-2 border-b border-gray-400 pb-5">
-          <h2 className="text-xl font-medium">1. Service Overview</h2>
-          <h3 className="text-normal text-lg">
+        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5">
+          <h2 className="text-lg md:text-xl font-medium">
+            1. Service Overview
+          </h2>
+          <h3 className="text-normal text-sm md:text-lg">
             My Brand Life provides users with tools and templates to build
             personal and business landing pages, manage brand assets, and access
             related applications, including but not limited to:
           </h3>
-          <ul className="list-disc pl-10 flex flex-col gap-2">
+          <ul className="list-disc pl-10 flex flex-col gap-2 text-sm md:text-base">
             <li>
               <strong>BrandBook</strong> (calendar and booking engine)
             </li>
@@ -65,29 +67,33 @@ function TermsCondition() {
               <strong>BrandPulse Social</strong> (social automation platform)
             </li>
           </ul>
-          <p className="text-base font-normal">
+          <p className="text-sm md:text-base font-normal">
             Each subscription tier grants access to specific apps and features
             as described on the Pricing or Sales page.
           </p>
         </div>
-        <div className="flex flex-col gap-2 border-b border-gray-400 pb-5">
-          <h2 className="text-xl font-medium">2. Account Registration</h2>
-          <h3>
+        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5">
+          <h2 className="text-lg md:text-xl font-medium">
+            2. Account Registration
+          </h2>
+          <h3 className="text-sm md:text-base">
             You must create an account to access most features. You agree to:
           </h3>
-          <ul className="list-disc pl-10 flex flex-col gap-2">
+          <ul className="list-disc pl-10 flex flex-col gap-2 text-sm md:text-base">
             <li>Provide accurate and complete registration information.</li>
             <li>Keep your login credentials secure and confidential.</li>
             <li>Be responsible for all activity under your account.</li>
           </ul>
-          <p className="text-base font-normal">
+          <p className="text-sm md:text-base font-normal">
             Accounts found engaging in abuse, impersonation, or unauthorized
             resale will be suspended or terminated without notice.
           </p>
         </div>
-        <div className="flex flex-col gap-2 border-b border-gray-400 pb-5">
-          <h2 className="text-xl font-medium">3. Subscription and Payments</h2>
-          <ul className="list-disc pl-10 flex flex-col gap-2">
+        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5">
+          <h2 className="text-lg md:text-xl font-medium">
+            3. Subscription and Payments
+          </h2>
+          <ul className="list-disc pl-10 flex flex-col gap-2 text-sm md:text-base">
             <li>
               All plans are billed via <strong>Stripe</strong> on a monthly or
               annual basis.
@@ -103,41 +109,49 @@ function TermsCondition() {
             </li>
           </ul>
         </div>
-        <div className="flex flex-col gap-2 border-b border-gray-400 pb-5">
-          <h2 className="text-xl font-medium">4. Intellectual Property</h2>
-          <h3>
+        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5">
+          <h2 className="text-lg md:text-xl font-medium">
+            4. Intellectual Property
+          </h2>
+          <h3 className="text-sm md:text-base">
             All code, content, design elements, and branding on My Brand Life
             are owned or licensed by My Brand Life LLC.
           </h3>
 
-          <p className="text-base font-normal">
+          <p className="text-sm md:text-base font-normal">
             You retain ownership of your uploaded content but grant us a
             non-exclusive license to host and display it within your page or
             sub-domain.
           </p>
-          <p className="text-base font-normal">
+          <p className="text-sm md:text-base font-normal">
             You may not reverse engineer, resell, or redistribute our templates,
             systems, or applications.
           </p>
         </div>
-        <div className="flex flex-col gap-2 border-b border-gray-400 pb-5">
-          <h2 className="text-xl font-medium">5. Acceptable Use</h2>
-          <p className="text-base font-normal">Users agree not to:</p>
-          <ul className="list-disc pl-10 flex flex-col gap-2">
+        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5">
+          <h2 className="text-lg md:text-xl font-medium">5. Acceptable Use</h2>
+          <p className="text-sm md:text-base font-normal">
+            Users agree not to:
+          </p>
+          <ul className="list-disc pl-10 flex flex-col gap-2 text-sm md:text-base">
             <li>Upload or post illegal, defamatory, or harmful content.</li>
             <li>
               Use the platform for spam, fraud, or unauthorized marketing.
             </li>
             <li>Attempt to breach, test, or overload platform security.</li>
           </ul>
-          <p className="text-base font-normal">
+          <p className="text-sm md:text-base font-normal">
             Violations may result in immediate suspension or permanent ban.
           </p>
         </div>
-        <div className="flex flex-col gap-2 border-b border-gray-400 pb-5">
-          <h2 className="text-xl font-medium">6. Third-Party Integrations.</h2>
-          <h3>We integrate with third-party services such as:</h3>
-          <ul className="list-disc pl-10 flex flex-col gap-2">
+        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5">
+          <h2 className="text-lg md:text-xl font-medium">
+            6. Third-Party Integrations.
+          </h2>
+          <h3 className="text-sm md:text-base">
+            We integrate with third-party services such as:
+          </h3>
+          <ul className="list-disc pl-10 flex flex-col gap-2 text-sm md:text-base">
             <li>
               <strong>Hostinger </strong> (hosting infrastructure)
             </li>
@@ -151,24 +165,26 @@ function TermsCondition() {
               <strong>Google Workspace </strong> (email and forms)
             </li>
           </ul>
-          <p className="text-base font-normal">
+          <p className="text-sm md:text-base font-normal">
             Your use of these services is subject to their respective policies.
           </p>
         </div>
-        <div className="flex flex-col gap-2 border-b border-gray-400 pb-5">
-          <h2 className="text-xl font-medium">7. Limitation of Liability</h2>
-          <h3>
+        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5">
+          <h2 className="text-lg md:text-xl font-medium">
+            7. Limitation of Liability
+          </h2>
+          <h3 className="text-sm md:text-base">
             To the maximum extent permitted by law, My Brand Life LLC is not
             liable for any indirect, incidental, or consequential damages
             resulting from:
           </h3>
-          <ul className="list-disc pl-10 flex flex-col gap-2">
+          <ul className="list-disc pl-10 flex flex-col gap-2 text-sm md:text-base">
             <li>• Platform downtime or data loss,</li>
             <li>• Third-party integrations or service interruptions,</li>
             <li>• Misuse of the system or user content.</li>
           </ul>
         </div>
-        <div className="flex flex-col gap-2 border-b border-gray-400 pb-5">
+        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5">
           <h2 className="text-xl font-medium">8. Termination</h2>
           <p className="text-base font-normal">
             We may suspend or terminate your account at any time for violations
@@ -176,21 +192,25 @@ function TermsCondition() {
             after a reasonable retention period.
           </p>
         </div>
-        <div className="flex flex-col gap-2 border-b border-gray-400 pb-5">
-          <h2 className="text-xl font-medium">9. Changes to Terms</h2>
-          <p className="text-base font-normal">
+        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5">
+          <h2 className="text-lg md:text-xl font-medium">
+            9. Changes to Terms
+          </h2>
+          <p className="text-sm md:text-base font-normal">
             We may update these Terms periodically. Continued use of the
             platform after updates constitutes acceptance of the revised Terms.
           </p>
         </div>
         <div className="flex flex-col gap-2">
-          <h2 className="text-xl font-medium">10. Contact</h2>
-          <p className="text-base font-normal">Questions or concerns?</p>
-          <p>
-            <strong>📧 support@mybrandlife.me</strong>
+          <h2 className="text-lg md:text-xl font-medium">10. Contact</h2>
+          <p className="text-sm md:text-base font-normal">
+            Questions or concerns?
           </p>
-          <p className="text-base font-normal">
-            📍 My Brand Life LLC — Stevens Point, Wisconsin, USA
+          <p className="text-sm md:text-base">
+            <strong>support@mybrandlife.me</strong>
+          </p>
+          <p className="text-sm md:text-base font-normal">
+            My Brand Life LLC — Stevens Point, Wisconsin, USA
           </p>
         </div>
       </div>

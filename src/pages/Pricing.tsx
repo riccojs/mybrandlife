@@ -146,13 +146,13 @@ function Pricing() {
 
   return (
     <React.Fragment>
-      <section className="pt-10">
+      <section className={`${domainSelect ? "pt-10 pb-10" : "pt-10"}`}>
         <div className="container">
           <div>
-            <h2 className="text-black text-3xl font-medium text-center">
-              Choose your Domain Lander.
+            <h2 className="text-black text-lg md:text-3xl font-medium text-center">
+              Choose Your Domain Lander
             </h2>
-            <div className="w-full md:w-5/12 m-auto mb-10">
+            <div className="w-full xl:w-5/12 m-auto mb-10">
               <PriceSelector
                 pricingRef={pricingRef}
                 isShow={priceShow}
@@ -162,7 +162,7 @@ function Pricing() {
               />
             </div>
           </div>
-          <div className="mb-5">
+          <div className={`${domainSelect ? "mb-5" : "mb-0"}`}>
             {domainData[domainSelect]?.title && (
               <motion.h2
                 key={`title-${domainSelect}`}
@@ -173,7 +173,7 @@ function Pricing() {
                   duration: 0.4,
                   ease: "easeOut",
                 }}
-                className="w-full text-center text-2xl font-medium flex justify-center"
+                className="w-full text-center text-md md:text-2xl font-medium flex justify-center"
               >
                 {domainData[domainSelect]?.title}
               </motion.h2>
@@ -189,7 +189,7 @@ function Pricing() {
                   duration: 0.2,
                   ease: "easeOut",
                 }}
-                className="w-full text-center text-xl font-normal flex justify-center"
+                className="w-full text-center text-md md:text-xl font-normal flex justify-center"
               >
                 {domainData[domainSelect]?.subTitle}
               </motion.h2>
@@ -197,14 +197,14 @@ function Pricing() {
           </div>
           {domainSelect && (
             <div>
-              <h2 className="text-black text-xl font-medium uppercase text-center">
+              <h2 className="text-black text-lg md:text-xl font-medium uppercase text-center">
                 Pricing Plans
               </h2>
-              <p className="text-black text-2xl leading-11 font-medium text-center">
+              <p className="text-black text-md md:text-2xl font-medium text-center">
                 Save 20% with annual billing (12 months for the price of 10)
               </p>
               <p className="text-sm text-black font-normal text-center">
-                NOTE: BrandShare codes are only valid on yearly plans!
+                Note: BrandShare codes are only valid on yearly plans!
               </p>
               <div className="flex md:flex-row flex-col gap-5 justify-center items-center mt-5 mb-14">
                 <div className="flex gap-5 items-center">
@@ -232,11 +232,13 @@ function Pricing() {
 
           {domainSelect ? (
             <div
-              className={`grid grid-cols-1 md:grid-cols-2 ${getCols()} gap-10 md:gap-5`}
+              className={`grid grid-cols-1 md:grid-cols-2 ${getCols()} gap-5`}
             >
               {bronzePlanFeatures?.price && (
                 <div className="bg-[#FFF3E3] p-8 rounded-lg flex flex-col gap-2 items-center">
-                  <h2 className="text-3xl font-medium text-black">Bronze</h2>
+                  <h2 className="text-xl md:text-3xl font-medium text-black">
+                    Bronze
+                  </h2>
                   {bronzePlanFeatures.oldPrice ? (
                     <p className="text-gray-600 line-through text-sm font-medium">
                       ${bronzePlanFeatures.oldPrice}/monthly
@@ -245,7 +247,7 @@ function Pricing() {
 
                   {type === "yearly" ? (
                     <>
-                      <p className="text-3xl font-medium text-black">
+                      <p className="text-xl md:text-3xl font-medium text-black">
                         $
                         {bronzePlanFeatures.price
                           ? (
@@ -287,7 +289,7 @@ function Pricing() {
                     </button>
                   )}
                   <div className="mt-5 md:mt-10">
-                    <h2 className="text-xl font-medium text-black">
+                    <h2 className="text-md md:text-xl font-medium text-black">
                       What's included:
                     </h2>
 
@@ -297,7 +299,7 @@ function Pricing() {
                           bronzePlanFeatures?.features?.map((item, index) => (
                             <li key={index} className="flex gap-2 items-center">
                               <i className="fa-solid fa-check text-[#96c94b]"></i>
-                              <p className="text-md font-normal text-black">
+                              <p className="text-sm md:text-md font-normal text-black">
                                 {item?.label}
                               </p>
                             </li>
@@ -338,7 +340,9 @@ function Pricing() {
 
               {silverPlanFeatures?.price && (
                 <div className="bg-[#FFF3E3] p-8 rounded-lg flex flex-col gap-2 items-center">
-                  <h2 className="text-3xl font-medium text-black">Silver</h2>
+                  <h2 className="text-xl md:text-3xl font-medium text-black">
+                    Silver
+                  </h2>
                   {silverPlanFeatures.oldPrice ? (
                     <p className="text-gray-600 line-through text-sm font-medium">
                       ${silverPlanFeatures.oldPrice}/monthly
@@ -347,7 +351,7 @@ function Pricing() {
 
                   {type === "yearly" ? (
                     <>
-                      <p className="text-3xl font-medium text-black">
+                      <p className="text-xl md:text-3xl font-medium text-black">
                         $
                         {silverPlanFeatures.price
                           ? (
@@ -389,7 +393,7 @@ function Pricing() {
                   )}
 
                   <div className="mt-5 md:mt-10">
-                    <h2 className="text-xl font-medium text-black">
+                    <h2 className="text-md md:text-xl font-medium text-black">
                       What's included:
                     </h2>
                     {showMore === "silver" && (
@@ -398,7 +402,7 @@ function Pricing() {
                           silverPlanFeatures?.features?.map((item, index) => (
                             <li key={index} className="flex gap-2 items-center">
                               <i className="fa-solid fa-check text-[#96c94b]"></i>
-                              <p className="text-md font-normal text-black">
+                              <p className="text-sm md:text-md font-normal text-black">
                                 {item?.label}
                               </p>
                             </li>
@@ -437,10 +441,12 @@ function Pricing() {
                 </div>
               )}
               <div className="bg-[#FFF3E3] p-8 rounded-lg flex flex-col gap-2 items-center border-2 border-[#96c94b] relative">
-                <p className="absolute -top-4 left-23.75 bg-[#96c94b] text-black px-4 py-1 rounded-full text-sm font-medium uppercase">
+                <p className="absolute -top-3 md:-top-4 left-23.75 bg-[#96c94b] text-black px-4 py-1 rounded-full text-xs md:text-sm font-medium uppercase">
                   POPULAR
                 </p>
-                <h2 className="text-3xl font-medium text-black">Gold</h2>
+                <h2 className="text-xl md:text-3xl font-medium text-black">
+                  Gold
+                </h2>
                 {GoldPlanFeatures.oldPrice ? (
                   <p className="text-gray-600 line-through text-sm font-medium">
                     ${GoldPlanFeatures.oldPrice}/monthly
@@ -449,7 +455,7 @@ function Pricing() {
 
                 {type === "yearly" ? (
                   <>
-                    <p className="text-3xl font-medium text-black">
+                    <p className="text-xl md:text-3xl font-medium text-black">
                       $
                       {GoldPlanFeatures.price
                         ? (
@@ -490,7 +496,7 @@ function Pricing() {
                 )}
 
                 <div className="mt-5 md:mt-10">
-                  <h2 className="text-xl font-medium text-black">
+                  <h2 className="text-md md:text-xl font-medium text-black">
                     What's included:
                   </h2>
                   {showMore === "gold" && (
@@ -499,7 +505,7 @@ function Pricing() {
                         (item: { label: string; note?: string }, index) => (
                           <li key={index} className="flex gap-2 items-center">
                             <i className="fa-solid fa-check text-[#96c94b]"></i>
-                            <p className="text-md font-normal text-black">
+                            <p className="text-sm md:text-md font-normal text-black">
                               {item?.label}
                               {item?.note === "brandshare" ? (
                                 <span
@@ -583,7 +589,7 @@ function Pricing() {
                 </div>
               </div>
               <div className="bg-[#FFF3E3] p-8 rounded-lg flex flex-col gap-2 items-center">
-                <h2 className="text-3xl font-medium text-black flex items-center gap-2">
+                <h2 className="text-xl md:text-3xl font-medium text-black flex items-center gap-2">
                   Platinum
                 </h2>
                 <p className="text-md font-normal text-center">
@@ -608,7 +614,7 @@ function Pricing() {
                 </p>
 
                 <div className="mt-5 md:mt-10">
-                  <h2 className="text-xl font-medium text-black">
+                  <h2 className="text-md md:text-xl font-medium text-black">
                     What's included:
                   </h2>
                   {showMore === "platinum" && (
@@ -616,7 +622,7 @@ function Pricing() {
                       {platinumFeatures?.map((item, index) => (
                         <li key={index} className="flex gap-2 items-start">
                           <i className="fa-solid fa-check text-[#96c94b] mt-1"></i>
-                          <p className="text-md font-normal text-black">
+                          <p className="text-sm md:text-md font-normal text-black">
                             {item?.label}
                           </p>
                         </li>
@@ -669,7 +675,7 @@ function Pricing() {
                   handleOpenCompare(SperkPdf);
                 }
               }}
-              className="bg-[#96c94b] hover:shadow-2xl cursor-pointer text-black px-10 py-3 rounded-xl hover:scale-105 duration-200 ease-in-out"
+              className="bg-[#96c94b] text-sm md:text-md hover:shadow-2xl cursor-pointer text-black px-10 py-3 rounded-xl hover:scale-105 duration-200 ease-in-out"
             >
               Compare features
             </button>

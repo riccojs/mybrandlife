@@ -5,6 +5,7 @@ import { useState } from "react";
 import BgImage from "../assets/Body-Background.jpg";
 import HeaderImage from "../assets/header-image.jpg";
 import SendInfo from "../component/popups/Send.info";
+import { getSocialIcon } from "../utils/socialIcons";
 
 function FollowUs() {
   const [layout, setLayout] = useState("");
@@ -20,14 +21,14 @@ function FollowUs() {
     { label: "LINKEDIN", url: "https://www.linkedin.com/company/mybrandlife/" },
     { label: "YOUTUBE", url: "https://www.youtube.com/@MyBrandLife" },
     { label: "EMAIL", url: "mailto:info@mybrandlife.me" },
-    { label: "PHONE", url: "tel:(888) 520-6120" },
+    { label: "PHONE", url: "tel:17155746890" },
     {
       label: "INSTAGRAM",
       url: "https://www.instagram.com/mybrandlife.me",
     },
     {
       label: "WHATSAPP",
-      url: "https://wa.me/18885206120?text=Hello%20I%20need%20help",
+      url: "https://wa.me/17155746890?text=Hello%20I%20need%20help",
     },
     { label: "TIKTOK", url: "https://www.tiktok.com/@mybrandlife.me" },
     { label: "SNAPCHAT", url: "https://www.snapchat.com/@mybrandlife" },
@@ -91,15 +92,15 @@ function FollowUs() {
               <img
                 src={Logo}
                 alt=""
-                className="w-24 md:w-32 active:scale-102 duration-300 transition-all"
+                className="w-16 lg:w-24 xl:w-32 active:scale-102 duration-300 transition-all"
               />
             </Link>
             <div>
-              <h2 className="text-white text-3xl font-medium text-right">
+              <h2 className="text-white text-lg md:text-2xl xl:text-3xl font-medium text-right">
                 Services Offered
               </h2>
               <ul
-                className={`mt-1 flex flex-col  ${
+                className={`mt-1 gap-1 flex flex-col  ${
                   layout === "Logo Center"
                     ? "items-center"
                     : layout === "Logo Right"
@@ -107,11 +108,19 @@ function FollowUs() {
                       : "items-end"
                 }`}
               >
-                <li className="text-md font-normal text-white">Your Lander</li>
-                <li className="text-md font-normal text-white">BrandBook</li>
-                <li className="text-md font-normal text-white">Echo</li>
-                <li className="text-md font-normal text-white">PulseTrack</li>
-                <li className="text-md font-normal text-white">
+                <li className="text-xs md:text-md font-normal text-white">
+                  Your Lander
+                </li>
+                <li className="text-xs md:text-md font-normal text-white">
+                  BrandBook
+                </li>
+                <li className="text-xs md:text-md font-normal text-white">
+                  Echo
+                </li>
+                <li className="text-xs md:text-md font-normal text-white">
+                  PulseTrack
+                </li>
+                <li className="text-xs md:text-md font-normal text-white">
                   And much more!
                 </li>
               </ul>
@@ -124,52 +133,55 @@ function FollowUs() {
             backgroundImage: `url(${BgImage})`,
           }}
         >
-          <div className="w-11/12 lg:w-4/12 m-auto">
-            <div className="flex gap-3 items-center">
+          <div className="w-11/12 lg:w-7/12 xl:w-4/12 m-auto">
+            <div className="flex gap-2 md:gap-3 items-center">
               <button
                 onClick={() => setIsShowInfo(true)}
-                className="bg-linear-to-r from-[#ecc246] text-sm md:text-base to-[#92cee8] flex justify-center gap-1 md:gap-2 items-center w-full h-12 rounded-lg active:scale-102 duration-300 transition-all cursor-pointer"
+                className="bg-linear-to-r hover:scale-102 from-[#ecc246] text-xs md:text-base to-[#92cee8] flex justify-center gap-1 md:gap-2 items-center w-full h-10 md:h-12 rounded-lg active:scale-102 duration-300 transition-all cursor-pointer"
               >
-                <i className="fa-solid fa-upload text-sm md:text-2xl"></i>
+                <i className="fa-solid fa-upload text-xs md:text-2xl"></i>
                 <p>Submit your info</p>
               </button>
               <button
                 onClick={handleDownloadVCF}
-                className="bg-linear-to-r from-[#ecc246] text-sm md:text-base to-[#92cee8] flex justify-center gap-1 md:gap-2 items-center w-full h-12 rounded-lg active:scale-102 duration-300 transition-all cursor-pointer"
+                className="bg-linear-to-r hover:scale-102 from-[#ecc246] text-xs md:text-base to-[#92cee8] flex justify-center gap-1 md:gap-2 items-center w-full h-10 md:h-12 rounded-lg active:scale-102 duration-300 transition-all cursor-pointer"
               >
                 <i className="fa-solid fa-download text-sm md:text-xl"></i>
                 <p>Download Our Info</p>
               </button>
             </div>
             <div className="my-5 md:my-10">
-              <h2 className="text-white text-3xl font-medium text-center">
+              <h2 className="text-white text-lg md:text-3xl font-medium text-center">
                 Connect with My Brand Life!
               </h2>
-              <p className="text-xl mt-2 font-normal text-white text-center">
+              <p className="text-md md:text-xl mt-2 font-normal text-white text-center">
                 Your Brand, Your Life, Your Way
               </p>
             </div>
             <div className="my-3 md:my-5">
-              <div className="grid grid-cols-2 gap-3 mt-2 md:mt-5">
+              <div className="grid grid-cols-2 gap-2 md:gap-3 mt-2 md:mt-5">
                 {allUrls?.map((item: { label: string; url: string }, index) => {
+                  const Icon = getSocialIcon(item?.label, item?.url);
+
                   return (
                     <a
                       key={index}
-                      className="bg-linear-to-r text-base from-[#ecc246] to-[#92cee8] w-full h-12 rounded-lg active:scale-102 duration-300 transition-all cursor-pointer flex justify-center items-center"
+                      className="bg-linear-to-r hover:scale-102 text-sm md:text-base from-[#ecc246] to-[#92cee8] w-full h-10 md:h-12 rounded-lg active:scale-102 duration-300 transition-all cursor-pointer flex justify-center items-center gap-1"
                       href={`${item.url}`}
                       target="_blank"
                     >
-                      {item.label}
+                      {Icon && <Icon className="text-lg md:text-2xl" />}
+                      <span> {item.label}</span>
                     </a>
                   );
                 })}
               </div>
             </div>
             <div className="my-0 mt-10">
-              <h2 className="text-xl font-medium text-white text-center">
+              <h2 className="text-md md:text-xl font-medium text-white text-center">
                 About My Brand Life (MBL)
               </h2>
-              <p className="text-white text-md font-normal text-center w-full mt-2">
+              <p className="text-white text-sm md:text-md font-normal text-center w-full mt-2">
                 Our mission is to empower individuals and businesses by
                 providing tailored, industry-specific landing pages that enhance
                 their online presence and engagement.
@@ -179,9 +191,6 @@ function FollowUs() {
         </div>
         <div className="bg-black py-10">
           <div className="container">
-            <p className="text-white text-md font-normal text-center">
-              © 2025 Vamp | All Rights Reserved.
-            </p>
             <ul className="flex gap-5 justify-center items-center mt-3">
               <li>
                 <Link
@@ -205,6 +214,10 @@ function FollowUs() {
               <Link to="/pricing" className="hover:text-blue-200 underline">
                 Select your plan and Join Now
               </Link>
+            </p>
+            <p className="text-white/70 mt-5 text-xs font-normal text-center">
+              ©{new Date().getFullYear()} MyBrandLife.me. All rights reserved.
+              Portions of the text and imagery may be AI-generated.
             </p>
           </div>
         </div>

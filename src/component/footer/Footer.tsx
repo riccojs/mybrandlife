@@ -13,11 +13,12 @@ import AskForhelp from "../popups/Ask.forhelp";
 
 function Footer() {
   const [showTab, setShowTab] = useState(false);
+
   return (
     <footer className="border-t border-[#EEEEEE] bg-[#FBFCFA]">
       <div className="container">
-        <div className="flex md:flex-row flex-col gap-20 py-10">
-          <div className="w-full md:w-4/12">
+        <div className="flex md:flex-row flex-col gap-10 sm:gap-14 xl:gap-20 py-10">
+          <div className="w-full md:w-3/12 xl:w-4/12">
             <a href="/" className="inline-flex items-center">
               <img
                 src={Logo}
@@ -30,24 +31,26 @@ function Footer() {
               businesses by providing tailored, industry-specific landing pages
               that enhance their online presence and engagement.
             </p>
-            <div className="mt-3.5 flex items-center gap-3.25">
+            <div className="mt-3.5 flex xl:flex-row flex-col items-start xl:items-center gap-3.25">
               <h3>Follow Us:</h3>
-              {socialIcons.map(({ label, icon: Icon, href }) => (
-                <a
-                  key={label}
-                  href={href}
-                  aria-label={label}
-                  target="_blank"
-                  className="text-[#111111] transition-all duration-200 hover:-translate-y-px hover:text-[#59A605]"
-                >
-                  <Icon size={15} strokeWidth={2} />
-                </a>
-              ))}
+              <div className="flex gap-3">
+                {socialIcons.map(({ label, icon: Icon, href }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    aria-label={label}
+                    target="_blank"
+                    className="text-[#111111] transition-all duration-200 hover:-translate-y-px hover:text-[#59A605]"
+                  >
+                    <Icon size={15} strokeWidth={2} />
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
-          <div className="w-full md:w-8/12 flex md:flex-nowrap flex-wrap md:gap-0 gap-10 justify-between">
+          <div className="w-full md:9/12 xl:w-8/12 flex md:flex-nowrap flex-wrap md:gap-0 gap-8 justify-between">
             <div>
-              <h3 className="text-lg font-medium leading-none text-[#111111]">
+              <h3 className="text-md xl:text-lg font-medium leading-none text-[#111111]">
                 Important Links
               </h3>
 
@@ -75,11 +78,21 @@ function Footer() {
               </ul>
             </div>
             <div>
-              <h3 className="text-lg font-medium leading-none text-[#111111]">
+              <h3 className="text-md xl:text-lg font-medium leading-none text-[#111111]">
                 SaaS Links
               </h3>
 
               <ul className="mt-3.75 space-y-2.25">
+                <li>
+                  <a
+                    href="https://app.mybrandlife.me/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-normal leading-none text-[#555555] transition-colors duration-200 hover:text-[#59A605]"
+                  >
+                    Login
+                  </a>
+                </li>
                 {saasLinks.map((item) => (
                   <li key={item?.id}>
                     <Link
@@ -112,7 +125,7 @@ function Footer() {
               </ul>
             </div>
             <div>
-              <h3 className="text-lg font-medium leading-none text-[#111111]">
+              <h3 className="text-md xl:text-lg font-medium leading-none text-[#111111]">
                 Help Links
               </h3>
 
@@ -133,7 +146,9 @@ function Footer() {
                     className="text-sm font-normal leading-none text-[#555555] transition-colors duration-200 hover:text-[#59A605]"
                   >
                     Forum{" "}
-                    <span className="text-red-500 text-xs">(Coming Soon)</span>
+                    <span className="text-[#F1BD2B] text-xs">
+                      (Coming Soon)
+                    </span>
                   </a>
                 </li>
                 <li>
@@ -158,13 +173,13 @@ function Footer() {
           </div>
         </div>
         <div className="h-px w-full bg-[#E5E7EB]" />
-        <div className="flex min-h-12 flex-col items-center justify-between gap-2 py-3 sm:flex-row">
-          <p className="text-xs font-normal text-[#555555]">
+        <div className="flex min-h-12 flex-col items-start md:items-center justify-between gap-2 py-3 sm:flex-row">
+          <p className="text-[11px] xl:text-xs font-normal text-[#555555]">
             ©2026 MyBrandLife.me. All rights reserved. Portions of the text and
             imagery may be AI-generated.
           </p>
 
-          <p className="flex items-center gap-1 text-xs font-normal text-[#555555]">
+          <p className="flex items-center gap-1 text-[11px] xl:text-xs font-normal text-[#555555]">
             <ShieldCheck size={16} color="green" /> Secured SaaS Platform
           </p>
         </div>

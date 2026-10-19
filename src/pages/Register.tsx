@@ -1,5 +1,4 @@
 import { Link } from "react-router";
-import Logo from "../assets/MBL_Logo_CROP.png";
 import { useState } from "react";
 import StepOne from "../component/auth/Step-one";
 import StepTow from "../component/auth/Step-tow";
@@ -253,11 +252,8 @@ function Register() {
 
   return (
     <section>
-      <div className="flex flex-col justify-center items-center w-full h-full py-10 md:px-0 px-3">
+      <div className="flex flex-col justify-center items-center w-full h-full py-5 md:py-10 md:px-0 px-2">
         <div className="flex w-full h-full flex-col gap-2 items-center justify-center">
-          <Link to="/">
-            <img src={Logo} alt="" className="w-24" />
-          </Link>
           <h2 className="text-lg md:text-2xl font-bold text-black text-center">
             Your Brand, Your Life, Your Way.
           </h2>
@@ -291,9 +287,9 @@ function Register() {
             />
           </div>
         </div>
-        <div className="w-full mt-5 md:mt-10 border border-gray-200 rounded-3xl shadow-lg lg:w-8/12 xl:w-6/12 h-full flex flex-col items-start justify-center p-5 md:p-14">
+        <div className="w-full mt-5 md:mt-10 border border-gray-200 rounded-3xl shadow-lg lg:w-8/12 xl:w-6/12 h-full flex flex-col items-start justify-center p-5 lg:p-8 xl:p-14">
           <div className="flex flex-col gap-3">
-            <h2 className="md:text-xl text-lg font-medium capitalize">
+            <h2 className="md:text-xl text-base font-medium capitalize">
               Select Your Domain, Plan & Billing
             </h2>
             <p className="text-black bg-amber-50 p-3 text-[13px] rounded-xl">

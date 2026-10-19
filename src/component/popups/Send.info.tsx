@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useRequestInfoMutation } from "../../redux/features/onboard/onboardApi";
 import LocationShare from "./Location.share";
+import { LoaderCircle } from "lucide-react";
 
 interface TypesForm {
   isShowInfo: boolean;
@@ -30,7 +31,7 @@ function SendInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
   const { name, email, phone, note } = user || {};
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setUser({
@@ -67,7 +68,7 @@ function SendInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
           <div className="p-5 min-h-full overflow-y-auto">
             <div className="flex flex-col gap-2 pb-5 mb-5">
               <h2 className="text-2xl font-bold text-center">
-                Let me get your info and I'll give you mine 😉
+                Let me get your info and I'll give you mine
               </h2>
             </div>
 
@@ -111,40 +112,31 @@ function SendInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
                 ></textarea>
               </div>
 
-              <button
-                type="submit"
-                className="py-2 bg-linear-to-r from-[#E73B14] to-[#EF9C25] flex justify-center gap-2 items-center w-full rounded-md mb-2 cursor-pointer hover:scale-102 duration-300 transition-all"
-              >
-                {isLoading ? (
-                  <>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      className="w-6 h-6 animate-spin"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
-                      />
-                    </svg>
-                    <p>Loading...</p>
-                  </>
-                ) : (
-                  <>
-                    <p>SUBMIT REQUEST</p>
-                  </>
-                )}
-              </button>
-              <button
-                className="bg-gradient-to-r from-[#2f2e2e] to-[#888787] w-full text-white text-md text-center py-2 rounded-md cursor-pointer hover:scale-102 duration-300 transition-all"
-                onClick={() => setIsShowInfo(false)}
-              >
-                CLOSE
-              </button>
+              <div className="flex gap-3 items-center">
+                <button
+                  className="bg-[#E6E6E6] cursor-pointer px-5 py-3 rounded-lg text-xs md:text-sm w-full"
+                  onClick={() => {
+                    if (isLoading) {
+                      return;
+                    }
+                    setIsShowInfo(false);
+                  }}
+                  disabled={isLoading}
+                >
+                  Close
+                </button>
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className={`flex justify-center items-center px-5 py-3 rounded-lg text-xs md:text-sm w-full ${isLoading ? "bg-[#4e8527] cursor-not-allowed" : "bg-[#65B32E] cursor-pointer"}`}
+                >
+                  {isLoading ? (
+                    <LoaderCircle size={20} className="animate-spin" />
+                  ) : (
+                    "Submit Request"
+                  )}
+                </button>
+              </div>
             </form>
           </div>
         )}

@@ -65,7 +65,7 @@ function SendPartneremail({
             required
             type="text"
             placeholder="Enter first name"
-            className="w-full rounded-lg border border-gray-200 bg-gray-100 px-4 py-2 text-sm text-black outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/50"
+            className="w-full rounded-lg border border-gray-200 bg-gray-100 px-4 py-2 text-sm text-black outline-none focus:border-[#96c94b] focus:ring-1 focus:ring-[#96c94b]"
           />
         </div>
         <div className="flex-1">
@@ -79,7 +79,7 @@ function SendPartneremail({
             required
             onChange={handleChange}
             placeholder="Enter last name"
-            className="w-full rounded-lg border border-gray-200 bg-gray-100 px-4 py-2 text-sm text-black outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/50"
+            className="w-full rounded-lg border border-gray-200 bg-gray-100 px-4 py-2 text-sm text-black outline-none focus:border-[#96c94b] focus:ring-1 focus:ring-[#96c94b]"
           />
         </div>
       </div>
@@ -93,7 +93,7 @@ function SendPartneremail({
           required
           onChange={handleChange}
           placeholder="Enter email"
-          className="w-full rounded-lg border border-gray-200 bg-gray-100 px-4 py-2 text-sm text-black outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/50"
+          className="w-full rounded-lg border border-gray-200 bg-gray-100 px-4 py-2 text-sm text-black outline-none focus:border-[#96c94b] focus:ring-1 focus:ring-[#96c94b]"
         />
       </div>
 
@@ -106,7 +106,7 @@ function SendPartneremail({
           required
           onChange={handleChange}
           placeholder="Enter phone no"
-          className="w-full rounded-lg border border-gray-200 bg-gray-100 px-4 py-2 text-sm text-black outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/50"
+          className="w-full rounded-lg border border-gray-200 bg-gray-100 px-4 py-2 text-sm text-black outline-none focus:border-[#96c94b] focus:ring-1 focus:ring-[#96c94b]"
         />
       </div>
 
@@ -119,21 +119,28 @@ function SendPartneremail({
           required
           onChange={handleChange}
           placeholder="Enter detail"
-          className="w-full rounded-lg border border-gray-200 bg-gray-100 px-4 py-2 text-sm text-black outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/50"
+          className="w-full rounded-lg border border-gray-200 bg-gray-100 px-4 py-2 text-sm text-black outline-none focus:border-[#96c94b] focus:ring-1 focus:ring-[#96c94b]"
         />
       </div>
 
       <div className="mt-3 flex items-center justify-end gap-2">
         <button
           type="button"
-          onClick={onClose}
-          className="bg-gray-200 border border-gray-300 px-3 py-1 rounded-full cursor-pointer"
+          onClick={() => {
+            if (isLoading) {
+              return;
+            }
+            onClose();
+          }}
+          disabled={isLoading}
+          className="bg-gray-200 border border-gray-300 px-5 py-2 rounded-lg cursor-pointer"
         >
           Cancel
         </button>
         <button
           type="submit"
-          className="rounded-full flex gap-2 items-center cursor-pointer bg-yellow-400 px-3 py-1 text-sm font-semibold text-black hover:bg-yellow-300"
+          disabled={isLoading}
+          className="rounded-lg flex gap-2 items-center cursor-pointer bg-[#96c94b] px-5 py-2 text-sm font-semibold text-black hover:bg-[#8fc244]"
         >
           {isLoading ? (
             <>

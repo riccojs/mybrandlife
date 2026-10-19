@@ -70,7 +70,7 @@ export default function DirectoryPage() {
               }}
               onKeyDown={handleKeyDown}
               placeholder="Search by first name or lander name…"
-              className="w-full rounded-2xl border border-neutral-300 bg-gray-100 px-4 py-3 text-sm outline-none ring-0 placeholder:text-neutral-500 focus:border-yellow-200 focus:ring-2 focus:ring-yellow-400/40"
+              className="w-full rounded-lg border border-neutral-300 bg-gray-100 px-4 py-3 text-sm outline-none ring-0 placeholder:text-neutral-500 focus:border-[#96c94b] focus:ring focus:ring-[#96c94b]"
             />
             <span className="pointer-events-none text-3xl absolute inset-y-0 right-3 flex items-center text-neutral-500">
               ⌕
@@ -122,11 +122,9 @@ export default function DirectoryPage() {
             </p>
           )}
         </div>
-
-        {/* Results table (shown after Enter) */}
         {showTable && query.trim() !== "" && (
-          <div className="mt-8 overflow-hidden rounded-2xl border border-gray-200 bg-gray-100">
-            <table className="min-w-full text-left text-sm">
+          <div className="mt-8 overflow-auto rounded-lg border border-gray-200 bg-gray-100 custom-scroll">
+            <table className="text-left text-sm min-w-150">
               <thead className="border-b border-gray-300">
                 <tr>
                   <th className="px-4 py-2 font-semibold">First Name</th>

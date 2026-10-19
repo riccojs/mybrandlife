@@ -2,7 +2,8 @@ import Logo from "../../assets/MBL_Logo_CROP.png";
 import { NavLink } from "react-router";
 import MobileHeader from "./Mobile.header";
 import React, { useState } from "react";
-import { Rocket, Users } from "lucide-react";
+import { Rocket, LogIn } from "lucide-react";
+import { RiMenu3Line } from "react-icons/ri";
 
 function Header() {
   const [isShow, setIsShow] = useState<boolean>(false);
@@ -11,32 +12,23 @@ function Header() {
 
   return (
     <React.Fragment>
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 py-px">
         <div className="container flex justify-between items-center">
           <div>
             <a href="/">
-              <img src={Logo} alt="" className="w-20 h-full" />
+              <img src={Logo} alt="" className="w-14 xm:w-16 xl:w-20 h-full" />
             </a>
           </div>
           <div className="lg:hidden block">
-            {isShow ? (
-              <button
-                onClick={() => setIsShow(false)}
-                className="cursor-pointer bg-[#96c94b] w-10 h-10 flex justify-center items-center rounded-md"
-              >
-                <i className="fa-solid fa-xmark text-xl"></i>
-              </button>
-            ) : (
-              <button
-                onClick={() => setIsShow(true)}
-                className="cursor-pointer bg-[#96c94b] w-10 h-10 flex justify-center items-center rounded-md"
-              >
-                <i className="fa-solid fa-bars text-xl"></i>
-              </button>
-            )}
+            <button
+              onClick={() => setIsShow(true)}
+              className="cursor-pointer active:scale-[0.98] transition-all bg-[#E6E6E6] w-10 h-10 flex justify-center items-center rounded-full"
+            >
+              <RiMenu3Line size={20} />
+            </button>
           </div>
           <div className="lg:block hidden">
-            <ul className="flex gap-8 items-center">
+            <ul className="flex gap-7 xl:gap-8 items-center">
               <li>
                 <NavLink
                   to={"/"}
@@ -139,26 +131,26 @@ function Header() {
               </li>
             </ul>
           </div>
-          <div className="gap-5 items-center lg:flex hidden">
+          <div className="gap-3 xl:gap-5 items-center lg:flex hidden">
             <a
               href={redirectUrl}
               target="_blank"
-              className="hidden active:scale-[0.98] md:flex items-center gap-3 px-5 py-2.5 rounded-full border border-gray-200 text-sm font-bold text-gray-800 hover:bg-gray-50 transition-all"
+              className="hidden active:scale-[0.98] md:flex items-center gap-2 xl:gap-3 px-5 py-2.5 rounded-full border border-gray-200 text-xs xl:text-sm font-bold text-gray-800 hover:bg-gray-50 transition-all"
             >
-              <Users className="w-4 h-4 text-gray-600" />
+              <LogIn className="w-3 xl:w-4 h-3 xl:h-4 text-gray-600" />
               Login
             </a>
             <NavLink
               to="/pricing"
               className={({ isActive }) =>
-                `flex items-center active:scale-[0.98] gap-2 px-5 py-2.5 rounded-full hover:bg-[#589c28] text-white text-sm font-medium shadow-lg transition-all ${
+                `flex items-center active:scale-[0.98] gap-2 px-5 py-2.5 rounded-full hover:bg-[#589c28] text-white text-xs xl:text-sm font-medium shadow-lg transition-all ${
                   isActive
                     ? "bg-[#bb2d28] text-white shadow-[#bb2d28]/25"
                     : "bg-[#65B32E] text-black shadow-[#65B32E]/25"
                 }`
               }
             >
-              <Rocket className="w-4 h-4 fill-current" />
+              <Rocket className="w-3 xl:w-4 h-3 xl:h-4 fill-current" />
               Register Your Brand
             </NavLink>
           </div>

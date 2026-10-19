@@ -2,28 +2,30 @@ import { Link } from "react-router";
 
 function AboutUsPage() {
   return (
-    <section className="py-10">
+    <section className="py-5 md:py-10">
       <div className="container flex flex-col gap-10 relative">
-        <div className="flex flex-col gap-4 bg-linear-to-r from-[#E1FFC1] to-[#D1FFA1] p-10 rounded-lg">
-          <h2 className="text-4xl font-medium">
+        <div className="flex flex-col gap-4 bg-linear-to-r from-[#E1FFC1] to-[#D1FFA1] p-5 md:p-10 rounded-lg">
+          <h2 className="text-lg md:text-2xl xl:text-4xl font-medium">
             Your brand deserves one home.
           </h2>
-          <p className="text-base font-normal">
+          <p className="text-sm md:text-base font-normal">
             My Brand Life was built to give creators, entertainers, businesses,
             service providers, and everyday brands one simple place to connect
             everything they do. Your links, content, bookings, requests,
             merchandise, stats, and future growth tools can all live under one
             connected brand hub.
           </p>
-          <p className="text-base font-normal">
+          <p className="text-sm md:text-base font-normal">
             Whether you are just getting started or already building an
             audience, My Brand Life helps make your presence easier to find,
-            easier to share, and easier to grow.
+            share, and grow.
           </p>
         </div>
         <div className="flex flex-col gap-2">
-          <h2 className="text-2xl font-medium">What My Brand Life Is?</h2>
-          <ul className="list-disc pl-10 flex flex-col gap-2">
+          <h2 className="text-lg md:text-2xl font-medium">
+            What My Brand Life Is?
+          </h2>
+          <ul className="list-disc pl-10 flex flex-col gap-2 text-sm md:text-base">
             <li>
               More than a landing page. A growing brand platform. iii. At its
               core, My Brand Life gives you a personal branded page that brings
@@ -43,8 +45,10 @@ function AboutUsPage() {
           </ul>
         </div>
         <div className="flex flex-col gap-2">
-          <h2 className="text-2xl font-medium">Why We Built MyBrandLife!</h2>
-          <ul className="list-disc pl-10 flex flex-col gap-2">
+          <h2 className="text-lg md:text-2xl font-medium">
+            Why We Built MyBrandLife!
+          </h2>
+          <ul className="list-disc pl-10 flex flex-col gap-2 text-sm md:text-base">
             <li>
               Most people are trying to build a brand across too many
               disconnected platforms. Social media profiles, booking links,
@@ -65,9 +69,11 @@ function AboutUsPage() {
           </ul>
         </div>
         <div className="flex flex-col gap-2">
-          <h2 className="text-xl font-medium">Who its built for?</h2>
-          <h3>Built For Every Kind of Brand Life </h3>
-          <ul className="list-disc pl-10 flex flex-col gap-2">
+          <h2 className="text-lg md:text-2xl font-medium">
+            Who its built for?
+          </h2>
+          <h3>Built For Every Kind of Brand Life: </h3>
+          <ul className="list-disc pl-10 flex flex-col gap-2 text-sm md:text-base">
             <li>
               Not every brand looks the same. Some brands perform. Some sell.
               Some teach. Some serve. Some create. Some organize. Some are just
@@ -90,20 +96,20 @@ function AboutUsPage() {
           </ul>
         </div>
         <div>
-          <h2 className="text-black text-4xl md:text-5xl font-bold text-center">
+          <h2 className="text-black text-xl md:text-3xl xl:text-4xl font-medium text-center">
             What Powers My Brand Life?
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mt-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mt-5 md:mt-10">
             <Link to="/pricing" className="h-full">
-              <div className="bg-[#e8ffc4] p-10 rounded-lg flex flex-col gap-3 relative hover-effect">
+              <div className="bg-[#e8ffc4] p-5 md:p-10 rounded-lg flex flex-col gap-3 relative hover-effect">
                 <div className="absolute -top-2.5 left-8 w-10/12 h-5 bg-[#dcffa4] rounded-t-lg"></div>
                 <p className="text-black bg-[#96c94b] text-sm px-4 py-1 rounded-md font-medium w-fit">
                   1 - Unify Your Brand
                 </p>
-                <h2 className="text-black text-xl font-medium">
+                <h2 className="text-black text-lg md:text-xl font-medium">
                   Bring everything together
                 </h2>
-                <p className="text-black text-md font-normal">
+                <p className="text-black text-sm md:text-base font-normal">
                   Your links, pages, tools, content, and connections should all
                   point back to one clear brand home. My Brand Life helps make
                   your presence consistent, professional, and easy to share.
@@ -111,30 +117,30 @@ function AboutUsPage() {
               </div>
             </Link>
             <Link to="/pricing" className="h-full">
-              <div className="bg-[#e8ffc4] p-10 rounded-lg flex flex-col gap-3 relative hover-effect h-full">
+              <div className="bg-[#e8ffc4] p-5 md:p-10 rounded-lg flex flex-col gap-3 relative hover-effect h-full">
                 <div className="absolute -top-2.5 left-8 w-10/12 h-5 bg-[#dcffa4] rounded-t-lg"></div>
                 <p className="text-black bg-[#96c94b] text-sm px-4 py-1 rounded-md font-medium w-fit">
                   2 - Engage Your People
                 </p>
-                <h2 className="text-black text-xl font-medium">
+                <h2 className="text-black text-lg md:text-xl font-medium">
                   Turn visitors into connections.
                 </h2>
-                <p className="text-black text-md font-normal">
+                <p className="text-black text-sm md:text-base font-normal">
                   Your audience should be able to follow, contact, book,
                   request, buy, and interact with you from one simple place.
                 </p>
               </div>
             </Link>
             <Link to="/pricing" className="h-full">
-              <div className="bg-[#e8ffc4] p-10 rounded-lg flex flex-col gap-3 relative hover-effect h-full">
+              <div className="bg-[#e8ffc4] p-5 md:p-10 rounded-lg flex flex-col gap-3 relative hover-effect h-full">
                 <div className="absolute -top-2.5 left-8 w-10/12 h-5 bg-[#dcffa4] rounded-t-lg"></div>
                 <p className="text-black bg-[#96c94b] text-sm px-4 py-1 rounded-md font-medium w-fit">
                   3 - Expand Your Presence
                 </p>
-                <h2 className="text-black text-xl font-medium">
+                <h2 className="text-black text-lg md:text-xl font-medium">
                   Grow beyond one platform.
                 </h2>
-                <p className="text-black text-md font-normal">
+                <p className="text-black text-sm lg:text-base font-normal">
                   Social platforms change. Algorithms shift. Your brand hub
                   stays yours. My Brand Life helps you stay visible and
                   connected wherever your audience finds you.
@@ -144,7 +150,7 @@ function AboutUsPage() {
           </div>
           <div className="flex justify-center items-center mt-3">
             <Link
-              className="flex cursor-pointer w-fit active:scale-[0.98] items-center gap-2 px-10 py-4 rounded-full hover:bg-[#589c28] text-white text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25"
+              className="flex cursor-pointer w-fit active:scale-[0.98] items-center gap-2 px-10 py-3 rounded-full hover:bg-[#589c28] text-white text-sm md:text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25 mt-2"
               to="/pricing"
             >
               Register Your Brand
@@ -152,8 +158,10 @@ function AboutUsPage() {
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <h2 className="text-2xl font-medium">More About My Brand Life </h2>
-          <ul className="list-disc pl-10 flex flex-col gap-2">
+          <h2 className="text-lg md:text-2xl font-medium">
+            More About My Brand Life{" "}
+          </h2>
+          <ul className="list-disc pl-10 flex flex-col gap-2 text-sm md:text-base">
             <li>
               My Brand Life is built to grow with you. New tools, features, and
               partner services are being developed to make building your brand
@@ -204,10 +212,10 @@ function AboutUsPage() {
           </ul>
         </div>
         <div className="flex flex-col gap-2">
-          <h2 className="text-2xl font-medium">
+          <h2 className="text-lg md:text-2xl font-medium">
             Your Brand Should Not Be Trapped
           </h2>
-          <ul className="list-decimal pl-10 flex flex-col gap-2">
+          <ul className="list-decimal pl-10 flex flex-col gap-2 text-sm md:text-base">
             <li>
               Social platforms are powerful, but they should not be the only
               place your brand lives. Algorithms change. Accounts get
@@ -222,10 +230,10 @@ function AboutUsPage() {
           </ul>
         </div>
         <div className="flex flex-col gap-2">
-          <h2 className="text-2xl font-medium">
+          <h2 className="text-lg md:text-2xl font-medium">
             Built Today. Growing Every Quarter.
           </h2>
-          <ul className="list-decimal pl-10 flex flex-col gap-2">
+          <ul className="list-decimal pl-10 flex flex-col gap-2 text-sm md:text-base">
             <li>
               Some My Brand Life tools are live now, while others are planned
               for future releases. Our roadmap is designed to add more value
@@ -244,15 +252,17 @@ function AboutUsPage() {
             </li>
           </ul>
           <Link
-            className="flex w-fit cursor-pointer active:scale-[0.98] items-center gap-2 px-10 py-4 rounded-full hover:bg-[#589c28] text-white text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25"
+            className="flex w-fit cursor-pointer active:scale-[0.98] items-center gap-2 px-10 py-3 rounded-full hover:bg-[#589c28] text-white text-sm md:text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25 mt-2"
             to="/pricing"
           >
             Register Your Brand
           </Link>
         </div>
         <div className="flex flex-col gap-2">
-          <h2 className="text-2xl font-medium">Start With One Page</h2>
-          <ul className="list-decimal pl-10 flex flex-col gap-2">
+          <h2 className="text-lg md:text-2xl font-medium">
+            Start With One Page
+          </h2>
+          <ul className="list-decimal pl-10 flex flex-col gap-2 text-sm md:text-base">
             <li>
               Your brand does not need to be perfect to get started. It just
               needs a home.
@@ -263,7 +273,7 @@ function AboutUsPage() {
             </li>
           </ul>
           <Link
-            className="flex cursor-pointer w-fit active:scale-[0.98] items-center gap-2 px-10 py-4 rounded-full hover:bg-[#589c28] text-white text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25"
+            className="flex cursor-pointer w-fit active:scale-[0.98] items-center gap-2 px-10 py-3 rounded-full hover:bg-[#589c28] text-white text-sm md:text-md font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25 mt-2"
             to="/pricing"
           >
             Register Your Brand

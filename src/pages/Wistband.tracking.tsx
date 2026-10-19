@@ -39,15 +39,16 @@ function WistbandTracking() {
   };
 
   return (
-    <section className="min-h-screen">
-      <div className="w-11/12 md:w-10/12 xl:w-7/12 2xl:w-5/12 m-auto py-10">
-        <p className="min-w-24 m-auto w-24 h-24 flex justify-center items-center bg-[#cbf38b] rounded-full">
-          <i className="fa-solid fa-shuffle text-5xl"></i>
+    <section className="min-h-auto md:min-h-screen">
+      <div className="w-11/12 md:w-10/12 xl:w-7/12 2xl:w-5/12 m-auto py-5 md:py-10">
+        <p className="min-w-20 m-auto w-20 h-20 flex justify-center items-center bg-[#cbf38b] rounded-full">
+          <i className="fa-solid fa-shuffle text-2xl md:text-3xl"></i>
         </p>
-        <h2 className="text-4xl font-medium text-black text-center mt-5">
-          Find Your Wristband and Track Your Order
+        <h2 className="text-xl md:text-3xl font-medium text-black text-center mt-5">
+          Find your wristband and track your{" "}
+          <span className="text-orange-500">ORDER</span>
         </h2>
-        <p className="text-center text-md font-normal text-black my-5">
+        <p className="text-center text-sm font-normal text-black my-5">
           Use your wristband order ID to quickly access order details and check
           the current shipping status.
         </p>
@@ -59,12 +60,12 @@ function WistbandTracking() {
               id="OrderId"
               value={odId}
               onChange={(e) => setdId(e.target.value)}
-              className="w-full p-4 outline-none text-md font-normal text-black"
+              className="w-full p-3 md:p-4 outline-none text-sm md:text-md font-normal text-black"
               placeholder="Enter your order id"
             />
             <button
               type="submit"
-              className="bg-[#cbf38b] px-5 py-3 rounded-xl text-sm font-normal text-black cursor-pointer"
+              className="bg-[#cbf38b] px-5 py-2 md:py-3 rounded-lg md:rounded-xl text-xs md:text-sm font-normal text-black cursor-pointer"
             >
               Search
             </button>
@@ -89,59 +90,61 @@ function WistbandTracking() {
         )}
 
         {!isLoading && !isFetching && !error && data && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 mt-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-10 mt-5 md:mt-10">
             <div className="flex gap-2 items-center justify-start">
-              <p className="min-w-16 w-16 h-16 flex justify-center items-center bg-[#cbf38b] rounded-full">
-                <i className="fa-regular fa-hand-back-fist text-3xl"></i>
+              <p className="min-w-12 md:min-w-16 w-12 md:w-16 h-12 md:h-16 flex justify-center items-center bg-[#cbf38b] rounded-full">
+                <i className="fa-regular fa-hand-back-fist text-xl md:text-3xl"></i>
               </p>
               <div>
-                <h2 className="text-black text-xl font-medium">
+                <h2 className="text-black text-lg md:text-xl font-medium">
                   Wristband Name
                 </h2>
-                <p className="text-md font-medium text-black">{title}</p>
+                <p className="text-md font-normal text-black">{title}</p>
               </div>
             </div>
             <div className="flex gap-2 items-center justify-start">
-              <p className="min-w-16 w-16 h-16 flex justify-center items-center bg-[#2EE2B7] rounded-full">
-                <i className="fa-solid fa-bandage text-2xl"></i>
+              <p className="min-w-12 md:min-w-16 w-12 md:w-16 h-12 md:h-16 flex justify-center items-center bg-[#2EE2B7] rounded-full">
+                <i className="fa-solid fa-bandage text-xl md:text-2xl"></i>
               </p>
               <div>
-                <h2 className="text-black text-xl font-medium">
+                <h2 className="text-black text-lg md:text-xl font-medium">
                   Wristband Color
                 </h2>
-                <p className="text-md font-medium text-black">{color}</p>
+                <p className="text-md font-normal text-black">{color}</p>
               </div>
             </div>
 
             <div className="flex gap-2 items-center">
-              <p className="min-w-16 w-16 h-16 flex justify-center text-white items-center bg-[#CC374B] rounded-full">
-                <i className="fa-regular fa-clock text-2xl"></i>
+              <p className="min-w-12 md:min-w-16 w-12 md:w-16 h-12 md:h-16 flex justify-center text-white items-center bg-[#CC374B] rounded-full">
+                <i className="fa-regular fa-clock text-xl md:text-2xl"></i>
               </p>
               <div>
-                <h2 className="text-black text-xl font-medium">Order Placed</h2>
-                <p className="text-md font-medium text-black">
+                <h2 className="text-black text-lg md:text-xl font-medium">
+                  Order Placed
+                </h2>
+                <p className="text-md font-normal text-black">
                   {formattedDate(create_at)}
                 </p>
               </div>
             </div>
 
             <div className="flex gap-2 items-start">
-              <p className="min-w-16 w-16 h-16 flex justify-center text-white items-center bg-[#5839DD] rounded-full">
-                <i className="fa-solid fa-dollar-sign text-2xl"></i>
+              <p className="min-w-12 md:min-w-16 w-12 md:w-16 h-12 md:h-16 flex justify-center text-white items-center bg-[#5839DD] rounded-full">
+                <i className="fa-solid fa-dollar-sign text-xl md:text-2xl"></i>
               </p>
               <div>
-                <h2 className="text-black text-xl font-medium">
+                <h2 className="text-black text-lg md:text-xl font-medium">
                   Wristband Price
                 </h2>
                 <div className="flex gap-2 flex-wrap">${price}</div>
               </div>
             </div>
             <div className="flex gap-2 items-start">
-              <p className="min-w-16 w-16 h-16 flex justify-center text-white items-center bg-[#FFCE49] rounded-full">
-                <i className="fa-solid fa-sack-dollar text-2xl"></i>
+              <p className="min-w-12 md:min-w-16 w-12 md:w-16 h-12 md:h-16 flex justify-center text-white items-center bg-[#FFCE49] rounded-full">
+                <i className="fa-solid fa-sack-dollar text-xl md:text-2xl"></i>
               </p>
               <div>
-                <h2 className="text-black text-xl font-medium">
+                <h2 className="text-black text-lg md:text-xl font-medium">
                   Wristband Sub Total
                 </h2>
                 <div className="flex gap-2 flex-wrap">${subTotal}</div>
@@ -149,11 +152,11 @@ function WistbandTracking() {
             </div>
 
             <div className="flex gap-2 items-center">
-              <p className="min-w-16 w-16 h-16 flex justify-center text-white items-center bg-[#E59D2D] rounded-full">
-                <i className="fa-solid fa-truck-fast text-2xl"></i>
+              <p className="min-w-12 md:min-w-16 w-12 md:w-16 h-12 md:h-16 flex justify-center text-white items-center bg-[#E59D2D] rounded-full">
+                <i className="fa-solid fa-truck-fast text-xl md:text-2xl"></i>
               </p>
               <div>
-                <h2 className="text-black text-xl font-medium mb-1">
+                <h2 className="text-black text-lg md:text-xl font-medium mb-1">
                   Shipping Status
                 </h2>
                 <p
