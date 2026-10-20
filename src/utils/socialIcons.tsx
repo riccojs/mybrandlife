@@ -166,22 +166,21 @@ export const socialUrls = [
   },
 ];
 
-export const socialIconMap = socialUrls.reduce((acc, item) => {
-  acc[item.label.toLowerCase()] = item.icon;
-  return acc;
-}, {} as Record<string, React.ElementType>);
+export const socialIconMap = socialUrls.reduce(
+  (acc, item) => {
+    acc[item.label.toLowerCase()] = item.icon;
+    return acc;
+  },
+  {} as Record<string, React.ElementType>,
+);
 
 export const getSocialIcon = (name: string, url?: string) => {
   const lowerName = name.toLowerCase();
-
-  // Match by label text
   for (const key in socialIconMap) {
     if (lowerName.includes(key)) {
       return socialIconMap[key];
     }
   }
-
-  // Match by URL domain
   if (url) {
     for (const key in socialIconMap) {
       if (url.toLowerCase().includes(key)) {
@@ -189,6 +188,5 @@ export const getSocialIcon = (name: string, url?: string) => {
       }
     }
   }
-
   return null;
 };

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreateBrandbook from "./Create.brandbook";
 import { track } from "@plausible-analytics/tracker";
 
@@ -10,6 +10,19 @@ function BrandbookRequest({
   landerName: string;
 }) {
   const [isshow, setIsshow] = useState(false);
+
+  useEffect(() => {
+    if (isshow) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isshow]);
+
   return (
     <>
       <button
@@ -30,7 +43,7 @@ function BrandbookRequest({
           backgroundImage: `linear-gradient(to right, ${officialColor}, #fff)`,
         }}
       >
-        <i className="fa-regular fa-calendar-days text-xs md:text-md"></i>
+        <i className="fa-regular fa-calendar-days text-xs md:text-base"></i>
         <p className="text-xs md:text-base">BrandBook</p>
       </button>
       {isshow && <CreateBrandbook isShow={isshow} setShow={setIsshow} />}

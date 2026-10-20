@@ -25,6 +25,7 @@
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.18",
     "framer-motion": "^12.25.0",
+    "lucide-react": "^1.59.0",
     "posthog-js": "^1.316.0",
     "react": "^19.2.5",
     "react-day-picker": "^9.11.1",

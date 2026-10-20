@@ -20,7 +20,10 @@ function App() {
         <Routes>
           <Route path="/error" element={<ErrorPage />} />
           <Route path="/:name" element={<Wireframe />} />
-          <Route path="/payment/success/:name" element={<PaymentSuccess />} />
+          <Route
+            path="/payment/success/:name/:id"
+            element={<PaymentSuccess />}
+          />
           <Route path="/:name/request_tv" element={<RequestTv />} />
           <Route path="/" element={<RedirectRoute />} />
           <Route path="*" element={<ErrorPage />} />

@@ -230,7 +230,7 @@ function Wireframe() {
             </a>
             {services?.length > 0 && (
               <div>
-                <h2 className="text-white text-xl md:text-3xl font-medium text-right">
+                <h2 className="text-white text-lg md:text-3xl font-medium">
                   {services_label ? services_label : "Service Offered"}
                 </h2>
                 <ul
@@ -257,7 +257,7 @@ function Wireframe() {
             )}
           </div>
         </div>
-        <div className="w-full h-1 bg-slate-400 animate-pulse"></div>
+        <div className="w-full h-px bg-black/70"></div>
         <div
           className="w-full py-10 min-h-[80vh] h-full"
           style={
@@ -284,7 +284,7 @@ function Wireframe() {
                     },
                   });
                 }}
-                className="flex justify-center px-4 gap-2 items-center w-full h-8 md:h-12 
+                className="flex justify-center px-4 gap-1 md:gap-2 items-center w-full h-8 md:h-12 
                       rounded-lg hover:scale-105 duration-300 transition-all cursor-pointer 
                       border border-white hover:shadow-[0_0_14px_rgba(255,255,255,0.90)]"
                 style={{
@@ -293,12 +293,12 @@ function Wireframe() {
               >
                 <i className="fa-solid fa-upload text-xs md:text-xl"></i>
                 <p className="text-xs md:text-base font-normal">
-                  Submit your info
+                  Submit Your Info
                 </p>
               </button>
               {enablevcf && (
                 <button
-                  className="flex justify-center px-4 gap-2 items-center w-full h-8 md:h-12 
+                  className="flex justify-center px-3 md:px-4 gap-1 md:gap-2 items-center w-full h-8 md:h-12 
              rounded-lg hover:scale-105 duration-300 transition-all cursor-pointer 
              border border-white hover:shadow-[0_0_14px_rgba(255,255,255,0.90)]"
                   style={{
@@ -328,10 +328,10 @@ function Wireframe() {
             </div>
 
             <div className="mt-4 mb-2 md:my-4">
-              <h2 className="uppercase text-white text-xl md:text-3xl font-medium text-center">
+              <h2 className="uppercase text-white text-lg md:text-3xl font-medium text-center">
                 {tagLine}
               </h2>
-              <p className="mt-2 text-md font-normal text-white text-center">
+              <p className="mt-2 text-sm font-normal text-white text-center">
                 {offerings}
               </p>
             </div>
@@ -366,10 +366,10 @@ function Wireframe() {
                     })
                   }
                 >
-                  <i className="fa-solid fa-bag-shopping text-xl"></i>
+                  <i className="fa-solid fa-bag-shopping text-sm md:text-xl"></i>
                   <a
                     target="_blank"
-                    className="capitalize"
+                    className="capitalize text-xs md:text-base"
                     href={merchendiseUrl}
                   >
                     {landerName} Merchandise
@@ -380,7 +380,7 @@ function Wireframe() {
               {packageName === "gold" && enableEcho && (
                 <div className="flex gap-3 mt-3">
                   <button
-                    className="flex justify-center px-4 gap-2 items-center w-full h-8 md:h-12 
+                    className="flex justify-center px-3 md:px-4 gap-1 md:gap-2 items-center w-full h-8 md:h-12 
              rounded-lg hover:scale-105 duration-300 transition-all cursor-pointer 
              border border-white hover:shadow-[0_0_14px_rgba(255,255,255,0.90)]"
                     style={{
@@ -396,10 +396,10 @@ function Wireframe() {
                       })
                     }
                   >
-                    <i className="fa-regular fa-circle-play text-xl"></i>
+                    <i className="fa-regular fa-circle-play text-md md:text-xl"></i>
                     <Link
                       to={`/${landerName}/request_tv`}
-                      className="capitalize"
+                      className="capitalize text-[11px] md:text-base"
                     >
                       ECHO (Live Board)
                     </Link>
@@ -490,10 +490,10 @@ function Wireframe() {
               </div>
             </div>
             <div className="mt-6">
-              <h2 className="text-xl font-medium text-white text-center capitalize">
+              <h2 className="text-base md:text-xl font-medium text-white text-center capitalize">
                 {about_label ? about_label : "About"} {landerName}
               </h2>
-              <p className="text-gray-200 mt-3 text-md font-normal text-center w-full  m-auto">
+              <p className="text-gray-200 mt-3 text-sm md:text-md font-normal text-center w-full  m-auto">
                 {bio}
               </p>
             </div>
@@ -522,11 +522,11 @@ function Wireframe() {
             </div>
           )}
         </div>
-        <div className="w-full h-1 bg-slate-400 animate-pulse"></div>
+        <div className="w-full h-px bg-black/70"></div>
         <div className="bg-black py-10">
           <div className="container">
             <p className="text-white text-xs md:text-md font-normal text-center capitalize">
-              © 2025 {landerName} | All Rights Reserved.
+              ©{new Date().getFullYear()} {landerName} - All Rights Reserved.
             </p>
             <ul className="flex gap-5 justify-center items-center mt-3">
               <li>
@@ -542,7 +542,7 @@ function Wireframe() {
                   }
                   href="https://mybrandlife.me/terms-condition"
                   target="_blank"
-                  className="text-white text-sm font-normal underline"
+                  className="text-white text-xs md:text-sm font-normal hover:underline"
                 >
                   Terms & Conditions
                 </a>
@@ -560,7 +560,7 @@ function Wireframe() {
                   }
                   target="_blank"
                   href="https://mybrandlife.me/privacy-policy"
-                  className="text-white text-sm font-normal underline"
+                  className="text-white text-xs md:text-sm font-normal hover:underline"
                 >
                   Privacy Policy
                 </a>
@@ -585,9 +585,9 @@ function Wireframe() {
                       })
                     }
                   >
-                    Apply Discount Code When Sing-Up
+                    Apply Discount Code When Signing Up
                   </a>
-                  <i className="fa-solid fa-arrow-up-right-from-square"></i>
+                  <i className="fa-solid fa-arrow-up-right-from-square text-xs md:text-md"></i>
                 </button>
               </div>
             )}
@@ -625,18 +625,18 @@ function Wireframe() {
                   "noopener,noreferrer",
                 )
               }
-              className="text-white text-sm font-medium text-center cursor-pointer"
+              className="text-white text-xs md:text-sm font-normal hover:underline text-center cursor-pointer"
             >
               Powered By MyBrandLife!
             </button>
             <a
               href="https://MyBrandLife.me/pricing"
-              className="text-white text-sm font-medium text-center cursor-pointer"
+              className="text-white text-xs md:text-sm font-medium hover:underline text-center cursor-pointer"
               target="_blank"
             >
               Join the community get your lander here!
             </a>
-            <img src={MBLLogo} className="w-24 h-24" alt="" />
+            <img src={MBLLogo} className="w-16 md:w-24 h-16 md:h-24" alt="" />
           </div>
         </div>
       </div>

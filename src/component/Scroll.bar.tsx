@@ -100,9 +100,9 @@ function ScrollBar() {
       return (
         <tr key={id} className={tipColor}>
           <td>{name}</td>
-          <td>{shoutOut}</td>
+          <td>{shoutOut ? shoutOut : "N/A"}</td>
           <td>{message}</td>
-          <td>{city}</td>
+          <td>{city ? city : "N/A"}</td>
           <td>${tip}</td>
           <td>{status}</td>
           <td>{formattedDate(create_at)}</td>
@@ -112,9 +112,9 @@ function ScrollBar() {
   }
 
   return (
-    <div className="w-full xl:w-9/12 2xl:w-10/12 h-full">
-      <div className="h-full overflow-auto">
-        <table className="my-table table-auto w-full min-w-300 border-collapse">
+    <div className="w-full sm:w-9/12 2xl:w-10/12 h-full">
+      <div className="h-full overflow-auto custom-scroll">
+        <table className="my-table table-auto w-full min-w-200 border-collapse">
           <thead className="sticky top-0 z-20 bg-black border-b border-gray-500">
             <tr className="text-white font-normal">
               <th>Name</th>

@@ -83,14 +83,11 @@ function CreateEcho({ isShow, setShow }: DataTypes) {
       >
         <div className="flex flex-col gap-5 rounded-2xl">
           <div>
-            <h2 className="text-[#3D424B] font-medium text-xl md:text-3xl">
+            <h2 className="text-[#3D424B] font-medium text-lg md:text-2xl">
               Send Live Request
             </h2>
           </div>
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col gap-5 mt-2 md:mt-3"
-          >
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <input
               type="text"
               value={name}
@@ -125,6 +122,7 @@ function CreateEcho({ isShow, setShow }: DataTypes) {
                 onChange={handleChange}
                 required
                 maxLength={120}
+                rows={3}
                 className="bg-[#F3F3F3] border border-gray-300 focus:outline focus:outline-[#96c94b] focus:border p-2 w-full rounded-md text-normal"
                 placeholder="Enter your message"
               ></textarea>
@@ -138,8 +136,9 @@ function CreateEcho({ isShow, setShow }: DataTypes) {
                 value={shoutOut}
                 onChange={handleChange}
                 maxLength={120}
+                rows={3}
                 className="bg-[#F3F3F3] border border-gray-300 focus:outline focus:outline-[#96c94b] focus:border p-2 w-full rounded-md text-normal"
-                placeholder="Enter your shoutOut (optional)"
+                placeholder="Enter your shoutout (optional)"
               ></textarea>
               <p className="text-sm font-normal text-gray-400">
                 Max length 120 characters
@@ -175,6 +174,8 @@ function CreateEcho({ isShow, setShow }: DataTypes) {
                   name="tip"
                   onChange={handleChange}
                   value={tip}
+                  min={0}
+                  max={100}
                   required
                   className="bg-[#F3F3F3] border mt-2 border-gray-300 focus:outline focus:outline-[#96c94b] focus:border p-2 w-full rounded-md text-normal"
                   placeholder="Enter your tip"
@@ -188,24 +189,32 @@ function CreateEcho({ isShow, setShow }: DataTypes) {
                 </p>
               )}
             </div>
-            <button
-              type="submit"
-              className="bg-[#cbf38b] px-6 py-3 cursor-pointer rounded-lg flex gap-2 items-center w-fit mt-3"
-            >
-              {isLoading ? (
-                <i className="fa-solid fa-circle-notch animate-spin"></i>
-              ) : (
-                "Submit"
-              )}
-            </button>
+            <div className="flex gap-3 items-center">
+              <button
+                onClick={() => {
+                  if (isLoading) {
+                    return;
+                  }
+                  setShow(false);
+                }}
+                className="bg-slate-200 px-6 py-3 cursor-pointer rounded-lg flex gap-2 items-center w-fit"
+              >
+                Close
+              </button>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="bg-[#cbf38b] px-6 py-3 cursor-pointer rounded-lg flex gap-2 items-center w-fit"
+              >
+                {isLoading ? (
+                  <i className="fa-solid fa-circle-notch animate-spin"></i>
+                ) : (
+                  "Submit"
+                )}
+              </button>
+            </div>
           </form>
         </div>
-        <button
-          onClick={() => setShow(false)}
-          className="text-red-500 text-2xl absolute top-1 right-1 cursor-pointer"
-        >
-          <i className="fa-solid fa-circle-xmark"></i>
-        </button>
       </div>
     </div>
   );

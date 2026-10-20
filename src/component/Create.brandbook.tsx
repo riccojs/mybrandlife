@@ -38,7 +38,7 @@ function CreateBrandbook({ isShow, setShow }: DataTypes) {
   const { name, email, note } = event || {};
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setEvent({
@@ -135,29 +135,38 @@ function CreateBrandbook({ isShow, setShow }: DataTypes) {
                 value={note}
                 onChange={handleChange}
                 required
+                rows={5}
                 className="bg-[#F3F3F3] border border-gray-300 focus:outline focus:outline-[#96c94b] focus:border py-3 px-3 w-full rounded-xl"
                 placeholder="Enter your note"
               ></textarea>
             </div>
             <SelectSlot setEvent={setEvent} />
-            <button
-              type="submit"
-              className="bg-[#cbf38b] px-6 py-3 cursor-pointer rounded-lg flex gap-2 items-center w-fit mt-3"
-            >
-              {isLoading ? (
-                <i className="fa-solid fa-circle-notch animate-spin"></i>
-              ) : (
-                "Book Now"
-              )}
-            </button>
+            <div className="flex gap-3 items-center">
+              <button
+                onClick={() => {
+                  if (isLoading) {
+                    return;
+                  }
+                  setShow(false);
+                }}
+                className="bg-slate-200 px-6 py-3 cursor-pointer rounded-lg flex gap-2 items-center w-fit"
+              >
+                Close
+              </button>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="bg-[#cbf38b] px-6 py-3 cursor-pointer rounded-lg flex gap-2 items-center w-fit"
+              >
+                {isLoading ? (
+                  <i className="fa-solid fa-circle-notch animate-spin"></i>
+                ) : (
+                  "Book Now"
+                )}
+              </button>
+            </div>
           </form>
         </div>
-        <button
-          onClick={() => setShow(false)}
-          className="text-red-500 text-2xl absolute top-1 right-1 cursor-pointer"
-        >
-          <i className="fa-solid fa-circle-xmark"></i>
-        </button>
       </div>
     </div>
   );
