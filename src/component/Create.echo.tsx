@@ -77,7 +77,7 @@ function CreateEcho({ isShow, setShow }: DataTypes) {
   return (
     <div className="fixed inset-0 flex justify-center items-center w-full min-h-screen z-50 overflow-auto bg-white/20 backdrop-blur-xs">
       <div
-        className={`relative px-5 py-10 md:p-10 flex flex-col w-11/12 lg:w-8/12 xl:w-7/12 2xl:w-4/12 m-auto justify-center rounded-xl shadow-xl bg-[#fff] ${
+        className={`relative px-5 py-10 md:p-10 flex flex-col w-11/12 lg:w-8/12 xl:w-7/12 2xl:w-4/12 m-auto justify-center rounded-xl shadow-xl bg-white ${
           isShow ? "zoom-animation" : ""
         }`}
       >
