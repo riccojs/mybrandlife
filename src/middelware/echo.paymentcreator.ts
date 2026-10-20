@@ -9,10 +9,8 @@ async function echoPaymentcreator(
   landerName: string,
   domain: string,
 ) {
-  const getUrl = process.env.CORS_ORIGIN;
-  const splitUrl = getUrl?.split(",");
-  const mainDomain = splitUrl?.[0];
-  const successUrl = `${mainDomain}/payment/success/${landerName}`;
+  const mainDomain = `https://${domain}`;
+  const successUrl = `${mainDomain}/payment/success/${landerName}/{CHECKOUT_SESSION_ID}`;
   const failedUrl = `https://${domain}/${landerName}`;
   const existUser = await Prisma.user.findUnique({
     where: {

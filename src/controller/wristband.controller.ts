@@ -229,6 +229,7 @@ export async function getAllWristbandItemByMode(req: Request, res: Response) {
   }
 }
 
+// get all order wristband
 export async function getAllOrderedWristband(req: Request, res: Response) {
   const id = req.params.id as string;
   try {

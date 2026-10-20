@@ -12,12 +12,14 @@ import {
   updateEchoStatus,
   getAllEchoByLander,
   checkStripeConnection,
+  getOneEchoById,
 } from "../controller/echo.controller.js";
 const router = express.Router();
 
 router.get("/", auth, getAllEcho);
 router.get("/lander", publicSecretAuth, getAllEchoByLander);
 router.get("/:id", auth, getOneEcho);
+router.get("/order/:id", publicSecretAuth, getOneEchoById);
 router.get("/stripe/connection/:id", publicSecretAuth, checkStripeConnection);
 router.post("/", publicSecretAuth, createEcho);
 router.post("/stripe/connect", auth, connectStripeAccount);

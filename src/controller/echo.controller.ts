@@ -183,6 +183,48 @@ export async function getOneEcho(req: Request, res: Response) {
   }
 }
 
+// get one echo by transactionId
+export async function getOneEchoById(req: Request, res: Response) {
+  const id = req.params.id as string;
+  try {
+    const existEcho = await Prisma.echo.findFirst({
+      where: {
+        transactionId: id,
+      },
+    });
+    if (!existEcho) {
+      return res.status(404).json({
+        status: ERROR_STATUS,
+        message: DATA_NOT_FOUND_MESSAGE,
+      });
+    }
+    res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: QUERY_SUCCESSFUL_MESSAGE,
+      echo: existEcho,
+    });
+    await activityLog({
+      userId: existEcho?.userId,
+      action: "Get one echo by transaction id",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+  } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
+
 // create echo
 export async function createEcho(req: Request, res: Response) {
   const { name, email, message, tip, userId, city, shoutOut } = req.body;

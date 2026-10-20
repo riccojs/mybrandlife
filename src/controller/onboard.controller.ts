@@ -32,12 +32,7 @@ import {
   mangoDomains,
   orangeDomains,
 } from "../utils/domains.js";
-import {
-  ButtonSetType,
-  LayoutDetection,
-  PlanWristbandType,
-  UserType,
-} from "../utils/types.js";
+import { ButtonSetType, LayoutDetection, UserType } from "../utils/types.js";
 import { paymentCreator } from "../middelware/payment.creator.js";
 import getBase64Image from "../lib/getBase64Image.js";
 import { fileURLToPath } from "url";
