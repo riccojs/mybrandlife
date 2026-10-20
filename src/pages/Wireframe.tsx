@@ -298,9 +298,9 @@ function Wireframe() {
               </button>
               {enablevcf && (
                 <button
-                  className="flex justify-center px-3 md:px-4 gap-1 md:gap-2 items-center w-full h-8 md:h-12 
+                  className={`flex justify-center px-3 md:px-4 gap-1 md:gap-2 items-center w-full h-8 md:h-12 
              rounded-lg hover:scale-105 duration-300 transition-all cursor-pointer 
-             border border-white hover:shadow-[0_0_14px_rgba(255,255,255,0.90)]"
+             border border-white hover:shadow-[0_0_14px_rgba(255,255,255,0.90)] ${vcfFile ? "cursor-pointer" : "cursor-not-allowed"}`}
                   style={{
                     backgroundImage: `linear-gradient(to right, ${officialColor}, #fff)`,
                   }}
