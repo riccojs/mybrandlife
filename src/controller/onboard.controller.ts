@@ -50,6 +50,7 @@ import extraWristbandPayment from "../middelware/extrawristband.payment.js";
 const card = new VCard();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const publicPath = process.env.PUBLIC_PATH as string;
 
 // get all onboard
 export async function getAllOnboard(req: Request, res: Response) {
@@ -921,7 +922,7 @@ export async function onboardingUser(req: Request, res: Response) {
         const portraitData = fs.readFileSync(portraitPath).toString("base64");
         card.set("photo", portraitData, { encoding: "b", type: "JPEG" });
       }
-      const fileDir = path.join(__dirname, "../../public");
+      const fileDir = publicPath;
       if (!fs.existsSync(fileDir)) fs.mkdirSync(fileDir, { recursive: true });
       const fileName = `${landerName || "contact"}_${Date.now()}.vcf`;
       const filePath = path.join(fileDir, fileName);

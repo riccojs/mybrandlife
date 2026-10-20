@@ -852,7 +852,7 @@ export async function sendResetOtp(req: Request, res: Response) {
     if (!existUser) {
       return res.status(404).json({
         status: ERROR_STATUS,
-        messahe: DATA_NOT_FOUND_MESSAGE,
+        message: DATA_NOT_FOUND_MESSAGE,
       });
     }
     const landerName = existUser?.landerName ?? "";

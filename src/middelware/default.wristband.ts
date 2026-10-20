@@ -1,4 +1,5 @@
 import { Prisma } from "../utils/prisma.js";
+import { randomUUID } from "crypto";
 
 async function defaultWristband(user: {
   id: string;
@@ -22,7 +23,7 @@ async function defaultWristband(user: {
         subTotal: 0,
         banner: existWristband.banner,
         color: existWristband.color,
-        trackingNumber: `${user?.landerName}-${existWristband.color}`,
+        trackingNumber: `${user?.landerName}-${randomUUID()}`,
         qrCode: `https://${user?.domain}/${user?.landerName}`,
         mode: "GLOBAL",
       },

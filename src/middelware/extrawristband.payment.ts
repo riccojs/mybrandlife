@@ -2,6 +2,7 @@ import Stripe from "stripe";
 import { Prisma } from "../utils/prisma.js";
 import { PlanWristbandType } from "../utils/types.js";
 import { WristbandName } from "@prisma/client";
+import { randomUUID } from "crypto";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
 const frontend = process.env.FRONTEND_CORS_URL;
@@ -94,7 +95,7 @@ async function extraWristbandPayment(
       subTotal: item.subTotal,
       banner: item.banner,
       color: item.color as WristbandName,
-      trackingNumber: `${landerName}-${item.color}`,
+      trackingNumber: `${user?.landerName}-${randomUUID()}`,
       qrCode: `https://${domain}/${landerName}`,
       mode: "EXTRA",
       transactionId: session.id,
