@@ -189,7 +189,8 @@ function PaymentSuccess() {
             Need help?
             <a
               className="font-semibold text-green-700 underline decoration-green-300 underline-offset-4 hover:text-green-800"
-              href=""
+              href="https://mybrandlife.me/contact"
+              target="_blank"
             >
               Contact our support team
             </a>
