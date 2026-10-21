@@ -6,7 +6,7 @@ export const response = {
   REGISTRATION_SUCCESS_MESSAGE: "Successful, redirect to payment",
   EMAIL_VERIFICATION_CODE_RESPONSE: "Verify Your Email for My Brand Life",
   NAME_RESPONSE: "The My Brand Life Team",
-  OUTRO_RESPONSE: "©2025 MyBrandLife.me. All rights reserved.",
+  OUTRO_RESPONSE: `${new Date().getFullYear()} MyBrandLife.me. All rights reserved.`,
   USE_VERIFICATION_CODE_TO_VERIFY_EMAIL_RESPONSE:
     "Welcome to My Brand Life! Please use the following confirmation code to verify your email address.",
   SINGNATURE_RESPONSE: "Kind regards",
@@ -40,6 +40,7 @@ export const response = {
   INVALID_SECURE_KEY_MESSAGE: "Invalid secure Key!",
   USER_VERIFY_SUCCESSFUL_MESSAGE: "Verify successful",
   FORM_SUBMITION_SUCCESSFUL_MESSAGE: "Submit successful, redireting",
+  SLOT_CREATE_SUCCESSFUL_MESSAGE: "Slot create successful",
   BOOKING_SUBMIT_SUCCESSFUL: "Booking submit successful",
   ACCOUNT_IS_DEACTIVATE_MESSAGE: "Deactivate account successful",
   CONNECTION_REDIRECT_MESSAGE: "Connection redirect",

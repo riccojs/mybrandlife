@@ -15,7 +15,7 @@ const {
   DELETE_SUCCESS_MESSAGE,
   BOOKING_SUBMIT_SUCCESSFUL,
   GOOGLE_CALENDAR_NOT_CONNECTED,
-  FORM_SUBMITION_SUCCESSFUL_MESSAGE,
+  SLOT_CREATE_SUCCESSFUL_MESSAGE,
   UPDATE_SUCCESSFUL_MESSAGE,
   ONBOARD_DOES_NOT_EXIST,
 } = response;
@@ -336,7 +336,7 @@ export async function createSlot(req: Request, res: Response) {
     });
     res.status(201).json({
       status: SUCCESS_STATUS,
-      message: FORM_SUBMITION_SUCCESSFUL_MESSAGE,
+      message: SLOT_CREATE_SUCCESSFUL_MESSAGE,
     });
     await activityLog({
       userId: userId,
@@ -431,7 +431,9 @@ export async function googleAuthCallback(req: Request, res: Response) {
         calendarId,
       },
     });
-    res.redirect(`${process.env.FRONTEND_CORS_URL}/google/connect/success`);
+    res.redirect(
+      `${process.env.FRONTEND_CORS_URL}/brandbook/google/connect/success`,
+    );
     await activityLog({
       userId: userId,
       action: "Callback google authentication",

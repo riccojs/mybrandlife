@@ -20,8 +20,8 @@ async function extraWristbandPayment(
   user: UserType,
 ) {
   const { id, username, landerName, domain, email } = user;
-  const successUrl = `${frontend}/ordered_wristband/confirmation/{CHECKOUT_SESSION_ID}`;
-  const cancelUrl = `${frontend}/dashboard`;
+  const successUrl = `${frontend}/wristband/confirmation/{CHECKOUT_SESSION_ID}`;
+  const cancelUrl = `${frontend}`;
 
   const totalAmount =
     wristbands.reduce((total, item) => total + item.subTotal, 0) ?? 0;

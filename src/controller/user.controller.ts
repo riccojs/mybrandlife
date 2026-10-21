@@ -811,7 +811,7 @@ export async function sendResetCode(req: Request, res: Response) {
         expireAt: new Date(Date.now() + 15 * 60 * 1000),
       },
     });
-    const resetURL = `${corsUrl}/auth/reset-password/${resetToken}`;
+    const resetURL = `${corsUrl}/auth/reset/${resetToken}`;
     const landerName = existUser.landerName ? existUser.landerName : "";
     await resetEmail(landerName, email, resetURL);
     await activityLog({
