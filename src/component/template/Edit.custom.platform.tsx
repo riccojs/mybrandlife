@@ -114,7 +114,7 @@ function EditCustomPlatform({
               <button
                 disabled={isLoading}
                 type="submit"
-                className="bg-[#BDF188] text-[#000000] flex justify-center items-center gap-1 w-fit border border-[#76c725] px-10 py-3 rounded-2xl cursor-pointer"
+                className={`${isLoading ? "bg-[#97c569] cursor-not-allowed" : "bg-[#BDF188] cursor-pointer"}  text-[#000000] flex justify-center items-center gap-1 border border-[#76c725] min-w-32 w-32 py-3 rounded-2xl`}
               >
                 {isLoading ? <LoaderCircle className="animate-spin" /> : "Save"}
               </button>

@@ -77,19 +77,23 @@ function UpdateBrandbook({ isShow, setShow, id, status }: DataTypes) {
                 color="#F3F3F3"
               />
             </div>
-            <div className="flex gap-3 items-center mt-2">
+            <div className="flex gap-3 items-center mt-5">
               <button
                 type="button"
                 onClick={() => setShow(false)}
-                className="bg-slate-200 px-6 py-3 cursor-pointer rounded-lg flex gap-2 items-center w-fit mt-3"
+                className="bg-slate-200 px-6 py-2 cursor-pointer rounded-lg flex gap-2 items-center w-fit"
               >
                 Close
               </button>
-              <button className="bg-[#cbf38b] px-6 py-3 cursor-pointer rounded-lg flex gap-2 items-center w-fit mt-3">
+              <button
+                type="submit"
+                disabled={isLoading}
+                className={`${isLoading ? "bg-[#a3c46f] cursor-not-allowed" : "bg-[#cbf38b] cursor-pointer"} min-w-28 text-normal h-10 rounded-md flex justify-center items-center gap-2`}
+              >
                 {isLoading ? (
                   <i className="fa-solid fa-circle-notch animate-spin"></i>
                 ) : (
-                  "Update"
+                  "Save"
                 )}
               </button>
             </div>

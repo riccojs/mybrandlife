@@ -72,6 +72,10 @@ function AddCustomButton({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (Object.keys(onboard.customPlatform ?? {}).length === 0) {
+      toast.error("Select a platform first.");
+      return;
+    }
     createCustoms({ id, onboard })
       .unwrap()
       .then((res) => {
@@ -96,11 +100,11 @@ function AddCustomButton({
           <div>
             <div className="mb-5 flex items-start justify-between border-b border-gray-200 pb-4">
               <div>
-                <h2 className="text-xl font-semibold text-gray-900">
+                <h2 className="text-lg md:text-xl md:text-left text-center text-[#121625] font-medium">
                   Add Custom Platforms
                 </h2>
-                <p className="text-sm text-gray-500">
-                  Add button label and link to create custom platform.
+                <p className="text-[#9FA9BB] md:text-left text-center text-xs md:text-sm font-normal">
+                  Add a button label and link to create a custom platform.
                 </p>
               </div>
             </div>
@@ -173,7 +177,8 @@ function AddCustomButton({
               </button>
               <button
                 type="submit"
-                className="bg-[#BDF188] text-[#000000] flex justify-center items-center gap-1 w-fit border border-[#76c725] px-10 py-3 rounded-2xl cursor-pointer"
+                disabled={isLoading}
+                className={`${isLoading ? "bg-[#97c569] cursor-not-allowed" : "bg-[#BDF188] cursor-pointer"}  text-[#000000] flex justify-center items-center gap-1 border border-[#76c725] min-w-32 w-32 py-3 rounded-2xl`}
               >
                 {isLoading ? <LoaderCircle className="animate-spin" /> : "Save"}
               </button>

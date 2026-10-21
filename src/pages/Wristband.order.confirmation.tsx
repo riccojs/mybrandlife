@@ -217,13 +217,7 @@ export default function WristbandOrderConfirmation() {
 
           <div className="w-full flex flex-col sm:flex-row items-center gap-3 mt-8 max-w-2xl">
             <Link
-              to="/wistband/tracking"
-              className="w-full text-center sm:w-1/2 bg-[#1a56db] hover:bg-blue-700 text-white font-semibold text-xs py-3 px-4 rounded-lg shadow-sm transition-colors duration-150"
-            >
-              Track Your Order
-            </Link>
-            <Link
-              to="/ordered_wristband"
+              to="/wristband"
               className="w-full text-center sm:w-1/2 bg-white hover:bg-slate-50 text-[#1a56db] border border-blue-200 font-semibold text-xs py-3 px-4 rounded-lg transition-colors duration-150"
             >
               Back to wristband

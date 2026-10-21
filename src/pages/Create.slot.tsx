@@ -8,6 +8,7 @@ import Slots from "../component/brandbook/Slots";
 import timeData from "../utils/time.data";
 import { useCreateSlotMutation } from "../redux/features/event/eventApi";
 import { useAuth } from "../hook/useAuth";
+import { ArrowLeft, EthernetPort } from "lucide-react";
 
 interface SlotType {
   date: string;
@@ -35,9 +36,9 @@ function CreateSlot() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!slot.date && slot.times?.length === 0) {
+    if (!slot.date || slot.times?.length === 0) {
       toast.error("Select require feild");
       return;
     }
@@ -50,6 +51,7 @@ function CreateSlot() {
           times: [],
           userId: userId,
         });
+        setSelectedDate(undefined);
       })
       .catch((error) => {
         const err = error as FetchBaseQueryError;
@@ -59,17 +61,17 @@ function CreateSlot() {
   };
 
   return (
-    <section className="p-5">
+    <section className="p-3 md:p-5">
       <div className="flex md:flex-row flex-col justify-between items-start md:items-center">
         <div className="md:w-6/12 w-full">
-          <h2 className="text-normal text-2xl md:text-3xl">Brandbook Stol</h2>
-          <ul className="flex gap-2 items-center py-2">
+          <h2 className="text-normal text-xl md:text-3xl">BrandBook Slot</h2>
+          <ul className="flex gap-1 md:gap-2 md:flex-nowrap flex-wrap items-center py-2">
             <li>
               <Link
                 to="/brandbook"
-                className="text-normal text-sm md:text-base"
+                className="text-normal text-sm md:text-base hover:underline"
               >
-                Brandbook
+                BrandBook
               </Link>
             </li>
             <li>
@@ -77,55 +79,58 @@ function CreateSlot() {
             </li>
             <li>
               <p className="text-normal text-sm md:text-base">
-                Create Brandbook Slot
+                Create Your Slot
               </p>
             </li>
           </ul>
         </div>
-        <Link
-          to="/brandbook"
-          className="bg-slate-200 text-[#000000] shadow flex justify-center items-center gap-1 w-fit border border-gray-300 px-10 py-3 rounded-2xl cursor-pointer"
-        >
-          Back
-        </Link>
+        <button className="bg-[#88C22F] text-white md:w-fit w-full justify-center flex gap-2 items-center px-6 py-2 md:py-3 rounded-lg text-normal text-md">
+          <ArrowLeft size={20} />
+          <Link to="/brandbook">Back</Link>
+        </button>
       </div>
-      <div className="flex lg:flex-row flex-col gap-5 w-full">
-        <div className="bg-white w-full lg:w-6/12 p-5 md:p-10 rounded-xl border border-gray-200">
-          <form onSubmit={handleSubmit} className="flex flex-col gap-10">
+      <div className="flex lg:flex-row flex-col gap-3 md:gap-5 w-full mt-3 md:mt-0">
+        <div className="bg-white w-full lg:w-6/12 p-5 md:p-10 rounded-3xl shadow border border-gray-200">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-5 md:gap-10"
+          >
             <div className="flex flex-col gap-2">
-              <label className="text-light text-xl font-normal">
-                Select Date<span className="text-xl text-red-400">*</span>
+              <label className="text-light text-lg font-normal">
+                Select Date<span className="text-lg text-red-400">*</span>
               </label>
-              <div className="bg-[#F3F3F3] p-5 rounded-xl w-fit">
+              <div className="w-full max-w-fit custom-scroll overflow-x-auto rounded-xl bg-[#F3F3F3] p-3 sm:p-5">
                 <DayPicker
                   mode="single"
                   selected={selectedDate}
                   onSelect={(date) => {
                     setSelectedDate(date || undefined);
+
                     if (date) {
                       const formatted = date.toLocaleDateString("en-CA");
                       setSlot((prev) => ({ ...prev, date: formatted }));
                     }
                   }}
-                  modifiersClassNames={{
-                    selected: "text-[#000] bg-[#96c94b] rounded-full",
-                    disabled: "text-gray-400",
-                    today: "text-[#000]",
-                    hidden: "text-gray-500",
-                    arrow: "text-red",
-                  }}
                   disabled={{ before: new Date() }}
+                  modifiersClassNames={{
+                    selected: "text-black bg-[#96c94b] rounded-full",
+                    disabled: "text-gray-400",
+                    today: "text-black",
+                    hidden: "text-gray-500",
+                  }}
                   modifiersStyles={{
                     caption: { color: "#ffdd00" },
                   }}
+                  className="mx-auto"
                 />
               </div>
             </div>
             <div className="flex flex-col gap-2">
-              <label className="text-light text-xl font-normal">
-                Select Times<span className="text-xl text-red-400">*</span>
+              <label className="text-light text-md md:text-lg font-normal">
+                Select Times
+                <span className="text-md md:text-lg text-red-400">*</span>
               </label>
-              <div className="flex flex-wrap gap-3 mt-2">
+              <div className="flex flex-wrap gap-2 md:gap-3 mt-2">
                 {timeData?.map((item, index) => (
                   <p
                     key={index}
@@ -136,7 +141,7 @@ function CreateSlot() {
                       }
                       handleSelectTime(item);
                     }}
-                    className={`px-4 min-w-28 text-md py-2 text-center rounded-md cursor-pointer
+                    className={`min-w-20 md:min-w-22 text-sm py-2 text-center rounded-md cursor-pointer
                     ${
                       slot.times.includes(item)
                         ? "bg-[#96c94b]"
@@ -151,7 +156,7 @@ function CreateSlot() {
             </div>
             <button
               disabled={isLoading}
-              className="bg-[#96c94b] cursor-pointer px-10 py-3 w-fit rounded-lg"
+              className={`${isLoading ? "bg-[#7ba43c] cursor-not-allowed" : "bg-[#96c94b] cursor-pointer"} min-w-32 md:min-w-44 h-12 flex justify-center items-center w-fit rounded-lg text-sm md:text-base`}
             >
               {isLoading ? (
                 <i className="fa-solid fa-circle-notch animate-spin"></i>
@@ -161,8 +166,13 @@ function CreateSlot() {
             </button>
           </form>
         </div>
-        <div className="bg-white w-full lg:w-6/12 p-5 rounded-xl border border-gray-200">
-          <h2 className="text-2xl font-normal">Created Slots</h2>
+        <div className="bg-white h-fit w-full lg:w-6/12 rounded-3xl overflow-hidden shadow border border-gray-200">
+          <div className="flex justify-between items-center p-5">
+            <h2 className="text-lg md:text-2xl font-normal">Created Slots</h2>
+            <p className="min-w-14 w-14 h-14 flex justify-center items-center rounded-full bg-amber-50">
+              <EthernetPort />
+            </p>
+          </div>
           <Slots />
         </div>
       </div>

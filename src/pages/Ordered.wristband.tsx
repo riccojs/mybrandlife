@@ -150,11 +150,7 @@ function OrderedWristband() {
           <td>
             <div className="flex gap-3">
               <Link
-                to={
-                  userData?.role === "ADMIN"
-                    ? `/admin/ordered-wristband/${id}`
-                    : `/ordered-wristband/${id}`
-                }
+                to={`/wristband/${id}`}
                 className="border border-gray-300 w-8 h-8 flex cursor-pointer justify-center items-center rounded-md"
               >
                 <i className="fa-regular fa-eye"></i>

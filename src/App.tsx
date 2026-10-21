@@ -64,13 +64,10 @@ function App() {
               <Route path="/brandbook" element={<Brandbook />} />
               <Route path="/brandbook/slot" element={<CreateSlot />} />
               <Route path="/spin" element={<SpinList />} />
-              <Route path="/ordered-wristband" element={<OrderedWristband />} />
+              <Route path="/wristband" element={<OrderedWristband />} />
+              <Route path="/wristband/:id" element={<OrderedWristbandView />} />
               <Route
-                path="/ordered-wristband/:id"
-                element={<OrderedWristbandView />}
-              />
-              <Route
-                path="/ordered-wristband/confirmation/:id"
+                path="/wristband/confirmation/:id"
                 element={<WristbandOrderConfirmation />}
               />
             </Route>
@@ -80,13 +77,10 @@ function App() {
               <Route path="/brandbook" element={<Brandbook />} />
               <Route path="/brandtrack" element={<Brandtrack />} />
               <Route path="/spin" element={<SpinList />} />
-              <Route path="/ordered-wristband" element={<OrderedWristband />} />
+              <Route path="/wristband" element={<OrderedWristband />} />
+              <Route path="/wristband/:id" element={<OrderedWristbandView />} />
               <Route
-                path="/ordered-wristband/:id"
-                element={<OrderedWristbandView />}
-              />
-              <Route
-                path="/ordered-wristband/confirmation/:id"
+                path="/wristband/confirmation/:id"
                 element={<WristbandOrderConfirmation />}
               />
               <Route

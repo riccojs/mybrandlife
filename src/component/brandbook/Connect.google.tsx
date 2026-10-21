@@ -15,12 +15,11 @@ function ConnectGoogle() {
       <button
         onClick={handleConnect}
         disabled={user?.calendarId ? true : false}
-        className={`cursor-pointer min-w-56 w-full px-6 py-3 rounded-lg flex gap-2 items-center justify-center ${
-          user?.calendarId ? "bg-gray-300" : "bg-[#cbf38b]"
+        className={`cursor-pointer min-w-12 w-12 h-12 p-3 py-3 rounded-lg flex gap-2 items-center justify-center ${
+          user?.calendarId ? "bg-gray-200" : "bg-[#cbf38b]"
         }`}
       >
         <FaGoogle size={20} />
-        <p>{user?.calendarId ? "Connected" : "Connect Calendar"}</p>
       </button>
     </>
   );

@@ -14,7 +14,7 @@ import WarningPopup from "../popups/Warning.popup";
 
 function Slots() {
   const [page, setPage] = useState(1);
-  const limit = 14;
+  const limit = 10;
   const [selected, setSelected] = useState("");
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
@@ -27,8 +27,11 @@ function Slots() {
   const handlePageChange = (no: number) => {
     setPage(no);
   };
-  const totalItems = data?.data?.slot;
+  const totalItems = data?.data?.totalSlot;
   const slots = data?.data?.slot;
+  const currentPage = data?.data?.currentPage || [];
+  const start = (currentPage - 1) * limit + 1;
+  const end = Math.min(currentPage * limit, totalItems);
 
   const handleDelete = (id: string) => {
     setSelected(id);
@@ -113,7 +116,7 @@ function Slots() {
                 }}
                 className="flex gap-3"
               >
-                <button className="border border-gray-300 w-10 h-10 flex justify-center items-center rounded-md cursor-pointer">
+                <button className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer">
                   <RiDeleteBin5Line size={20} />
                 </button>
               </div>
@@ -124,10 +127,10 @@ function Slots() {
     );
   }
   return (
-    <div className="xl:overflow-x-auto overflow-x-scroll bg-white mt-5">
-      <table className="my-table table-fixed w-full min-w-150">
-        <thead>
-          <tr className="border-b border-gray-300">
+    <div className="xl:overflow-x-auto overflow-x-scroll bg-white">
+      <table className="my-table table-fixed w-full min-w-180">
+        <thead className="text-xs uppercase text-gray-500 bg-gray-50">
+          <tr className="border-y border-gray-200">
             <th className="font-medium w-32">Date</th>
             <th className="font-medium w-96">Times</th>
             <th className="font-medium w-16">Actions</th>
@@ -135,18 +138,26 @@ function Slots() {
         </thead>
         <tbody>{content}</tbody>
       </table>
-      {totalItems > limit && (
+
+      <div className="flex flex-wrap md:gap-0 gap-3 items-center justify-between p-5 border-t border-gray-200">
+        <p className="text-sm text-gray-400">
+          Showing <span className="font-medium text-gray-500">{start}</span> to{" "}
+          <span className="font-medium text-gray-500">{end}</span> of{" "}
+          <span className="font-medium text-gray-700">{totalItems}</span>{" "}
+          results
+        </p>
         <Pagination
           handlePageChange={handlePageChange}
           page={page}
           totalItems={totalItems}
           itemsPerPage={limit}
         />
-      )}
+      </div>
+
       {selected && (
         <WarningPopup
           open={open}
-          title="Do you want delete this slot?"
+          title="Do you want to delete this slot?"
           description={`Deleting this slot will permanently remove all associated data from the database. This action cannot be undone. Click "Delete" to continue or "Close" to cancel.`}
           smButton="Delete"
           clButton="Close"

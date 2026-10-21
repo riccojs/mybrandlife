@@ -50,17 +50,17 @@ function Login() {
 
   return (
     <section>
-      <div className="z-10 flex justify-center items-center md:min-h-screen py-10 md:py-0">
+      <div className="z-10 flex justify-center items-center md:min-h-screen py-10 md:py-0 px-2">
         <div className="flex flex-1 flex-col items-center p-0 md:p-5">
           <div className="w-full max-w-114.5 rounded-3xl shadow-lg bg-white px-8 py-7 border border-gray-200 sm:px-10 sm:py-8">
             <div className="flex flex-col justify-center items-center gap-2">
               <Link to="/">
-                <img src={Logo} alt="" className="w-24" />
+                <img src={Logo} alt="" className="w-16 md:w-24" />
               </Link>
-              <h2 className="text-3xl font-medium leading-tight tracking-[-0.035em] text-[#171926]">
+              <h2 className="text-lg md:text-3xl font-medium leading-tight tracking-[-0.035em] text-[#171926]">
                 Welcome Back!
               </h2>
-              <p className="mt-1 text-sm leading-5 text-[#171926]/50 text-center">
+              <p className="mt-1 text-xs md:text-sm leading-5 text-[#171926]/50 text-center">
                 Please sign in using the email address and password associated
                 with your registered account. Make sure you enter the same
                 credentials you used when creating your account. If the
@@ -68,7 +68,7 @@ function Login() {
                 system, you will not be able to sign in.
               </p>
             </div>
-            <form onSubmit={handleSubmit} className="mt-10">
+            <form onSubmit={handleSubmit} className="mt-5 md:mt-10">
               <div className="mt-5">
                 <label
                   htmlFor="email"
@@ -104,15 +104,15 @@ function Login() {
                 />
                 <Link
                   to="/auth/reset"
-                  className="text-xs font-normal inline-block mt-5 text-black/50 hover:underline"
+                  className="text-xs font-normal inline-block mt-2 md:mt-5 text-black/50 hover:underline"
                 >
-                  Forget Password
+                  Forgot Password
                 </Link>
               </div>
               <button
                 type="submit"
                 disabled={isLoading}
-                className={`mt-7 h-12 w-full flex justify-center items-center rounded-full  text-sm font-semibold text-black shadow-sm transition duration-200 active:scale-[0.95] ${isLoading ? "bg-[#6fa420] cursor-not-allowed" : "bg-[#96c94b] hover:bg-[#88c133] cursor-pointer"}`}
+                className={`mt-3 md:mt-7 h-10 md:h-12 w-full flex justify-center items-center rounded-full text-sm md:text-md font-semibold text-black shadow-sm transition duration-200 active:scale-[0.95] ${isLoading ? "bg-[#6fa420] cursor-not-allowed" : "bg-[#96c94b] hover:bg-[#88c133] cursor-pointer"}`}
               >
                 {isLoading ? (
                   <LoaderCircle className="animate-spin" />

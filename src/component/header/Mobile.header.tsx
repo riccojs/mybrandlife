@@ -171,17 +171,23 @@ function MobileHeader({ navbar, setNavbar }: Types) {
         }
       >
         <div className="relative">
-          <div className="flex justify-center items-center py-2">
+          <div className="flex justify-between items-center px-5 py-2">
             <Link to={""}>
               <img
                 src={getLogo[domain.replace(".me", "")]}
                 alt=""
-                className="w-24 h-24 min-w-24 min-h-24"
+                className="w-16 md:w-24"
               />
             </Link>
+            <button
+              onClick={handleClose}
+              className="border bg-gray-200 border-gray-300 shadow-sm rounded-full w-10 h-10 flex justify-center items-center cursor-pointer"
+            >
+              <i className="fa-solid fa-xmark text-xl"></i>
+            </button>
           </div>
           <div className="mt-5">
-            <h2 className="text-thin text-sm pl-8 uppercase tracking-widest">
+            <h2 className="text-thin text-xs md:text-sm pl-8 uppercase tracking-widest">
               Overview
             </h2>
             <nav className="mt-5">
@@ -199,8 +205,10 @@ function MobileHeader({ navbar, setNavbar }: Types) {
                         className={`flex items-center cursor-pointer justify-between w-full py-2 px-4 rounded-lg ${openMenu === menu.name ? "bg-[#96c94b]" : ""}`}
                       >
                         <div className="flex items-center gap-2">
-                          <img src={menu?.icon} alt="" className="w-6" />
-                          <p className="font-medium">{menu.name}</p>
+                          <img src={menu?.icon} alt="" className="w-5 md:w-6" />
+                          <p className="font-medium text-sm md:text-base">
+                            {menu.name}
+                          </p>
                         </div>
                         <span>
                           {openMenu === menu.name ? (
@@ -246,9 +254,9 @@ function MobileHeader({ navbar, setNavbar }: Types) {
                                     <img
                                       src={child?.icon}
                                       alt=""
-                                      className="w-6"
+                                      className="w-5 md:w-6"
                                     />
-                                    <p className="font-medium text-base">
+                                    <p className="font-medium text-sm md:text-base">
                                       {child.name}
                                     </p>
                                   </NavLink>
@@ -263,12 +271,6 @@ function MobileHeader({ navbar, setNavbar }: Types) {
               </ul>
             </nav>
           </div>
-          <button
-            onClick={handleClose}
-            className="border border-gray-300 shadow-sm rounded-full bg-white w-8 h-8 flex justify-center items-center absolute top-1 -right-3.75 hover:bg-[#2B7F75] hover:text-white cursor-pointer"
-          >
-            <i className="fa-solid fa-xmark"></i>
-          </button>
         </div>
       </div>
     </header>

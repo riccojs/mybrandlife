@@ -7,6 +7,7 @@ import SearchComponent from "../component/ui/Search.component";
 import SelectComponent from "../component/ui/Select.component";
 import OnboardLoader from "../component/loader/Onboard.loadder";
 import { useGetAllOnboardQuery } from "../redux/features/onboard/onboardApi";
+import { CalendarRange, Globe } from "lucide-react";
 
 interface UserType {
   package?: string;
@@ -36,7 +37,10 @@ function OnboardingList() {
     userId: user?.id,
   });
   const onboardLists = data?.data?.onboard;
-  const totalItems = data?.data?.totalOnboard;
+  const currentPage = data?.data?.currentPage || [];
+  const totalItem = data?.data?.totalOnboard || 0;
+  const start = (currentPage - 1) * limit + 1;
+  const end = Math.min(currentPage * limit, totalItem);
 
   const handlePageChange = (value: number) => {
     searchParams.set("page", value.toString());
@@ -87,8 +91,8 @@ function OnboardingList() {
   if (!isLoading && !isFetching && onboardLists?.length === 0) {
     content = (
       <tr>
-        <td colSpan={6}>
-          <p className="bg-amber-100 text-md font-normal p-3 rounded-md">
+        <td colSpan={6} className="p-0!">
+          <p className="bg-[#FEFBED] text-center text-[#643315] text-md font-normal py-5 rounded-md">
             Data not found!
           </p>
         </td>
@@ -111,13 +115,23 @@ function OnboardingList() {
         const { domain, landerName } = user;
         return (
           <tr key={id}>
-            <td>{formattedDate(create_at)}</td>
-            <td>{domain}</td>
-            <td>{landerName}</td>
-            <td>{bio?.slice(0, 60)}</td>
+            <td>
+              <div className="flex gap-2 items-center">
+                <CalendarRange color="#12544F" size={20} />
+                {formattedDate(create_at)}
+              </div>
+            </td>
+            <td>
+              <div className="flex gap-2 items-center">
+                <Globe color="#12544F" size={20} />
+                <p className="text-sm">{domain}</p>
+              </div>
+            </td>
+            <td className="text-sm">{landerName}</td>
+            <td className="text-sm">{bio?.slice(0, 60)}</td>
             <td>
               <p
-                className={`w-fit px-3 py-1 rounded-md text-center font-medium text-sm capitalize ${
+                className={`w-fit px-6 py-2 rounded-md text-center font-medium text-xs ${
                   verify
                     ? "bg-green-100 text-green-500"
                     : "bg-red-100 text-red-500"
@@ -130,13 +144,13 @@ function OnboardingList() {
               <div className="flex gap-3">
                 <button
                   onClick={() => handleRedirect(domain, landerName, verify)}
-                  className="border border-gray-300 w-8 h-8 flex justify-center items-center rounded-md cursor-pointer"
+                  className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
                 >
                   <i className="fa-regular fa-eye"></i>
                 </button>
                 <Link
                   to={`/onboard/update/${id}`}
-                  className="border border-gray-300 w-8 h-8 flex justify-center items-center rounded-md"
+                  className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
                 >
                   <i className="fa-regular fa-pen-to-square"></i>
                 </Link>
@@ -152,12 +166,12 @@ function OnboardingList() {
     <React.Fragment>
       <div className="p-3 md:p-5 min-h-screen">
         <div className="md:w-6/12 w-full">
-          <h2 className="text-normal text-2xl md:text-3xl">Onboard</h2>
-          <ul className="flex gap-2 items-center py-2">
+          <h2 className="text-normal text-xl md:text-3xl">Onboard</h2>
+          <ul className="flex gap-1 md:gap-2 md:flex-nowrap flex-wrap items-center py-2">
             <li>
               <Link
-                to="/dashboard"
-                className="text-normal text-sm md:text-base"
+                to="/"
+                className="text-normal text-sm md:text-base hover:underline"
               >
                 Dashboard
               </Link>
@@ -176,8 +190,8 @@ function OnboardingList() {
             </li>
           </ul>
         </div>
-        <div className="flex flex-col gap-5 mt-5">
-          <div className="flex md:flex-row flex-col justify-between items-start gap-3 md:items-center">
+        <div className="w-full mx-auto bg-white rounded-2xl border border-gray-200 shadow-sm mt-3">
+          <div className="flex md:flex-row flex-col gap-3 md:gap-0 items-center w-full justify-between p-6">
             <div className="w-full md:w-96">
               <SearchComponent
                 name="search"
@@ -212,30 +226,36 @@ function OnboardingList() {
               />
             </div>
           </div>
-          <div className="xl:overflow-x-auto overflow-x-scroll bg-white">
-            <table className="my-table table-fixed w-full min-w-300">
-              <thead>
-                <tr className="border-y border-gray-300">
-                  <th>Created At</th>
-                  <th>Selected Domain</th>
-                  <th>Lander Name</th>
-                  <th>Template Bio</th>
-                  <th>Template Status</th>
-                  <th>Actions</th>
+          <div className="xl:overflow-x-auto overflow-x-scroll custom-scroll bg-white">
+            <table className="my-table table-fixed w-full min-w-350">
+              <thead className="text-xs uppercase text-gray-500 bg-gray-50">
+                <tr className="border-y border-gray-200">
+                  <th className="text-left px-6 py-4">Created At</th>
+                  <th className="text-left px-6 py-4">Selected Domain</th>
+                  <th className="text-left px-6 py-4">Lander Name</th>
+                  <th className="text-left px-6 py-4">Template Bio</th>
+                  <th className="text-left px-6 py-4">Template Status</th>
+                  <th className="text-left px-6 py-4">Actions</th>
                 </tr>
               </thead>
               <tbody>{content}</tbody>
             </table>
           </div>
+          <div className="flex flex-wrap md:gap-0 gap-3 items-center justify-between px-6 py-5 border-t border-gray-200">
+            <p className="text-sm text-gray-400">
+              Showing <span className="font-medium text-gray-500">{start}</span>{" "}
+              to <span className="font-medium text-gray-500">{end}</span> of{" "}
+              <span className="font-medium text-gray-700">{totalItem}</span>{" "}
+              results
+            </p>
+            <Pagination
+              handlePageChange={handlePageChange}
+              page={page}
+              totalItems={totalItem}
+              itemsPerPage={limit}
+            />
+          </div>
         </div>
-        {totalItems > limit && (
-          <Pagination
-            handlePageChange={handlePageChange}
-            page={page}
-            totalItems={totalItems}
-            itemsPerPage={limit}
-          />
-        )}
       </div>
     </React.Fragment>
   );

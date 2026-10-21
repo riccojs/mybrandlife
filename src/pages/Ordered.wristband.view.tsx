@@ -189,7 +189,7 @@ export default function OrderedWristbandView() {
               Production Phase
             </h2>
             <Link
-              to="/ordered-wristband"
+              to="/wristband"
               className="border border-gray-200 px-5 py-1 rounded-lg bg-gray-100"
             >
               Back

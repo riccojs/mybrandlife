@@ -4,15 +4,15 @@ import toast from "react-hot-toast";
 import { useLogoutMutation } from "../../redux/features/auth/authApi";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useAuth } from "../../hook/useAuth";
-import {
-  TbLayoutSidebarLeftCollapse,
-  TbLayoutSidebarRightCollapse,
-} from "react-icons/tb";
+import WristbandIcon from "../../assets/menu-icons/ristband.svg";
+import OnboardIcon from "../../assets/menu-icons/onboard.svg";
 import LogoutModal from "../../component/Logout.modal";
 import NotificationIcon from "../../assets/app-icons/notification.png";
 import HeaderNotification from "./Header.notification";
 import type { NotificationType } from "../../utils/notification.type";
 import io from "socket.io-client";
+import { BiCollapse } from "react-icons/bi";
+import { RiCollapseDiagonalLine, RiMenu3Line } from "react-icons/ri";
 
 const socket = io(import.meta.env.VITE_APP_API_URL);
 
@@ -99,45 +99,35 @@ function Header({ setSidebard, sidebar, setNavbar }: Types) {
 
   return (
     <header className="sticky z-10 top-0 bg-white flex justify-between items-center h-16 border-b-2 border-gray-200 p-3 md:px-5">
-      <div className="flex gap-5 items-center w-3/12">
+      <div className="flex gap-2 items-center w-3/12">
         <button
           onClick={() => setSidebard(!sidebar)}
-          className="xl:flex hidden border border-gray-200 w-10 min-w-10 h-10 justify-center items-center rounded-lg cursor-pointer text-xl"
+          className="xl:flex hidden bg-[#E2E2E2] border border-gray-200 w-10 min-w-10 h-10 justify-center items-center rounded-full cursor-pointer text-xl"
         >
-          {sidebar ? (
-            <TbLayoutSidebarLeftCollapse size={30} />
-          ) : (
-            <TbLayoutSidebarRightCollapse size={30} />
-          )}
+          {sidebar ? <RiCollapseDiagonalLine /> : <BiCollapse />}
         </button>
         <button
           onClick={() => setNavbar(true)}
-          className="block xl:hidden border shadow-sm border-gray-200 px-2 py-1 rounded-lg cursor-pointer"
+          className="flex xl:hidden bg-[#E2E2E2] border border-gray-200 w-10 min-w-10 h-10 justify-center items-center rounded-full cursor-pointer text-xl"
         >
-          <i className="fa-solid fa-bars"></i>
+          <RiMenu3Line size={20} />
         </button>
         <div className="flex gap-2 items-center">
           {existTemplate && (
             <a
               href={`https://${domain}/${landerName}`}
               target="_blank"
-              className="bg-[#cbf38b] px-3 md:px-0 md:min-w-48 py-2 text-center rounded-lg text-base font-normal"
+              className="bg-[#cbf38b] h-10 w-10 md:min-w-10 text-center rounded-full flex justify-center items-center text-base font-normal"
             >
-              <p className="md:block hidden">View Your Lander</p>
-              <p className="md:hidden block">
-                <i className="fa-solid fa-eye "></i>
-              </p>
+              <img src={OnboardIcon} alt="" className="w-5" />
             </a>
           )}
           <a
             href="https://yourworldlife.store/collections/mybrandlife"
             target="_blank"
-            className="bg-[#cbf38b] px-3 md:px-0 md:min-w-48 py-2 text-center rounded-lg text-base font-normal"
+            className="bg-[#cbf38b] h-10 w-10 md:min-w-10 text-center rounded-full flex justify-center items-center text-base font-normal"
           >
-            <p className="md:block hidden">More Wristband</p>
-            <p className="md:hidden block">
-              <i className="fa-solid fa-anchor"></i>
-            </p>
+            <img src={WristbandIcon} className="w-6" alt="" />
           </a>
         </div>
       </div>
@@ -166,11 +156,6 @@ function Header({ setSidebard, sidebar, setNavbar }: Types) {
             onClick={() => setIsProfile((prev) => !prev)}
             className="flex gap-2 items-center cursor-pointer"
           >
-            {!secureKey && (
-              <p className="shadow uppercase border border-gray-200 px-4 py-2 rounded-xl hidden sm:block">
-                {landerName}
-              </p>
-            )}
             {profile ? (
               <img
                 src={profile}

@@ -26,7 +26,7 @@ function InputComponent({
       name={name}
       required={required}
       autoComplete={autoComplete}
-      className="bg-[#F3F3F3] border border-gray-300 focus:outline focus:outline-[#96c94b] focus:border py-3 px-3 w-full rounded-xl text-normal"
+      className="bg-[#F3F3F3] border border-gray-300 focus:outline focus:outline-[#96c94b] focus:border py-3 px-3 w-full rounded-xl text-sm md:text-base"
     />
   );
 }

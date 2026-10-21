@@ -161,7 +161,7 @@ function ViewRequest({ isShow, setShow, id }: DataTypes) {
         )}
         <button
           onClick={() => setShow(false)}
-          className="text-red-500 text-2xl absolute top-1 right-1 cursor-pointer"
+          className="border absolute top-2 text-[#8C98AE] right-2 border-[#E7EBF2] bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-full cursor-pointer"
         >
           <i className="fa-solid fa-circle-xmark"></i>
         </button>

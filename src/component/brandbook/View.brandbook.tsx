@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router";
 import useBodyScroll from "../../hook/userBodyscroll";
 import { useGetOneEventQuery } from "../../redux/features/event/eventApi";
 import ViewBrandbookLoader from "../loader/View.brandbook.loader";
+import { X } from "lucide-react";
 
 interface DataTypes {
   isShow: boolean;
@@ -37,20 +38,10 @@ function ViewBrandbook({ isShow, setShow, id }: DataTypes) {
           <ViewBrandbookLoader />
         ) : (
           <div className="flex flex-col gap-5 rounded-2xl">
-            <div className="flex flex-col gap-2">
-              <h2 className="text-[#3D424B] font-medium text-3xl">
-                Booking Details
-              </h2>
-              <p
-                className={`w-fit px-3 py-1 rounded-md text-center font-medium text-sm capitalize ${
-                  status === "PENDING" || status === "REJECTED"
-                    ? "bg-red-100 text-red-500"
-                    : "bg-green-100 text-green-500"
-                }`}
-              >
-                {status}
-              </p>
-            </div>
+            <h2 className="text-[#565a61] font-medium text-2xl">
+              Booking Details
+            </h2>
+
             <div>
               <h3 className="text-[#3D424B] font-medium text-lg">Name</h3>
               <p className="text-[#3D424B] font-normal text-md">{name}</p>
@@ -81,7 +72,15 @@ function ViewBrandbook({ isShow, setShow, id }: DataTypes) {
             </div>
             <div>
               <h2 className="text-[#3D424B] font-medium text-lg">Status</h2>
-              <p className="text-[#3D424B] font-normal text-md">{status}</p>
+              <p
+                className={`w-fit px-6 mt-1 py-1 rounded-md text-center font-medium text-xs ${
+                  status === "PENDING" || status === "REJECTED"
+                    ? "bg-red-100 text-red-500"
+                    : "bg-green-100 text-green-500"
+                }`}
+              >
+                {status}
+              </p>
             </div>
           </div>
         )}
@@ -91,9 +90,9 @@ function ViewBrandbook({ isShow, setShow, id }: DataTypes) {
             searchParams.delete("view");
             setSearchParams(searchParams);
           }}
-          className="text-gray-400 text-2xl absolute top-2 right-2 cursor-pointer"
+          className="absolute top-3 right-3 border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-full cursor-pointer"
         >
-          <i className="fa-solid fa-circle-xmark"></i>
+          <X />
         </button>
       </div>
     </div>

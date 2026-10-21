@@ -33,7 +33,7 @@ export const userMenu: UserMenu[] = [
     icon: DashboardIcon,
     children: [
       {
-        name: "Dashboard",
+        name: "Home",
         path: "/",
         icon: DashboardIcon,
       },
@@ -69,8 +69,8 @@ export const userMenu: UserMenu[] = [
         requiredPackage: "silver",
       },
       {
-        name: "Ordered Wristband",
-        path: "/ordered-wristband",
+        name: "Wristband",
+        path: "/wristband",
         icon: WistbandIcon,
         requiredPackage: "silver",
       },
@@ -107,7 +107,7 @@ export const userMenu: UserMenu[] = [
     icon: SubscribeIcon,
     children: [
       {
-        name: "Subscription",
+        name: "My Subscription",
         path: "/subscription",
         icon: SubscribeIcon,
       },

@@ -35,7 +35,7 @@ export default function WarningPopup({
         }`}
       >
         <img src={Logo} alt="" className="absolute top-0 right-0 opacity-15" />
-        <div className="px-8 pt-10 pb-8 text-center">
+        <div className="px-5 md:px-8 pt-10 pb-8 text-center">
           <div className="relative mx-auto mb-7 flex h-20 w-20 items-center justify-center rounded-3xl border border-yellow-200 bg-linear-to-b from-yellow-100 to-yellow-50 shadow-lg">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-yellow-400 shadow-md">
               <MessageSquareWarning className="h-7 w-7 text-white" />
@@ -44,17 +44,17 @@ export default function WarningPopup({
               <AlertTriangle className="h-4 w-4 text-yellow-400" />
             </div>
           </div>
-          <h2 className="text-[30px] font-medium leading-tight text-slate-900">
+          <h2 className="text-xl md:text-3xl font-medium leading-tight text-slate-900">
             {title}
           </h2>
 
-          <p className="mt-6 text-[15px] leading-6 text-slate-500">
+          <p className="mt-2 md:mt-6 text-sm md:text-md leading-6 text-slate-500">
             {description}
           </p>
-          <div className="mt-10 flex gap-4">
+          <div className="mt-10 flex gap-3 md:gap-4">
             <button
               onClick={onClose}
-              className="flex-1 cursor-pointer rounded-xl border border-slate-200 bg-slate-100 py-3.5 font-medium text-slate-700 transition hover:bg-slate-200"
+              className="flex-1 cursor-pointer rounded-xl border border-slate-200 bg-slate-100 py-2 md:py-3.5 font-medium text-slate-700 transition active:bg-slate-200"
             >
               {clButton}
             </button>
@@ -62,7 +62,7 @@ export default function WarningPopup({
             <button
               onClick={onConfirm}
               disabled={loading}
-              className="flex-1 cursor-pointer rounded-xl bg-yellow-500 py-3.5 font-semibold text-white shadow-lg shadow-yellow-500/30 transition hover:bg-yellow-600 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex-1 cursor-pointer rounded-xl bg-yellow-500 py-2 md:py-3.5 font-semibold text-white shadow-lg shadow-yellow-500/30 transition hover:bg-yellow-600 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? (
                 <i className="fa-solid fa-circle-notch animate-spin text-xl"></i>

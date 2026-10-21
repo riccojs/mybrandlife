@@ -159,17 +159,19 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
           isShowFile ? "zoom-animation" : ""
         }`}
       >
-        <div className="p-8 min-h-full overflow-y-auto custom-scroll">
+        <div className="p-5 md:p-8 min-h-full overflow-y-auto custom-scroll">
           <div className="flex flex-col border-b border-gray-300 pb-5 mb-5">
-            <h2 className="text-xl">Update All Files</h2>
-            <p className="text-sm font-normal text-gray-400">
-              Update your files settings here!
+            <h2 className="text-[#121625] text-lg md:text-xl">
+              Update All Files
+            </h2>
+            <p className="text-xs md:text-sm font-normal text-[#A0AABC]">
+              Update your file settings here
             </p>
           </div>
           <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6 my-5">
               <div className="flex flex-col gap-1 w-full">
-                <label htmlFor="" className="text-lg font-medium text-black">
+                <label className="text-md md:text-lg font-medium text-black">
                   Header Image
                 </label>
                 <label
@@ -215,7 +217,7 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
                 )}
               </div>
               <div className="flex flex-col gap-1 w-full">
-                <label htmlFor="" className="text-lg font-medium text-black">
+                <label className="text-md md:text-lg font-medium text-black">
                   Logo or Portrait
                 </label>
                 <label
@@ -261,7 +263,7 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
                 )}
               </div>
               <div className="flex flex-col gap-1 w-full">
-                <label htmlFor="" className="text-lg font-medium text-black">
+                <label className="text-md md:text-lg font-medium text-black">
                   Body Image
                 </label>
                 <label
@@ -307,7 +309,7 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
                 )}
               </div>
               <div className="flex flex-col gap-1 w-full">
-                <label htmlFor="" className="text-lg font-medium text-black">
+                <label className="text-md md:text-lg font-medium text-black">
                   EPK.zip File Upload{" "}
                   {disableBox && (
                     <span className="text-xs font-normal text-red-500">
@@ -365,7 +367,7 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
               <button
                 disabled={isLoading}
                 type="submit"
-                className="bg-[#BDF188] text-[#000000] flex justify-center items-center gap-1 w-fit border border-[#76c725] px-10 py-3 rounded-2xl cursor-pointer"
+                className={`${isLoading ? "bg-[#97c569] cursor-not-allowed" : "bg-[#BDF188] cursor-pointer"}  text-[#000000] flex justify-center items-center gap-1 border border-[#76c725] min-w-32 w-32 py-3 rounded-2xl`}
               >
                 {isLoading ? <LoaderCircle className="animate-spin" /> : "Save"}
               </button>

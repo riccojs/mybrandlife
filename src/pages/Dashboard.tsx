@@ -12,8 +12,10 @@ interface AuthType {
 
 interface ItemType {
   midName: string;
+  lastName: string;
   landerName: string;
   package: string;
+  domain: string;
   userTemplete: [];
 }
 
@@ -24,7 +26,7 @@ function Dashboard() {
 
   return (
     <div>
-      <div className="w-full p-5">
+      <div className="w-full p-2 md:p-5">
         {!existTemplate && user?.package === "gold" && (
           <div className="mb-5">
             <p className="text-black bg-amber-100 border-l-3 border-amber-400 p-3 rounded-lg text-lg">

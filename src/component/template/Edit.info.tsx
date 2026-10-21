@@ -18,7 +18,6 @@ interface TypesForm {
 
 interface OnboardType {
   midName: string;
-  nickName: string;
   bio: string;
   tagLine: string;
   offerings: string;
@@ -41,7 +40,6 @@ function EditInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
   const { data } = useGetOneOnboardQuery(id);
   const [onboard, setOnboard] = useState<OnboardType>({
     midName: "",
-    nickName: "",
     bio: "",
     tagLine: "",
     offerings: "",
@@ -58,7 +56,6 @@ function EditInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
 
   const {
     midName,
-    nickName,
     bio,
     tagLine,
     offerings,
@@ -145,17 +142,22 @@ function EditInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
           isShowInfo ? "zoom-animation" : ""
         }`}
       >
-        <div className="p-8 min-h-[90vh] h-[95vh] overflow-y-auto custom-scroll">
-          <div className="flex flex-col border-b border-gray-300 pb-5 mb-5">
-            <h2 className="text-xl">Update General Info</h2>
-            <p className="text-sm font-normal text-gray-400">
+        <div className="p-5 md:p-8 min-h-[90vh] h-[95vh] overflow-y-auto custom-scroll">
+          <div className="flex flex-col border-b border-gray-300 pb-3 md:pb-5 mb-3 md:mb-5">
+            <h2 className="text-[#121625] text-lg md:text-xl">
+              Update General Info
+            </h2>
+            <p className="text-xs md:text-sm font-normal text-[#A0AABC]">
               Update your general info settings here!
             </p>
           </div>
           <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-4 mb-5">
               <div className="flex flex-col">
-                <label htmlFor="" className="text-lg font-normal text-black">
+                <label
+                  htmlFor="firstName"
+                  className="text-md md:text-base font-normal text-[#121625]"
+                >
                   First Name
                 </label>
                 <InputComponent
@@ -169,7 +171,10 @@ function EditInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
                 />
               </div>
               <div className="flex flex-col">
-                <label htmlFor="" className="text-lg font-normal text-black">
+                <label
+                  htmlFor="midName"
+                  className="text-md md:text-base font-normal text-[#121625]"
+                >
                   Mid Name
                 </label>
                 <InputComponent
@@ -183,7 +188,10 @@ function EditInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
                 />
               </div>
               <div className="flex flex-col">
-                <label htmlFor="" className="text-lg font-normal text-black">
+                <label
+                  htmlFor="lastName"
+                  className="text-md md:text-base font-normal text-[#121625]"
+                >
                   Last Name
                 </label>
                 <InputComponent
@@ -196,22 +204,11 @@ function EditInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
                   autoComplete="lastName"
                 />
               </div>
+
               <div className="flex flex-col">
-                <label htmlFor="" className="text-lg font-normal text-black">
-                  Nick Name
-                </label>
-                <InputComponent
-                  type="text"
-                  name="nickName"
-                  value={nickName}
-                  handleChange={handleChange}
-                  placeholder="Enter nick name"
-                  required={false}
-                  autoComplete="nickName"
-                />
-              </div>
-              <div className="flex flex-col">
-                <p>Private Domain</p>
+                <p className="text-md md:text-base font-normal text-[#121625]">
+                  Private Domain
+                </p>
                 <InputComponent
                   type="text"
                   placeholder="Update private domain"
@@ -237,24 +234,24 @@ function EditInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
                   />
                   <label
                     htmlFor="enablePrivateDomain"
-                    className="text-md font-medium text-black mt-1 cursor-pointer"
+                    className="text-sm md:text-md font-medium text-black mt-1 cursor-pointer"
                   >
                     Activate or deactivate your private domain.
                   </label>
                 </div>
-                <p className="bg-amber-50 text-black p-2 border-l-3 rounded-xl border-amber-300 text-xs">
+                <p className="bg-[#FFFCF0] w-full text-[#7C3E16] border-2 border-[#FCF2C6] p-5 text-sm font-normal rounded-lg mt-3">
                   Activating now, your QR code will point to your own domain and
                   not take you to your new lander until you have completed
                   forwarding.
                 </p>
-                <p className="bg-green-100 text-black p-2 border-l-3 rounded-xl border-green-300 text-xs mt-2">
+                <p className="bg-[#FFFCF0] w-full text-[#7C3E16] border-2 border-[#FCF2C6] p-5 text-sm font-normal rounded-lg mt-3">
                   Domain Forwarding Help.” The link will take them to{" "}
                   <a
                     href="https://www.google.com/search?q=how+to+forward+a+domain+to+another+website"
                     target="_blank"
-                    className="text-red-500 hover:underline hover:text-red-600"
+                    className="text-[#7C3E16] uppercase font-bold underline"
                   >
-                    https://www.google.com/search?q=how+to+forward+a+domain+to+another+website
+                    Click
                   </a>{" "}
                   WARNING - setting your page to your own domain will require
                   forwarding that domain to “display full path to the subscriber
@@ -262,10 +259,16 @@ function EditInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
                 </p>
               </div>
               <div className="flex flex-col">
-                <p>VCF File</p>
-                <p className="bg-[#F3F3F3] border border-gray-300 focus:outline focus:outline-[#96c94b] focus:border py-3 px-3 w-full rounded-xl text-normal">
-                  {data?.onboard?.vcfFile?.slice(0, 50)}...
+                <p className="text-md md:text-base font-normal text-[#121625]">
+                  VCF File
                 </p>
+                <a
+                  href={data?.onboard?.vcfFile}
+                  target="_blank"
+                  className="bg-[#F3F3F3] break-all border border-gray-300 focus:outline focus:outline-[#96c94b] focus:border py-3 px-3 w-full rounded-xl text-normal"
+                >
+                  {data?.onboard?.vcfFile?.slice(0, 50)}...
+                </a>
                 <div className="flex gap-2 mt-1">
                   <input
                     type="checkbox"
@@ -286,13 +289,16 @@ function EditInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
                     Activate or deactivate your VCF File.
                   </label>
                 </div>
-                <p className="bg-amber-50 text-black p-2 border-l-3 rounded-xl border-amber-300 text-xs">
-                  Activating your VCF File makes it visible on your landing
+                <p className="bg-[#FFFCF0] w-full text-[#7C3E16] border-2 border-[#FCF2C6] p-5 text-sm font-normal rounded-lg">
+                  Activating your VCF file makes it visible on your landing
                   page. Deactivating it hides it from your landing page.
                 </p>
               </div>
               <div className="flex flex-col">
-                <label htmlFor="" className="text-lg font-normal text-black">
+                <label
+                  htmlFor="offerings"
+                  className="text-md md:text-base font-normal text-[#121625]"
+                >
                   Business/Niche Offerings
                 </label>
                 <TextareaComponent
@@ -306,7 +312,10 @@ function EditInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
                 />
               </div>
               <div className="flex flex-col">
-                <label htmlFor="" className="text-lg font-normal text-black">
+                <label
+                  htmlFor="bio"
+                  className="text-md md:text-base font-normal text-[#121625]"
+                >
                   {about_label ? about_label : "About"}
                 </label>
                 <TextareaComponent
@@ -320,7 +329,10 @@ function EditInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
                 />
               </div>
               <div className="flex flex-col">
-                <label htmlFor="" className="text-lg font-normal text-black">
+                <label
+                  htmlFor="tagLine"
+                  className="text-md md:text-base font-normal text-[#121625]"
+                >
                   Tag Line
                 </label>
                 <InputComponent
@@ -334,7 +346,10 @@ function EditInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
                 />
               </div>
               <div className="flex flex-col col-span-2">
-                <label htmlFor="" className="text-lg font-normal text-black">
+                <label
+                  htmlFor="funnySaying"
+                  className="text-md md:text-base font-normal text-[#121625]"
+                >
                   Funny Saying
                 </label>
                 <InputComponent
@@ -348,7 +363,10 @@ function EditInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
                 />
               </div>
               <div className="flex flex-col col-span-2">
-                <label htmlFor="" className="text-lg font-normal text-black">
+                <label
+                  htmlFor="services_label"
+                  className="text-md md:text-base font-normal text-[#121625]"
+                >
                   Services Offered Label
                 </label>
                 <InputComponent
@@ -362,7 +380,10 @@ function EditInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
                 />
               </div>
               <div className="flex flex-col col-span-2">
-                <label htmlFor="" className="text-lg font-normal text-black">
+                <label
+                  htmlFor="about_label"
+                  className="text-md md:text-base font-normal text-[#121625]"
+                >
                   About Label
                 </label>
                 <InputComponent
@@ -376,7 +397,7 @@ function EditInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
                 />
               </div>
               <div className="flex flex-col gap-2 mt-5 border-t border-gray-300 pt-5">
-                <label className="text-lg font-normal text-black">
+                <label className="text-md md:text-base font-normal text-[#121625]">
                   {services_label ? services_label : "Services Offered"}
                 </label>
 
@@ -427,7 +448,7 @@ function EditInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
               <button
                 disabled={isLoading}
                 type="submit"
-                className="bg-[#BDF188] text-[#000000] flex justify-center items-center gap-1 w-fit border border-[#76c725] px-10 py-3 rounded-2xl cursor-pointer"
+                className={`${isLoading ? "bg-[#97c569] cursor-not-allowed" : "bg-[#BDF188] cursor-pointer"}  text-[#000000] flex justify-center items-center gap-1 border border-[#76c725] min-w-32 w-32 py-3 rounded-2xl`}
               >
                 {isLoading ? <LoaderCircle className="animate-spin" /> : "Save"}
               </button>

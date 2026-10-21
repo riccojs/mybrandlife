@@ -46,25 +46,25 @@ function Reset() {
 
   return (
     <section>
-      <div className="z-10 flex justify-center items-center md:min-h-screen py-10 md:py-0">
+      <div className="z-10 flex justify-center items-center md:min-h-screen px-2 py-10 md:py-0">
         <div className="flex flex-1 flex-col items-center p-0 md:p-5">
           <div className="w-full max-w-114.5 rounded-3xl shadow-lg bg-white px-8 py-7 border border-gray-200 sm:px-10 sm:py-8">
             <div className="flex flex-col justify-center items-center gap-2">
               <Link to="/">
-                <img src={Logo} alt="" className="w-24" />
+                <img src={Logo} alt="" className="w-16 md:w-24" />
               </Link>
-              <h2 className="text-3xl font-medium leading-tight tracking-[-0.035em] text-[#171926]">
+              <h2 className="text-lg md:text-3xl font-medium leading-tight tracking-[-0.035em] text-[#171926]">
                 Reset Password Request!
               </h2>
 
-              <p className="mt-1 text-sm leading-5 text-[#171926]/50 text-center">
+              <p className="mt-1 text-xs md:text-sm leading-5 text-[#171926]/50 text-center">
                 Please enter a valid email address associated with an existing
                 account. Password reset requests can only be processed for
                 registered email addresses. If the email is not found in our
                 system, you will receive an error message.
               </p>
             </div>
-            <form onSubmit={handleSubmit} className="mt-10">
+            <form onSubmit={handleSubmit} className="mt-5 md:mt-10">
               <div className="mt-5">
                 <label
                   htmlFor="email"
@@ -86,7 +86,7 @@ function Reset() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className={`mt-5 h-12 w-full flex justify-center items-center rounded-full  text-sm font-semibold text-black shadow-sm transition duration-200 active:scale-[0.95] ${isLoading ? "bg-[#6fa420] cursor-not-allowed" : "bg-[#96c94b] hover:bg-[#88c133] cursor-pointer"}`}
+                className={`mt-2 md:mt-5 h-10 md:h-12 w-full flex justify-center items-center rounded-full  text-sm font-semibold text-black shadow-sm transition duration-200 active:scale-[0.95] ${isLoading ? "bg-[#6fa420] cursor-not-allowed" : "bg-[#96c94b] hover:bg-[#88c133] cursor-pointer"}`}
               >
                 {isLoading ? (
                   <LoaderCircle className="animate-spin" />
@@ -118,7 +118,7 @@ function Reset() {
           </div>
 
           <div className="mt-12 text-center text-[13px]">
-            <span>Already change your password? </span>
+            <span>Already changed your password? </span>
             <Link
               to="/auth/login"
               className="font-medium text-[#cf3832] underline underline-offset-2"
