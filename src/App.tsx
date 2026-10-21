@@ -84,7 +84,7 @@ function App() {
                 element={<WristbandOrderConfirmation />}
               />
               <Route
-                path="/google/connect/success"
+                path="/brandbook/google/connect/success"
                 element={<GoogleConnectsuccess />}
               />
               <Route
