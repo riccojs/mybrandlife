@@ -67,6 +67,10 @@ function App() {
               <Route path="/wristband" element={<OrderedWristband />} />
               <Route path="/wristband/:id" element={<OrderedWristbandView />} />
               <Route
+                path="/brandbook/google/connect/success"
+                element={<GoogleConnectsuccess />}
+              />
+              <Route
                 path="/wristband/confirmation/:id"
                 element={<WristbandOrderConfirmation />}
               />
