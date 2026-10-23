@@ -1,10 +1,9 @@
-import { Search, LayersPlus, Pencil, Eye, Trash2 } from "lucide-react";
+import { LayersPlus, Pencil, Eye, Trash2 } from "lucide-react";
 import CreateProject from "./Create.project";
 import { useState } from "react";
 import ViewProject from "./View.project";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import toast from "react-hot-toast";
-import { FaSpinner } from "react-icons/fa6";
 import UpdateProject from "./Update.project";
 import { MdAddShoppingCart } from "react-icons/md";
 import { Link, useSearchParams } from "react-router";

@@ -1,4 +1,4 @@
-import { Search, Eye } from "lucide-react";
+import { Eye } from "lucide-react";
 import { Link, useSearchParams } from "react-router";
 import Pagination from "../Pagination";
 import { useGetAllPulsetrackQuery } from "../../redux/features/pulsetrack/pulsetrackApi";

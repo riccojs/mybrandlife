@@ -1,4 +1,4 @@
-import { Folder, Save, User } from "lucide-react";
+import { Folder, User } from "lucide-react";
 import useBodyScroll from "../../hook/userBodyscroll";
 import { useGetOnePulsetrackQuery } from "../../redux/features/pulsetrack/pulsetrackApi";
 import type { PulsetrackType } from "../../utils/pulsetrack.types";

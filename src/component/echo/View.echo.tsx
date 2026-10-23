@@ -1,8 +1,4 @@
 import { type SetStateAction } from "react";
-import { LuMessageSquareMore } from "react-icons/lu";
-import { SlLocationPin } from "react-icons/sl";
-import { IoFlashOutline } from "react-icons/io5";
-import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { useSearchParams } from "react-router";
 import useBodyScroll from "../../hook/userBodyscroll";
 import { useGetOneEchoQuery } from "../../redux/features/echo/echoApi";

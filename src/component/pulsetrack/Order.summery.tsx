@@ -3,7 +3,6 @@ import { Link, useParams } from "react-router";
 import { useState } from "react";
 import AssignUser from "./Assign.user";
 import ViewOrderWristband from "./View.order.wristband";
-import { IoPlaySkipBackOutline } from "react-icons/io5";
 import type {
   OrderWristbandType,
   WristbandType,

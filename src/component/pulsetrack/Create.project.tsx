@@ -1,6 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { MdOutlineClose } from "react-icons/md";
-import { ImSpinner6 } from "react-icons/im";
 import toast from "react-hot-toast";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import useBodyScroll from "../../hook/userBodyscroll";

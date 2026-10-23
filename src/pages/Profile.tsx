@@ -36,7 +36,6 @@ function Profile() {
     phone,
     profile,
     midName,
-    username,
     status,
     lastName,
     firstName,
