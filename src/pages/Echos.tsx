@@ -17,6 +17,8 @@ import {
 import EchoLoader from "../component/loader/Echo.loader";
 import UpdateEchoStatus from "../component/echo/Update.echo.status";
 import WarningPopup from "../component/popups/Warning.popup";
+import { Contact } from "lucide-react";
+import IchoIcon from "../assets/menu-icons/echo.svg";
 
 interface UserType {
   package?: string;
@@ -54,6 +56,9 @@ function Echos() {
   const echos = data?.data?.echo;
   const totalItems = data?.data?.totalEcho;
   const existTemplate = user && user?.userTemplete?.length > 0 ? true : false;
+  const currentPage = data?.data?.currentPage || [];
+  const start = (currentPage - 1) * limit + 1;
+  const end = Math.min(currentPage * limit, totalItems);
 
   const handlePageChange = (newPage: number) => {
     searchParams.set("page", newPage.toString());
@@ -101,8 +106,8 @@ function Echos() {
   if (!isLoading && !isFetching && echos?.length === 0) {
     content = (
       <tr>
-        <td colSpan={7}>
-          <p className="bg-amber-100 text-md font-normal p-3 rounded-md">
+        <td colSpan={6} className="p-0!">
+          <p className="bg-[#FEFBED] text-center text-[#643315] text-md font-normal py-5 rounded-md">
             Data not found!
           </p>
         </td>
@@ -125,13 +130,18 @@ function Echos() {
 
         return (
           <tr key={id}>
-            <td>{name}</td>
-            <td>{email}</td>
-            <td>{shoutOut}</td>
+            <td>
+              <div className="flex gap-2 items-center">
+                <Contact color="#12544F" size={20} />
+                <p className="text-md">{name}</p>
+              </div>
+            </td>
+            <td>{email?.slice(0, 20)}...</td>
+            <td>{shoutOut ? shoutOut : "-"}</td>
             <td>${tip}</td>
             <td>
               <p
-                className={`w-fit px-3 py-1 rounded-md text-center font-medium text-sm capitalize ${
+                className={`w-fit px-6 py-1 rounded-md text-center font-medium text-xs capitalize ${
                   status === "PENDING" ||
                   status === "REJECTED" ||
                   status === "CANCELED"
@@ -149,7 +159,7 @@ function Echos() {
                     setSelected(id);
                     setViewEcho(true);
                   }}
-                  className="border border-gray-300 min-w-8 w-8 h-8 flex justify-center items-center rounded-md cursor-pointer"
+                  className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
                 >
                   <i className="fa-regular fa-eye"></i>
                 </button>
@@ -159,7 +169,7 @@ function Echos() {
                     setUpdateEcho(true);
                     setEchoStatus(status);
                   }}
-                  className="border border-gray-300 min-w-8 w-8 h-8 flex justify-center items-center rounded-md cursor-pointer"
+                  className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
                 >
                   <i className="fa-regular fa-pen-to-square"></i>
                 </button>
@@ -168,7 +178,7 @@ function Echos() {
                     setOpen(true);
                     setSelected(id);
                   }}
-                  className="border border-gray-300 min-w-8 w-8 h-8 flex justify-center items-center rounded-md cursor-pointer"
+                  className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
                 >
                   <RiDeleteBin5Line size={20} />
                 </button>
@@ -185,12 +195,9 @@ function Echos() {
       <div className="p-3 md:p-5 min-h-screen">
         <div className="md:w-6/12 w-full">
           <h2 className="text-normal text-2xl md:text-3xl">ECHO</h2>
-          <ul className="flex gap-2 items-center py-2">
+          <ul className="flex gap-2 flex-wrap items-center py-2">
             <li>
-              <Link
-                to="/dashboard"
-                className="text-normal text-sm md:text-base"
-              >
+              <Link to="/" className="text-normal text-sm md:text-base">
                 Dashboard
               </Link>
             </li>
@@ -210,13 +217,13 @@ function Echos() {
         </div>
         {!existTemplate && (
           <div>
-            <p className="text-black bg-amber-100 border-l-3 border-amber-400 p-3 rounded-lg text-sm">
-              Build your brand to unlock Echo and start engaging your audience.
+            <p className="bg-[#FFFCF0] w-full text-[#7C3E16] border-2 border-[#FCF2C6] p-5 text-sm font-normal rounded-2xl">
+              Build your brand to unlock ECHO and start engaging your audience.
             </p>
           </div>
         )}
-        <div className="flex flex-col gap-5 mt-5">
-          <div className="w-full 2xl:flex-row flex-col gap-5 flex justify-between items-center">
+        <div className="w-full mx-auto bg-white rounded-2xl border border-gray-200 shadow-sm mt-3">
+          <div className="w-full 2xl:flex-row flex-col gap-5 flex justify-between items-center p-6">
             <div className="flex md:w-auto w-full sm:flex-row flex-col justify-between items-start gap-3 md:items-center">
               <div className="w-full md:w-96">
                 <SearchComponent
@@ -256,20 +263,28 @@ function Echos() {
               </div>
             </div>
             {existTemplate && (
-              <div className="flex w-full sm:w-auto sm:flex-row flex-col gap-5 items-center">
+              <div className="flex w-full sm:w-auto gap-3 items-center justify-center md:justify-end">
                 {enableEcho ? (
                   <button
                     onClick={() => setIsShow(true)}
-                    className="bg-gray-300 w-full px-6 py-3 cursor-pointer rounded-lg flex gap-2 items-center justify-center"
+                    className="bg-gray-300 min-w-12 w-12 h-12 p-3 cursor-pointer rounded-lg flex gap-2 items-center justify-center"
                   >
-                    Hide Echo
+                    <img
+                      src={IchoIcon}
+                      alt={IchoIcon}
+                      className="w-full h-full"
+                    />
                   </button>
                 ) : (
                   <button
                     onClick={() => setIsShow(true)}
-                    className="bg-[#cbf38b] w-full px-6 py-3 cursor-pointer rounded-lg flex gap-2 items-center justify-center"
+                    className="bg-[#cbf38b] min-w-12 w-12 h-12 p-2 cursor-pointer rounded-lg flex gap-2 items-center justify-center"
                   >
-                    Show Echo
+                    <img
+                      src={IchoIcon}
+                      alt={IchoIcon}
+                      className="w-full h-full"
+                    />
                   </button>
                 )}
                 {user && <ConnectStripe id={user?.id} />}
@@ -277,9 +292,9 @@ function Echos() {
             )}
           </div>
           <div className="overflow-x-auto bg-white">
-            <table className="my-table table-auto w-full min-w-300">
-              <thead>
-                <tr className="border-y border-gray-300">
+            <table className="my-table table-fixed w-full min-w-350">
+              <thead className="text-xs uppercase text-gray-500 bg-gray-50">
+                <tr className="border-y border-gray-200">
                   <th>Name</th>
                   <th>Email</th>
                   <th>Shoutout</th>
@@ -291,15 +306,23 @@ function Echos() {
               <tbody>{content}</tbody>
             </table>
           </div>
+          <div className="flex flex-wrap md:gap-0 gap-3 items-center justify-between px-6 py-5 border-t border-gray-200">
+            <p className="text-sm text-gray-400">
+              Showing <span className="font-medium text-gray-500">{start}</span>{" "}
+              to <span className="font-medium text-gray-500">{end}</span> of{" "}
+              <span className="font-medium text-gray-700">{totalItems}</span>{" "}
+              results
+            </p>
+
+            <Pagination
+              handlePageChange={handlePageChange}
+              page={page}
+              totalItems={totalItems}
+              itemsPerPage={limit}
+            />
+          </div>
         </div>
-        {totalItems > limit && (
-          <Pagination
-            handlePageChange={handlePageChange}
-            page={page}
-            totalItems={totalItems}
-            itemsPerPage={limit}
-          />
-        )}
+
         {isShow && enableEcho && (
           <EchoAgreement
             setShow={setIsShow}
@@ -330,7 +353,7 @@ function Echos() {
         {selected && (
           <WarningPopup
             open={open}
-            title="Do you want delete this ECHO request?"
+            title="Do you want to delete this ECHO request?"
             description={`Deleting this ECHO request will permanently remove all associated data from the database. This action cannot be undone. Click "Delete" to continue or "Close" to cancel.`}
             smButton="Delete"
             clButton="Close"

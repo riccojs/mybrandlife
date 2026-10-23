@@ -1,6 +1,7 @@
 import React, { type SetStateAction } from "react";
 import toast from "react-hot-toast";
 import type { OnboardTypes } from "../../utils/user.types";
+import { CircleAlert } from "lucide-react";
 
 interface DataTypes {
   onboard: OnboardTypes;
@@ -36,12 +37,15 @@ function OnboardServices({ setOnboard, onboard }: DataTypes) {
   };
 
   return (
-    <div className="border border-gray-300 p-5 rounded-md">
+    <div className="border border-gray-200 p-3 md:p-5 rounded-xl">
       <div className="w-full flex justify-between items-center">
-        <h2 className="text-normal text-md capitalize font-normal">
+        <h2 className="text-sm md:text-md font-medium text-[#1F2534] capitalize">
           Add your services
         </h2>
-        <div onClick={handleAddFeature} className="dark-gold cursor-pointer">
+        <div
+          onClick={handleAddFeature}
+          className="dark-gold cursor-pointer border active:bg-gray-50 border-gray-200 text-gray-400 w-10 min-w-10 h-10 flex justify-center items-center rounded-lg"
+        >
           <i className="fa-solid fa-plus text-xl"></i>
         </div>
       </div>
@@ -58,22 +62,25 @@ function OnboardServices({ setOnboard, onboard }: DataTypes) {
               required={onboard?.offerings?.length > 0}
               maxLength={30}
               onChange={(e) => handleFeatureChange(e, index)}
-              className="bg-[#F3F3F3] border border-gray-300 focus:outline focus:outline-[#96c94b] focus:border py-3 px-3 w-full rounded-xl text-normal"
+              className="bg-[#FBFCFD] border border-[#C6CFDC] focus:outline focus:outline-[#96c94b] focus:border py-3 px-3 w-full rounded-xl text-sm md:text-base"
               placeholder="Add your Services, it a list located top of page, left, center, or right depending on your domain"
             />
             <div
               onClick={() => handleRemoveFeature(index)}
-              className="dark-gold cursor-pointer"
+              className="dark-gold cursor-pointer active:bg-gray-50 border border-gray-200 text-gray-400 w-12 min-w-12 h-12 flex justify-center items-center rounded-lg"
             >
               <i className="fa-solid fa-xmark text-xl"></i>
             </div>
           </div>
         ))}
-        <p className="bg-amber-100 text-black text-sm p-2 rounded-lg mt-1">
-          <span className="font-medium">NOTE:</span> This is a list of your
-          services using the plus sign add a max of 5 services offered with each
-          service max 30 characters.
-        </p>
+        <div className="bg-[#FEFBED] text-[#764B2E] text-xs px-4 py-2 rounded-lg mt-3 border border-[#F9EAA5] flex gap-2 items-center">
+          <CircleAlert color="#C5731E" size={15} />
+          <p>
+            <span className="font-medium">NOTE:</span> This is a list of your
+            services using the plus sign add a max of 5 services offered with
+            each service max 30 characters.
+          </p>
+        </div>
       </div>
     </div>
   );

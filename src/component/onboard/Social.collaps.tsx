@@ -1,5 +1,5 @@
 import { useState, type RefObject, type SetStateAction } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, CircleAlert } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { OnboardTypes } from "../../utils/user.types";
 
@@ -122,7 +122,7 @@ function SocialCollaps({
   };
 
   return (
-    <div className="mt-5">
+    <div className="mt-2 md:mt-10">
       <button
         onClick={() => {
           const hasInvalid = urls.some((platform) => {
@@ -135,14 +135,19 @@ function SocialCollaps({
           setOpen((prev) => !prev);
         }}
         type="button"
-        className="flex w-full cursor-pointer items-center justify-between text-xl font-normal text-black"
+        className="flex w-full cursor-pointer items-end justify-between"
       >
-        <span className="font-medium">Social Platforms</span>
-        <ChevronDown
-          className={`h-5 w-5 transition-transform duration-300 ${
-            open ? "rotate-180" : ""
-          }`}
-        />
+        <span className="text-sm md:text-md font-medium text-[#1F2534]">
+          Social Platforms
+        </span>
+        <div className="border border-gray-200 rounded-lg flex justify-center items-center bg-gray-50 w-10 min-w-10 h-10 transition-transform duration-300">
+          <ChevronDown
+            className={`transition-transform duration-200 ${
+              open ? "rotate-180" : "rotate-0"
+            }`}
+            size={20}
+          />
+        </div>
       </button>
       <AnimatePresence initial={false}>
         {open && (
@@ -151,22 +156,21 @@ function SocialCollaps({
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="mt-2"
           >
-            <div className="flex flex-col gap-5 mt-2">
+            <div className="flex flex-col gap-5">
               <div className="flex flex-col gap-1 w-full">
-                <label className="text-md font-medium text-gray-400">
+                <label className="text-xs font-medium text-[#1F2534] uppercase">
                   Choose Available Platforms:
                 </label>
-                <div className="relative w-full" ref={tabRef}>
+                <div className="relative w-full mt-3" ref={tabRef}>
                   <div
                     tabIndex={0}
                     onClick={() => setShowSocial(!showSocial)}
-                    className="bg-[#F3F3F3] border border-gray-300 cursor-pointer focus-within:border-[#96c94b] focus-within:border py-3 flex gap-2 items-center justify-between px-3 w-full text-center rounded-xl text-normal"
+                    className="bg-[#FBFCFD] border border-gray-300 cursor-pointer focus-within:border-[#96c94b] focus-within:border py-3 flex gap-2 items-center justify-between px-3 w-full text-center rounded-xl text-normal"
                   >
                     <span className="flex gap-2 items-center">
-                      <i className="fa-solid fa-share-nodes text-xl"></i>
-                      <p>Choose Platforms</p>
+                      <i className="fa-solid fa-share-nodes text-sm"></i>
+                      <p className="text-sm md:text-md">Choose Platforms</p>
                     </span>
                     {showSocial ? (
                       <i className="fa-solid fa-angle-up"></i>
@@ -174,10 +178,14 @@ function SocialCollaps({
                       <i className="fa-solid fa-angle-down"></i>
                     )}
                   </div>
-                  <p className="text-normal bg-amber-100 p-3 rounded-lg text-sm mt-2">
-                    Please add your social media URLs and contact info now. You
-                    can always update this on your dashboard later.
-                  </p>
+
+                  <div className="bg-[#FEFBED] text-[#764B2E] text-xs px-4 py-2 rounded-lg mt-3 border border-[#F9EAA5] flex gap-2 items-center">
+                    <CircleAlert color="#C5731E" size={15} />
+                    <p>
+                      Please add your social media URLs and contact info now.
+                      You can always update this on your dashboard later.
+                    </p>
+                  </div>
                   <div
                     className={`absolute bg-white rounded-md shadow-md border border-gray-100 w-full top-13 left-0 transition-all duration-200 ease-in-out transform z-50 ${
                       showSocial
@@ -227,7 +235,7 @@ function SocialCollaps({
                               />
                               <label
                                 htmlFor={item}
-                                className={`text-md font-medium cursor-pointer ${
+                                className={`text-sm md:text-md font-medium cursor-pointer ${
                                   isDisabled
                                     ? "text-gray-400 cursor-not-allowed"
                                     : "text-black"
@@ -235,7 +243,7 @@ function SocialCollaps({
                               >
                                 {item}
                                 {isDisabled && (
-                                  <span className="text-xs text-red-500">
+                                  <span className="text-[10px] md:text-xs text-red-500">
                                     (Gold only)
                                   </span>
                                 )}
@@ -257,7 +265,7 @@ function SocialCollaps({
                 )
                 .map((name, idx) => (
                   <div key={idx} className="flex flex-col gap-1 w-full">
-                    <label className="text-lg font-medium text-black">
+                    <label className="text-sm md:text-md font-medium text-[#1F2534]">
                       {name}:
                     </label>
                     {name === "EMAIL" ? (
@@ -266,8 +274,8 @@ function SocialCollaps({
                         value={onboard.socialLinks?.[name] || ""}
                         onChange={(e) => handleChange(e, name)}
                         required
-                        placeholder={`Enter your ${name} link`}
-                        className="bg-[#F3F3F3] border border-gray-300 focus:outline focus:outline-[#96c94b] focus:border py-3 px-3 w-full rounded-xl text-normal"
+                        placeholder="e.x example@gmail.com"
+                        className="bg-[#FBFCFD] border border-[#C6CFDC] focus:outline focus:outline-[#96c94b] focus:border py-3 px-3 w-full rounded-xl text-sm md:text-md"
                       />
                     ) : name === "PHONE" || name === "WHATSAPP" ? (
                       <input
@@ -275,8 +283,8 @@ function SocialCollaps({
                         value={onboard.socialLinks?.[name] || ""}
                         onChange={(e) => handleChange(e, name)}
                         required
-                        placeholder={`Enter your ${name} link`}
-                        className="bg-[#F3F3F3] border border-gray-300 focus:outline focus:outline-[#96c94b] focus:border py-3 px-3 w-full rounded-xl text-normal"
+                        placeholder="e.x 123-456-7856"
+                        className="bg-[#FBFCFD] border border-[#C6CFDC] focus:outline focus:outline-[#96c94b] focus:border py-3 px-3 w-full rounded-xl text-normal"
                       />
                     ) : (
                       <input
@@ -284,8 +292,8 @@ function SocialCollaps({
                         value={onboard.socialLinks?.[name] || ""}
                         onChange={(e) => handleChange(e, name)}
                         required
-                        placeholder={`Enter your ${name} link`}
-                        className="bg-[#F3F3F3] border border-gray-300 focus:outline focus:outline-[#96c94b] focus:border py-3 px-3 w-full rounded-xl text-normal"
+                        placeholder="e.x https://example.com"
+                        className="bg-[#FBFCFD] border border-[#C6CFDC] focus:outline focus:outline-[#96c94b] focus:border py-3 px-3 w-full rounded-xl text-normal"
                       />
                     )}
                   </div>

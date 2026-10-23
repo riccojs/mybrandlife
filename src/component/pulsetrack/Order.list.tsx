@@ -5,6 +5,7 @@ import { useGetAllPulsetrackQuery } from "../../redux/features/pulsetrack/pulset
 import type { PulsetrackType } from "../../utils/pulsetrack.types";
 import { useAuth } from "../../hook/useAuth";
 import OrderListLoader from "../loader/Order.list.loader";
+import SearchComponent from "../ui/Search.component";
 
 const statusStyles: Record<string, string> = {
   ACTIVATE: "bg-emerald-100 text-emerald-700",
@@ -48,8 +49,8 @@ const OrderList = () => {
   if (!isFetching && !isLoading && pulsetrack?.length === 0) {
     content = (
       <tr>
-        <td colSpan={7}>
-          <p className="bg-amber-100 text-md font-normal p-3 rounded-md">
+        <td colSpan={7} className="p-0!">
+          <p className="bg-[#FEFBED] text-center text-[#643315] text-md font-normal py-5 rounded-md">
             Data not found!
           </p>
         </td>
@@ -69,10 +70,7 @@ const OrderList = () => {
         });
       };
       return (
-        <tr
-          key={id}
-          className="border-t border-gray-100 hover:bg-gray-50 transition"
-        >
+        <tr key={id}>
           <td className="px-6 py-5">#{sequence}</td>
           <td className="px-6 py-5 text-gray-600 text-sm">
             {formattedDate(create_at)}
@@ -90,10 +88,9 @@ const OrderList = () => {
           <td className="px-6 py-5 font-medium">
             <Link
               to={`/pulsetrack/orders/success/${id}`}
-              className="flex gap-2 items-center border border-gray-300 px-3 py-1 rounded-lg w-fit"
+              className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
             >
               <Eye size={20} className="cursor-pointer hover:text-gray-700" />
-              <span className="text-xs">View</span>
             </Link>
           </td>
         </tr>
@@ -101,17 +98,18 @@ const OrderList = () => {
     });
   }
   return (
-    <section className="bg-gray-50 min-h-screen p-5">
+    <section className="min-h-screen p-3 md:p-5">
       <div className="w-full mx-auto bg-white rounded-2xl border border-gray-200 shadow-sm">
-        <div className="flex flex-wrap gap-3 md:gap-0 items-center justify-between p-6 border-b border-gray-200">
-          <div className="relative w-96">
-            <Search
-              size={18}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-            />
-            <input
-              type="number"
-              onChange={(e) => {
+        <div className="flex flex-wrap gap-3 md:gap-0 items-center justify-between p-6">
+          <div className="w-full md:w-96">
+            <SearchComponent
+              name="search"
+              color="white"
+              value={searchBy}
+              placeholder="Seach by title"
+              required={false}
+              autoComplete="text"
+              handleChange={(e) => {
                 const value = e.target.value;
                 if (value) {
                   searchParams.set("search", value);
@@ -122,16 +120,13 @@ const OrderList = () => {
                 }
                 setSearchParams(searchParams);
               }}
-              value={searchBy}
-              placeholder="Search order by id..."
-              className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 outline-none text-sm"
             />
           </div>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full table-fixed border-collapse min-w-7xl">
+          <table className="my-table table-fixed w-full min-w-350">
             <thead className="text-xs uppercase text-gray-500 bg-gray-50">
-              <tr>
+              <tr className="border-y border-gray-200">
                 <th className="text-left px-6 py-4">Order ID</th>
                 <th className="text-left px-6 py-4">Order On</th>
                 <th className="text-left px-6 py-4">Total Wristband</th>

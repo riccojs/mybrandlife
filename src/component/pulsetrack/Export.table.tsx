@@ -29,8 +29,8 @@ function ExportTable() {
   if (!isFetching && !isLoading && exportData?.length === 0) {
     content = (
       <tr>
-        <td colSpan={4}>
-          <p className="bg-amber-100 text-md font-normal p-3 rounded-md">
+        <td colSpan={4} className="p-0!">
+          <p className="bg-[#FEFBED] text-center text-[#643315] text-md font-normal py-5 rounded-md">
             Data not found!
           </p>
         </td>
@@ -80,12 +80,11 @@ function ExportTable() {
   }
 
   return (
-    <div className="mt-8">
-      <h2 className="text-[18px] font-semibold text-[#1F2937] mb-4">
+    <div className="mt-4 md:mt-8">
+      <h2 className="text-base md:text-2xl font-semibold text-[#1F2937] mb-2 md:mb-4">
         Recent Export Activity
       </h2>
-
-      <div className="bg-white border border-[#E6E9EF] rounded-xl overflow-x-auto">
+      <div className="bg-white border border-[#E6E9EF] rounded-xl overflow-x-auto custom-scroll">
         <table className="w-full table-fixed text-[14px] min-w-4xl">
           <thead className="text-[#6B7280] border-b border-[#E6E9EF]">
             <tr>

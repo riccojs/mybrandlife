@@ -84,7 +84,7 @@ function CreateSpining({ isOpen, onClose }: Type) {
           <p className="mt-1 text-sm text-slate-500">
             Fill in the details below to start your new SPIN features.
           </p>
-          <p className="mt-1 text-sm text-amber-500">
+          <p className="mt-3 border border-[#fff2b7] bg-[#FEFBED] text-[#643315] text-md font-normal p-3 rounded-md">
             Fun SPIN works best with 10 or more links.
           </p>
           <form onSubmit={handleSubmit} className="mt-6 space-y-5">
@@ -165,23 +165,22 @@ function CreateSpining({ isOpen, onClose }: Type) {
                 </label>
               </div>
             </div>
-
-            <div className="mt-8 flex items-center justify-end gap-3">
+            <div className="flex gap-3 items-center mt-10">
               <button
                 onClick={onClose}
-                type="button"
-                className="rounded-lg cursor-pointer px-4 py-2 text-sm font-medium text-slate-600 transition bg-slate-200"
+                disabled={isLoading}
+                className="cursor-pointer bg-gray-200 w-fit text-normal px-6 py-2 rounded-md flex justify-center items-center gap-2"
               >
                 Cancel
               </button>
               <button
-                type="submit"
-                className="rounded-lg cursor-pointer bg-[#8CC63F] px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#7AB535] focus:outline-none focus:ring-2 focus:ring-[#8CC63F]/40"
+                disabled={isLoading}
+                className={`${isLoading ? "bg-[#a3c46f] cursor-not-allowed" : "bg-[#cbf38b] cursor-pointer"} min-w-28 text-normal h-10 rounded-md flex justify-center items-center gap-2`}
               >
                 {isLoading ? (
-                  <ImSpinner6 className="animate-spin" />
+                  <i className="fa-solid fa-circle-notch animate-spin"></i>
                 ) : (
-                  "Create Link"
+                  "Create"
                 )}
               </button>
             </div>

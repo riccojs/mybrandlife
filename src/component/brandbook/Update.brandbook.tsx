@@ -81,6 +81,7 @@ function UpdateBrandbook({ isShow, setShow, id, status }: DataTypes) {
               <button
                 type="button"
                 onClick={() => setShow(false)}
+                disabled={isLoading}
                 className="bg-slate-200 px-6 py-2 cursor-pointer rounded-lg flex gap-2 items-center w-fit"
               >
                 Close

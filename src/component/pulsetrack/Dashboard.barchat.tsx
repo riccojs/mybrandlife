@@ -94,7 +94,7 @@ function DashboardBarchat({ data }: { data: DefaultPulsetrackType }) {
   };
 
   return (
-    <div className={`${card} p-6 mb-8`}>
+    <div className={`${card} p-6 mb-3 md:mb-8`}>
       <div className="flex flex-wrap gap-5 md:gap-0 justify-between items-start mb-6">
         <div>
           <h2 className="text-base font-semibold text-[#0F172A]">
@@ -126,7 +126,7 @@ function DashboardBarchat({ data }: { data: DefaultPulsetrackType }) {
           ))}
         </div>
       </div>
-      <div className="h-100">
+      <div className="h-80 md:h-100">
         <Bar data={chartData} options={options} />
       </div>
     </div>

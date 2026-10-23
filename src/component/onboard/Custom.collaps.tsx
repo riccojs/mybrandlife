@@ -5,7 +5,7 @@ import {
   type RefObject,
   type SetStateAction,
 } from "react";
-import { ChevronDown, CircleX } from "lucide-react";
+import { ChevronDown, CircleAlert, CircleX } from "lucide-react";
 import toast from "react-hot-toast";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { motion, AnimatePresence } from "framer-motion";
@@ -121,18 +121,23 @@ function CustomCollaps({
   };
 
   return (
-    <div className="mt-5">
+    <div className="mt-2 md:mt-5">
       <button
         onClick={() => setOpen((prev) => !prev)}
         type="button"
-        className="flex w-full cursor-pointer items-center justify-between text-xl font-normal text-black"
+        className="flex w-full cursor-pointer items-end justify-between"
       >
-        <span className="font-medium">Custom Platforms</span>
-        <ChevronDown
-          className={`h-5 w-5 transition-transform duration-300 ${
-            open ? "rotate-180" : ""
-          }`}
-        />
+        <span className="text-sm md:text-md font-medium text-[#1F2534]">
+          Custom Platforms
+        </span>
+        <div className="border border-gray-200 rounded-lg flex justify-center items-center bg-gray-50 w-10 min-w-10 h-10 transition-transform duration-300">
+          <ChevronDown
+            className={`transition-transform duration-200 ${
+              open ? "rotate-180" : "rotate-0"
+            }`}
+            size={20}
+          />
+        </div>
       </button>
       <AnimatePresence initial={false}>
         {open && (
@@ -141,7 +146,7 @@ function CustomCollaps({
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden mt-5"
+            className="overflow-hidden mt-2"
           >
             <div className="flex flex-col gap-1">
               <AddCustomLink onboard={onboard} setOnboard={setOnboard} />
@@ -162,17 +167,21 @@ function CustomCollaps({
                   />
                   <label
                     htmlFor="vfcFile"
-                    className="text-md font-normal text-black cursor-pointer"
+                    className="text-sm font-normal text-[#1F2534] cursor-pointer"
                   >
                     Do you want to build a VFC File?{" "}
                   </label>
                 </div>
-                <p className="bg-amber-100 text-sm text-black p-3 rounded-lg border-l-3 border-amber-400">
-                  Allow customers to download your digital contact card from
-                  your landing page. You can choose what information is included
-                  in your VCF from your dashboard. Unchecking this will hide the
-                  button from your page.
-                </p>
+
+                <div className="bg-[#FEFBED] text-[#764B2E] text-xs px-4 py-2 rounded-lg mt-3 border border-[#F9EAA5] flex gap-2 items-center">
+                  <CircleAlert color="#C5731E" size={30} />
+                  <p>
+                    Allow customers to download your digital contact card from
+                    your landing page. You can choose what information is
+                    included in your VCF from your dashboard. Unchecking this
+                    will hide the button from your page.
+                  </p>
+                </div>
               </div>
               <div>
                 <div className="flex gap-2 w-full items-start">
@@ -196,7 +205,7 @@ function CustomCollaps({
                   />
                   <label
                     htmlFor="merchendiseUrl"
-                    className="text-md font-normal text-black cursor-pointer"
+                    className="text-sm font-normal text-[#1F2534] cursor-pointer"
                   >
                     Do you want to create BrandGear URL? BrandGear is your
                     merchandise hosted on YourWorldLife.store.{" "}

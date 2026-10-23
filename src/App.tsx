@@ -88,7 +88,7 @@ function App() {
                 element={<GoogleConnectsuccess />}
               />
               <Route
-                path="/stripe/connect/success"
+                path="/echo/stripe/connect/success"
                 element={<StripeConnectsuccess />}
               />
               <Route

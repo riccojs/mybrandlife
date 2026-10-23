@@ -183,19 +183,23 @@ export default function AssignUser({ isOpen, onClose, selectData }: Props) {
                 />
               </div>
             </div>
-            <div className="flex justify-end gap-3 items-center bg-gray-50 border-t border-gray-300 p-5">
+            <div className="flex gap-3 items-center px-5 pb-5">
               <button
-                onClick={() => onClose()}
-                type="button"
-                className="px-4 cursor-pointer py-2 border border-gray-300 rounded-xl text-black"
+                onClick={onClose}
+                disabled={isLoading}
+                className="cursor-pointer bg-gray-200 w-fit text-normal px-6 py-2 rounded-md flex justify-center items-center gap-2"
               >
-                Close
+                Cancel
               </button>
               <button
-                type="submit"
-                className="flex cursor-pointer w-fit items-center justify-center gap-2 rounded-xl bg-lime-500 px-4 py-2 font-semibold text-white hover:bg-lime-600"
+                disabled={isLoading}
+                className={`${isLoading ? "bg-[#a3c46f] cursor-not-allowed" : "bg-[#cbf38b] cursor-pointer"} min-w-28 text-normal h-10 rounded-md flex justify-center items-center gap-2`}
               >
-                {isLoading ? <ImSpinner10 className="animate-spin" /> : "SAVE"}
+                {isLoading ? (
+                  <i className="fa-solid fa-circle-notch animate-spin"></i>
+                ) : (
+                  "Update"
+                )}
               </button>
             </div>
           </form>

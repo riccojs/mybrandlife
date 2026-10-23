@@ -3,8 +3,8 @@ import { apiSlice } from "../../app/api";
 export const spinApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllSpining: builder.query({
-      query: ({ page, limit, searchBy, landerId }) => ({
-        url: `/api/spin?limit=${limit}&page=${page}&searchBy=${searchBy}&landerId=${landerId}`,
+      query: ({ page, limit, searchBy, statusBy, landerId }) => ({
+        url: `/api/spin?limit=${limit}&page=${page}&searchBy=${searchBy}&statusBy=${statusBy}&landerId=${landerId}`,
         method: "GET",
         headers: {
           "x-api-key": import.meta.env.VITE_APP_PUBLIC_API_KEY,

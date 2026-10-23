@@ -41,7 +41,7 @@ function ToggleBrandshare() {
   };
 
   return (
-    <div className="bg-white border border-gray-200 p-10 rounded-xl my-5">
+    <div className="bg-white border border-gray-200 p-10 rounded-2xl shadow my-5">
       <div className="flex flex-col gap-5 justify-start">
         <p className="text-gray-700 text-medium text-xl">
           Do you want hide BrandShare?
@@ -76,7 +76,7 @@ function ToggleBrandshare() {
             setOpen(true);
           }}
           disabled
-          className="bg-gray-200 text-[#000000] flex justify-center items-center gap-1 w-fit border border-gray-300 px-10 py-4 rounded-2xl cursor-not-allowed"
+          className="bg-[#BDF188] text-[#000000] flex justify-center items-center gap-1 w-fit border border-[#76c725] px-5 md:px-10 py-2 md:py-4 rounded-lg md:rounded-2xl cursor-pointer"
         >
           <p>Save</p>
           <ArrowRight />
@@ -84,7 +84,7 @@ function ToggleBrandshare() {
       </div>
       <WarningPopup
         open={open}
-        title="Do you want update BrandShare?"
+        title="Do you want to update BrandShare?"
         description="If BrandShare is hidden, it will be removed from visibility on your subscriber page and will not be accessible to subscribers."
         smButton="Update"
         clButton="Close"

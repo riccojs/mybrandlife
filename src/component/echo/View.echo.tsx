@@ -7,6 +7,7 @@ import { useSearchParams } from "react-router";
 import useBodyScroll from "../../hook/userBodyscroll";
 import { useGetOneEchoQuery } from "../../redux/features/echo/echoApi";
 import ViewEchoLoader from "../loader/View.echo.loader";
+import { X } from "lucide-react";
 
 interface DataTypes {
   isShow: boolean;
@@ -46,39 +47,35 @@ function ViewEcho({ isShow, setShow, id }: DataTypes) {
             <div>
               <div>
                 <h2 className="text-[#3D424B] font-medium text-lg">Message</h2>
-                <span className="flex gap-2 items-center">
-                  <LuMessageSquareMore size={20} />
-                  <p className="text-[#3D424B] font-normal text-md">
-                    {message}
-                  </p>
-                </span>
+                <p className="text-[#3D424B] font-normal text-md">{message}</p>
               </div>
               <div className="my-5">
                 <h2 className="text-[#3D424B] font-medium text-lg">City</h2>
-                <span className="flex gap-2 items-center">
-                  <SlLocationPin size={20} />
-                  <p className="text-[#3D424B] font-normal text-md">{city}</p>
-                </span>
+                <p className="text-[#3D424B] font-normal text-md">{city}</p>
               </div>
               <div className="my-5">
                 <h2 className="text-[#3D424B] font-medium text-lg">Shoutout</h2>
-                <span className="flex gap-2 items-center">
-                  <IoFlashOutline size={20} />
-                  <p className="text-[#3D424B] font-normal text-md">
-                    {shoutOut}
-                  </p>
-                </span>
+                <p className="text-[#3D424B] font-normal text-md">
+                  {shoutOut ? shoutOut : "N/A"}
+                </p>
               </div>
               <div className="my-5">
                 <h2 className="text-[#3D424B] font-medium text-lg">Tip</h2>
-                <span className="flex gap-2 items-center">
-                  <RiMoneyDollarCircleLine size={20} />
-                  <p className="text-[#3D424B] font-normal text-md">{tip}</p>
-                </span>
+                <p className="text-[#3D424B] font-normal text-md">${tip}</p>
               </div>
               <div>
                 <h2 className="text-[#3D424B] font-medium text-lg">Status</h2>
-                <p className="text-[#3D424B] font-normal text-md">{status}</p>
+                <p
+                  className={`w-fit px-6 py-1 rounded-md text-center font-medium text-xs capitalize ${
+                    status === "PENDING" ||
+                    status === "REJECTED" ||
+                    status === "CANCELED"
+                      ? "bg-red-100 text-red-500"
+                      : "bg-green-100 text-green-500"
+                  }`}
+                >
+                  {status}
+                </p>
               </div>
             </div>
           </div>
@@ -89,9 +86,9 @@ function ViewEcho({ isShow, setShow, id }: DataTypes) {
             searchParams.delete("view");
             setSearchParams(searchParams);
           }}
-          className="text-gray-400 text-2xl absolute top-2 right-2 cursor-pointer"
+          className="absolute top-3 right-3 border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-full cursor-pointer"
         >
-          <i className="fa-solid fa-circle-xmark"></i>
+          <X />
         </button>
       </div>
     </div>

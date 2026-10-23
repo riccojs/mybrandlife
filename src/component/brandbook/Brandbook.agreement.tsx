@@ -50,6 +50,7 @@ function BrandbookAgreement({ isShow, setShow, status, body }: DataTypes) {
           <div className="flex gap-5 items-center">
             <button
               onClick={() => setShow(false)}
+              disabled={isLoading}
               className="cursor-pointer bg-gray-200 w-fit text-normal px-6 py-2 rounded-md flex justify-center items-center gap-2"
             >
               Cancel

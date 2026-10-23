@@ -43,20 +43,22 @@ function EchoAgreement({ isShow, setShow, status, body }: DataTypes) {
       >
         <div className="flex flex-col items-center justify-center gap-5 rounded-2xl">
           <AiOutlineQuestionCircle color="#52C372" size={100} />
-          <h2 className="text-[#3D424B] font-medium text-2xl">Are you Sure?</h2>
+          <h2 className="text-[#3D424B] font-medium text-2xl">Are You Sure?</h2>
           <p className="text-[#3D424B] font-normal text-md text-center">
             {body}
           </p>
           <div className="flex gap-5 items-center">
             <button
               onClick={() => setShow(false)}
+              disabled={isLoading}
               className="cursor-pointer bg-gray-300 w-fit text-normal px-6 py-2 rounded-md flex justify-center items-center gap-2"
             >
               Cancel
             </button>
             <button
               onClick={handleSubmit}
-              className="bg-[#cbf38b] w-fit text-normal px-6 py-2 rounded-md flex cursor-pointer justify-center items-center gap-2"
+              disabled={isLoading}
+              className={`${isLoading ? "bg-[#a3c46f] cursor-not-allowed" : "bg-[#cbf38b] cursor-pointer"} min-w-28 text-normal h-10 rounded-md flex justify-center items-center gap-2`}
             >
               {isLoading ? (
                 <i className="fa-solid fa-circle-notch animate-spin"></i>

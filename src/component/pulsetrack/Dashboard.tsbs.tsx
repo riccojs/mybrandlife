@@ -44,7 +44,7 @@ function DashboardTsbs({
   let content;
   if (isFetching || isLoading) {
     content = (
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8 animate-pulse">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 md:gap-6 mb-8 animate-pulse">
         {[1, 2, 3, 4].map((item) => (
           <div
             key={item}
@@ -63,7 +63,7 @@ function DashboardTsbs({
   }
   if (!isFetching && !isLoading) {
     content = (
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 md:gap-6 mb-3 md:mb-8">
         <div className="p-8 bg-white shadow rounded-xl flex justify-between items-center">
           <div className="flex flex-col gap-1">
             <p className="text-sm text-[#64748B]">Today Total Scan</p>

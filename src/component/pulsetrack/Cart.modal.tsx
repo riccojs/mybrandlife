@@ -265,7 +265,7 @@ export default function CartModal({ isOpen, onClose }: Props) {
                         setSelectedId(id);
                         handleDelete(id);
                       }}
-                      className="text-gray-400 hover:text-red-500"
+                      className="text-gray-400 hover:text-red-500 cursor-pointer"
                     >
                       {delLoad && selectId === id ? (
                         <FaSpinner className="animate-spin" size={20} />
@@ -429,13 +429,15 @@ export default function CartModal({ isOpen, onClose }: Props) {
               <div className="flex gap-3 items-center">
                 <button
                   onClick={() => setStep(1)}
+                  disabled={payLoad}
                   className="px-4 py-3 border cursor-pointer border-gray-300 rounded-xl text-black"
                 >
                   Back
                 </button>
                 <button
                   onClick={handlePaymentCreate}
-                  className="flex w-full items-center cursor-pointer justify-center gap-2 rounded-xl bg-lime-500 px-4 py-3 font-semibold text-white hover:bg-lime-600"
+                  disabled={payLoad}
+                  className={`${payLoad ? "bg-[#6e9335] cursor-not-allowed" : "bg-[#96c94b] cursor-pointer"} flex w-full items-center justify-center gap-2 rounded-xl h-12 font-semibold text-black`}
                 >
                   {payLoad ? (
                     <ImSpinner10 className="animate-spin" />

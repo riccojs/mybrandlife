@@ -4,7 +4,7 @@ function Pulsetrack() {
   return (
     <section>
       <div className="bg-white p-5 border-b border-gray-200">
-        <h1 className="text-[26px] font-semibold text-[#0F172A]">
+        <h1 className="text-lg md:text-2xl font-semibold text-[#0F172A]">
           PulseTrack Dashboard
         </h1>
         <p className="text-sm text-[#64748B] mt-1">
@@ -13,13 +13,13 @@ function Pulsetrack() {
       </div>
       <div className="flex bg-white p-5 gap-8 border-b border-[#E2E8F0]">
         <nav>
-          <ul className="flex flex-wrap gap-10">
+          <ul className="flex flex-wrap gap-8 md:gap-10">
             <li>
               <NavLink
                 to={"/pulsetrack"}
                 end
                 className={({ isActive }) =>
-                  `border-b-2 w-full pb-2 transition-all duration-300 text-md font-medium text-black ${
+                  `border-b-2 w-full pb-2 transition-all duration-300 text-sm md:text-base font-medium text-black ${
                     isActive ? "border-[#95BF4D]" : "border-transparent"
                   }`
                 }
@@ -31,7 +31,7 @@ function Pulsetrack() {
               <NavLink
                 to={"/pulsetrack/projects"}
                 className={({ isActive }) =>
-                  `border-b-2 w-full pb-2 transition-all duration-300 text-md font-medium text-black ${
+                  `border-b-2 w-full pb-2 transition-all duration-300 text-sm md:text-base font-medium text-black ${
                     isActive ? "border-[#95BF4D]" : "border-transparent"
                   }`
                 }
@@ -43,7 +43,7 @@ function Pulsetrack() {
               <NavLink
                 to={"/pulsetrack/orders"}
                 className={({ isActive }) =>
-                  `border-b-2 w-full pb-2 transition-all duration-300 text-md font-medium text-black ${
+                  `border-b-2 w-full pb-2 transition-all duration-300 text-sm md:text-base font-medium text-black ${
                     isActive ? "border-[#95BF4D]" : "border-transparent"
                   }`
                 }
@@ -55,7 +55,7 @@ function Pulsetrack() {
               <NavLink
                 to={"/pulsetrack/export"}
                 className={({ isActive }) =>
-                  `border-b-2 w-full pb-2 transition-all duration-300 text-md font-medium text-black ${
+                  `border-b-2 w-full pb-2 transition-all duration-300 text-sm md:text-base font-medium text-black ${
                     isActive ? "border-[#95BF4D]" : "border-transparent"
                   }`
                 }

@@ -47,8 +47,11 @@ function UpdateAddress({ open, setOpen, type }: TypesForm) {
     }
   }, [findUserAddress]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isLoading) {
+      return;
+    }
     const userID = userData ? userData?.id : "";
     updateUserAddress({ user, id: userID })
       .unwrap()
@@ -152,10 +155,11 @@ function UpdateAddress({ open, setOpen, type }: TypesForm) {
             <div className="mt-10 flex gap-4">
               <button
                 type="button"
+                disabled={isLoading}
                 onClick={() => setOpen(false)}
                 className="flex-1 cursor-pointer rounded-xl border border-slate-200 bg-slate-100 py-3.5 font-medium text-slate-700 transition hover:bg-slate-200"
               >
-                close
+                Close
               </button>
 
               <button

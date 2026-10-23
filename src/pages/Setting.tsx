@@ -98,13 +98,10 @@ function Setting() {
     <React.Fragment>
       <div className="p-3 md:p-5">
         <div className="md:w-6/12 w-full">
-          <h2 className="text-normal text-2xl md:text-3xl">Profile Setting</h2>
-          <ul className="flex gap-2 items-center py-2">
+          <h2 className="text-normal text-xl md:text-3xl">Profile Setting</h2>
+          <ul className="flex flex-wrap gap-2 items-center py-2">
             <li>
-              <Link
-                to="/dashboard"
-                className="text-normal text-sm md:text-base"
-              >
+              <Link to="/" className="text-normal text-sm md:text-base">
                 Dashboard
               </Link>
             </li>
@@ -126,19 +123,25 @@ function Setting() {
         </div>
         <div>
           <div className="jost">
-            <div className="bg-white border border-gray-200 rounded-xl p-5 md:p-10">
+            <div className="bg-white border border-gray-200 rounded-2xl shadow p-5 md:p-10">
               <div className="border-b border-gray-300 pb-5">
-                <p className="text-2xl text-medium">Genral Setting</p>
+                <p className="text-xl md:text-2xl text-medium">
+                  Genral Setting
+                </p>
                 <p className="text-gray-500 text-md font-normal">
                   Update your settings
                 </p>
               </div>
 
-              <div className="border-b border-gray-300 pb-5">
+              <div className="border-b border-gray-300 py-2 md:py-5">
                 {typeof profile === "string" ? (
-                  <img src={profile} alt="" className="w-24 rounded-md mt-2" />
+                  <img
+                    src={profile}
+                    alt=""
+                    className="w-16 md:w-24 rounded-md mt-2"
+                  />
                 ) : (
-                  <p className="min-w-24 min-h-24 w-24 h-24 rounded-md bg-gray-300 text-6xl uppercase text-normal flex justify-center items-center">
+                  <p className="md:min-w-24 md:min-h-24 w-16 md:w-24 h-16 md:h-24 rounded-md bg-gray-300 text-3xl md:text-6xl uppercase text-normal flex justify-center items-center">
                     {landerName?.slice(0, 1)}
                   </p>
                 )}
@@ -240,7 +243,7 @@ function Setting() {
                     onClick={() => {
                       setIsShow(true);
                     }}
-                    className="bg-[#BDF188] text-[#000000] flex justify-center items-center gap-1 w-fit border border-[#76c725] px-10 py-4 rounded-2xl cursor-pointer"
+                    className="bg-[#BDF188] text-[#000000] flex justify-center items-center gap-1 w-fit border border-[#76c725] px-5 md:px-10 py-2 md:py-4 rounded-lg md:rounded-2xl cursor-pointer"
                   >
                     <p>Save</p>
                     <ArrowRight />
@@ -248,9 +251,9 @@ function Setting() {
                 </form>
               </div>
             </div>
-            <div className="my-5 bg-white border border-gray-200 rounded-xl p-10">
+            <div className="my-5 bg-white border border-gray-200 rounded-2xl shadow p-5 md:p-10">
               <div className="my-5">
-                <p className="text-gray-700 text-medium text-xl pb-5">
+                <p className="text-gray-700 text-medium text-base md:text-xl pb-2 md:pb-5">
                   Update your password
                 </p>
               </div>

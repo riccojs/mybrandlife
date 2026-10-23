@@ -82,14 +82,14 @@ function SettingPassUpdate({ id }: { id: string | null }) {
         onClick={() => {
           setOpen(true);
         }}
-        className="bg-[#BDF188] text-[#000000] flex justify-center items-center gap-1 w-fit border border-[#76c725] px-10 py-4 rounded-2xl cursor-pointer"
+        className="bg-[#BDF188] text-[#000000] flex justify-center items-center gap-1 w-fit border border-[#76c725] px-5 md:px-10 py-2 md:py-4 rounded-lg md:rounded-2xl cursor-pointer"
       >
         <p>Save</p>
         <ArrowRight />
       </button>
       <WarningPopup
         open={open}
-        title="Do you want update Password?"
+        title="Do you want to update the password?"
         description={`To update your password, click "Save". If you decide not to proceed, click "Close" to exit without saving your changes.`}
         smButton="Save"
         clButton="Close"

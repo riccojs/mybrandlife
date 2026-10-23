@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { MdOutlineClose } from "react-icons/md";
-import { ImSpinner6 } from "react-icons/im";
 import toast from "react-hot-toast";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import useBodyScroll from "../../hook/userBodyscroll";
@@ -66,6 +65,7 @@ function UpdateProject({ isOpen, onClose, id }: Type) {
           idPrefix: "",
         }));
         setWriting(false);
+        onClose();
       })
       .catch((error) => {
         const err = error as FetchBaseQueryError;
@@ -165,23 +165,22 @@ function UpdateProject({ isOpen, onClose, id }: Type) {
             )}
           </p>
         </div>
-
-        <div className="mt-8 flex items-center justify-end gap-3">
+        <div className="flex gap-3 items-center mt-10">
           <button
             onClick={onClose}
-            type="button"
-            className="rounded-lg cursor-pointer px-4 py-2 text-sm font-medium text-slate-600 transition bg-slate-200"
+            disabled={upLoad}
+            className="cursor-pointer bg-gray-200 w-fit text-normal px-6 py-2 rounded-md flex justify-center items-center gap-2"
           >
             Cancel
           </button>
           <button
-            type="submit"
-            className="rounded-lg cursor-pointer bg-[#8CC63F] px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#7AB535] focus:outline-none focus:ring-2 focus:ring-[#8CC63F]/40"
+            disabled={upLoad}
+            className={`${upLoad ? "bg-[#a3c46f] cursor-not-allowed" : "bg-[#cbf38b] cursor-pointer"} min-w-28 text-normal h-10 rounded-md flex justify-center items-center gap-2`}
           >
             {upLoad ? (
-              <ImSpinner6 className="animate-spin" />
+              <i className="fa-solid fa-circle-notch animate-spin"></i>
             ) : (
-              "Update Project"
+              "Save"
             )}
           </button>
         </div>
@@ -201,13 +200,6 @@ function UpdateProject({ isOpen, onClose, id }: Type) {
             <h2 className="text-lg font-semibold text-slate-900">
               Update your project
             </h2>
-            <button
-              onClick={onClose}
-              className="rounded-md p-1 text-slate-400 transition hover:text-slate-600"
-              aria-label="Close modal"
-            >
-              <MdOutlineClose size={25} />
-            </button>
           </div>
           <p className="mt-1 text-sm text-slate-500">
             Fill in the details below to update your project.

@@ -298,7 +298,7 @@ function Brandbook() {
                         return;
                       }
                     }}
-                    className={`min-w-12 w-12 h-12 p-3 py-3 rounded-lg flex gap-2 items-center justify-center ${user?.calendarId ? "bg-[#cbf38b] cursor-pointer" : "bg-gray-300 cursor-not-allowed"}`}
+                    className={`min-w-12 w-12 h-12 p-3 rounded-lg flex gap-2 items-center justify-center ${user?.calendarId ? "bg-[#cbf38b] cursor-pointer" : "bg-gray-300 cursor-not-allowed"}`}
                   >
                     <img
                       src={BrandbookIcon}

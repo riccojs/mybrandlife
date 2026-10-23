@@ -32,21 +32,14 @@ function ConnectStripe({ id }: { id: string }) {
       <button
         onClick={getLoad ? () => {} : handleConnect}
         disabled={data?.connected && data?.ready ? true : false}
-        className={`cursor-pointer w-full min-w-72 px-6 py-3 rounded-lg flex gap-2 items-center justify-center ${
+        className={`cursor-pointer min-w-12 w-12 h-12 p-2 rounded-lg flex gap-2 items-center justify-center ${
           data?.connected && data?.ready ? "bg-gray-300" : "bg-[#cbf38b]"
         }`}
       >
         {isLoading || getLoad ? (
           <i className="fa-solid fa-circle-notch animate-spin"></i>
         ) : (
-          <>
-            <BsStripe size={20} />
-            <p>
-              {data?.connected && data?.ready
-                ? "Connected"
-                : "Connect Stripe (for Tips)"}
-            </p>
-          </>
+          <BsStripe size={20} />
         )}
       </button>
     </>

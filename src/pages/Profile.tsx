@@ -57,12 +57,9 @@ function Profile() {
       <div className="p-3 md:p-5">
         <div className="md:w-6/12 w-full">
           <h2 className="text-normal text-2xl md:text-3xl">Profile</h2>
-          <ul className="flex gap-2 items-center py-2">
+          <ul className="flex flex-wrap gap-2 items-center py-2">
             <li>
-              <Link
-                to="/dashboard"
-                className="text-normal text-sm md:text-base"
-              >
+              <Link to="/" className="text-normal text-sm md:text-base">
                 Dashboard
               </Link>
             </li>
@@ -81,24 +78,28 @@ function Profile() {
           </ul>
         </div>
         <div>
-          <div className="jost border border-gray-300 p-5 md:p-10 rounded-lg bg-white">
+          <div className="jost p-5 md:p-10 rounded-2xl shadow bg-white">
             <div className="border-b border-gray-300 pb-5">
-              <p className="text-2xl text-medium">Profile Infos</p>
+              <p className="text-xl md:text-2xl text-medium">Profile Infos</p>
               <p className="text-gray-500 text-md font-normal">
-                Your detail profile infos
+                Your detailed profile info
               </p>
             </div>
             <div className="mt-5">
               <div className="border-b border-gray-300 pb-5">
                 {profile ? (
-                  <img src={profile} alt="" className="w-24 rounded-md mt-2" />
+                  <img
+                    src={profile}
+                    alt=""
+                    className="w-16 md:w-24 rounded-md mt-2"
+                  />
                 ) : (
-                  <p className="min-w-24 min-h-24 w-24 h-24 rounded-md bg-gray-300 text-6xl uppercase text-normal flex justify-center items-center">
+                  <p className="md:min-w-24 md:min-h-24 w-16 md:w-24 h-16 md:h-24 rounded-md bg-gray-300 text-3xl md:text-6xl uppercase text-normal flex justify-center items-center">
                     {landerName?.slice(0, 1)}
                   </p>
                 )}
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 mt-5 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 mt-2 md:mt-5 gap-3 md:gap-6">
                 <div className="flex flex-col gap-1">
                   <p>First Name</p>
                   <span className="bg-[#F1F1F1] flex gap-2 items-center border border-gray-200 rounded-md">
@@ -133,18 +134,10 @@ function Profile() {
                     <p className="text-bold text-md p-3">{landerName}</p>
                   </span>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <p>Username</p>
-                  <span className="bg-[#F1F1F1] flex gap-2 items-center border border-gray-200 rounded-md">
-                    <i className="fa-regular fa-user border-r border-gray-300 py-3 px-4 text-xl"></i>
-                    <p className="text-bold text-md capitalize p-3">
-                      {username}
-                    </p>
-                  </span>
-                </div>
+
                 <div className="flex flex-col gap-1">
                   <p>Email</p>
-                  <span className="bg-[#F1F1F1] flex gap-2 items-center border border-gray-300 rounded-md">
+                  <span className="bg-[#F1F1F1] break-all flex gap-2 items-center border border-gray-300 rounded-md">
                     <i className="fa-regular fa-envelope border-r border-gray-300 px-4 py-3 text-xl"></i>
                     <p className="text-bold text-md p-3">{email}</p>
                   </span>
@@ -207,23 +200,25 @@ function Profile() {
           </div>
         </div>
         <div className="flex md:flex-row flex-col gap-5 w-full mt-5">
-          <div className="bg-white border w-full border-gray-200 p-5 rounded-xl">
+          <div className="bg-white border w-full border-gray-200 p-5 rounded-2xl shadow">
             <div className="flex justify-between items-center w-full">
               <div className="flex gap-3 items-center">
-                <span className="w-16 h-16 rounded-full bg-green-100 text-green-700 flex justify-center items-center">
+                <span className="w-12 md:w-16 h-12 md:h-16 text-xs md:text-base rounded-full bg-green-100 text-green-700 flex justify-center items-center">
                   <MapPinHouse />
                 </span>
-                <h2 className="text-xl font-medium">Primary Address</h2>
+                <h2 className="text-md md:text-xl font-medium">
+                  Primary Address
+                </h2>
               </div>
               <button
                 onClick={() => setPrimaryOpen(true)}
-                className="w-12 cursor-pointer h-12 rounded-lg bg-yellow-100 text-yellow-700 flex justify-center items-center"
+                className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
               >
-                <SquarePen />
+                <SquarePen size={20} />
               </button>
             </div>
-            <div className="mt-5">
-              <table className="my-table table-fixed w-full">
+            <div className="mt-5 overflow-x-auto custom-scroll">
+              <table className="my-table table-fixed w-full min-w-96">
                 <tbody>
                   <tr>
                     <td className="text-md font-medium p-2">Country:</td>
@@ -265,23 +260,25 @@ function Profile() {
               </table>
             </div>
           </div>
-          <div className="bg-white border w-full border-gray-200 p-5 rounded-xl">
+          <div className="bg-white border w-full border-gray-200 p-5 rounded-2xl shadow">
             <div className="flex justify-between items-center w-full">
               <div className="flex gap-3 items-center">
-                <span className="w-16 h-16 rounded-full bg-red-100 text-red-700 flex justify-center items-center">
+                <span className="w-12 md:w-16 h-12 md:h-16 text-xs md:text-base rounded-full bg-red-100 text-red-700 flex justify-center items-center">
                   <NotebookTabs />
                 </span>
-                <h2 className="text-xl font-medium">Shipping Address</h2>
+                <h2 className="text-md md:text-xl font-medium">
+                  Shipping Address
+                </h2>
               </div>
               <button
                 onClick={() => setShippingOpen(true)}
-                className="cursor-pointer w-12 h-12 rounded-lg bg-yellow-100 text-yellow-700 flex justify-center items-center"
+                className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
               >
-                <SquarePen />
+                <SquarePen size={20} />
               </button>
             </div>
-            <div className="mt-5">
-              <table className="my-table table-fixed w-full">
+            <div className="mt-5 overflow-x-auto custom-scroll">
+              <table className="my-table table-fixed w-full min-w-96">
                 <tbody>
                   <tr>
                     <td className="text-md font-medium p-2">Country:</td>

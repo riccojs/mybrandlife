@@ -20,7 +20,10 @@ function JoinUserList() {
     code: code,
   });
 
-  const totalItems = data?.data?.totalUser;
+  const totalItem = data?.data?.totalUser;
+  const currentPage = data?.data?.currentPage || [];
+  const start = (currentPage - 1) * limit + 1;
+  const end = Math.min(currentPage * limit, totalItem);
   const users = data?.data?.user;
 
   const handlePageChange = (value: number) => {
@@ -39,8 +42,8 @@ function JoinUserList() {
   if (!isLoading && !isFetching && users?.length === 0) {
     content = (
       <tr>
-        <td colSpan={7}>
-          <p className="bg-amber-100 text-md font-normal p-3 rounded-md">
+        <td colSpan={6} className="p-0!">
+          <p className="bg-[#FEFBED] text-center text-[#643315] text-md font-normal py-5 rounded-md">
             Data not found!
           </p>
         </td>
@@ -86,12 +89,9 @@ function JoinUserList() {
         <div className="flex md:flex-row flex-col justify-between items-start md:items-center">
           <div className="md:w-6/12 w-full">
             <h2 className="text-normal text-2xl md:text-3xl">BrandShare</h2>
-            <ul className="flex gap-2 items-center py-2">
+            <ul className="flex flex-wrap gap-2 items-center py-2">
               <li>
-                <Link
-                  to="/admin/dashboard"
-                  className="text-normal text-sm md:text-base"
-                >
+                <Link to="/" className="text-normal text-sm md:text-base">
                   Dashboard
                 </Link>
               </li>
@@ -106,8 +106,8 @@ function JoinUserList() {
             </ul>
           </div>
         </div>
-        <div className="flex flex-col gap-5 mt-5">
-          <div className="flex md:w-auto w-full sm:flex-row flex-col justify-between items-start gap-3 md:items-center">
+        <div className="w-full mx-auto bg-white rounded-2xl border border-gray-200 shadow-sm mt-3">
+          <div className="w-full 2xl:flex-row flex-col gap-5 flex justify-between items-center p-6">
             <div className="w-full md:w-96">
               <SearchComponent
                 name="search"
@@ -131,9 +131,9 @@ function JoinUserList() {
             </div>
           </div>
           <div className="overflow-x-auto bg-white">
-            <table className="my-table table w-full min-w-300">
-              <thead>
-                <tr className="border-y border-gray-300">
+            <table className="my-table table-fixed w-full min-w-350">
+              <thead className="text-xs uppercase text-gray-500 bg-gray-50">
+                <tr className="border-y border-gray-200">
                   <th>BrandShare Code</th>
                   <th>Email</th>
                   <th>Lander Name</th>
@@ -145,15 +145,21 @@ function JoinUserList() {
               <tbody>{content}</tbody>
             </table>
           </div>
+          <div className="flex flex-wrap md:gap-0 gap-3 items-center justify-between px-6 py-5 border-t border-gray-200">
+            <p className="text-sm text-gray-400">
+              Showing <span className="font-medium text-gray-500">{start}</span>{" "}
+              to <span className="font-medium text-gray-500">{end}</span> of{" "}
+              <span className="font-medium text-gray-700">{totalItem}</span>{" "}
+              results
+            </p>
+            <Pagination
+              handlePageChange={handlePageChange}
+              page={page}
+              totalItems={totalItem}
+              itemsPerPage={limit}
+            />
+          </div>
         </div>
-        {totalItems > limit && (
-          <Pagination
-            handlePageChange={handlePageChange}
-            page={page}
-            totalItems={totalItems}
-            itemsPerPage={limit}
-          />
-        )}
       </div>
     </React.Fragment>
   );

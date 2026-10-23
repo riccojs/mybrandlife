@@ -41,19 +41,19 @@ function UpdateDirectoryStatus() {
   };
 
   return (
-    <div className="bg-white p-10 rounded-xl border border-gray-200">
+    <div className="bg-white p-5 md:p-10 rounded-2xl shadow border border-gray-200">
       <div className="flex flex-col gap-5 justify-start">
-        <p className="text-gray-700 text-medium text-xl">
+        <p className="text-gray-700 text-medium text-md md:text-xl">
           Disable Your Account from the Directory?
         </p>
-        <p className="bg-amber-50 text-black p-3 rounded-lg text-md font-normal w-full sm:w-8/12 lg:w-6/12 border-l-4 border-amber-300">
+        <p className="bg-amber-50 text-black p-3 rounded-lg text-sm md:text-md font-normal w-full sm:w-8/12 lg:w-6/12 border-l-4 border-amber-300">
           Disabling your account will remove your profile from the public
           directory. Other users will no longer be able to find or connect with
           you through search.
         </p>
         <div className="flex gap-5 items-center">
           <p className="text-md text-black font-normal">
-            Show or hide from directory
+            Show or hide from the directory
           </p>
           <div className="flex justify-center items-center">
             <label className="switch">
@@ -73,7 +73,7 @@ function UpdateDirectoryStatus() {
           onClick={() => {
             setOpen(true);
           }}
-          className="bg-[#BDF188] text-[#000000] flex justify-center items-center gap-1 w-fit border border-[#76c725] px-10 py-4 rounded-2xl cursor-pointer"
+          className="bg-[#BDF188] text-[#000000] flex justify-center items-center gap-1 w-fit border border-[#76c725] px-5 md:px-10 py-2 md:py-4 rounded-lg md:rounded-2xl cursor-pointer"
         >
           <p>Save</p>
           <ArrowRight />
@@ -81,7 +81,7 @@ function UpdateDirectoryStatus() {
       </div>
       <WarningPopup
         open={open}
-        title="Do you want update Directory Status?"
+        title="Do you want to update your directory status?"
         description={`Disabling your account will remove your profile from the public
           directory. Other users will no longer be able to find or connect with
           you through search.`}

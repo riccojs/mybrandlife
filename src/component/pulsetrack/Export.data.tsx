@@ -37,10 +37,9 @@ const ExportData = () => {
   const existPulsetrack = user?.pulsetrackDatas;
 
   return (
-    <div className="min-h-screen bg-[#F7F9FC] px-6 py-8 md:px-10">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-[26px] font-semibold text-[#1F2937]">
+    <div className="min-h-screen p-3 md:p-5">
+      <div className="mb-4 md:mb-8">
+        <h1 className="text-lg md:text-2xl font-semibold text-[#1F2937]">
           Export PulseTrack Analytics
         </h1>
         <p className="text-[#6B7280] mt-1 text-[14px]">
@@ -48,9 +47,7 @@ const ExportData = () => {
           engagement data.
         </p>
       </div>
-
-      {/* Top Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
         <ExportCard
           title="Last 7 Days"
           subtitle="Quick export of recent activity"

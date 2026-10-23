@@ -32,16 +32,13 @@ function Brandtrack() {
   const existTemplate = user && user?.userTemplete?.length > 0 ? true : false;
 
   return (
-    <div className="p-5">
+    <div className="p-3 md:p-5">
       <div className="flex md:flex-row flex-col justify-between items-start md:items-center">
         <div className="md:w-6/12 w-full">
           <h2 className="text-normal text-2xl md:text-3xl">BrandTrack</h2>
-          <ul className="flex gap-2 items-center py-2">
+          <ul className="flex flex-wrap gap-2 items-center py-2">
             <li>
-              <Link
-                to="/dashboard"
-                className="text-normal text-sm md:text-base"
-              >
+              <Link to="/" className="text-normal text-sm md:text-base">
                 Dashboard
               </Link>
             </li>
@@ -62,8 +59,8 @@ function Brandtrack() {
           </ul>
         </div>
       </div>
-      <div className="bg-white border border-gray-200 flex gap-3 items-center w-full text-black text-3xl font-medium p-3 rounded-lg my-3">
-        <TbDeviceDesktopAnalytics color="#7bb53d" size={50} />
+      <div className="bg-white border border-gray-200 flex gap-2 items-center w-full text-black text-2xl md:text-3xl font-medium p-3 rounded-lg my-3">
+        <TbDeviceDesktopAnalytics color="#7bb53d" />
         <p>BrandTrack</p>
       </div>
       {existTemplate ? (

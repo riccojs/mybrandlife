@@ -2,6 +2,7 @@ import { useState, type SetStateAction } from "react";
 import WristbandCollaps from "./Wristband.collaps";
 import { motion, AnimatePresence } from "framer-motion";
 import type { OnboardTypes } from "../../utils/user.types";
+import { ChevronDown } from "lucide-react";
 
 interface DataTypes {
   onboard: OnboardTypes;
@@ -27,20 +28,34 @@ function OnboardFour({ onboard, setOnboard }: DataTypes) {
   } = onboard || {};
   return (
     <div className="w-full">
-      <div className="flex flex-col gap-1">
-        <p className="text-2xl font-medium text-black mt-5">
-          Step 4: Your selected values
-        </p>
-        <p className="text-xl font-normal text-black mt-2">
-          Please check carefully before submission
-        </p>
-        <span
-          onClick={() => setOpen(!open)}
-          className="bg-[#96c94b] text-black px-5 py-2 rounded-lg w-fit cursor-pointer"
-        >
-          {open ? "Collaps" : "Review"}
-        </span>
+      <div className="flex md:flex-row flex-col w-full justify-between items-start md:items-center gap-1">
+        <div>
+          <h2 className="text-lg md:text-xl font-medium text-black mt-5">
+            Step 4: Review Your Selections
+          </h2>
+          <p className="text-[#64748b] text-xs font-normal">
+            Please review your social links and selected details carefully
+            before submitting.
+          </p>
+        </div>
+        <div className="bg-[#F0F3F8] flex gap-1 items-center rounded-lg px-3">
+          <p className="text-[#D84D3E] text-md md:text-xl mt-2">*</p>
+          <p className="text-xs text-[#41495A]">Required Fields</p>
+        </div>
       </div>
+      <button
+        onClick={() => setOpen(!open)}
+        type="button"
+        className="bg-gray-50 flex gap-2 items-center justify-center mt-3 w-full border border-gray-300 text-black px-5 py-2 rounded-lg cursor-pointer text-sm md:text-md"
+      >
+        {open ? "Hide Your Selections" : "Review Your Selections"}
+        <ChevronDown
+          className={`transition-transform duration-200 ${
+            open ? "rotate-180" : "rotate-0"
+          }`}
+          size={20}
+        />
+      </button>
 
       <AnimatePresence initial={false}>
         {open && (
@@ -49,10 +64,10 @@ function OnboardFour({ onboard, setOnboard }: DataTypes) {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden mt-5"
+            className="overflow-hidden"
           >
-            <div className="rounded-md shadow overflow-hidden my-5">
-              <table className="table-auto border-collapse w-full oboardTable">
+            <div className="rounded-md shadow overflow-x-auto custom-scroll my-5">
+              <table className="table-auto border-collapse w-full oboardTable min-w-120 text-sm md:text-md">
                 <thead>
                   <tr className="border border-gray-300">
                     <td className="text-left p-3 font-medium w-72">Key</td>

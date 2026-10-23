@@ -108,12 +108,12 @@ function UpdateMerchendiseStatus() {
   };
 
   return (
-    <div className="bg-white border border-gray-200 p-10 rounded-xl">
+    <div className="bg-white border border-gray-200 p-5 md:p-10 rounded-2xl shadow mt-3">
       <div className="flex flex-col gap-5 justify-start">
-        <p className="text-gray-700 text-medium text-xl">
+        <p className="text-gray-700 text-medium text-base md:text-xl">
           Disable Your Merchandise URL from Your Lander
         </p>
-        <p className="bg-amber-50 text-black p-3 rounded-lg text-md font-normal w-full sm:w-8/12 lg:w-6/12 border-l-4 border-amber-300">
+        <p className="bg-amber-50 text-black p-3 rounded-lg text-sm md:text-md font-normal w-full sm:w-8/12 lg:w-6/12 border-l-4 border-amber-300">
           Disabling your merchandise URL will remove your products from public
           view on your lander. Visitors will no longer be able to browse,
           search, or purchase your merchandise. Make sure you understand the
@@ -165,9 +165,9 @@ function UpdateMerchendiseStatus() {
                 onChange={handleFileChange}
               />
 
-              <CiImageOn color="#0084F9" size={60} />
+              <CiImageOn color="#0084F9" size={50} />
 
-              <h3 className="text-lg font-medium text-black">
+              <h3 className="text-sm md:text-lg font-medium text-black">
                 Drag & Drop your image
               </h3>
 
@@ -214,7 +214,7 @@ function UpdateMerchendiseStatus() {
           onClick={() => {
             setOpen(true);
           }}
-          className="bg-[#BDF188] text-[#000000] flex justify-center items-center gap-1 w-fit border border-[#76c725] px-10 py-4 rounded-2xl cursor-pointer"
+          className="bg-[#BDF188] text-[#000000] flex justify-center items-center gap-1 w-fit border border-[#76c725] px-5 md:px-10 py-2 md:py-4 rounded-lg md:rounded-2xl cursor-pointer"
         >
           <p>Save</p>
           <ArrowRight />
@@ -222,7 +222,7 @@ function UpdateMerchendiseStatus() {
       </div>
       <WarningPopup
         open={open}
-        title="Do you want update Merchandise Settings?"
+        title="Do you want to update your merchandise settings?"
         description="Disabling your merchandise URL will remove your products from public view on your lander. Visitors will no longer be able to browse, search, or purchase your merchandise. Make sure you understand the impact before proceeding."
         smButton="Update"
         clButton="Close"

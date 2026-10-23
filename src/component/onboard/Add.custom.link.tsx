@@ -41,12 +41,12 @@ function AddCustomLink({ setOnboard, onboard }: DataTypes) {
   };
 
   return (
-    <div className="border border-gray-300 p-5 rounded-md">
+    <div className="border border-gray-300 p-5 rounded-xl">
       <div className="w-full flex justify-between items-center">
-        <h2 className="text-md font-normal capitalize">
+        <h2 className="text-xs md:text-sm text-[#1F2534] font-normal capitalize">
           Add Custom Link{" "}
           {user?.package !== "gold" && (
-            <span className="text-red-500 text-xs font-normal">
+            <span className="text-red-500 text-[10px] md:text-xs font-normal">
               (Gold Only)
             </span>
           )}
@@ -55,9 +55,9 @@ function AddCustomLink({ setOnboard, onboard }: DataTypes) {
           type="button"
           onClick={handleAddFeature}
           disabled={user?.package !== "gold"}
-          className="dark-gold cursor-pointer"
+          className="border border-gray-200 rounded-lg flex justify-center items-center bg-gray-50 w-8 md:w-10 md:min-w-10 h-8 md:h-10 transition-transform duration-300"
         >
-          <i className="fa-solid fa-plus text-xl" />
+          <i className="fa-solid fa-plus text-md md:text-xl" />
         </button>
       </div>
       <div

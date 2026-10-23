@@ -155,7 +155,7 @@ export default function WristbandStore() {
                   );
                   setSelectedId(id);
                 }}
-                className="w-full cursor-pointer flex items-center justify-center gap-2 bg-lime-500 hover:bg-lime-600 transition text-white font-medium py-2.5 rounded-xl"
+                className="w-full cursor-pointer text-sm md:text-base flex items-center justify-center gap-2 bg-[#96c94b] hover:bg-lime-600 transition text-black font-medium py-2.5 rounded-xl"
               >
                 {createLoad && selectId === id ? (
                   <FaSpinner size={20} className="animate-spin" />
@@ -171,27 +171,29 @@ export default function WristbandStore() {
     });
   }
   return (
-    <div className="min-h-screen bg-[#f5f7f6] text-gray-800 p-6">
-      <div className="bg-linear-to-r from-[#0f2027] via-[#203a43] to-[#2c5364] rounded-2xl p-10 text-white mb-10 shadow-lg">
-        <span className="bg-lime-500 text-xs font-semibold px-3 py-1 rounded-full">
+    <div className="min-h-screen text-gray-800 p-3 md:p-6">
+      <div className="bg-linear-to-r flex flex-col gap-3 from-[#0f2027] via-[#203a43] to-[#2c5364] rounded-2xl p-6 md:p-10 text-white mb-5 md:mb-10 shadow-lg">
+        <span className="bg-[#96c94b] text-black text-xs font-semibold px-3 py-1 rounded-full w-fit">
           ORDER YOUR CHOICE
         </span>
-        <h1 className="text-4xl font-bold mt-4 mb-3 capitalize">
+        <h1 className="text-xl md:text-4xl font-bold capitalize">
           Select and Order
         </h1>
-        <p className="text-gray-200 max-w-xl mb-6">
+        <p className="text-gray-200 max-w-xl text-sm md:text-base">
           Select your items, add them to your cart, and proceed to secure
           checkout.
         </p>
         <Link
           to="/pulsetrack/projects"
-          className="bg-lime-500 hover:bg-lime-600 transition px-6 py-2 rounded-xl font-medium text-sm text-white"
+          className="bg-[#96c94b] w-fit hover:bg-lime-600 transition px-6 py-2 rounded-xl font-medium text-sm text-black"
         >
-          Back to PulseTrack
+          Back
         </Link>
       </div>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-semibold">Wristband Selection</h2>
+      <div className="flex flex-col md:flex-row items-center justify-between mb-6">
+        <h2 className="text-xl md:text-2xl font-semibold">
+          Wristband Selection
+        </h2>
         <button
           onClick={() => setOpencart(true)}
           className="flex cursor-pointer items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-xl text-md"
@@ -204,7 +206,7 @@ export default function WristbandStore() {
           )}
         </button>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-6">
         {content}
       </div>
       <div className="flex flex-wrap md:gap-0 gap-3 items-center justify-between px-6 py-5 border-t border-gray-200">

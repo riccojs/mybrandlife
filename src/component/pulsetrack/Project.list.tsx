@@ -17,6 +17,7 @@ import type { PulsetrackType } from "../../utils/pulsetrack.types";
 import { useAuth } from "../../hook/useAuth";
 import Pagination from "../Pagination";
 import WarningPopup from "../popups/Warning.popup";
+import SearchComponent from "../ui/Search.component";
 
 const statusStyles: Record<string, string> = {
   ACTIVATE: "bg-emerald-100 text-emerald-700",
@@ -95,8 +96,8 @@ const ProjectList = () => {
   if (!isFetching && !isLoading && pulsetrack?.length === 0) {
     content = (
       <tr>
-        <td colSpan={6}>
-          <p className="bg-amber-100 text-md font-normal p-3 rounded-md">
+        <td colSpan={6} className="p-0!">
+          <p className="bg-[#FEFBED] text-center text-[#643315] text-md font-normal py-5 rounded-md">
             Data not found!
           </p>
         </td>
@@ -115,16 +116,13 @@ const ProjectList = () => {
         });
       };
       return (
-        <tr
-          key={id}
-          className="border-t border-gray-100 hover:bg-gray-50 transition"
-        >
+        <tr key={id}>
           <td className="px-6 py-5">
             <div className="flex items-center gap-4">
               <div
-                className={`w-14 min-w-14 h-11 rounded-xl flex items-center justify-center font-semibold text-sm ${getColorFromName(name || "")}`}
+                className={`w-11 min-w-11 h-11 rounded-xl flex items-center justify-center font-semibold text-xl ${getColorFromName(name || "")}`}
               >
-                {name?.slice(0, 3).toUpperCase()}
+                {name?.slice(0, 1).toUpperCase()}
               </div>
               <span className="font-medium text-gray-800">{name}</span>
             </div>
@@ -134,7 +132,7 @@ const ProjectList = () => {
           </td>
           <td className="px-6 py-5">
             <span
-              className={`px-3 py-1 text-xs font-medium rounded-full ${statusStyles[active]}`}
+              className={`px-6 py-1 text-xs font-medium rounded-md ${statusStyles[active]}`}
             >
               {active}
             </span>
@@ -142,45 +140,45 @@ const ProjectList = () => {
           <td className="px-6 py-5 font-medium">{idPrefix}</td>
           <td className="px-6 py-5 font-medium">{basePath}</td>
           <td className="px-6 py-5">
-            <div className="flex gap-4 text-gray-500">
+            <div className="flex gap-3 text-gray-500">
               <Link
                 to={active === "ACTIVATE" ? "" : `/pulsetrack/projects/${id}`}
-                className={
+                className={`border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer ${
                   active === "ACTIVATE"
                     ? "cursor-not-allowed"
                     : "cursor-pointer"
-                }
+                }`}
               >
                 <MdAddShoppingCart size={20} />
               </Link>
-              <Pencil
-                size={18}
+              <button
+                className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
                 onClick={() => {
                   setShow(true);
                   setSelectedId(id);
                 }}
-                className="cursor-pointer hover:text-gray-700"
-              />
-              <Eye
-                size={18}
+              >
+                <Pencil size={20} />
+              </button>
+
+              <button
                 onClick={() => {
                   setOpenProject(true);
                   setSelectedId(id);
                 }}
-                className="cursor-pointer hover:text-gray-700"
-              />
-              {delLoad && selectId === id ? (
-                <FaSpinner className="animate-spin" />
-              ) : (
-                <Trash2
-                  size={18}
-                  onClick={() => {
-                    setSelectedId(id);
-                    setDeleteOpen(true);
-                  }}
-                  className="cursor-pointer hover:text-red-500"
-                />
-              )}
+                className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
+              >
+                <Eye size={20} />
+              </button>
+              <button
+                onClick={() => {
+                  setSelectedId(id);
+                  setDeleteOpen(true);
+                }}
+                className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
+              >
+                <Trash2 size={20} />
+              </button>
             </div>
           </td>
         </tr>
@@ -189,17 +187,18 @@ const ProjectList = () => {
   }
 
   return (
-    <section className="bg-gray-50 min-h-screen p-5">
+    <section className="min-h-screen p-3 md:p-5">
       <div className="w-full mx-auto bg-white rounded-2xl border border-gray-200 shadow-sm">
-        <div className="flex flex-wrap gap-3 md:gap-0 items-center justify-between p-6 border-b border-gray-200">
-          <div className="relative w-96">
-            <Search
-              size={18}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-            />
-            <input
-              type="text"
-              onChange={(e) => {
+        <div className="flex gap-3 md:gap-0 items-center justify-between p-6">
+          <div className="w-full md:w-96">
+            <SearchComponent
+              name="search"
+              color="white"
+              value={searchBy}
+              placeholder="Seach by title"
+              required={false}
+              autoComplete="text"
+              handleChange={(e) => {
                 const value = e.target.value;
                 if (value) {
                   searchParams.set("search", value);
@@ -210,24 +209,20 @@ const ProjectList = () => {
                 }
                 setSearchParams(searchParams);
               }}
-              value={searchBy}
-              placeholder="Search ids..."
-              className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 outline-none text-sm"
             />
           </div>
           <button
             onClick={() => setOpen(true)}
-            className="flex cursor-pointer items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 text-sm"
+            className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] min-w-10 w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
           >
             <LayersPlus size={20} />
-            Create IDs
           </button>
         </div>
-        <div className="bg-white rounded-xl border border-gray-200">
-          <div className="overflow-x-auto">
-            <table className="w-full table-fixed border-collapse min-w-325">
+        <div className="bg-white rounded-xl ">
+          <div className="overflow-x-auto bg-white">
+            <table className="my-table table-fixed w-full min-w-350">
               <thead className="text-xs uppercase text-gray-500 bg-gray-50">
-                <tr>
+                <tr className="border-y border-gray-200">
                   <th className="text-left px-6 py-4 w-96">PulseTrack IDs</th>
                   <th className="text-left px-6 py-4">Date Created</th>
                   <th className="text-left px-6 py-4">Status</th>
@@ -248,14 +243,13 @@ const ProjectList = () => {
             <span className="font-medium text-gray-700">{totalItem}</span>{" "}
             results
           </p>
-          {totalItem > limit && (
-            <Pagination
-              handlePageChange={handlePageChange}
-              page={page}
-              totalItems={totalItem}
-              itemsPerPage={limit}
-            />
-          )}
+
+          <Pagination
+            handlePageChange={handlePageChange}
+            page={page}
+            totalItems={totalItem}
+            itemsPerPage={limit}
+          />
         </div>
       </div>
       {open && <CreateProject isOpen={open} onClose={() => setOpen(false)} />}
@@ -276,7 +270,7 @@ const ProjectList = () => {
       {selectId && deleteOpen && (
         <WarningPopup
           open={deleteOpen}
-          title="Do you want delete this project?"
+          title="Do you want to delete this project?"
           description={`Deleting this project will permanently remove it along with all associated data. This action cannot be undone. Click "Delete" to permanently delete the project, or click "Close" to cancel and return without making any changes.`}
           smButton="Delete"
           clButton="Close"

@@ -1,8 +1,8 @@
-import { Folder, Save, User } from "lucide-react";
+import { Folder, User } from "lucide-react";
 import useBodyScroll from "../../hook/userBodyscroll";
 import { useGetOneSpiningQuery } from "../../redux/features/spin/spinApi";
 import type { SpinType } from "../../utils/spin.types";
-import PulsetrackProjectLoader from "../loader/Pulsetrack.project.loader";
+import ViewSpinLoader from "../loader/View.spin.loader";
 
 interface Props {
   isOpen: boolean;
@@ -29,7 +29,7 @@ function ViewSpining({ isOpen, onClose, id }: Props) {
   // decide what to render
   let content;
   if (isFetching || isLoading) {
-    content = <PulsetrackProjectLoader />;
+    content = <ViewSpinLoader />;
   }
   if (!isFetching && !isLoading && data) {
     content = (
@@ -124,14 +124,6 @@ function ViewSpining({ isOpen, onClose, id }: Props) {
               className="px-6 py-2 cursor-pointer rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300"
             >
               Close
-            </button>
-
-            <button
-              onClick={() => onClose()}
-              className="flex cursor-pointer items-center gap-2 px-6 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600"
-            >
-              <Save size={16} />
-              SaVe
             </button>
           </div>
         </div>

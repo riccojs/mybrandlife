@@ -26,11 +26,22 @@ function OneboardThree({ setOnboard, onboard }: DataTypes) {
 
   return (
     <div className="w-full">
-      <p className="text-2xl font-medium text-black mt-5">
-        Step 3: Available Platforms and Information
-      </p>
+      <div className="flex md:flex-row flex-col w-full justify-between items-start md:items-center gap-1">
+        <div>
+          <h2 className="text-lg md:text-xl font-medium text-black mt-5">
+            Step 2: Available Platforms and Information
+          </h2>
+          <p className="text-[#64748b] text-xs font-normal">
+            Select the platforms included in your plan and add the correct URLs
+            for each one.
+          </p>
+        </div>
+        <div className="bg-[#F0F3F8] flex gap-1 items-center rounded-lg px-3">
+          <p className="text-[#D84D3E] text-md md:text-xl mt-2">*</p>
+          <p className="text-xs text-[#41495A]">Required Fields</p>
+        </div>
+      </div>
       <PersonalCollaps user={user} />
-
       <SocialCollaps
         user={user}
         setShowSocial={setShowSocial}

@@ -179,13 +179,13 @@ export default function OrderedWristbandView() {
   }
   if (!isLoading && !isFetching && wristband) {
     content = (
-      <div className="w-full p-5 space-y-6">
-        <div className="bg-white border border-slate-200 rounded-xl p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="w-full p-3 md:p-5">
+        <div className="bg-white border border-slate-200 rounded-xl p-5 flex flex-col xl:flex-row justify-start md:justify-between items-start xl:items-center gap-4">
           <div>
-            <p className="text-sm tracking-widest text-slate-500 font-bold uppercase">
+            <p className="text-xs md:text-sm tracking-widest text-slate-500 font-bold uppercase">
               Wristband Status
             </p>
-            <h2 className="text-2xl mb-2 font-extrabold text-lime-600 mt-0.5 tracking-wide">
+            <h2 className="text-lg md:text-2xl mb-2 font-extrabold text-lime-600 mt-0.5 tracking-wide">
               Production Phase
             </h2>
             <Link
@@ -212,7 +212,7 @@ export default function OrderedWristbandView() {
                     className={`${step.status === "active" && "w-3 h-3 absolute rounded-full bg-lime-500 shadow-[0_0_8px_rgba(132,204,22,0.6)] animate-ping"}`}
                   />
                   <span
-                    className={`text-xs font-bold tracking-wider mt-2 whitespace-nowrap ${
+                    className={`text-[10px] md:text-xs font-bold tracking-wider mt-2 whitespace-nowrap ${
                       step.status === "active"
                         ? "text-lime-600"
                         : "text-slate-400"
@@ -234,11 +234,11 @@ export default function OrderedWristbandView() {
             ))}
           </div>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-3">
           <div className="md:col-span-2 bg-white p-5 rounded-xl border border-gray-200">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-lime-500/5 rounded-full blur-3xl pointer-events-none" />
             <div>
-              <div className="flex justify-between gap-4 mt-4 w-full">
+              <div className="flex md:flex-row flex-col justify-between gap-4 mt-4 w-full">
                 <div className="flex flex-col gap-1">
                   <h1 className="text-3xl font-medium text-black leading-tight tracking-tight max-w-sm">
                     {title}
@@ -260,20 +260,11 @@ export default function OrderedWristbandView() {
                       User id: {user?.id}
                     </p>
                   </div>
-                  {role === "ADMIN" && (
-                    <button
-                      onClick={() => setIsShow(true)}
-                      className="border border-gray-200 w-fit flex gap-2 items-center uppercase text-sm px-6 mt-2 py-2 rounded-xl font-bold cursor-pointer"
-                    >
-                      <i className="fa-regular fa-pen-to-square"></i>{" "}
-                      <p>Update</p>
-                    </button>
-                  )}
                 </div>
                 <img
                   src={banner}
                   alt=""
-                  className="w-44 rounded-2xl object-cover h-40"
+                  className="w-full md:w-44 rounded-2xl object-cover h-40"
                 />
               </div>
             </div>
@@ -282,10 +273,10 @@ export default function OrderedWristbandView() {
               <p className="text-[9px] tracking-widest text-slate-400 font-bold uppercase">
                 Sub total price
               </p>
-              <p className="text-4xl md:text-5xl font-black text-lime-600 tracking-tight">
+              <p className="text-2xl md:text-5xl font-black text-lime-600 tracking-tight">
                 ${subTotal}
               </p>
-              <p className="bg-green-200 text-green-600 text-sm px-10 py-1 rounded-md font-bold">
+              <p className="bg-green-200 text-green-600 text-xs md:text-sm px-5 md:px-10 py-1 rounded-md font-bold">
                 {status}
               </p>
             </div>
@@ -295,7 +286,7 @@ export default function OrderedWristbandView() {
             <p className="text-xs tracking-widest text-slate-500 font-bold uppercase">
               Scan Wristband Track id
             </p>
-            <div className="w-44 h-44 bg-white rounded-xl p-3 flex items-center justify-center border border-slate-200 shadow-md my-3">
+            <div className="w-32 md:w-44 h-32 md:h-44 bg-white rounded-xl p-3 flex items-center justify-center border border-slate-200 shadow-md my-3">
               <QRCode value={`${user?.domain}/${user?.landerName}`} />
             </div>
             <p className="text-[11px] leading-relaxed text-slate-500 px-4 max-w-xs">
@@ -395,8 +386,7 @@ export default function OrderedWristbandView() {
             )}
           </div>
         </div>
-
-        <div className=" bg-white p-10 rounded-xl border border-gray-200">
+        <div className=" bg-white p-10 rounded-xl border border-gray-200 mt-3">
           <h3 className="text-md tracking-widest text-slate-500 font-bold uppercase">
             Wristband Activity
           </h3>

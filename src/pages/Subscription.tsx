@@ -132,13 +132,10 @@ function Subscription() {
     <React.Fragment>
       <div className="p-3 md:p-5 min-h-screen">
         <div className="md:w-6/12 w-full">
-          <h2 className="text-normal text-2xl md:text-3xl">Subsription</h2>
-          <ul className="flex gap-2 items-center py-2">
+          <h2 className="text-normal text-2xl md:text-3xl">Subscription</h2>
+          <ul className="flex flex-wrap gap-2 items-center py-2">
             <li>
-              <Link
-                to="/dashboard"
-                className="text-normal text-sm md:text-base"
-              >
+              <Link to="/" className="text-normal text-sm md:text-base">
                 Dashboard
               </Link>
             </li>
@@ -152,19 +149,21 @@ function Subscription() {
               <i className="fa-solid fa-angles-right text-xs"></i>
             </li>
             <li>
-              <p className="text-normal text-sm md:text-base">Subsription</p>
+              <p className="text-normal text-sm md:text-base">
+                My Subscription
+              </p>
             </li>
           </ul>
         </div>
         <div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 my-5">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-4 my-3 md:my-5">
             <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-between min-h-30">
               <div>
                 <p className="text-[10px] font-bold tracking-wider text-slate-400 uppercase">
                   Current Plan
                 </p>
                 <div className="flex items-center gap-2 mt-1">
-                  <h3 className="text-2xl font-bold text-emerald-800 uppercase">
+                  <h3 className="text-lg md:text-2xl font-bold text-emerald-800 uppercase">
                     {pkgType}
                   </h3>
                   <span
@@ -185,7 +184,7 @@ function Subscription() {
                 <p className="text-[10px] font-bold tracking-wider text-slate-400 uppercase">
                   {frequency === "yearly" ? "Annual Price" : "Monthly Price"}
                 </p>
-                <h3 className="text-2xl font-bold text-slate-800 mt-1">
+                <h3 className="text-xl md:text-2xl font-bold text-slate-800 mt-1">
                   ${price}
                 </h3>
               </div>
@@ -201,7 +200,7 @@ function Subscription() {
                 </p>
                 <div className="flex items-center gap-2 mt-1 text-emerald-700">
                   <Calendar className="w-5 h-5" />
-                  <h3 className="text-xl font-bold text-slate-800">
+                  <h3 className="text-lg md:text-2xl font-bold text-slate-800">
                     {create_at ? formattedDate(create_at) : "not-available"}
                   </h3>
                 </div>
@@ -219,42 +218,42 @@ function Subscription() {
                 </p>
                 <div className="flex items-center gap-2 mt-1 text-red-500">
                   <Calendar className="w-5 h-5" />
-                  <h3 className="text-xl font-bold text-slate-800">
+                  <h3 className="text-lg md:text-2xl font-bold text-slate-800">
                     {activate_at ? formattedDate(activate_at) : "not-available"}
                   </h3>
                 </div>
               </div>
               <p className="text-sm text-slate-500">
                 {activate_at ? getRemainingDays(activate_at) : null} days until
-                next invoice
+                the next invoice
               </p>
             </div>
           </div>
-          <div className="flex xl:flex-row flex-col gap-5">
-            <div className="bg-white md:w-9/12 w-full border border-gray-200 p-5 md:p-10 rounded-3xl flex lg:flex-row flex-col gap-10 md:gap-0 justify-between items-center">
+          <div className="flex md:flex-row flex-col gap-5">
+            <div className="bg-white md:w-8/12 xl:w-9/12 w-full border border-gray-200 p-5 md:p-10 rounded-3xl flex lg:flex-row flex-col gap-10 md:gap-0 justify-between items-center">
               <div className="flex flex-col gap-2">
-                <p className="bg-green-100 text-green-600 px-5 py-2 rounded-full text-sm w-fit uppercase font-medium">
+                <p className="bg-green-100 text-green-600 px-5 py-2 rounded-full text-xs md:text-sm w-fit uppercase font-medium">
                   {domain}
                 </p>
 
-                <h2 className="jost text-medium text-xl md:text-3xl">
+                <h2 className="jost text-medium text-md md:text-3xl">
                   Build Your Brand with My Brand Life
                 </h2>
-                <h2 className="jost text-medium text-xl leading-relaxed">
+                <h2 className="jost text-medium text-sm md:text-xl leading-relaxed">
                   From idea to launch, manage everything in one place — create,
                   customize, and scale your business with ease.
                 </h2>
-                <p className="text-gray-400 font-normal text-lg">
+                <p className="text-gray-400 font-normal text-sm md:text-lg">
                   Top Template Development Platform
                 </p>
-                <p className="text-gray-400 font-normal text-lg">
-                  Login | Build | Launch | Succeed 🚀
+                <p className="text-gray-400 font-normal text-sm md:text-lg">
+                  Login | Build | Launch | Succeed
                 </p>
               </div>
-              <img src={Banner} alt="" />
+              <img src={Banner} alt="" className="xl:w-full w-52" />
             </div>
-            <div className="w-full md:w-3/12 bg-white border border-gray-200 rounded-3xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.02)]">
-              <h2 className="text-2xl font-bold text-[#1a2b49] mb-6 tracking-tight">
+            <div className="w-full md:w-4/12 xl:w-3/12 bg-white border border-gray-200 rounded-3xl p-5 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.02)]">
+              <h2 className="text-lg md:text-2xl font-bold text-[#1a2b49] mb-6 tracking-tight">
                 Quick Actions
               </h2>
               <div className="flex flex-col gap-4">
@@ -265,7 +264,7 @@ function Subscription() {
                       key={action.id}
                       href={action.url}
                       target="_blank"
-                      className={`w-full flex items-center justify-between p-4 rounded-xl transition-all duration-200 group text-left ${action.rowBg} ${action.hoverBg}`}
+                      className={`w-full flex items-center justify-between p-3 md:p-4 rounded-xl transition-all duration-200 group text-left ${action.rowBg} ${action.hoverBg}`}
                     >
                       <div className="flex items-center gap-4">
                         <div
@@ -273,7 +272,7 @@ function Subscription() {
                         >
                           <IconComponent className="w-5 h-5 stroke-[2.25]" />
                         </div>
-                        <span className="font-semibold text-[#1a2b49] text-base tracking-wide">
+                        <span className="font-semibold text-[#1a2b49] text-sm md:text-base tracking-wide">
                           {action.label}
                         </span>
                       </div>
@@ -359,16 +358,16 @@ function Subscription() {
             <div className="bg-white border w-full border-gray-200 p-5 rounded-3xl shadow">
               <div className="flex justify-between items-center w-full">
                 <div className="flex gap-3 items-center">
-                  <span className="w-16  h-16 rounded-full bg-green-100 text-green-700 flex justify-center items-center">
+                  <span className="w-12 md:w-16 h-12 md:h-16 text-xs md:text-base rounded-full bg-green-100 text-green-700 flex justify-center items-center">
                     <MapPinHouse />
                   </span>
-                  <h2 className="text-lg md:text-xl font-medium">
+                  <h2 className="text-md md:text-xl font-medium">
                     Primary Address
                   </h2>
                 </div>
               </div>
-              <div className="mt-5">
-                <table className="my-table table-fixed w-full">
+              <div className="mt-5 overflow-x-auto custom-scroll">
+                <table className="my-table table-fixed w-full min-w-96">
                   <tbody>
                     <tr>
                       <td className="text-sm md:text-md font-medium p-2">
@@ -425,16 +424,16 @@ function Subscription() {
             <div className="bg-white border w-full border-gray-200 p-5 rounded-3xl shadow">
               <div className="flex justify-between items-center w-full">
                 <div className="flex gap-3 items-center">
-                  <span className="w-16 h-16 rounded-full bg-red-100 text-red-700 flex justify-center items-center">
+                  <span className="w-12 md:w-16 h-12 md:h-16 text-xs md:text-base rounded-full bg-red-100 text-red-700 flex justify-center items-center">
                     <NotebookTabs />
                   </span>
-                  <h2 className="text-lg md:text-xl font-medium">
+                  <h2 className="text-md md:text-xl font-medium">
                     Shipping Address
                   </h2>
                 </div>
               </div>
-              <div className="mt-5">
-                <table className="my-table table-fixed w-full">
+              <div className="mt-5 overflow-x-auto custom-scroll">
+                <table className="my-table table-fixed w-full min-w-96">
                   <tbody>
                     <tr>
                       <td className="text-sm md:text-md font-medium p-2">

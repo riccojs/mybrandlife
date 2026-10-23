@@ -164,19 +164,25 @@ function UpdateSpining({ isOpen, onClose, id }: Type) {
                 </div>
               </div>
 
-              <div className="mt-8 flex items-center justify-end gap-3">
+              <div className="flex gap-3 items-center mt-10">
                 <button
-                  onClick={onClose}
                   type="button"
-                  className="rounded-lg cursor-pointer px-4 py-2 text-sm font-medium text-slate-600 transition bg-slate-200"
+                  onClick={onClose}
+                  disabled={isLoading}
+                  className="bg-slate-200 px-6 py-2 cursor-pointer rounded-lg flex gap-2 items-center w-fit"
                 >
-                  Cancel
+                  Close
                 </button>
                 <button
                   type="submit"
-                  className="rounded-lg cursor-pointer bg-[#8CC63F] px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#7AB535] focus:outline-none focus:ring-2 focus:ring-[#8CC63F]/40"
+                  disabled={isLoading}
+                  className={`${isLoading ? "bg-[#a3c46f] cursor-not-allowed" : "bg-[#cbf38b] cursor-pointer"} min-w-28 text-normal h-10 rounded-md flex justify-center items-center gap-2`}
                 >
-                  {isLoading ? <ImSpinner6 className="animate-spin" /> : "Save"}
+                  {isLoading ? (
+                    <i className="fa-solid fa-circle-notch animate-spin"></i>
+                  ) : (
+                    "Save"
+                  )}
                 </button>
               </div>
             </form>

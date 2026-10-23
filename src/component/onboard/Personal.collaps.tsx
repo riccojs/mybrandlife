@@ -16,18 +16,23 @@ interface UserType {
 function PersonalCollaps({ user }: UserType) {
   const [open, setOpen] = useState(true);
   return (
-    <div className="mt-5">
+    <div className="mt-0 md:mt-5">
       <button
         onClick={() => setOpen((prev) => !prev)}
         type="button"
-        className="flex w-full cursor-pointer items-center justify-between text-xl font-normal text-black"
+        className="flex w-full cursor-pointer items-end justify-between"
       >
-        <span className="font-medium">Personal Public Data</span>
-        <ChevronDown
-          className={`h-5 w-5 transition-transform duration-300 ${
-            open ? "rotate-180" : ""
-          }`}
-        />
+        <span className="text-sm md:text-md font-medium text-[#1F2534]">
+          Personal Public Data
+        </span>
+        <div className="border border-gray-200 rounded-lg flex justify-center items-center bg-gray-50 w-10 min-w-10 h-10 transition-transform duration-300">
+          <ChevronDown
+            className={`transition-transform duration-200 ${
+              open ? "rotate-180" : "rotate-0"
+            }`}
+            size={20}
+          />
+        </div>
       </button>
       <AnimatePresence initial={false}>
         {open && (
@@ -38,28 +43,38 @@ function PersonalCollaps({ user }: UserType) {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden mt-2"
           >
-            <div className="rounded-md overflow-hidden bg-gray-50">
-              <table className="table-auto border-collapse w-full oboardTable">
+            <div className="rounded-lg overflow-x-auto custom-scroll bg-gray-50">
+              <table className="table-auto border-collapse w-full oboardTable text-[#1F2534] min-w-150">
                 <tbody>
                   <tr className="border border-gray-300">
-                    <td className="p-3 font-medium">Selected Domain</td>
-                    <td className="p-3">{user?.domain}</td>
+                    <td className="p-3 uppercase text-sm font-medium">
+                      Selected Domain
+                    </td>
+                    <td className="p-3 text-sm">{user?.domain}</td>
                   </tr>
                   <tr className="border border-gray-300">
-                    <td className="p-3 font-medium">First Name</td>
-                    <td className="p-3">{user?.firstName}</td>
+                    <td className="p-3 font-medium uppercase text-sm">
+                      First Name
+                    </td>
+                    <td className="p-3 text-sm">{user?.firstName}</td>
                   </tr>
                   <tr className="border border-gray-300">
-                    <td className="p-3 font-medium">Last Name</td>
-                    <td className="p-3">{user?.lastName}</td>
+                    <td className="p-3 font-medium uppercase text-sm">
+                      Last Name
+                    </td>
+                    <td className="p-3 text-sm">{user?.lastName}</td>
                   </tr>
                   <tr className="border border-gray-300">
-                    <td className="p-3 font-medium">Lander Name</td>
-                    <td className="p-3">{user?.landerName}</td>
+                    <td className="p-3 font-medium uppercase text-sm">
+                      Lander Name
+                    </td>
+                    <td className="p-3 text-sm">{user?.landerName}</td>
                   </tr>
                   <tr className="border border-gray-300">
-                    <td className="p-3 font-medium">Publlic URL</td>
-                    <td className="p-3">{`https://${user?.domain}/${user?.landerName}`}</td>
+                    <td className="p-3 font-medium uppercase text-sm">
+                      Publlic URL
+                    </td>
+                    <td className="p-3 text-sm">{`https://${user?.domain}/${user?.landerName}`}</td>
                   </tr>
                 </tbody>
               </table>

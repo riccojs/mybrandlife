@@ -81,9 +81,9 @@ function UpdateProfile({ setUser, user, logoRef }: DataTypes) {
           onChange={handleFileChange}
         />
 
-        <CiImageOn color="#0084F9" size={90} />
+        <CiImageOn color="#0084F9" size={50} />
 
-        <h3 className="text-xl font-medium text-black">
+        <h3 className="text-base md:text-xl font-medium text-black">
           Drag & Drop your image
         </h3>
 

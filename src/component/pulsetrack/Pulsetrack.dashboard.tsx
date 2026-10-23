@@ -10,7 +10,7 @@ function PulsetrackDashboard() {
   const { data, isLoading, isFetching } = useGetDefaultPulsetrackQuery(userId);
 
   return (
-    <div className="p-5 bg-[#F7F9FC]">
+    <div className="p-3 md:p-5">
       <DashboardTsbs
         data={data}
         isFetching={isFetching}

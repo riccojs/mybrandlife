@@ -1,4 +1,4 @@
-import { Eye, HelpCircle, Pencil } from "lucide-react";
+import { ArrowLeft, Eye, HelpCircle, Pencil } from "lucide-react";
 import { Link, useParams } from "react-router";
 import { useState } from "react";
 import AssignUser from "./Assign.user";
@@ -94,27 +94,27 @@ export default function OrderSummery() {
   if (!isFetching && !isLoading && pulsetrack) {
     content = (
       <div className="min-h-screen text-[#0F172A]">
-        <div className="w-full mx-auto p-5">
-          <p className="text-xs sm:text-sm text-gray-500 mb-4">
+        <div className="w-full mx-auto p-3 md:p-5">
+          <p className="text-xs sm:text-sm text-gray-500 mb-1 md:mb-4">
             MyBrandLife &gt; <Link to="/pulsetrack/orders">PulseTrack</Link>{" "}
             &gt; <span className="text-gray-700">Order Details</span>
           </p>
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4 md:mb-8">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold">Order Details</h2>
+              <h2 className="text-lg sm:text-3xl font-bold">Order Details</h2>
               <p className="text-gray-500 mt-2 text-xs sm:text-sm">
                 Order ID: #{sequence} • Placed on {formattedDate(create_at)}
               </p>
             </div>
             <Link
               to="/pulsetrack/orders"
-              className="w-full sm:w-auto bg-[#84CC16] hover:bg-[#65A30D] transition-colors text-white px-5 py-3 rounded-xl flex items-center justify-center gap-2 text-sm font-medium shadow-sm"
+              className="bg-[#88C22F] text-white md:w-fit w-full justify-center flex gap-2 items-center px-6 py-2 md:py-3 rounded-lg text-normal text-md"
             >
-              <IoPlaySkipBackOutline />
-              Back to order
+              <ArrowLeft size={20} />
+              Back
             </Link>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 md:gap-6">
             <div className="lg:col-span-8 space-y-6">
               <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
                 <div className="px-5 sm:px-6 py-4 sm:py-5 border-b border-gray-200 font-semibold text-base sm:text-lg">
@@ -188,16 +188,17 @@ export default function OrderSummery() {
                               ${subTotal}
                             </td>
                             <td className="px-6 py-5 font-semibold whitespace-nowrap">
-                              <div className="flex gap-5 items-center">
-                                <Eye
+                              <div className="flex gap-2 items-center">
+                                <button
                                   onClick={() => {
                                     setWristband(item);
                                     setShowOrder(true);
                                   }}
-                                  size={20}
-                                  className="cursor-pointer hover:text-gray-700"
-                                />
-                                <Pencil
+                                  className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
+                                >
+                                  <Eye size={20} />
+                                </button>
+                                <button
                                   onClick={() => {
                                     setShow(true);
                                     setSelectData({
@@ -209,9 +210,10 @@ export default function OrderSummery() {
                                       assignedNickname: assignedNickname,
                                     });
                                   }}
-                                  size={18}
-                                  className="cursor-pointer hover:text-gray-700"
-                                />
+                                  className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
+                                >
+                                  <Pencil size={18} />
+                                </button>
                               </div>
                             </td>
                           </tr>
@@ -312,7 +314,7 @@ export default function OrderSummery() {
                     <HelpCircle size={18} className="text-[#22C55E]" />
                   </div>
                   <div>
-                    <p className="font-semibold mb-2">
+                    <p className="font-semibold mb-2 text-sm md:text-base">
                       Need help with your order?
                     </p>
                     <p className="text-sm text-gray-600 mb-4">

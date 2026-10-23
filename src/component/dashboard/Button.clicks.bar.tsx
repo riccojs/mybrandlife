@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import { useSearchParams } from "react-router";
 import { colors } from "../../utils/link.colors";
-import PlausibleChartLoader from "../loader/Plausible.chart.loader";
 import { useGetPlusibleDataQuery } from "../../redux/features/partner/partnerApi";
 import SelectComponent from "../ui/Select.component";
+import ButtonClicksLoader from "../loader/Button.click.loader";
 
 interface Props {
   lander: string;
@@ -33,7 +33,7 @@ function ButtonClicksBar({ lander }: Props) {
   // decide what to render
   let content;
   if (isLoading || isFetching) {
-    content = <PlausibleChartLoader />;
+    content = <ButtonClicksLoader />;
   }
   if (!isLoading && !isFetching) {
     content = buttonClicks?.map(
@@ -64,13 +64,13 @@ function ButtonClicksBar({ lander }: Props) {
   }
 
   return (
-    <section className="mt-5">
-      <div className="bg-white p-10 rounded-xl border border-gray-200">
-        <div className="flex justify-between items-center w-full mb-5 border-b border-gray-200 pb-5">
-          <p className="text-gray-500 mb-4">
+    <section className="mt-3 md:mt-5">
+      <div className="bg-white p-5 md:p-10 rounded-xl border border-gray-200">
+        <div className="flex flex-col md:flex-row justify-between items-center w-full mb-5 border-b border-gray-200 pb-5">
+          <p className="text-gray-500 mb-4 text-sm md:text-base">
             Last {period === "" ? "7d" : period} Button Clicks Overview
           </p>
-          <div className="w-40 min-w-40">
+          <div className="w-full md:w-40 md:min-w-40">
             <SelectComponent
               value={period}
               label="Period"
@@ -90,7 +90,7 @@ function ButtonClicksBar({ lander }: Props) {
             />
           </div>
         </div>
-        <h2 className="text-black text-3xl font-medium">
+        <h2 className="text-black text-lg md:text-3xl font-medium">
           Total Clicks: {totalClicks}
         </h2>
         <div className="mt-10 flex flex-col gap-5">{content}</div>
