@@ -14,13 +14,19 @@ const {
 
 // get all groups
 export async function getAllSpining(req: Request, res: Response) {
-  const { searchBy = "", landerId = "" } = req.query;
+  const { searchBy = "", statusBy = "", landerId = "" } = req.query;
   const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
   const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 10;
   const skip = (page - 1) * limit;
   let filter: any = {};
   if (searchBy) {
-    filter.groupType = searchBy;
+    filter.title = {
+      contains: searchBy,
+      mode: "insensitive",
+    };
+  }
+  if (statusBy) {
+    filter.groupType = statusBy;
   }
   if (landerId) {
     filter.landerId = landerId;

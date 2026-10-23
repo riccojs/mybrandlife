@@ -33,10 +33,7 @@ export async function getAllPulsetrack(req: Request, res: Response) {
   const skip = (page - 1) * limit;
   let filter: any = {};
   if (searchBy) {
-    filter.name = {
-      contains: searchBy,
-      mode: "insensitive",
-    };
+    filter.idPrefix = Number(searchBy);
   }
   if (statusBy) {
     filter.active = statusBy;

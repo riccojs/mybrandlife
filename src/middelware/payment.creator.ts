@@ -26,8 +26,8 @@ const myBrandLife: any = {
 
 export async function paymentCreator(user: UserType, code: string) {
   const { planKey, planPrice, planOldPrice, frequency, planId, id } = user;
-  const successUrl = `${baseURL}/auth/verify`;
-  const failedUrl = `${baseURL}/auth/register`;
+  const successUrl = "https://mybrandlife.me/auth/verify";
+  const failedUrl = "https://mybrandlife.me/auth/register";
   try {
     const existUser = await Prisma.user.findUnique({
       where: { id },

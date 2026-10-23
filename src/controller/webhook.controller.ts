@@ -19,6 +19,8 @@ const membershipWebhookSecret = process.env.MEMBERSHIP_WEBHOOK_SECRET ?? "";
 const renewalWebhookSecret = process.env.RENEW_WEBHOOK_SECRET ?? "";
 const echoWebhookSecret = process.env.ECHO_WEBHOOK_SECRET ?? "";
 const wristbandWebhookSecret = process.env.WRISTBAND_WEBHOOK_SECRET ?? "";
+const extraWristbandWebhookSecret =
+  process.env.EXTRA_WRISTBAND_WEBHOOK_SECRET ?? "";
 const baseURL = process.env.FRONTEND_CORS_URL;
 
 // membership webhook
@@ -323,7 +325,7 @@ export async function extraWristbandWebhook(req: Request, res: Response) {
     event = stripe.webhooks.constructEvent(
       req.body,
       sig,
-      wristbandWebhookSecret,
+      extraWristbandWebhookSecret,
     );
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;

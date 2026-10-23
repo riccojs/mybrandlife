@@ -472,7 +472,7 @@ export async function connectStripeAccount(req: Request, res: Response) {
     const accountLink = await stripe.accountLinks.create({
       account: accountId ?? "",
       refresh_url: `${process.env.FRONTEND_CORS_URL}`,
-      return_url: `${process.env.FRONTEND_CORS_URL}/stripe/connect/success`,
+      return_url: `${process.env.FRONTEND_CORS_URL}/echo/stripe/connect/success`,
       type: "account_onboarding",
     });
     res.status(200).json({
