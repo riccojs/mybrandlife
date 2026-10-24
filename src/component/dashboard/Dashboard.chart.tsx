@@ -120,11 +120,11 @@ const DashboardChart = ({ data }: DataTypes) => {
   };
 
   return (
-    <div className="w-full mx-auto p-6 bg-white border border-gray-200 rounded-lg">
+    <div className="w-full rounded-2xl overflow-hidden mx-auto p-6 border border-slate-200 bg-white shadow-[0_2px_5px_rgba(15,23,42,0.04)] transition-shadow hover:shadow-md sm:p-6">
       <div className="flex justify-between items-center mb-4">
         <p className="text-gray-500">Last 30 Days Overview</p>
       </div>
-      <div className="h-125">
+      <div className="h-80 md:h-125">
         <Bar data={chartData} options={chartOptions} />
       </div>
     </div>

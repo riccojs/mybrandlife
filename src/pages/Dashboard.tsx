@@ -1,9 +1,9 @@
 import DashboardChart from "../component/dashboard/Dashboard.chart";
 import DashboardHeader from "../component/dashboard/Dashboard.header";
-import DashboardMembers from "../component/dashboard/Dashboard.members";
+import DashboardOnboarding from "../component/dashboard/Dashboard.onboarding";
 import DashboardPulsechart from "../component/dashboard/Dashboard.pulsechart";
 import DashboardTabs from "../component/dashboard/Dashboard.tabs";
-import DashboardTemplates from "../component/dashboard/Dashboard.templates";
+import DashboardUsers from "../component/dashboard/Dashboard.users";
 import DashHeaderLoader from "../component/loader/Dash.header.loader";
 import DashTabsLoader from "../component/loader/Dash.tabs.loader";
 import { useGetAllUserByAdminQuery } from "../redux/features/auth/authApi";
@@ -19,7 +19,10 @@ interface DataTypes {
 interface UserDataType {
   id: string | null;
   email: string | null;
-  create_at: string | null;
+  create_at: string;
+  firstName: string;
+  lastName: string;
+  status: string;
   landerName: string | null;
   planPrice: number | null;
   profile: string | null;
@@ -30,16 +33,21 @@ interface UserDataType {
 interface TemplateType {
   id: string | null;
   logo: string | null;
-  create_at: string | null;
+  create_at: string;
   tagLine: string | null;
   offerings: string | null;
+  status: string;
+  logoImage: string;
+  bio: string;
+  layout: string;
+  user: UserDataType;
 }
 
 function Dashboard() {
   const { data, isLoading } = useGetAllUserByAdminQuery() as DataTypes;
 
   return (
-    <div className="p-5 h-full">
+    <div className="p-3 md:p-5 h-full">
       <div className="w-ful flex flex-col gap-5">
         {isLoading ? <DashHeaderLoader /> : <DashboardHeader />}
         {isLoading ? (
@@ -52,8 +60,8 @@ function Dashboard() {
         <DashboardChart data={data} />
       </div>
       <div className="flex lg:flex-row flex-col gap-5">
-        <DashboardTemplates data={data} isLoading={isLoading} />
-        <DashboardMembers data={data} isLoading={isLoading} />
+        <DashboardOnboarding data={data} isLoading={isLoading} />
+        <DashboardUsers data={data} isLoading={isLoading} />
       </div>
       <DashboardPulsechart />
     </div>
