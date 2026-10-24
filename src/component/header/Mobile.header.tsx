@@ -243,6 +243,7 @@ function MobileHeader({ navbar, setNavbar }: Types) {
                                 <li className="">
                                   <NavLink
                                     to={child?.path}
+                                    onClick={() => setNavbar(false)}
                                     className={({ isActive }) =>
                                       `flex gap-2 rounded-lg items-center py-2 px-4 ${
                                         isActive
