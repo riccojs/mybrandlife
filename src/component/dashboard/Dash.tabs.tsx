@@ -83,8 +83,8 @@ export default function DashTabs() {
           </div>
         </div>
 
-        <p className="wrap-break-word text-md font-bold leading-snug tracking-tight text-slate-900 sm:text-xl">
-          Your have chose {pkgType} Package
+        <p className="wrap-break-word capitalize text-md font-bold leading-snug tracking-tight text-slate-900 sm:text-xl">
+          Chosen Package: {pkgType}
         </p>
         <p className="mt-1 flex items-center gap-1.5 text-xs font-medium text-amber-700">
           <span className="h-2 w-2 shrink-0 rounded-full bg-amber-500" />
@@ -109,8 +109,8 @@ export default function DashTabs() {
           </div>
         </div>
 
-        <p className="break-all text-md font-bold leading-snug tracking-tight text-slate-900 sm:text-xl">
-          Your have chose {domain} domain
+        <p className="break-all capitalize text-md font-bold leading-snug tracking-tight text-slate-900 sm:text-xl">
+          Chosen Domain: {domain}
         </p>
         <p className="mt-1 flex flex-wrap items-center gap-1.5 text-xs font-medium text-blue-600">
           <span className="h-2 w-2 shrink-0 rounded-full bg-emerald-500" />
