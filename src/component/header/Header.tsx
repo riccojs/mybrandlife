@@ -13,6 +13,7 @@ import type { NotificationType } from "../../utils/notification.type";
 import io from "socket.io-client";
 import { BiCollapse } from "react-icons/bi";
 import { RiCollapseDiagonalLine, RiMenu3Line } from "react-icons/ri";
+import { ChevronDown, CircleHelp } from "lucide-react";
 
 const socket = io(import.meta.env.VITE_APP_API_URL);
 
@@ -31,6 +32,8 @@ interface UserAuth {
     domain: string | null;
     userTemplete: [];
     email: string | null;
+    firstName: string | null;
+    lastName: string | null;
   } | null;
 }
 
@@ -44,8 +47,16 @@ function Header({ setSidebard, sidebar, setNavbar }: Types) {
   const notifyRef = useRef<HTMLDivElement | null>(null);
 
   const { user } = useAuth() as UserAuth;
-  const { email, secureKey, profile, landerName, username, domain } =
-    user || {};
+  const {
+    email,
+    secureKey,
+    profile,
+    landerName,
+    username,
+    domain,
+    firstName,
+    lastName,
+  } = user || {};
   const existTemplate = user && user?.userTemplete?.length > 0 ? true : false;
 
   useEffect(() => {
@@ -151,23 +162,46 @@ function Header({ setSidebard, sidebar, setNavbar }: Types) {
           </div>
         )}
 
+        <a
+          href="https://mybrandlife.me/contact"
+          target="_blank"
+          className="hidden h-9 w-9 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 sm:inline-flex"
+        >
+          <CircleHelp className="h-5 w-5" />
+        </a>
+
         <div className="relative" ref={profileRef}>
-          <div
+          <button
+            type="button"
             onClick={() => setIsProfile((prev) => !prev)}
-            className="flex gap-2 items-center cursor-pointer"
+            className="flex items-center gap-2.5 rounded-xl p-1 transition-colors hover:bg-slate-100 cursor-pointer"
           >
-            {profile ? (
-              <img
-                src={profile}
-                alt=""
-                className="w-10 min-w-10 rounded-full h-10 object-cover"
-              />
-            ) : (
-              <p className="w-10 h-10 rounded-full bg-[#FFD2A3] text-xl uppercase text-normal flex justify-center items-center">
-                {!secureKey ? landerName?.slice(0, 1) : username?.slice(0, 1)}
-              </p>
-            )}
-          </div>
+            <div className="relative">
+              {profile ? (
+                <img
+                  alt="Tanvir Ahamed"
+                  className="h-8 w-8 rounded-lg object-cover ring-1 ring-slate-200"
+                  src={profile}
+                />
+              ) : (
+                <p className="w-8 h-8 rounded-lg ring-1 ring-slate-300 bg-slate-200 text-xl uppercase text-normal flex justify-center items-center">
+                  {!secureKey ? landerName?.slice(0, 1) : username?.slice(0, 1)}
+                </p>
+              )}
+              <span className="absolute bottom-0 right-0 h-2 w-2 rounded-full bg-emerald-500 ring-2 ring-white" />
+            </div>
+            <div className="hidden flex-col text-left leading-none xl:flex">
+              <span className="text-xs font-semibold text-slate-900">
+                {`${firstName} ${lastName}`}
+              </span>
+              <span className="mt-0.5 text-[10px] text-slate-500">{email}</span>
+            </div>
+            <ChevronDown
+              className={`hidden h-3.5 w-3.5 text-slate-400 xl:block transition-transform duration-200 ${
+                isProfile ? "rotate-180" : "rotate-0"
+              }`}
+            />
+          </button>
 
           <HeaderProfile
             isProfile={isProfile}

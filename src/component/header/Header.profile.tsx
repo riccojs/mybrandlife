@@ -24,12 +24,14 @@ function HeaderProfile({
   };
 
   const { user } = useAuth();
-  const { landerName, email, profile, username } =
+  const { landerName, email, profile, firstName, lastName } =
     (user as {
       landerName: string;
       email: string;
       profile: string;
       username: string;
+      firstName: string;
+      lastName: string;
     }) || {};
 
   return (
@@ -40,27 +42,26 @@ function HeaderProfile({
           : "opacity-0 scale-90 -translate-y-4 pointer-events-none"
       }`}
     >
-      <div className="flex gap-3 items-center border-b border-gray-300 p-3 mb-3">
-        {profile ? (
-          <img
-            src={profile}
-            alt=""
-            className="w-10 min-w-10 rounded-full h-10 object-cover"
-          />
-        ) : (
-          <p className="w-10 h-10 min-w-10 rounded-full bg-[#FFD2A3] text-xl uppercase text-normal flex justify-center items-center">
-            {user?.role === "USER"
-              ? landerName?.slice(0, 1)
-              : username?.slice(0, 1)}
-          </p>
-        )}
+      <div className="relative flex gap-2 items-center border-b border-gray-300 p-3 mb-3">
+        <div className="relative">
+          {profile ? (
+            <img
+              src={profile}
+              alt=""
+              className="w-8 min-w-8 rounded-full h-8 ring-1 ring-slate-300 object-cover"
+            />
+          ) : (
+            <p className="w-8 h-8 min-w-8 rounded-lg bg-slate-100 ring-1 ring-slate-300 text-xl uppercase flex justify-center items-center">
+              {landerName?.slice(0, 1)}
+            </p>
+          )}
+          <span className="absolute bottom-0 right-0 h-2 w-2 rounded-full bg-emerald-500 ring-2 ring-white" />
+        </div>
         <div>
-          <p className="text-md capitalize font-medium text-normal leading-4">
-            {landerName}
+          <p className="text-sm capitalize font-medium text-normal leading-4">
+            {`${firstName} ${lastName}`}
           </p>
-          <p className="text-[#525252] text-sm font-normal">
-            {email?.slice(0, 16)}..
-          </p>
+          <p className="text-[#525252] text-[10px] font-normal">{email}</p>
         </div>
       </div>
       <ul className="flex flex-col gap-1 items-start justify-center">

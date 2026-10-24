@@ -70,10 +70,6 @@ function SIngleOnboard() {
               <h2 className="text-normal text-lg md:text-2xl font-medium">
                 Onboard Details
               </h2>
-              <p className="text-[#404755] text-md">
-                Manage and review member onboarding profile parameters and
-                integrations
-              </p>
               <ul className="flex gap-1 md:gap-2 md:flex-nowrap flex-wrap items-center text-[#626D83]">
                 <li>
                   <Link to="/" className="text-normal text-sm hover:underline">
@@ -100,10 +96,13 @@ function SIngleOnboard() {
               </ul>
             </div>
             <div className="flex gap-2 items-center py-2 w-full md:w-fit">
-              <button className="bg-[#88C22F] text-white md:w-fit w-full justify-center flex gap-2 items-center px-6 py-2 md:py-3 rounded-lg text-normal text-md">
+              <Link
+                to="/onboard"
+                className="bg-[#88C22F] text-white md:w-fit w-full justify-center flex gap-2 items-center px-6 py-2 md:py-3 rounded-lg text-normal text-md"
+              >
                 <ArrowLeft size={20} />
-                <Link to="/onboard">Back</Link>
-              </button>
+                <span>Back</span>
+              </Link>
             </div>
           </div>
           <div className="flex gap-5 2xl:flex-row flex-col">

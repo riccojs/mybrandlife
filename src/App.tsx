@@ -11,7 +11,6 @@ import Brandtrack from "./pages/Brandtrack";
 import Pulsetrack from "./pages/Pulsetrack";
 import ProjectList from "./component/pulsetrack/Project.list";
 import WristbandStore from "./component/pulsetrack/Wristband.store";
-import WristbandList from "./component/pulsetrack/Wristband.list";
 import OrderList from "./component/pulsetrack/Order.list";
 import OrderSummery from "./component/pulsetrack/Order.summery";
 import ExportData from "./component/pulsetrack/Export.data";
@@ -105,10 +104,6 @@ function App() {
                 <Route index element={<PulsetrackDashboard />} />
                 <Route path="projects" element={<ProjectList />} />
                 <Route path="projects/:id" element={<WristbandStore />} />
-                <Route
-                  path="projects/wristband/:id"
-                  element={<WristbandList />}
-                />
                 <Route path="orders" element={<OrderList />} />
                 <Route path="orders/success/:id" element={<OrderSummery />} />
                 <Route path="export" element={<ExportData />} />

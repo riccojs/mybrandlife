@@ -66,7 +66,7 @@ const RequestList = () => {
   if (!isFetching && !isLoading && requests?.length === 0) {
     content = (
       <tr>
-        <td colSpan={6}>
+        <td colSpan={6} className="p-0!">
           <p className="bg-[#FEFBED] text-center text-[#643315] text-md font-normal py-5 rounded-md">
             Data not found!
           </p>
