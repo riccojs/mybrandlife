@@ -130,7 +130,7 @@ function Brandbook() {
         const { id, name, email, date, time, status } = item || {};
 
         return (
-          <tr key={id}>
+          <tr key={id} className="hover:bg-gray-50">
             <td>
               <div className="flex gap-2 items-center">
                 <Contact color="#12544F" size={20} />

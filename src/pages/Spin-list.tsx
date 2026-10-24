@@ -115,7 +115,7 @@ const SpinList = () => {
         });
       };
       return (
-        <tr key={id}>
+        <tr key={id} className="hover:bg-gray-50">
           <td className="text-gray-600 text-sm">{formattedDate(create_at)}</td>
           <td className="text-gray-600 text-sm">{title}</td>
           <td className="text-gray-600 text-sm">{url?.slice(0, 50)}..</td>

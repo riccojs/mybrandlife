@@ -150,7 +150,10 @@ export default function OrderSummery() {
                           assignedNickname,
                         } = item || {};
                         return (
-                          <tr key={id} className="border-t border-gray-100">
+                          <tr
+                            key={id}
+                            className="border-t border-gray-100 hover:bg-gray-50"
+                          >
                             <td className="px-6 py-5 flex items-center gap-4">
                               <div className="w-12 h-full min-w-12 rounded-md">
                                 <img

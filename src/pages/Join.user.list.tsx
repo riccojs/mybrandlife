@@ -70,7 +70,7 @@ function JoinUserList() {
           item || {};
 
         return (
-          <tr key={id}>
+          <tr key={id} className="hover:bg-gray-50">
             <td>{code}</td>
             <td>{email}</td>
             <td>{landerName}</td>

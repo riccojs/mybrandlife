@@ -70,7 +70,7 @@ const OrderList = () => {
         });
       };
       return (
-        <tr key={id}>
+        <tr key={id} className="hover:bg-gray-50">
           <td className="px-6 py-5">#{sequence}</td>
           <td className="px-6 py-5 text-gray-600 text-sm">
             {formattedDate(create_at)}

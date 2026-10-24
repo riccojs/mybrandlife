@@ -115,7 +115,7 @@ const ProjectList = () => {
         });
       };
       return (
-        <tr key={id}>
+        <tr key={id} className="hover:bg-gray-50">
           <td className="px-6 py-5">
             <div className="flex items-center gap-4">
               <div

@@ -129,7 +129,7 @@ function Echos() {
         const { id, name, email, tip, status, shoutOut } = item || {};
 
         return (
-          <tr key={id}>
+          <tr key={id} className="hover:bg-gray-50">
             <td>
               <div className="flex gap-2 items-center">
                 <Contact color="#12544F" size={20} />

@@ -102,7 +102,7 @@ function OrderedWristband() {
       };
 
       return (
-        <tr key={id}>
+        <tr key={id} className="hover:bg-gray-50">
           <td>
             <div className="flex gap-2 items-center">
               <img
