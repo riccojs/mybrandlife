@@ -1,6 +1,6 @@
 import { Link, NavLink, useLocation } from "react-router";
-import Logo from "../../assets/logo.png";
-import { useEffect, useState } from "react";
+import Logo from "../../assets/MBL_Logo_CROP.png";
+import { useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { motion, AnimatePresence } from "framer-motion";
 import menuData from "../../utils/menu.data";
@@ -11,28 +11,20 @@ interface Types {
 }
 
 function MobileHeader({ navbar, setNavbar }: Types) {
-  const handleClose = () => {
-    setNavbar(false);
-  };
-
-  const [openMenu, setOpenMenu] = useState("");
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [closedMenu, setClosedMenu] = useState<string | null>(null);
   const location = useLocation();
 
-  useEffect(() => {
-    if (navbar) {
-      window.scrollTo(0, 0);
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
+  const handleToggle = (menuName: string) => {
+    if (currentOpenMenu === menuName) {
+      setOpenMenu(null);
+      if (activeMenu?.name === menuName) {
+        setClosedMenu(menuName);
+      }
+      return;
     }
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [navbar]);
-
-  const handleToggle = (menu: string) => {
-    const value = openMenu === menu ? "" : menu;
-    setOpenMenu(value);
+    setOpenMenu(menuName);
+    setClosedMenu(null);
   };
 
   const activeMenu = menuData.find((menu) =>
@@ -43,7 +35,16 @@ function MobileHeader({ navbar, setNavbar }: Types) {
     ),
   );
 
-  const currentOpenMenu = activeMenu?.name || openMenu;
+  const currentOpenMenu =
+    openMenu !== null
+      ? openMenu
+      : activeMenu?.name !== closedMenu
+        ? activeMenu?.name
+        : null;
+
+  const handleClose = () => {
+    setNavbar(false);
+  };
 
   return (
     <header className="w-full">
@@ -62,10 +63,16 @@ function MobileHeader({ navbar, setNavbar }: Types) {
         }
       >
         <div className="relative">
-          <div className="flex justify-center items-center py-2">
-            <Link to={""}>
-              <img onClick={handleClose} src={Logo} alt="" className="w-24" />
+          <div className="flex justify-between items-center px-5 py-2">
+            <Link to={"/"}>
+              <img src={Logo} alt="" className="w-16 md:w-24" />
             </Link>
+            <button
+              onClick={handleClose}
+              className="border bg-gray-200 border-gray-300 shadow-sm rounded-full w-10 h-10 flex justify-center items-center cursor-pointer"
+            >
+              <i className="fa-solid fa-xmark text-xl"></i>
+            </button>
           </div>
           <div className="mt-5">
             <h2 className="text-thin text-sm pl-8 uppercase tracking-widest">
@@ -82,8 +89,10 @@ function MobileHeader({ navbar, setNavbar }: Types) {
                         className={`flex items-center cursor-pointer justify-between w-full py-2 px-4 rounded-lg ${isOpen ? "bg-[#96c94b]" : ""}`}
                       >
                         <div className="flex items-center gap-2">
-                          <img src={menu?.icon} alt="" className="w-6" />
-                          <p className="font-medium">{menu.name}</p>
+                          <img src={menu?.icon} alt="" className="w-5 md:w-6" />
+                          <p className="font-medium text-sm md:text-base">
+                            {menu.name}
+                          </p>
                         </div>
                         <span>
                           {isOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
@@ -102,6 +111,7 @@ function MobileHeader({ navbar, setNavbar }: Types) {
                               <li key={index}>
                                 <NavLink
                                   to={child?.path}
+                                  onClick={() => setNavbar(false)}
                                   className={({ isActive }) =>
                                     `flex gap-2 rounded-lg items-center hover:text-[#000000] hover:bg-[#96c94b] py-2 px-4 ${
                                       isActive
@@ -113,10 +123,10 @@ function MobileHeader({ navbar, setNavbar }: Types) {
                                   <img
                                     src={child?.icon}
                                     alt=""
-                                    className="w-6"
+                                    className="w-5 md:w-6"
                                   />
-                                  <p className="font-medium text-base">
-                                    {child?.name}
+                                  <p className="font-medium text-sm md:text-base">
+                                    {child.name}
                                   </p>
                                 </NavLink>
                               </li>
@@ -130,12 +140,6 @@ function MobileHeader({ navbar, setNavbar }: Types) {
               </ul>
             </nav>
           </div>
-          <button
-            onClick={handleClose}
-            className="border border-gray-300 shadow-sm rounded-full bg-white w-8 h-8 flex justify-center items-center absolute top-1 -right-3.75 hover:bg-[#2B7F75] hover:text-white cursor-pointer"
-          >
-            <i className="fa-solid fa-xmark"></i>
-          </button>
         </div>
       </div>
     </header>

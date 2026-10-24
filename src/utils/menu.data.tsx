@@ -21,7 +21,7 @@ const menuData = [
   {
     name: "Dashboard",
     icon: DashboardIcon,
-    children: [{ name: "Dashboard", path: "/", icon: DashboardIcon }],
+    children: [{ name: "Home", path: "/", icon: DashboardIcon }],
   },
   {
     name: "Management",
