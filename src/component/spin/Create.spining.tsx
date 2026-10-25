@@ -6,6 +6,7 @@ import { useAuth } from "../../hook/useAuth";
 import useBodyScroll from "../../hook/userBodyscroll";
 import { useCreateSpiningMutation } from "../../redux/features/spin/spinApi";
 import SelectComponent from "../ui/Select.component";
+import { LoaderCircle } from "lucide-react";
 
 interface Type {
   isOpen: boolean;
@@ -168,16 +169,17 @@ function CreateSpining({ isOpen, onClose }: Type) {
               <button
                 onClick={onClose}
                 disabled={isLoading}
-                className="cursor-pointer bg-gray-200 w-fit text-normal px-6 py-2 rounded-md flex justify-center items-center gap-2"
+                className="bg-slate-200 text-[#000000] min-w-32 w-32 h-12 flex justify-center items-center gap-1 border border-gray-200 rounded-lg cursor-pointer"
               >
-                Cancel
+                Close
               </button>
               <button
                 disabled={isLoading}
-                className={`${isLoading ? "bg-[#a3c46f] cursor-not-allowed" : "bg-[#cbf38b] cursor-pointer"} min-w-28 text-normal h-10 rounded-md flex justify-center items-center gap-2`}
+                type="submit"
+                className={`${isLoading ? "bg-[#77a630] cursor-not-allowed" : "bg-[#96c94b] cursor-pointer"}  text-[#000000] flex justify-center items-center gap-1 min-w-32 w-32 h-12 rounded-lg`}
               >
                 {isLoading ? (
-                  <i className="fa-solid fa-circle-notch animate-spin"></i>
+                  <LoaderCircle className="animate-spin" />
                 ) : (
                   "Create"
                 )}

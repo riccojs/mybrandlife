@@ -84,10 +84,13 @@ function CreateSlot() {
             </li>
           </ul>
         </div>
-        <button className="bg-[#88C22F] text-white md:w-fit w-full justify-center flex gap-2 items-center px-6 py-2 md:py-3 rounded-lg text-normal text-md">
+        <Link
+          to="/brandbook"
+          className="bg-[#88C22F] text-white md:w-fit w-full justify-center flex gap-2 items-center px-6 py-2 md:py-3 rounded-lg text-normal text-md"
+        >
           <ArrowLeft size={20} />
-          <Link to="/brandbook">Back</Link>
-        </button>
+          <span>Back</span>
+        </Link>
       </div>
       <div className="flex lg:flex-row flex-col gap-3 md:gap-5 w-full mt-3 md:mt-0">
         <div className="bg-white w-full lg:w-6/12 p-5 md:p-10 rounded-3xl shadow border border-gray-200">

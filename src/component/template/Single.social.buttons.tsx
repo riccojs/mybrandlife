@@ -156,7 +156,7 @@ function SingleSocialButtons() {
       {selected && (
         <WarningPopup
           open={open}
-          title="Do you want to delete this button?"
+          title="Do you want to delete this social button?"
           description={`Deleting this button will permanently remove all associated data from the database. This action cannot be undone. Click "Delete" to continue or "Close" to cancel.`}
           smButton="Delete"
           clButton="Close"

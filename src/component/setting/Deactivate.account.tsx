@@ -20,10 +20,10 @@ function DeactivateAccount() {
           onClick={() => {
             setIsShow(true);
           }}
-          className="bg-[#BDF188] text-[#000000] flex justify-center items-center gap-1 w-fit border border-[#76c725] px-5 md:px-10 py-2 md:py-4 rounded-lg md:rounded-2xl cursor-pointer"
+          className="bg-[#96c94b] mt-3 cursor-pointer text-[#000000] flex justify-center items-center gap-1 min-w-44 w-44 h-12 rounded-lg"
         >
           <p>Deactivate</p>
-          <ArrowRight />
+          <ArrowRight size={20} />
         </button>
       </div>
       {isShow && <DeactivateWarn isShow={isShow} setShow={setIsShow} />}

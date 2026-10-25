@@ -107,14 +107,15 @@ function EditCustomPlatform({
             <div className="flex gap-3 items-center">
               <button
                 onClick={() => setIsShowButton(false)}
-                className="bg-slate-200 text-[#000000] flex justify-center items-center gap-1 w-fit border border-gray-200 px-10 py-3 rounded-2xl cursor-pointer"
+                disabled={isLoading}
+                className="bg-slate-200 text-[#000000] min-w-32 w-32 h-12 flex justify-center items-center gap-1 border border-gray-200 rounded-lg cursor-pointer"
               >
                 Close
               </button>
               <button
                 disabled={isLoading}
                 type="submit"
-                className={`${isLoading ? "bg-[#97c569] cursor-not-allowed" : "bg-[#BDF188] cursor-pointer"}  text-[#000000] flex justify-center items-center gap-1 border border-[#76c725] min-w-32 w-32 py-3 rounded-2xl`}
+                className={`${isLoading ? "bg-[#77a630] cursor-not-allowed" : "bg-[#96c94b] cursor-pointer"}  text-[#000000] flex justify-center items-center gap-1 min-w-32 w-32 h-12 rounded-lg`}
               >
                 {isLoading ? <LoaderCircle className="animate-spin" /> : "Save"}
               </button>

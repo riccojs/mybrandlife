@@ -54,6 +54,7 @@ export default function WarningPopup({
           <div className="mt-10 flex gap-3 md:gap-4">
             <button
               onClick={onClose}
+              disabled={loading}
               className="flex-1 cursor-pointer rounded-xl border border-slate-200 bg-slate-100 py-2 md:py-3.5 font-medium text-slate-700 transition active:bg-slate-200"
             >
               {clButton}
