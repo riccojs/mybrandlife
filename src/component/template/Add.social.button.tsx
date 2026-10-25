@@ -135,7 +135,7 @@ function AddSocialButton({
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (Object.keys(onboard.socialLinks ?? {}).length === 0) {
-      toast.error("Select a platform first.");
+      toast.error("Add minimum one link");
       return;
     }
     createSocials({ id, onboard })

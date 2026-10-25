@@ -57,6 +57,11 @@ function AddCustomButton({
       toast.error("Maximum 5 custom links allowed!");
       return;
     }
+
+    if (onboard.customPlatform.length === 0) {
+      toast.error("Add minimum one link");
+      return;
+    }
     setOnboard((prev) => ({
       ...prev,
       customPlatform: [...prev.customPlatform, { name: "", url: "" }],

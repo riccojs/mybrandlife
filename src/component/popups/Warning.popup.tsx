@@ -44,7 +44,7 @@ export default function WarningPopup({
               <AlertTriangle className="h-4 w-4 text-yellow-400" />
             </div>
           </div>
-          <h2 className="text-xl md:text-3xl font-medium leading-tight text-slate-900">
+          <h2 className="text-xl md:text-2xl font-medium leading-tight text-slate-900">
             {title}
           </h2>
 
