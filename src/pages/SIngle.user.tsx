@@ -2,24 +2,26 @@ import { RiProfileLine } from "react-icons/ri";
 import { Link, NavLink, Outlet, useParams } from "react-router";
 import { LuLockKeyhole } from "react-icons/lu";
 import { MdAccountBalance } from "react-icons/md";
+import { ArrowLeft } from "lucide-react";
 
 function SIngleUser() {
   const params = useParams();
   const id = params.id;
   return (
-    <section className="p-5">
+    <section className="p-3 md:p-5">
       <div className="w-full flex justify-between items-center">
-        <h2 className="text-light text-xl font-medium uppercase">
+        <h2 className="text-light text-md md:text-xl font-medium uppercase">
           User Setting
         </h2>
         <Link
-          to="/admin/user"
-          className="bg-[#BDF188] text-black px-6 py-2 rounded-md"
+          to="/user"
+          className="bg-[#96c94b] text-black w-fit justify-center flex gap-2 items-center px-6 py-2 md:py-3 rounded-lg text-normal text-md"
         >
-          Back
+          <ArrowLeft size={20} />
+          <span>Back</span>
         </Link>
       </div>
-      <div className="bg-white mt-5 flex md:flex-row flex-col gap-20 border border-gray-200 p-5 rounded-lg">
+      <div className="bg-white mt-5 flex md:flex-row flex-col gap-5 md:gap-20 border border-gray-200 p-3 md:p-5 rounded-2xl shadow">
         <nav className="min-w-60 w-full md:w-2/12">
           <ul className="flex flex-col gap-1">
             <li>

@@ -29,18 +29,18 @@ function UserSecurity() {
   return (
     <section>
       <UserpassUpdate />
-      <div className="mt-10 border-t border-gray-300 py-10">
+      <div className="mt-10 border-t border-gray-300 py-5 md:py-10">
         <div className="flex flex-col gap-5 justify-start">
-          <p className="text-gray-700 text-medium text-xl">
+          <p className="text-gray-700 text-medium text-md md:text-xl">
             Deactivate User Account?
           </p>
-          <p className="bg-amber-50 text-black p-3 rounded-lg text-md font-normal w-full md:w-8/12 border-l-4 border-amber-300">
+          <p className="bg-[#FFFCF0] mt-2 w-full text-[#7C3E16] border-2 border-[#FCF2C6] p-5 text-sm font-normal rounded-lg">
             Delect user account will also delete user membership and onboarding
             access. Please make sure you want to continue before proceeding.
           </p>
           <button
             onClick={() => setOpen(true)}
-            className="text-white bg-red-500 px-6 py-3 rounded-lg text-md font-normal w-fit cursor-pointer flex gap-2 items-center"
+            className="text-white bg-red-600 justify-center min-w-44 h-10 w-44 rounded-lg text-md font-normal cursor-pointer flex gap-2 items-center"
           >
             Delete Account
           </button>

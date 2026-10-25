@@ -1,11 +1,9 @@
 import { type SetStateAction } from "react";
-import { GrDomain } from "react-icons/gr";
-import { HiOutlineMailOpen } from "react-icons/hi";
-import { BsSignpost2 } from "react-icons/bs";
 import { useSearchParams } from "react-router";
 import ViewdomainLoader from "../loader/View.domain.loader";
 import useBodyScroll from "../../hook/userBodyscroll";
 import { useGetOneDomainQuery } from "../../redux/features/domain/domainApi";
+import { X } from "lucide-react";
 
 interface DataTypes {
   isShow: boolean;
@@ -37,35 +35,32 @@ function ViewDomain({ isShow, setShow, id }: DataTypes) {
         {isLoading ? (
           <ViewdomainLoader />
         ) : (
-          <div className="flex flex-col gap-5 rounded-2xl p-8">
-            <h2 className="text-[#3D424B] font-medium text-2xl">
+          <div className="flex flex-col gap-5 rounded-lg p-6 md:p-10">
+            <h2 className="text-[#3D424B] font-medium text-xl md:text-2xl">
               Domain Request
             </h2>
-            <div>
+            <div className="flex flex-col gap-5">
               <div>
-                <h2 className="text-[#3D424B] font-medium text-lg">Domain</h2>
-                <span className="flex gap-2 items-center">
-                  <GrDomain size={20} />
-                  <p className="text-[#3D424B] font-normal text-md">{domain}</p>
-                </span>
+                <h2 className="text-[#3D424B] font-medium text-base">
+                  Domain ID
+                </h2>
+                <p className="text-[#464a51] font-normal text-sm">{id}</p>
               </div>
-              <div className="my-5">
-                <h2 className="text-[#3D424B] font-medium text-lg">Email</h2>
-                <span className="flex gap-2 items-center">
-                  <HiOutlineMailOpen size={20} />
-                  <p className="text-[#3D424B] font-normal text-md">{email}</p>
-                </span>
+              <div>
+                <h2 className="text-[#3D424B] font-medium text-base">Domain</h2>
+                <p className="text-[#464a51] font-normal text-sm">{domain}</p>
               </div>
-              <div className="my-5">
-                <h2 className="text-[#3D424B] font-medium text-lg">
+              <div>
+                <h2 className="text-[#3D424B] font-medium text-base">Email</h2>
+                <p className="text-[#464a51] font-normal text-sm">{email}</p>
+              </div>
+              <div>
+                <h2 className="text-[#3D424B] font-medium text-base">
                   Create At
                 </h2>
-                <span className="flex gap-2 items-center">
-                  <BsSignpost2 size={20} />
-                  <p className="text-[#3D424B] font-normal text-md">
-                    {formattedDate(create_at)}
-                  </p>
-                </span>
+                <p className="text-[#464a51] font-normal text-sm">
+                  {formattedDate(create_at)}
+                </p>
               </div>
             </div>
           </div>
@@ -76,9 +71,9 @@ function ViewDomain({ isShow, setShow, id }: DataTypes) {
             searchParams.delete("view");
             setSearchParams(searchParams);
           }}
-          className="text-gray-400 text-2xl absolute top-2 right-2 cursor-pointer"
+          className="absolute top-2 right-2 border border-[#E7EBF2] text-[#8C98AE] bg-[#f0f3f8] hover:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-full cursor-pointer"
         >
-          <i className="fa-solid fa-circle-xmark"></i>
+          <X size={20} />
         </button>
       </div>
     </div>

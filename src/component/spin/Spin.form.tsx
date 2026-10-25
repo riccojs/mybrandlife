@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { ImSpinner6 } from "react-icons/im";
 import SelectComponent from "../ui/Select.component";
 import { useUpdateSpiningMutation } from "../../redux/features/spin/spinApi";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import toast from "react-hot-toast";
 import type { SpinType } from "../../utils/spin.types";
+import { LoaderCircle } from "lucide-react";
 
 interface TypeForm {
   data: {
@@ -129,16 +129,17 @@ function SpinForm({ data, onClose, id }: TypeForm) {
       <div className="mt-8 flex items-center justify-end gap-3">
         <button
           onClick={onClose}
-          type="button"
-          className="rounded-lg cursor-pointer px-4 py-2 text-sm font-medium text-slate-600 transition bg-slate-200"
+          disabled={isLoading}
+          className="bg-slate-200 text-[#000000] flex justify-center items-center gap-1 w-fit border border-gray-200 px-10 h-12 rounded-lg cursor-pointer"
         >
-          Cancel
+          Close
         </button>
         <button
+          disabled={isLoading}
           type="submit"
-          className="rounded-lg cursor-pointer bg-[#8CC63F] px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#7AB535] focus:outline-none focus:ring-2 focus:ring-[#8CC63F]/40"
+          className={`${isLoading ? "bg-[#77a630] cursor-not-allowed" : "bg-[#96c94b] cursor-pointer"}  text-[#000000] flex justify-center items-center gap-1 min-w-32 w-32 h-12 rounded-lg`}
         >
-          {isLoading ? <ImSpinner6 className="animate-spin" /> : "Save"}
+          {isLoading ? <LoaderCircle className="animate-spin" /> : "Save"}
         </button>
       </div>
     </form>

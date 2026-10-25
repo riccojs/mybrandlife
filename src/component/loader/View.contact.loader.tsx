@@ -4,32 +4,32 @@ export default function ViewContactLoader() {
       <div className="h-7 bg-slate-200 rounded-md w-1/3" />
       <div className="w-full flex flex-col gap-5">
         <div className="space-y-2">
-          <div className="h-7 bg-slate-200 rounded-md w-1/5" />
-          <div className="h-6 bg-slate-200 rounded-md w-1/3" />
+          <div className="h-7 bg-slate-200 rounded-md w-8/12 md:w-6/12" />
+          <div className="h-6 bg-slate-200 rounded-md w-6/12 md:w-3/12" />
         </div>
         <div className="space-y-2">
-          <div className="h-7 bg-slate-200 rounded-md w-1/5" />
-          <div className="h-6 bg-slate-200 rounded-md w-1/4" />
+          <div className="h-7 bg-slate-200 rounded-md w-8/12 md:w-6/12" />
+          <div className="h-6 bg-slate-200 rounded-md w-6/12 md:w-3/12" />
         </div>
         <div className="space-y-2">
-          <div className="h-7 bg-slate-200 rounded-md w-1/6" />
-          <div className="h-6 bg-slate-200 rounded-md w-2/5" />
+          <div className="h-7 bg-slate-200 rounded-md w-8/12 md:w-6/12" />
+          <div className="h-6 bg-slate-200 rounded-md w-6/12 md:w-3/12" />
         </div>
         <div className="space-y-2">
-          <div className="h-7 bg-slate-200 rounded-md w-1/6" />
-          <div className="h-6 bg-slate-200 rounded-md w-1/4" />
+          <div className="h-7 bg-slate-200 rounded-md w-8/12 md:w-6/12" />
+          <div className="h-6 bg-slate-200 rounded-md w-6/12 md:w-3/12" />
         </div>
         <div className="space-y-2">
-          <div className="h-7 bg-slate-200 rounded-md w-1/5" />
-          <div className="h-6 bg-slate-200 rounded-md w-1/2" />
+          <div className="h-7 bg-slate-200 rounded-md w-8/12 md:w-6/12" />
+          <div className="h-6 bg-slate-200 rounded-md w-6/12 md:w-3/12" />
         </div>
         <div className="space-y-2">
-          <div className="h-7 bg-slate-200 rounded-md w-1/5" />
-          <div className="h-6 bg-slate-200 rounded-md w-3/4" />
+          <div className="h-7 bg-slate-200 rounded-md w-8/12 md:w-6/12" />
+          <div className="h-6 bg-slate-200 rounded-md w-6/12 md:w-3/12" />
         </div>
         <div className="space-y-2">
-          <div className="h-7 bg-slate-200 rounded-md w-1/6" />
-          <div className="h-6 bg-slate-200 rounded-md w-1/4" />
+          <div className="h-7 bg-slate-200 rounded-md w-8/12 md:w-6/12" />
+          <div className="h-6 bg-slate-200 rounded-md w-6/12 md:w-3/12" />
         </div>
       </div>
     </div>

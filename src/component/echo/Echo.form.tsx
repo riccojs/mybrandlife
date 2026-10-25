@@ -4,6 +4,7 @@ import type { EchoType } from "../../utils/echo.types";
 import toast from "react-hot-toast";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import SelectComponent from "../ui/Select.component";
+import { LoaderCircle } from "lucide-react";
 
 interface TypeForm {
   data: {
@@ -115,27 +116,23 @@ function EchoForm({ data, setShow, id }: TypeForm) {
         name="shoutOut"
         value={shoutOut}
         onChange={handleChange}
-        required
         className="bg-[#F3F3F3] border border-gray-300 focus:outline focus:outline-[#96c94b] focus:border p-2 w-full rounded-md text-normal"
         placeholder="Enter shoutOut"
       ></textarea>
       <div className="flex gap-3 items-center">
         <button
-          type="button"
           onClick={() => setShow(false)}
-          className="bg-slate-200 px-6 py-3 cursor-pointer rounded-lg flex gap-2 items-center w-fit mt-3"
+          disabled={isLoading}
+          className="bg-slate-200 text-[#000000] flex justify-center items-center gap-1 w-fit border border-gray-200 px-10 h-12 rounded-lg cursor-pointer"
         >
           Close
         </button>
         <button
+          disabled={isLoading}
           type="submit"
-          className="bg-[#cbf38b] px-6 py-3 cursor-pointer rounded-lg flex gap-2 items-center w-fit mt-3"
+          className={`${isLoading ? "bg-[#77a630] cursor-not-allowed" : "bg-[#96c94b] cursor-pointer"}  text-[#000000] flex justify-center items-center gap-1 min-w-32 w-32 h-12 rounded-lg`}
         >
-          {isLoading ? (
-            <i className="fa-solid fa-circle-notch animate-spin"></i>
-          ) : (
-            "Save"
-          )}
+          {isLoading ? <LoaderCircle className="animate-spin" /> : "Save"}
         </button>
       </div>
     </form>

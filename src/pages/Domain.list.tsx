@@ -29,7 +29,10 @@ function DomainList() {
     searchBy: search,
   });
   const domains = data?.data?.domain;
-  const totalItems = data?.data?.totalDomain;
+  const totalItem = data?.data?.totalDomain;
+  const currentPage = data?.data?.currentPage || [];
+  const start = (currentPage - 1) * limit + 1;
+  const end = Math.min(currentPage * limit, totalItem);
 
   const handlePageChange = (value: number) => {
     searchParams.set("page", value.toString());
@@ -60,8 +63,8 @@ function DomainList() {
   if (!isLoading && !isFetching && domains?.length === 0) {
     content = (
       <tr>
-        <td colSpan={7}>
-          <p className="bg-amber-100 text-md font-normal p-3 rounded-md">
+        <td colSpan={5} className="p-0!">
+          <p className="bg-[#FEFBED] text-center text-[#643315] text-md font-normal py-5 rounded-md">
             Data not found!
           </p>
         </td>
@@ -86,19 +89,20 @@ function DomainList() {
           });
         };
         return (
-          <tr key={id}>
+          <tr key={id} className="hover:bg-gray-50">
+            <td className="text-sm text-gray-600">{id}</td>
             <td>{domain}</td>
             <td>{email}</td>
             <td>{formattedDate(create_at)}</td>
 
             <td>
-              <div className="flex gap-3">
+              <div className="flex gap-2">
                 <button
                   onClick={() => {
                     setSelected(id);
                     setViewDomain(true);
                   }}
-                  className="border border-gray-300 min-w-8 w-8 h-8 flex justify-center items-center rounded-md cursor-pointer"
+                  className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
                 >
                   <i className="fa-regular fa-eye"></i>
                 </button>
@@ -107,7 +111,7 @@ function DomainList() {
                     setOpen(true);
                     setSelected(id);
                   }}
-                  className="border border-gray-300 min-w-8 w-8 h-8 flex justify-center items-center rounded-md cursor-pointer"
+                  className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
                 >
                   <RiDeleteBin5Line size={20} />
                 </button>
@@ -124,15 +128,10 @@ function DomainList() {
       <div className="p-3 md:p-5 min-h-screen">
         <div className="flex md:flex-row flex-col justify-between items-start md:items-center">
           <div className="md:w-6/12 w-full">
-            <h2 className="text-normal text-2xl md:text-3xl">
-              Domain Requests
-            </h2>
-            <ul className="flex gap-2 items-center py-2">
+            <h2 className="text-normal text-xl md:text-3xl">Domain Requests</h2>
+            <ul className="flex flex-wrap gap-2 items-center py-2">
               <li>
-                <Link
-                  to="/admin/dashboard"
-                  className="text-normal text-sm md:text-base"
-                >
+                <Link to="/" className="text-normal text-sm md:text-base">
                   Dashboard
                 </Link>
               </li>
@@ -147,8 +146,8 @@ function DomainList() {
             </ul>
           </div>
         </div>
-        <div className="flex flex-col gap-5 mt-5">
-          <div className="w-full 2xl:flex-row flex-col gap-5 flex justify-between items-center">
+        <div className="w-full mx-auto bg-white rounded-2xl border border-gray-200 shadow-sm mt-3">
+          <div className="flex md:flex-row flex-col gap-3 md:gap-0 items-center w-full justify-between p-6">
             <div className="w-full md:w-96">
               <SearchComponent
                 name="search"
@@ -171,10 +170,11 @@ function DomainList() {
               />
             </div>
           </div>
-          <div className="overflow-x-auto bg-white">
-            <table className="my-table table-fixed w-full min-w-300">
-              <thead>
-                <tr className="border-y border-gray-300">
+          <div className="xl:overflow-x-auto overflow-x-scroll custom-scroll bg-white">
+            <table className="my-table table-fixed w-full min-w-350">
+              <thead className="text-xs uppercase text-gray-500 bg-gray-50">
+                <tr className="border-y border-gray-200">
+                  <th>Domain ID</th>
                   <th>Domain</th>
                   <th>Email</th>
                   <th>Create At</th>
@@ -184,15 +184,21 @@ function DomainList() {
               <tbody>{content}</tbody>
             </table>
           </div>
+          <div className="flex flex-wrap md:gap-0 gap-3 items-center justify-between px-6 py-5 border-t border-gray-200">
+            <p className="text-sm text-gray-400">
+              Showing <span className="font-medium text-gray-500">{start}</span>{" "}
+              to <span className="font-medium text-gray-500">{end}</span> of{" "}
+              <span className="font-medium text-gray-700">{totalItem}</span>{" "}
+              results
+            </p>
+            <Pagination
+              handlePageChange={handlePageChange}
+              page={page}
+              totalItems={totalItem}
+              itemsPerPage={limit}
+            />
+          </div>
         </div>
-        {totalItems > limit && (
-          <Pagination
-            handlePageChange={handlePageChange}
-            page={page}
-            totalItems={totalItems}
-            itemsPerPage={limit}
-          />
-        )}
 
         {(viewDomain || view) && (
           <ViewDomain
@@ -204,7 +210,7 @@ function DomainList() {
         {selected && (
           <WarningPopup
             open={open}
-            title="Do you want delete this domain request?"
+            title="Do you want to delete this domain request?"
             description={`Deleting this domain request will permanently remove all associated data from the database. This action cannot be undone. Click "Delete" to continue or "Close" to cancel.`}
             smButton="Delete"
             clButton="Close"

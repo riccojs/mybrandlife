@@ -242,21 +242,10 @@ function InfoForm({ data, setIsShowInfo, id }: TypeForm) {
               Activate or deactivate your private domain.
             </label>
           </div>
-          <p className="bg-amber-50 text-black p-2 border-l-3 rounded-xl border-amber-300 text-xs">
-            Activating now, your QR code will point to your own domain and not
-            take you to your new lander until you have completed forwarding.
-          </p>
-          <p className="bg-green-100 text-black p-2 border-l-3 rounded-xl border-green-300 text-xs mt-2">
-            Domain Forwarding Help.” The link will take them to{" "}
-            <a
-              href="https://www.google.com/search?q=how+to+forward+a+domain+to+another+website"
-              target="_blank"
-              className="text-red-500 hover:underline hover:text-red-600"
-            >
-              https://www.google.com/search?q=how+to+forward+a+domain+to+another+website
-            </a>{" "}
-            WARNING - setting your page to your own domain will require
-            forwarding that domain to “display full path to the subscriber page.
+          <p className="bg-[#FFFCF0] w-full text-[#7C3E16] border-2 border-[#FCF2C6] p-5 text-sm font-normal rounded-lg mt-3">
+            Activating Now: The QR code will continue directing users to their
+            own domain until the forwarding setup is complete. Once forwarding
+            is configured, the QR code will direct users to their new lander.
           </p>
         </div>
         <div className="flex flex-col">
@@ -284,9 +273,9 @@ function InfoForm({ data, setIsShowInfo, id }: TypeForm) {
               Activate or deactivate your VCF File.
             </label>
           </div>
-          <p className="bg-amber-50 text-black p-2 border-l-3 rounded-xl border-amber-300 text-xs">
-            Activating your VCF File makes it visible on your landing page.
-            Deactivating it hides it from your landing page.
+          <p className="bg-[#FFFCF0] w-full text-[#7C3E16] border-2 border-[#FCF2C6] p-5 text-sm font-normal rounded-lg">
+            VCF File Visibility: Administrators can activate the VCF file to
+            display it on the user's landing page or deactivate it to hide it.
           </p>
         </div>
         <div className="flex flex-col">
@@ -415,14 +404,15 @@ function InfoForm({ data, setIsShowInfo, id }: TypeForm) {
       <div className="flex gap-3 items-center">
         <button
           onClick={() => setIsShowInfo(false)}
-          className="bg-slate-200 text-[#000000] flex justify-center items-center gap-1 w-fit border border-gray-200 px-10 py-3 rounded-2xl cursor-pointer"
+          disabled={isLoading}
+          className="bg-slate-200 text-[#000000] flex justify-center items-center gap-1 w-fit border border-gray-200 px-10 h-12 rounded-lg cursor-pointer"
         >
           Close
         </button>
         <button
           disabled={isLoading}
           type="submit"
-          className="bg-[#BDF188] text-[#000000] flex justify-center items-center gap-1 w-fit border border-[#76c725] px-10 py-3 rounded-2xl cursor-pointer"
+          className={`${isLoading ? "bg-[#77a630] cursor-not-allowed" : "bg-[#96c94b] cursor-pointer"}  text-[#000000] flex justify-center items-center gap-1 min-w-32 w-32 h-12 rounded-lg`}
         >
           {isLoading ? <LoaderCircle className="animate-spin" /> : "Save"}
         </button>

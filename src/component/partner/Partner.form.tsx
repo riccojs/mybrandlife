@@ -4,6 +4,7 @@ import { useUpdatePartnerMutation } from "../../redux/features/partner/partnerAp
 import SelectDomain from "../ui/Select.domain";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import toast from "react-hot-toast";
+import { LoaderCircle } from "lucide-react";
 
 interface TypeForm {
   data: {
@@ -116,7 +117,7 @@ function PartnerForm({ data, setShowTab, id }: TypeForm) {
       </div>
       <div className="flex flex-col gap-1 w-full">
         <label htmlFor="" className="text-md font-normal text-black">
-          Title
+          Link Type
         </label>
         <SelectDomain
           value={partner.type}
@@ -268,37 +269,18 @@ function PartnerForm({ data, setShowTab, id }: TypeForm) {
       )}
       <div className="flex gap-3 items-center">
         <button
-          type="button"
           onClick={() => setShowTab(false)}
-          className="bg-slate-200 cursor-pointer px-5 justify-center py-3 rounded-lg w-fit flex gap-2 items-center"
+          disabled={upLoad}
+          className="bg-slate-200 text-[#000000] flex justify-center items-center gap-1 w-fit border border-gray-200 px-10 h-12 rounded-lg cursor-pointer"
         >
           Close
         </button>
         <button
+          disabled={upLoad}
           type="submit"
-          className="bg-[#96BF4D] cursor-pointer min-w-44 justify-center py-3 rounded-lg w-fit flex gap-2 items-center"
+          className={`${upLoad ? "bg-[#77a630] cursor-not-allowed" : "bg-[#96c94b] cursor-pointer"}  text-[#000000] flex justify-center items-center gap-1 min-w-32 w-32 h-12 rounded-lg`}
         >
-          {upLoad ? (
-            <>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-6 h-6 animate-spin"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
-                />
-              </svg>
-              <p>Loading...</p>
-            </>
-          ) : (
-            "Update"
-          )}
+          {upLoad ? <LoaderCircle className="animate-spin" /> : "Save"}
         </button>
       </div>
     </form>

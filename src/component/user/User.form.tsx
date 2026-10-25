@@ -147,12 +147,12 @@ function UserForm({ data }: TypeForm) {
 
   return (
     <div className="w-full">
-      <div className="w-full flex gap-5 items-center">
-        <h2 className="text-xl text-normal font-medium">
+      <div className="w-full md:flex-row flex-col flex gap-1 md:gap-5 items-start md:items-center">
+        <h2 className="text-md md:text-xl text-normal font-medium">
           User Profile Information
         </h2>
         <p
-          className={`px-4 py-2 rounded-xl w-fit font-bold text-sm ${
+          className={`px-3 py-1 rounded-md w-fit font-bold text-xs ${
             status === "ACTIVATE"
               ? "bg-green-100 text-green-600"
               : status === "PENDING"
@@ -384,11 +384,11 @@ function UserForm({ data }: TypeForm) {
               </div>
             </div>
           </div>
-          <div className="w-full flex gap-5 justify-end mt-5">
+          <div className="w-full flex gap-3 md:gap-5 justify-end mt-5">
             <button
-              className={`flex gap-2 items-center cursor-pointer px-6 py-3 rounded-lg text-md font-medium ${
+              className={`flex gap-2 items-center justify-center cursor-pointer min-w-36 md:min-w-40 h-10 md:h-12 w-36 md:w-40 rounded-lg text-sm md:text-md font-normal ${
                 status === "ACTIVATE"
-                  ? "bg-green-100 text-green-600"
+                  ? "bg-[#96c94b] text-black"
                   : status === "PENDING"
                     ? "bg-yellow-100 text-yellow-600"
                     : "bg-red-100 text-red-600"
@@ -399,7 +399,7 @@ function UserForm({ data }: TypeForm) {
               <p>Update Status</p>
             </button>
             <button
-              className="bg-[#cbf38b] cursor-pointer px-6 py-3 rounded-lg text-md font-normal text-black"
+              className="bg-[#96c94b] cursor-pointer px-6 py-2 md:py-3 rounded-lg text-md font-normal text-black"
               type="button"
               onClick={() => setOpen(true)}
             >

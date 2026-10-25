@@ -17,14 +17,12 @@ function UpdatePartner({ showTab, setShowTab, id }: TypesForm) {
           showTab ? "zoom-animation" : ""
         }`}
       >
-        <div className="max-h-[95vh] h-auto overflow-y-auto p-8 custom-scroll">
-          <h2 className="text-2xl font-medium text-black text-center mt-5 mb-2">
-            Update Partner Info
+        <div className="max-h-[95vh] h-auto overflow-y-auto p-5 md:p-8 custom-scroll">
+          <h2 className="text-base md:text-xl font-medium text-gray-500 text-center mt-5 mb-2">
+            Update Partner
           </h2>
-          <p className="text-md font-normal text-black text-center">
-            Ensure all mandatory fields are filled in with the correct
-            information. Upon completion, you may proceed to establish the
-            partner profile.
+          <p className="bg-[#FEFBED] text-center text-[#643315] border-2 border-[#feeda0] text-xs md:text-sm px-2 font-normal py-3 rounded-lg">
+            You can edit any info on this partner form section.
           </p>
           {isLoading ? (
             <div className="flex items-center justify-center h-[50vh]">

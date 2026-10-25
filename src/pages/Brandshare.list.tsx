@@ -14,6 +14,7 @@ import BrandshareLoader from "../component/loader/Brandshare.loader";
 import ViewBrandshare from "../component/brandshare/View.brandshare";
 import UpdateBrandshare from "../component/brandshare/Update.brandshare";
 import CreateBrandshare from "../component/brandshare/Create.brandshare";
+import BrandshareIcon from "../assets/menu-icons/referralcodes.svg";
 
 function BrandShareList() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -37,8 +38,11 @@ function BrandShareList() {
     sort: sort,
   });
 
-  const totalItems = data?.data?.totalReferral;
+  const totalItem = data?.data?.totalReferral;
   const referral = data?.data?.referral;
+  const currentPage = data?.data?.currentPage || [];
+  const start = (currentPage - 1) * limit + 1;
+  const end = Math.min(currentPage * limit, totalItem);
 
   const handlePageChange = (value: number) => {
     searchParams.set("page", value.toString());
@@ -92,8 +96,8 @@ function BrandShareList() {
   if (!isLoading && !isFetching && referral?.length === 0) {
     content = (
       <tr>
-        <td colSpan={7}>
-          <p className="bg-amber-100 text-md font-normal p-3 rounded-md">
+        <td colSpan={7} className="p-0!">
+          <p className="bg-[#FEFBED] text-center text-[#643315] text-md font-normal py-5 rounded-md">
             Data not found!
           </p>
         </td>
@@ -167,13 +171,13 @@ function BrandShareList() {
                     setShowUpdateTab(true);
                     setSelectedId(id);
                   }}
-                  className="border border-gray-300 min-w-8 w-8 h-8 flex justify-center items-center rounded-md cursor-pointer"
+                  className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
                 >
                   <i className="fa-regular fa-pen-to-square"></i>
                 </button>
                 <Link
                   to={`/brandshare/${code}`}
-                  className="border border-gray-300 min-w-8 w-8 h-8 flex justify-center items-center rounded-md cursor-pointer"
+                  className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
                 >
                   <i className="fa-regular fa-eye"></i>
                 </Link>
@@ -182,7 +186,7 @@ function BrandShareList() {
                     setOpen(true);
                     setSelectedId(id);
                   }}
-                  className="border border-gray-300 w-8 h-8 flex justify-center items-center rounded-md cursor-pointer"
+                  className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
                 >
                   <i className="fa-regular fa-trash-can"></i>
                 </button>
@@ -200,7 +204,7 @@ function BrandShareList() {
         <div className="flex md:flex-row flex-col justify-between items-start md:items-center">
           <div className="md:w-6/12 w-full">
             <h2 className="text-normal text-2xl md:text-3xl">BrandShare</h2>
-            <ul className="flex gap-2 items-center py-2">
+            <ul className="flex gap-2 flex-wrap items-center py-2">
               <li>
                 <Link to="/" className="text-normal text-sm md:text-base">
                   Dashboard
@@ -217,8 +221,8 @@ function BrandShareList() {
             </ul>
           </div>
         </div>
-        <div className="flex flex-col gap-5 mt-5">
-          <div className="flex 2xl:flex-nowrap flex-wrap md:w-auto w-full sm:flex-row flex-col justify-between items-start gap-3 md:items-center">
+        <div className="w-full mx-auto bg-white rounded-2xl border border-gray-200 shadow-sm mt-3">
+          <div className="flex p-6 2xl:flex-nowrap flex-wrap md:w-auto w-full sm:flex-row flex-col justify-between items-start gap-3 md:items-center">
             <div className="flex gap-5 md:flex-row flex-col w-full items-center">
               <div className="w-full md:w-96">
                 <SearchComponent
@@ -286,16 +290,20 @@ function BrandShareList() {
               </div>
             </div>
             <button
-              className="primary-btn md:w-64 w-full"
+              className="bg-[#96c94b] w-12 min-w-12 h-12 rounded-md p-2 cursor-pointer"
               onClick={() => setShowTab(true)}
             >
-              Create BrandShare
+              <img
+                src={BrandshareIcon}
+                alt={BrandshareIcon}
+                className="w-full h-full"
+              />
             </button>
           </div>
-          <div className="overflow-x-auto bg-white">
-            <table className="my-table table-fixed w-full min-w-300">
-              <thead>
-                <tr className="border-y border-gray-300">
+          <div className="xl:overflow-x-auto overflow-x-scroll custom-scroll bg-white">
+            <table className="my-table table-fixed w-full min-w-350">
+              <thead className="text-xs uppercase text-gray-500 bg-gray-50">
+                <tr className="border-y border-gray-200">
                   <th>BrandShare Code</th>
                   <th>BrandShare Value</th>
                   <th>BrandShare Type</th>
@@ -308,15 +316,21 @@ function BrandShareList() {
               <tbody>{content}</tbody>
             </table>
           </div>
+          <div className="flex flex-wrap md:gap-0 gap-3 items-center justify-between px-6 py-5 border-t border-gray-200">
+            <p className="text-sm text-gray-400">
+              Showing <span className="font-medium text-gray-500">{start}</span>{" "}
+              to <span className="font-medium text-gray-500">{end}</span> of{" "}
+              <span className="font-medium text-gray-700">{totalItem}</span>{" "}
+              results
+            </p>
+            <Pagination
+              handlePageChange={handlePageChange}
+              page={page}
+              totalItems={totalItem}
+              itemsPerPage={limit}
+            />
+          </div>
         </div>
-        {totalItems > limit && (
-          <Pagination
-            handlePageChange={handlePageChange}
-            page={page}
-            totalItems={totalItems}
-            itemsPerPage={limit}
-          />
-        )}
       </div>
       {showTab && (
         <CreateBrandshare setShowTab={setShowTab} showTab={showTab} />
@@ -335,7 +349,7 @@ function BrandShareList() {
       {selectId && (
         <WarningPopup
           open={open}
-          title="Do you want delete this BrandShare request?"
+          title="Do you want to delete this BrandShare request?"
           description={`Deleting this BrandShare request will permanently remove all associated data from the database. This action cannot be undone. Click "Delete" to continue or "Close" to cancel.`}
           smButton="Delete"
           clButton="Close"

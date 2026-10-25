@@ -15,14 +15,16 @@ function UpdateBrandbook({ isShow, setShow, id }: DataTypes) {
   const { data, isLoading } = useGetOneEventQuery(id);
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center w-full min-h-screen z-50 overflow-auto bg-white/20 backdrop-blur-xs">
+    <div className="inset-0 bg-[#00000039] flex fixed left-0 justify-center items-center w-full h-auto min-h-screen z-50 overflow-auto">
       <div
-        className={`relative p-10 flex flex-col w-11/12 lg:w-8/12 xl:w-7/12 2xl:w-5/12 m-auto justify-center rounded-xl shadow-xl bg-white ${
+        className={`relative p-5 md:p-10 flex flex-col w-11/12 lg:w-8/12 xl:w-7/12 2xl:w-5/12 m-auto justify-center rounded-xl shadow-xl bg-white ${
           isShow ? "zoom-animation" : ""
         }`}
       >
         <div className="flex flex-col gap-5 rounded-2xl">
-          <h2 className="text-[#3D424B] font-medium text-3xl">Update Echo</h2>
+          <h2 className="text-[#3D424B] font-medium text-lg md:text-3xl">
+            Update Echo
+          </h2>
         </div>
         {isLoading ? (
           <div className="flex items-center justify-center h-[50vh]">

@@ -10,8 +10,8 @@ import {
 } from "../../redux/features/onboard/onboardApi";
 import SpiningLoader from "../loader/Spining.loader";
 import type { RequestType } from "../../utils/spin.types";
-import WarningPopup from "../Warning.popup";
 import ViewRequest from "./View.request";
+import WarningPopup from "../Warning.popup";
 
 const RequestList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -66,8 +66,8 @@ const RequestList = () => {
   if (!isFetching && !isLoading && requests?.length === 0) {
     content = (
       <tr>
-        <td colSpan={6}>
-          <p className="bg-amber-100 text-md font-normal p-3 rounded-md">
+        <td colSpan={6} className="p-0!">
+          <p className="bg-[#FEFBED] text-center text-[#643315] text-md font-normal py-5 rounded-md">
             Data not found!
           </p>
         </td>
@@ -104,19 +104,18 @@ const RequestList = () => {
                   setView(true);
                   setSelectedId(id);
                 }}
+                className="border border-[#E7EBF2] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
               >
-                <Eye size={18} className="cursor-pointer hover:text-gray-700" />
+                <Eye size={18} />
               </button>
               <button
                 onClick={() => {
                   setOpen(true);
                   setSelectedId(id);
                 }}
+                className="border border-[#E7EBF2] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
               >
-                <Trash2
-                  size={18}
-                  className="cursor-pointer hover:text-red-500"
-                />
+                <Trash2 size={18} />
               </button>
             </div>
           </td>
@@ -126,10 +125,11 @@ const RequestList = () => {
   }
 
   return (
-    <section className="p-5">
-      <div className="w-full mx-auto bg-white rounded-2xl border border-gray-200 shadow-sm">
-        <div className="p-5">
-          <h2>Request List</h2>
+    <section className="p-3 md:p-5">
+      <div className="w-full mx-auto bg-white rounded-3xl border border-gray-200 shadow-sm">
+        <div className="px-5 py-8 flex w-full justify-between items-center">
+          <h2 className="text-lg text-[#121625] font-normal">Request List</h2>
+          <p className="text-[#A0AABC] text-sm">Total Entries: {totalItem}</p>
         </div>
         <div className="bg-white rounded-xl border border-gray-200">
           <div className="overflow-x-auto">
@@ -144,26 +144,23 @@ const RequestList = () => {
                   <th className="text-left px-6 py-4">Actions</th>
                 </tr>
               </thead>
-
               <tbody>{content}</tbody>
             </table>
           </div>
         </div>
-        <div className="flex flex-wrap md:gap-0 gap-3 items-center justify-between px-6 py-5 border-t border-gray-200">
+        <div className="flex flex-wrap md:gap-0 gap-3 items-center justify-between px-6 py-5">
           <p className="text-sm text-gray-500">
             Showing <span className="font-medium text-gray-700">{start}</span>{" "}
             to <span className="font-medium text-gray-700">{end}</span> of{" "}
             <span className="font-medium text-gray-700">{totalItem}</span>{" "}
             results
           </p>
-          {totalItem > limit && (
-            <Pagination
-              handlePageChange={handlePageChange}
-              page={page}
-              totalItems={totalItem}
-              itemsPerPage={limit}
-            />
-          )}
+          <Pagination
+            handlePageChange={handlePageChange}
+            page={page}
+            totalItems={totalItem}
+            itemsPerPage={limit}
+          />
         </div>
         {view && selectId ? (
           <ViewRequest setShow={setView} isShow={view} id={selectId} />
@@ -171,7 +168,7 @@ const RequestList = () => {
         {selectId && (
           <WarningPopup
             open={open}
-            title="Do you want delete this request?"
+            title="Do you want to delete this request?"
             description={`Deleting this request will permanently remove all associated data from the database. This action cannot be undone. Click "Delete" to continue or "Close" to cancel.`}
             smButton="Delete"
             clButton="Close"

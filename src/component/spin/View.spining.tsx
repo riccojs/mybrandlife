@@ -1,4 +1,4 @@
-import { Folder, Save, User } from "lucide-react";
+import { Folder, User } from "lucide-react";
 import PulsetrackProjectLoader from "../loader/Pulsetrack.project.loader";
 import useBodyScroll from "../../hook/userBodyscroll";
 import type { SpinType } from "../../utils/spin.types";
@@ -40,17 +40,17 @@ function ViewSpining({ isOpen, onClose, id }: Props) {
               <h1 className="text-xl font-medium text-gray-900">{title}</h1>
               <p className="text-gray-500 mt-1">Lander ID: #{lander?.id}</p>
             </div>
-            <span
+            <p
               className={`px-3 py-1 text-xs font-medium rounded-full ${isEnable ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}
             >
               {isEnable ? "ACTIVE" : "DEACTIVATE"}
-            </span>
+            </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2">
             <div className="p-8">
               <div className="flex items-center gap-2 mb-6">
                 <Folder className="text-green-600" size={18} />
-                <h2 className="text-lg font-semibold text-gray-800">
+                <h2 className="text-md md:text-lg font-semibold text-gray-800">
                   Spining Information
                 </h2>
               </div>
@@ -86,7 +86,7 @@ function ViewSpining({ isOpen, onClose, id }: Props) {
             <div className="p-8 bg-slate-100">
               <div className="flex items-center gap-2 mb-6">
                 <User className="text-green-600" size={18} />
-                <h2 className="text-lg font-semibold text-gray-800">
+                <h2 className="text-md md:text-lg font-semibold text-gray-800">
                   User Information
                 </h2>
               </div>
@@ -124,14 +124,6 @@ function ViewSpining({ isOpen, onClose, id }: Props) {
               className="px-6 py-2 cursor-pointer rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300"
             >
               Close
-            </button>
-
-            <button
-              onClick={() => onClose()}
-              className="flex cursor-pointer items-center gap-2 px-6 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600"
-            >
-              <Save size={16} />
-              SaVe
             </button>
           </div>
         </div>

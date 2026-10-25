@@ -1,12 +1,9 @@
 import { type SetStateAction } from "react";
-import { LuMessageSquareMore } from "react-icons/lu";
-import { SlLocationPin } from "react-icons/sl";
-import { IoFlashOutline } from "react-icons/io5";
-import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { useSearchParams } from "react-router";
 import ViewEchoLoader from "../loader/View.echo.loader";
 import { useGetOneEchoQuery } from "../../redux/features/echo/echoApi";
 import useBodyScroll from "../../hook/userBodyscroll";
+import { X } from "lucide-react";
 
 interface DataTypes {
   isShow: boolean;
@@ -32,53 +29,65 @@ function ViewEcho({ isShow, setShow, id }: DataTypes) {
           <ViewEchoLoader />
         ) : (
           <div className="flex flex-col gap-5">
-            <h2 className="text-[#3D424B] font-medium text-2xl">
+            <h2 className="text-[#3D424B] font-medium text-lg md:text-2xl">
               Echo Request
             </h2>
             <div>
-              <h3 className="text-[#3D424B] font-medium text-lg">Name</h3>
-              <p className="text-[#3D424B] font-normal text-md">{name}</p>
+              <h3 className="text-[#3D424B] font-medium text-md md:text-lg">
+                Name
+              </h3>
+              <p className="text-[#3D424B] font-normal text-sm md:text-md">
+                {name}
+              </p>
             </div>
             <div>
-              <h3 className="text-[#3D424B] font-medium text-lg">Email</h3>
-              <p className="text-[#3D424B] font-normal text-md">{email}</p>
+              <h3 className="text-[#3D424B] font-medium text-md md:text-lg">
+                Email
+              </h3>
+              <p className="text-[#3D424B] font-normal text-sm md:text-md">
+                {email}
+              </p>
             </div>
             <div>
               <div>
-                <h2 className="text-[#3D424B] font-medium text-lg">Message</h2>
-                <span className="flex gap-2 items-center">
-                  <LuMessageSquareMore size={20} />
-                  <p className="text-[#3D424B] font-normal text-md">
-                    {message}
-                  </p>
-                </span>
+                <h2 className="text-[#3D424B] font-medium text-md md:text-lg">
+                  Message
+                </h2>
+                <p className="text-[#3D424B] font-normal text-sm md:text-md">
+                  {message}
+                </p>
               </div>
               <div className="my-5">
-                <h2 className="text-[#3D424B] font-medium text-lg">City</h2>
-                <span className="flex gap-2 items-center">
-                  <SlLocationPin size={20} />
-                  <p className="text-[#3D424B] font-normal text-md">{city}</p>
-                </span>
+                <h2 className="text-[#3D424B] font-medium text-md md:text-lg">
+                  City
+                </h2>
+                <p className="text-[#3D424B] font-normal text-sm md:text-md">
+                  {city}
+                </p>
               </div>
               <div className="my-5">
-                <h2 className="text-[#3D424B] font-medium text-lg">Shoutout</h2>
-                <span className="flex gap-2 items-center">
-                  <IoFlashOutline size={20} />
-                  <p className="text-[#3D424B] font-normal text-md">
-                    {shoutOut}
-                  </p>
-                </span>
+                <h2 className="text-[#3D424B] font-medium text-md md:text-lg">
+                  Shoutout
+                </h2>
+                <p className="text-[#3D424B] font-normal text-sm md:text-md">
+                  {shoutOut}
+                </p>
               </div>
               <div className="my-5">
-                <h2 className="text-[#3D424B] font-medium text-lg">Tip</h2>
-                <span className="flex gap-2 items-center">
-                  <RiMoneyDollarCircleLine size={20} />
-                  <p className="text-[#3D424B] font-normal text-md">{tip}</p>
-                </span>
+                <h2 className="text-[#3D424B] font-medium text-md md:text-lg">
+                  Tip
+                </h2>
+                <p className="text-[#3D424B] font-normal text-sm md:text-md">
+                  {tip}
+                </p>
               </div>
               <div>
-                <h2 className="text-[#3D424B] font-medium text-lg">Status</h2>
-                <p className="text-[#3D424B] font-normal text-md">{status}</p>
+                <h2 className="text-[#3D424B] font-medium text-md md:text-lg">
+                  Status
+                </h2>
+                <p className="text-[#3D424B] font-normal text-sm md:text-md">
+                  {status}
+                </p>
               </div>
             </div>
           </div>
@@ -89,9 +98,9 @@ function ViewEcho({ isShow, setShow, id }: DataTypes) {
             searchParams.delete("view");
             setSearchParams(searchParams);
           }}
-          className="text-gray-400 text-2xl absolute top-2 right-2 cursor-pointer"
+          className="absolute top-2 right-2 border border-[#E7EBF2] text-[#8C98AE] bg-[#f0f3f8] hover:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-full cursor-pointer"
         >
-          <i className="fa-solid fa-circle-xmark"></i>
+          <X size={20} />
         </button>
       </div>
     </div>

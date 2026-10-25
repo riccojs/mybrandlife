@@ -14,6 +14,7 @@ import PartnerLoader from "../component/loader/Partner.loader";
 import type { PartnerType } from "../utils/partner.types";
 import CreatePartner from "../component/partner/Create.partner";
 import UpdatePartner from "../component/partner/Update.partner";
+import PartnerIcon from "../assets/menu-icons/partners.svg";
 
 function PartnerList() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -40,8 +41,11 @@ function PartnerList() {
     });
   };
 
-  const totalItems = data?.data?.totalPartner;
+  const totalItem = data?.data?.totalPartner;
   const partner = data?.data?.partner;
+  const currentPage = data?.data?.currentPage || [];
+  const start = (currentPage - 1) * limit + 1;
+  const end = Math.min(currentPage * limit, totalItem);
 
   const handlePageChange = (value: number) => {
     searchParams.set("page", value.toString());
@@ -85,8 +89,8 @@ function PartnerList() {
   if (!isLoading && !isFetching && partner?.length === 0) {
     content = (
       <tr>
-        <td colSpan={7}>
-          <p className="bg-amber-100 text-md font-normal p-3 rounded-md">
+        <td colSpan={6} className="p-0!">
+          <p className="bg-[#FEFBED] text-center text-[#643315] text-md font-normal py-5 rounded-md">
             Data not found!
           </p>
         </td>
@@ -109,44 +113,56 @@ function PartnerList() {
       } = item || {};
 
       return (
-        <tr key={id}>
+        <tr key={id} className="hover:bg-gray-50">
           <td>
             <div className="flex gap-2 items-center">
               {logo ? (
                 <img
                   src={logo}
                   alt=""
-                  className="w-14 min-w-14 h-14 mn-h-14 rounded-full"
+                  className="w-10 min-w-10 h-10 mn-h-10 rounded-full object-cover"
                 />
               ) : (
-                <p className="capitalize w-14 min-w-14 h-14 mn-h-14 bg-gray-100 text-black text-3xl font-medium rounded-full flex justify-center items-center">
+                <p className="capitalize w-10 min-w-10 h-10 mn-h-10 bg-gray-100 text-black text-xl font-medium rounded-full flex justify-center items-center">
                   {title?.slice(0, 1)}
                 </p>
               )}
               <span>
-                <h2 className="text-lg text-medium jost">
-                  {title?.slice(0, 25)}...
+                <h2 className="text-md text-medium jost">
+                  {title?.slice(0, 20)}..
                 </h2>
-                <p className="text-sm text-gray-400">
-                  Posted At: {formattedDate(create_at)}
+                <p className="text-xs text-gray-400">
+                  Join: {formattedDate(create_at)}
                 </p>
               </span>
             </div>
           </td>
-          <td>{description?.slice(0, 80)}...</td>
-          <td>{type}</td>
+          <td className="text-sm text-gray-500">
+            {description?.slice(0, 50)}...
+          </td>
+          <td>
+            <p
+              className={`${
+                type === "LINKTYPE"
+                  ? "bg-green-100 w-fit px-3 py-1 rounded-md text-center text-green-700 font-medium text-xs"
+                  : "bg-red-100 w-fit px-3 py-1 rounded-md text-center text-red-700 font-medium text-xs"
+              }`}
+            >
+              {type}
+            </p>
+          </td>
           <td>{linkText ? linkText : recipentLabel}</td>
-          <td className="whitespace-pre-line break-all">
+          <td className="whitespace-pre-line break-all text-sm">
             {link ? link : recipent?.join("\n")}
           </td>
           <td>
-            <div className="flex gap-3">
+            <div className="flex gap-2">
               <button
                 onClick={() => {
                   setShowUpdateTab(true);
                   setSelectedId(id);
                 }}
-                className="border border-gray-300 min-w-8 w-8 h-8 flex justify-center items-center rounded-md cursor-pointer"
+                className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
               >
                 <i className="fa-regular fa-pen-to-square"></i>
               </button>
@@ -155,7 +171,7 @@ function PartnerList() {
                   setSelectedId(id);
                   setOpen(true);
                 }}
-                className="border border-gray-300 w-8 h-8 flex justify-center items-center rounded-md cursor-pointer"
+                className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
               >
                 <i className="fa-regular fa-trash-can"></i>
               </button>
@@ -172,12 +188,9 @@ function PartnerList() {
         <div className="flex md:flex-row flex-col justify-between items-start md:items-center">
           <div className="md:w-6/12 w-full">
             <h2 className="text-normal text-2xl md:text-3xl">Partner</h2>
-            <ul className="flex gap-2 items-center py-2">
+            <ul className="flex gap-2 flex-wrap items-center py-2">
               <li>
-                <Link
-                  to="/admin/dashboard"
-                  className="text-normal text-sm md:text-base"
-                >
+                <Link to="/" className="text-normal text-sm md:text-base">
                   Dashboard
                 </Link>
               </li>
@@ -190,8 +203,8 @@ function PartnerList() {
             </ul>
           </div>
         </div>
-        <div className="flex flex-col gap-5 mt-5">
-          <div className="flex md:w-auto w-full sm:flex-row flex-col justify-between items-start gap-3 md:items-center">
+        <div className="w-full mx-auto bg-white rounded-2xl border border-gray-200 shadow-sm mt-3">
+          <div className="flex gap-3 md:gap-0 items-center w-full justify-between p-6">
             <div className="w-full md:w-96">
               <SearchComponent
                 name="search"
@@ -213,14 +226,21 @@ function PartnerList() {
                 }}
               />
             </div>
-            <button className="primary-btn" onClick={() => setShowTab(true)}>
-              Create Partner
+            <button
+              className="bg-[#96c94b] w-12 min-w-12 h-12 rounded-md p-2 cursor-pointer"
+              onClick={() => setShowTab(true)}
+            >
+              <img
+                src={PartnerIcon}
+                alt={PartnerIcon}
+                className="w-full h-full"
+              />
             </button>
           </div>
-          <div className="overflow-x-auto bg-white">
-            <table className="my-table table-fixed w-full min-w-300">
-              <thead>
-                <tr className="border-y border-gray-300">
+          <div className="xl:overflow-x-auto overflow-x-scroll custom-scroll bg-white">
+            <table className="my-table table-fixed w-full min-w-350">
+              <thead className="text-xs uppercase text-gray-500 bg-gray-50">
+                <tr className="border-y border-gray-200">
                   <th>Partner Info</th>
                   <th>Description</th>
                   <th>Type</th>
@@ -232,15 +252,21 @@ function PartnerList() {
               <tbody>{content}</tbody>
             </table>
           </div>
+          <div className="flex flex-wrap md:gap-0 gap-3 items-center justify-between px-6 py-5 border-t border-gray-200">
+            <p className="text-sm text-gray-400">
+              Showing <span className="font-medium text-gray-500">{start}</span>{" "}
+              to <span className="font-medium text-gray-500">{end}</span> of{" "}
+              <span className="font-medium text-gray-700">{totalItem}</span>{" "}
+              results
+            </p>
+            <Pagination
+              handlePageChange={handlePageChange}
+              page={page}
+              totalItems={totalItem}
+              itemsPerPage={limit}
+            />
+          </div>
         </div>
-        {totalItems > limit && (
-          <Pagination
-            handlePageChange={handlePageChange}
-            page={page}
-            totalItems={totalItems}
-            itemsPerPage={limit}
-          />
-        )}
       </div>
       {showTab && <CreatePartner setShowTab={setShowTab} showTab={showTab} />}
       {showUpdateTab && (
@@ -254,7 +280,7 @@ function PartnerList() {
       {selectId && (
         <WarningPopup
           open={open}
-          title="Do you want delete this partner?"
+          title="Do you want to delete this partner?"
           description={`Deleting this partner will permanently remove all associated data from the database. This action cannot be undone. Click "Delete" to continue or "Close" to cancel.`}
           smButton="Delete"
           clButton="Close"

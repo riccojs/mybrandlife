@@ -32,7 +32,10 @@ function ContactList() {
     statusBy: status,
   });
   const contacts = data?.data?.contact;
-  const totalItems = data?.data?.totalContact;
+  const totalItem = data?.data?.totalContact;
+  const currentPage = data?.data?.currentPage || [];
+  const start = (currentPage - 1) * limit + 1;
+  const end = Math.min(currentPage * limit, totalItem);
 
   const handlePageChange = (value: number) => {
     searchParams.set("page", value.toString());
@@ -63,8 +66,8 @@ function ContactList() {
   if (!isLoading && contacts?.length === 0) {
     content = (
       <tr>
-        <td colSpan={8}>
-          <p className="bg-amber-100 text-md font-normal p-3 rounded-md">
+        <td colSpan={7} className="p-0!">
+          <p className="bg-[#FEFBED] text-center text-[#643315] text-md font-normal py-5 rounded-md">
             Data not found!
           </p>
         </td>
@@ -79,30 +82,26 @@ function ContactList() {
         lastname: string;
         niche: string;
         email: string;
-        message: string;
+        seen: boolean;
         phone: string;
         subject: string;
       }) => {
-        const {
-          id,
-          firstname,
-          lastname,
-          email,
-          niche,
-          message,
-          phone,
-          subject,
-        } = item || {};
+        const { id, firstname, lastname, email, niche, seen, phone } =
+          item || {};
         return (
-          <tr key={id}>
+          <tr key={id} className="hover:bg-gray-50">
             <td>{firstname}</td>
             <td>{lastname}</td>
-            <td>{email}</td>
-            <td>{niche}</td>
-            <td>{message?.slice(0, 50)}</td>
+            <td className="text-sm break-all">{email}</td>
+            <td className="text-sm break-all">{niche}</td>
+            <td>
+              <p
+                className={`${seen ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"} px-4 py-1 rounded-lg text-sm w-fit`}
+              >
+                {seen ? "SEEN" : "UNSEEN"}
+              </p>
+            </td>
             <td>{phone}</td>
-            <td>{subject}</td>
-
             <td>
               <div className="flex gap-3">
                 <button
@@ -110,7 +109,7 @@ function ContactList() {
                     setSelected(id);
                     setViewContact(true);
                   }}
-                  className="border border-gray-300 min-w-8 w-8 h-8 flex justify-center items-center rounded-md cursor-pointer"
+                  className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
                 >
                   <i className="fa-regular fa-eye"></i>
                 </button>
@@ -120,7 +119,7 @@ function ContactList() {
                     setOpen(true);
                     setSelected(id);
                   }}
-                  className="border border-gray-300 min-w-8 w-8 h-8 flex justify-center items-center rounded-md cursor-pointer"
+                  className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
                 >
                   <RiDeleteBin5Line size={20} />
                 </button>
@@ -138,12 +137,9 @@ function ContactList() {
         <div className="flex md:flex-row flex-col justify-between items-start md:items-center">
           <div className="md:w-6/12 w-full">
             <h2 className="text-normal text-2xl md:text-3xl">Contact</h2>
-            <ul className="flex gap-2 items-center py-2">
+            <ul className="flex gap-2 flex-wrap items-center py-2">
               <li>
-                <Link
-                  to="/admin/dashboard"
-                  className="text-normal text-sm md:text-base"
-                >
+                <Link to="/" className="text-normal text-sm md:text-base">
                   Dashboard
                 </Link>
               </li>
@@ -156,79 +152,83 @@ function ContactList() {
             </ul>
           </div>
         </div>
-        <div className="flex flex-col gap-5 mt-5">
-          <div className="w-full 2xl:flex-row flex-col gap-5 flex justify-between items-center">
-            <div className="flex w-full md:flex-row flex-col justify-between items-start gap-3">
-              <div className="w-full md:w-96">
-                <SearchComponent
-                  name="search"
-                  color="white"
-                  placeholder="Seach by firstname"
-                  required={false}
-                  autoComplete="text"
-                  value={search}
-                  handleChange={(e) => {
-                    const value = e.target.value;
-                    if (value) {
-                      searchParams.set("search", value);
-                      searchParams.set("page", "1");
-                    } else {
-                      searchParams.delete("search");
-                      searchParams.delete("page");
-                    }
-                    setSearchParams(searchParams);
-                  }}
-                />
-              </div>
-              <div className="w-full md:w-52">
-                <SelectComponent
-                  value={status}
-                  color="white"
-                  handleChange={(item: string) => {
-                    if (item) {
-                      searchParams.set("status", item);
-                      searchParams.set("page", "1");
-                    } else {
-                      searchParams.delete("status");
-                      searchParams.delete("page");
-                    }
-                    setSearchParams(searchParams);
-                  }}
-                  datas={[
-                    { key: "Pending", value: "Pending" },
-                    { key: "Seen", value: "seen" },
-                  ]}
-                  label="Select Status"
-                />
-              </div>
+        <div className="w-full mx-auto bg-white rounded-2xl border border-gray-200 shadow-sm mt-3">
+          <div className="flex md:flex-row flex-col gap-3 md:gap-0 items-center w-full justify-between p-6">
+            <div className="w-full md:w-96">
+              <SearchComponent
+                name="search"
+                color="white"
+                placeholder="Seach by firstname"
+                required={false}
+                autoComplete="text"
+                value={search}
+                handleChange={(e) => {
+                  const value = e.target.value;
+                  if (value) {
+                    searchParams.set("search", value);
+                    searchParams.set("page", "1");
+                  } else {
+                    searchParams.delete("search");
+                    searchParams.delete("page");
+                  }
+                  setSearchParams(searchParams);
+                }}
+              />
+            </div>
+            <div className="w-full md:w-52">
+              <SelectComponent
+                value={status}
+                color="white"
+                handleChange={(item: string) => {
+                  if (item) {
+                    searchParams.set("status", item);
+                    searchParams.set("page", "1");
+                  } else {
+                    searchParams.delete("status");
+                    searchParams.delete("page");
+                  }
+                  setSearchParams(searchParams);
+                }}
+                datas={[
+                  { key: "Pending", value: "Pending" },
+                  { key: "Seen", value: "seen" },
+                ]}
+                label="Select Status"
+              />
             </div>
           </div>
-          <div className="overflow-x-auto bg-white">
-            <table className="my-table table-auto w-full min-w-300">
-              <thead>
-                <tr className="border-y border-gray-300">
-                  <th className="min-w-44">First Name</th>
-                  <th className="min-w-44">Last Name</th>
+          <div className="xl:overflow-x-auto overflow-x-scroll custom-scroll bg-white">
+            <table className="my-table table-fixed w-full min-w-350">
+              <thead className="text-xs uppercase text-gray-500 bg-gray-50">
+                <tr className="border-y border-gray-200">
+                  <th>First Name</th>
+                  <th>Last Name</th>
                   <th>Email</th>
                   <th>niche</th>
                   <th>message</th>
                   <th>phone</th>
-                  <th>subject</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>{content}</tbody>
             </table>
           </div>
+          <div className="flex flex-wrap md:gap-0 gap-3 items-center justify-between px-6 py-5 border-t border-gray-200">
+            <p className="text-sm text-gray-400">
+              Showing <span className="font-medium text-gray-500">{start}</span>{" "}
+              to <span className="font-medium text-gray-500">{end}</span> of{" "}
+              <span className="font-medium text-gray-700">{totalItem}</span>{" "}
+              results
+            </p>
+            <Pagination
+              handlePageChange={handlePageChange}
+              page={page}
+              totalItems={totalItem}
+              itemsPerPage={limit}
+            />
+          </div>
         </div>
-        {totalItems > limit && (
-          <Pagination
-            handlePageChange={handlePageChange}
-            page={page}
-            totalItems={totalItems}
-            itemsPerPage={limit}
-          />
-        )}
+
         {viewContact && selected ? (
           <ViewContact
             isShow={viewContact}
@@ -239,7 +239,7 @@ function ContactList() {
         {selected && (
           <WarningPopup
             open={open}
-            title="Do you want delete this contact request?"
+            title="Do you want to delete this contact request?"
             description={`Deleting this contact request will permanently remove all associated data from the database. This action cannot be undone. Click "Delete" to continue or "Close" to cancel.`}
             smButton="Delete"
             clButton="Close"

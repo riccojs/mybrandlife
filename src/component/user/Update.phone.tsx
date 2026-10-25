@@ -101,7 +101,7 @@ function UpdatePhone({ setUser, user }: Props) {
           </div>
         )}
       </div>
-      <p className="text-black bg-amber-50 px-3 py-2 text-sm mt-1 rounded-xl">
+      <p className="bg-[#FFFCF0] mt-2 w-full text-[#7C3E16] border-2 border-[#FCF2C6] p-5 text-sm font-normal rounded-lg">
         Country code must be selected before entering the phone number.
       </p>
     </div>

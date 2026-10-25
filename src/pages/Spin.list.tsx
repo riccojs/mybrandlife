@@ -17,8 +17,8 @@ import ViewSpining from "../component/spin/View.spining";
 
 const statusStyles: Record<string, string> = {
   PEOPLE: "bg-emerald-100 text-emerald-700",
-  CLUBS: "bg-amber-100 text-amber-700",
-  HOTELS: "bg-gray-100 text-gray-600",
+  CLUBS: "bg-orange-100 text-orange-700",
+  HOTELS: "bg-blue-100 text-blue-700",
   RESTAURANTS: "bg-yellow-100 text-yellow-700",
   ALL: "bg-red-100 text-red-700",
 };
@@ -73,8 +73,8 @@ const SpinList = () => {
   if (!isFetching && !isLoading && group?.length === 0) {
     content = (
       <tr>
-        <td colSpan={6}>
-          <p className="bg-amber-100 text-md font-normal p-3 rounded-md">
+        <td colSpan={6} className="p-0!">
+          <p className="bg-[#FEFBED] text-center text-[#643315] text-md font-normal py-5 rounded-md">
             Data not found!
           </p>
         </td>
@@ -93,55 +93,54 @@ const SpinList = () => {
         });
       };
       return (
-        <tr
-          key={id}
-          className="border-t border-gray-100 hover:bg-gray-50 transition"
-        >
-          <td className="px-6 py-5 text-gray-600 text-sm">
-            {formattedDate(create_at)}
-          </td>
-          <td className="px-6 py-5 text-gray-600 text-sm">{title}</td>
-          <td className="px-6 py-5 text-gray-600 text-sm">{url}</td>
-          <td className="px-6 py-5">
+        <tr key={id} className="hover:bg-gray-50">
+          <td className="text-sm text-gray-600">{formattedDate(create_at)}</td>
+          <td>{title}</td>
+          <td className="text-sm text-gray-500">{url?.slice(0, 50)}..</td>
+          <td>
             <span
               className={`px-3 py-1 text-xs font-medium rounded-full ${statusStyles[groupType]}`}
             >
               {groupType}
             </span>
           </td>
-          <td className="px-6 py-5">
+          <td>
             <span
               className={`px-3 py-1 text-xs font-medium rounded-full ${isEnable ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}
             >
               {isEnable ? "ACTIVE" : "DEACTIVATE"}
             </span>
           </td>
-          <td className="px-6 py-5">
-            <div className="flex gap-4 text-gray-500">
-              <Pencil
-                size={18}
+          <td>
+            <div className="flex gap-2 text-gray-500">
+              <button
                 onClick={() => {
                   setShow(true);
                   setSelectedId(id);
                 }}
-                className="cursor-pointer hover:text-gray-700"
-              />
+                className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
+              >
+                <Pencil size={20} />
+              </button>
+
               <button
                 onClick={() => {
                   setView(true);
                   setSelectedId(id);
                 }}
+                className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
               >
-                <Eye size={18} className="cursor-pointer hover:text-gray-700" />
+                <Eye size={20} />
               </button>
-              <Trash2
-                size={18}
+              <button
                 onClick={() => {
                   setSelectedId(id);
                   setOpen(true);
                 }}
-                className="cursor-pointer hover:text-red-500"
-              />
+                className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
+              >
+                <Trash2 size={20} />
+              </button>
             </div>
           </td>
         </tr>
@@ -150,12 +149,12 @@ const SpinList = () => {
   }
 
   return (
-    <section className="bg-gray-50 min-h-screen p-5">
+    <section className="min-h-screen p-3 md:p-5">
       <div className="md:w-6/12 w-full">
         <h2 className="text-normal text-2xl md:text-3xl">SPIN</h2>
-        <ul className="flex gap-2 items-center py-2">
+        <ul className="flex gap-2 flex-wrap items-center py-2">
           <li>
-            <Link to="/dashboard" className="text-normal text-sm md:text-base">
+            <Link to="/" className="text-normal text-sm md:text-base">
               Dashboard
             </Link>
           </li>
@@ -167,9 +166,9 @@ const SpinList = () => {
           </li>
         </ul>
       </div>
-      <div className="w-full mx-auto bg-white rounded-2xl border border-gray-200 shadow-sm">
-        <div className="flex flex-wrap gap-3 md:gap-0 items-center justify-between p-6 border-b border-gray-200">
-          <div className="w-64 md:w-64">
+      <div className="w-full mx-auto bg-white rounded-2xl border border-gray-200 shadow-sm mt-3">
+        <div className="flex md:flex-row flex-col gap-3 md:gap-0 items-center w-full justify-between p-6">
+          <div className="w-full md:w-96">
             <SelectComponent
               value={searchBy}
               label="Select group type"
@@ -194,39 +193,34 @@ const SpinList = () => {
             />
           </div>
         </div>
-        <div className="bg-white rounded-xl border border-gray-200">
-          <div className="overflow-x-auto">
-            <table className="w-full table-fixed border-collapse min-w-325">
-              <thead className="text-xs uppercase text-gray-500 bg-gray-50">
-                <tr>
-                  <th className="text-left px-6 py-4">Create at</th>
-                  <th className="text-left px-6 py-4">Name</th>
-                  <th className="text-left px-6 py-4">URL</th>
-                  <th className="text-left px-6 py-4">Group Type</th>
-                  <th className="text-left px-6 py-4">Status</th>
-                  <th className="text-left px-6 py-4">Actions</th>
-                </tr>
-              </thead>
-
-              <tbody>{content}</tbody>
-            </table>
-          </div>
+        <div className="xl:overflow-x-auto overflow-x-scroll custom-scroll bg-white">
+          <table className="my-table table-fixed w-full min-w-350">
+            <thead className="text-xs uppercase text-gray-500 bg-gray-50">
+              <tr className="border-y border-gray-200">
+                <th className="text-left px-6 py-4">Create at</th>
+                <th className="text-left px-6 py-4">Name</th>
+                <th className="text-left px-6 py-4">URL</th>
+                <th className="text-left px-6 py-4">Group Type</th>
+                <th className="text-left px-6 py-4">Status</th>
+                <th className="text-left px-6 py-4">Actions</th>
+              </tr>
+            </thead>
+            <tbody>{content}</tbody>
+          </table>
         </div>
         <div className="flex flex-wrap md:gap-0 gap-3 items-center justify-between px-6 py-5 border-t border-gray-200">
-          <p className="text-sm text-gray-500">
-            Showing <span className="font-medium text-gray-700">{start}</span>{" "}
-            to <span className="font-medium text-gray-700">{end}</span> of{" "}
+          <p className="text-sm text-gray-400">
+            Showing <span className="font-medium text-gray-500">{start}</span>{" "}
+            to <span className="font-medium text-gray-500">{end}</span> of{" "}
             <span className="font-medium text-gray-700">{totalItem}</span>{" "}
             results
           </p>
-          {totalItem > limit && (
-            <Pagination
-              handlePageChange={handlePageChange}
-              page={page}
-              totalItems={totalItem}
-              itemsPerPage={limit}
-            />
-          )}
+          <Pagination
+            handlePageChange={handlePageChange}
+            page={page}
+            totalItems={totalItem}
+            itemsPerPage={limit}
+          />
         </div>
       </div>
       {view && selectId ? (
@@ -246,7 +240,7 @@ const SpinList = () => {
       {selectId && (
         <WarningPopup
           open={open}
-          title="Do you want delete this Spin?"
+          title="Do you want to delete this SPIN?"
           description={`Deleting this spin will permanently remove all associated data from the database. This action cannot be undone. Click "Delete" to continue or "Close" to cancel.`}
           smButton="Delete"
           clButton="Close"

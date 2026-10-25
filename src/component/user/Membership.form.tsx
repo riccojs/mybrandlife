@@ -58,12 +58,12 @@ function MembershipForm({ data, id }: TypeForm) {
   return (
     <div className="mt-5">
       <div className="my-5">
-        <p className="text-gray-700 text-medium text-xl pb-5">
+        <p className="text-gray-700 text-medium text-md md:text-xl pb-5">
           Update User Membership
         </p>
       </div>
       <form>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10">
           <div className="flex flex-col gap-1 w-full">
             <label htmlFor="" className="text-md font-normal text-[#737373]">
               Plan
@@ -155,7 +155,7 @@ function MembershipForm({ data, id }: TypeForm) {
         </div>
         <div className="w-full flex justify-end mt-5">
           <button
-            className="bg-[#cbf38b] px-6 py-3 rounded-lg cursor-pointer text-md font-normal text-black"
+            className="bg-[#96c94b] min-w-24 h-12 w-24 rounded-lg cursor-pointer text-sm md:text-base font-normal text-black"
             type="button"
             onClick={() => setOpen(true)}
           >

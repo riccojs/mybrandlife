@@ -79,21 +79,19 @@ function AddSocialButton({
   const [search, setSearch] = useState("");
   const tabRef = useRef<HTMLDivElement>(null);
   const [createSocials, { isLoading }] = useCreateSocialsMutation();
-  // Extract array of platform names already created in parent
+
   const existingPlatforms = Array.isArray(buttons)
     ? buttons.map((item) => (typeof item === "string" ? item : item?.name))
     : buttons && typeof buttons === "object"
       ? Object.keys(buttons)
       : [];
 
-  // Initialize selected links from incoming props
   const [onboard, setOnboard] = useState<{
     socialLinks: Record<string, string>;
   }>({
     socialLinks: {},
   });
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (tabRef.current && !tabRef.current.contains(event.target as Node)) {
@@ -137,6 +135,10 @@ function AddSocialButton({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (Object.keys(onboard.socialLinks).length === 0) {
+      toast.error("Add minimum one link");
+      return;
+    }
     createSocials({ id, onboard })
       .unwrap()
       .then((res) => {
@@ -322,20 +324,24 @@ function AddSocialButton({
                   </div>
                 ))}
             </div>
-            <div className="flex gap-3 items-center justify-end border-t border-gray-200 pt-5">
+            <div className="flex gap-3 items-center">
               <button
-                type="button"
                 onClick={() => setIsShowButton(false)}
-                className="bg-slate-200 text-[#000000] flex justify-center items-center gap-1 w-fit border border-gray-200 px-10 py-3 rounded-2xl cursor-pointer"
+                disabled={isLoading}
+                className="bg-slate-200 text-[#000000] flex justify-center items-center gap-1 w-fit border border-gray-200 px-10 h-12 rounded-lg cursor-pointer"
               >
                 Close
               </button>
               <button
                 disabled={isLoading}
                 type="submit"
-                className="bg-[#BDF188] text-[#000000] flex justify-center items-center gap-1 w-fit border border-[#76c725] px-10 py-3 rounded-2xl cursor-pointer"
+                className={`${isLoading ? "bg-[#77a630] cursor-not-allowed" : "bg-[#96c94b] cursor-pointer"}  text-[#000000] flex justify-center items-center gap-1 min-w-32 w-32 h-12 rounded-lg`}
               >
-                {isLoading ? <LoaderCircle className="animate-spin" /> : "Save"}
+                {isLoading ? (
+                  <LoaderCircle className="animate-spin" />
+                ) : (
+                  "Create"
+                )}
               </button>
             </div>
           </form>

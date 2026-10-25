@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useCreateReferralMutation } from "../../redux/features/referral/referralApi";
 import SelectComponent from "../ui/Select.component";
+import { LoaderCircle } from "lucide-react";
 
 interface TypesForm {
   showTab: boolean;
@@ -100,16 +101,16 @@ function CreateBrandshare({ showTab, setShowTab }: TypesForm) {
   };
 
   return (
-    <div className="inset-0 bg-[#00000053] flex fixed left-0 justify-center items-center w-full min-h-screen z-50 overflow-auto">
+    <div className="inset-0 bg-[#00000053] flex fixed left-0 justify-center w-full min-h-screen z-50 overflow-auto">
       <div
-        className={`relative flex flex-col w-11/12 md:w-8/12 lg:w-6/12 2xl:w-5/12 m-auto justify-center p-10 rounded-3xl shadow-sm bg-[#ffffff] border border-gray-300 ${
+        className={`max-h-[95vh] h-auto overflow-y-auto custom-scroll w-11/12 md:w-8/12 lg:w-6/12 2xl:w-5/12 m-auto p-5 md:p-10 rounded-3xl shadow-sm bg-[#ffffff] border border-gray-300 ${
           showTab ? "zoom-animation" : ""
         }`}
       >
-        <h2 className="text-2xl font-medium text-black text-center mt-5 mb-2">
+        <h2 className="text-xl md:text-2xl font-medium text-black text-center">
           Create BrandShare
         </h2>
-        <p className="text-md font-normal text-black text-center">
+        <p className="text-sm md:text-md font-normal text-black text-center">
           Ensure all mandatory fields are filled in with the correct
           information. Upon completion, you may proceed to establish the
           referral system.
@@ -264,37 +265,18 @@ function CreateBrandshare({ showTab, setShowTab }: TypesForm) {
 
           <div className="flex gap-3 items-center">
             <button
-              type="button"
               onClick={() => setShowTab(false)}
-              className="w-fit bg-slate-200 text-black px-5 py-3 rounded-lg cursor-pointer"
+              disabled={isLoading}
+              className="bg-slate-200 text-[#000000] flex justify-center items-center gap-1 w-fit border border-gray-200 px-10 h-12 rounded-lg cursor-pointer"
             >
               Close
             </button>
             <button
+              disabled={isLoading}
               type="submit"
-              className="bg-[#82C24E] py-3 px-5 rounded-lg text-black cursor-pointer"
+              className={`${isLoading ? "bg-[#77a630] cursor-not-allowed" : "bg-[#96c94b] cursor-pointer"}  text-[#000000] flex justify-center items-center gap-1 min-w-32 w-32 h-12 rounded-lg`}
             >
-              {isLoading ? (
-                <>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-6 h-6 animate-spin"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
-                    />
-                  </svg>
-                  <p>Loading...</p>
-                </>
-              ) : (
-                "Create BrandShare"
-              )}
+              {isLoading ? <LoaderCircle className="animate-spin" /> : "Create"}
             </button>
           </div>
         </form>

@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useParams } from "react-router";
 import toast from "react-hot-toast";
@@ -11,6 +10,7 @@ import {
 import ButtonSetLoadder from "../loader/ButtonSet.loader";
 import EditButton from "./Edit.button";
 import AddSocialButton from "./Add.social.button";
+import { FilePenLine, FilePlus } from "lucide-react";
 import WarningPopup from "../Warning.popup";
 
 interface TypesOfButton {
@@ -27,11 +27,14 @@ function SingleSocialButtons() {
   const [addButton, setAddButton] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const { data, isError, isLoading, isFetching } = useGetOneOnboardQuery(id);
+  const [showAllButtons, setShowAllButtons] = useState(false);
   const onboard = !isError && data?.onboard ? data.onboard : null;
   const { buttonSet } = onboard || {};
   const [selected, setSelected] = useState("");
   const [deleteSocialButton, { isLoading: delLoad }] =
     useDeleteSocialButtonMutation();
+
+  const visibleButtons = showAllButtons ? buttonSet : buttonSet?.slice(0, 6);
 
   const handleDelete = (id: string) => {
     setSelected(id);
@@ -52,32 +55,23 @@ function SingleSocialButtons() {
   // decide what to render
   let content;
   if (isLoading || isFetching) {
-    content = (
-      <>
-        <ButtonSetLoadder />
-        <ButtonSetLoadder />
-        <ButtonSetLoadder />
-        <ButtonSetLoadder />
-        <ButtonSetLoadder />
-        <ButtonSetLoadder />
-      </>
-    );
+    content = [...Array(6)].map((_, i) => <ButtonSetLoadder key={i} />);
   }
   if (!isLoading && !isFetching && buttonSet?.length === 0) {
     content = (
-      <p className="bg-amber-100 text-black p-3 rounded-lg border-l-3 border-amber-400 w-full col-span-2">
+      <p className="bg-[#FEFBED] text-center text-[#643315] text-md font-normal py-5 rounded-md col-span-2">
         Social link not found!
       </p>
     );
   }
   if (!isLoading && !isFetching && buttonSet?.length > 0) {
-    content = buttonSet?.map((item: TypesOfButton) => {
+    content = visibleButtons?.map((item: TypesOfButton) => {
       const { url, name, id } = item || {};
       return (
         <div key={id} className="flex flex-col gap-1">
-          <p className="text-md text-medium">{name}</p>
-          <div className="flex gap-2 items-center justify-between border border-gray-300 px-4 py-2 rounded-md break-all">
-            <p className="text-sm">{url}</p>
+          <p className="text-sm uppercase font-medium text-[#687388]">{name}</p>
+          <div className="flex gap-2 items-center justify-between border-2 border-[#E7EBF2] px-4 py-2 rounded-xl break-all">
+            <p className="text-sm">{url?.slice(0, 22)}...</p>
             <button
               onClick={() => {
                 setOpen(true);
@@ -94,32 +88,48 @@ function SingleSocialButtons() {
   }
 
   return (
-    <div className="jost border border-gray-300 p-5 md:p-10 rounded-lg bg-white">
-      <div className="border-b border-gray-300 pb-5 flex justify-between w-full items-center">
+    <div className="jost border border-gray-200 p-5 md:p-10 rounded-3xl shadow bg-white">
+      <div className="border-b md:flex-row flex-col gap-3 md:gap-0 border-gray-200 pb-3 md:pb-8 flex justify-between w-full items-center">
         <div className="flex flex-col">
-          <p className="text-xl text-medium">Onboard Social Buttons</p>
-          <p className="text-gray-400 text-sm font-normal">
+          <p className="text-lg md:text-xl text-[#121625] font-medium">
+            Onboard Social Buttons
+          </p>
+          <p className="text-[#9FA9BB] text-xs md:text-sm font-normal">
             View and update social buttons
           </p>
         </div>
         <div className="flex gap-3 items-center">
           <button
             onClick={() => setAddButton(true)}
-            className="border border-gray-300 w-10 h-10 flex justify-center items-center rounded-md shadow cursor-pointer"
+            className="border border-[#E7EBF2] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
           >
-            <i className="fa-regular fa-plus"></i>
+            <FilePlus color="#8C98AE" size={20} />
           </button>
+
           <button
             onClick={() => setIsShowButton(true)}
-            className="border border-gray-300 w-10 h-10 flex justify-center items-center rounded-md shadow cursor-pointer"
+            className="border border-[#E7EBF2] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
           >
-            <i className="fa-regular fa-pen-to-square"></i>
+            <FilePenLine color="#8C98AE" size={20} />
           </button>
         </div>
       </div>
-      <div className="mt-5 grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div className="mt-3 md:mt-8 grid grid-cols-1 lg:grid-cols-2 gap-5">
         {content}
       </div>
+      {!isLoading && !isFetching && (buttonSet?.length ?? 0) > 6 && (
+        <div className="mt-6 flex justify-center">
+          <button
+            type="button"
+            onClick={() => setShowAllButtons((prev) => !prev)}
+            className="rounded-lg cursor-pointer border border-[#E7EBF2] px-5 py-2.5 text-sm font-medium text-[#687388] transition hover:bg-gray-50 hover:text-gray-900"
+          >
+            {showAllButtons
+              ? "Show less"
+              : `Show more (${buttonSet!.length - 6})`}
+          </button>
+        </div>
+      )}
       {isShowButton && (
         <EditButton
           isShowButton={isShowButton}
@@ -137,7 +147,7 @@ function SingleSocialButtons() {
       {selected && (
         <WarningPopup
           open={open}
-          title="Do you want delete this button?"
+          title="Do you want to delete this social button?"
           description={`Deleting this button will permanently remove all associated data from the database. This action cannot be undone. Click "Delete" to continue or "Close" to cancel.`}
           smButton="Delete"
           clButton="Close"

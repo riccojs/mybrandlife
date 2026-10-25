@@ -34,14 +34,14 @@ function UserpassUpdate() {
   };
 
   return (
-    <div className="mt-5">
+    <div className="mt-0 md:mt-5">
       <div className="my-5">
-        <p className="text-gray-700 text-medium text-xl pb-5">
+        <p className="text-gray-700 text-medium text-md md:text-xl pb-5">
           Update your password
         </p>
       </div>
       <form>
-        <div className="grid grid-cols-1 gap-5 my-5">
+        <div className="grid grid-cols-1 gap-5 my-0 md:my-5">
           <div className="flex flex-col gap-2 w-full">
             <label>New Password</label>
             <PasswordComponent
@@ -69,8 +69,9 @@ function UserpassUpdate() {
         </div>
 
         <button
-          className="primary-btn max-w-fit flex gap-2 items-center"
+          className="bg-[#96c94b] min-w-24 w-24 h-10 justify-center rounded-lg max-w-fit flex gap-2 items-center mt-3 md:mt-0"
           type="button"
+          disabled={isLoading}
           onClick={() => {
             if (password?.length === 0) {
               return toast.error("Enter password");

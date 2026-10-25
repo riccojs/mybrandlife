@@ -20,8 +20,10 @@ function UpdateEcho({ isShow, setShow, id }: DataTypes) {
           isShow ? "zoom-animation" : ""
         }`}
       >
-        <div className="flex flex-col gap-5 rounded-2xl p-8">
-          <h2 className="text-[#3D424B] font-medium text-3xl">Update Echo</h2>
+        <div className="flex flex-col gap-5 rounded-2xl p-5 md:p-8">
+          <h2 className="text-[#3D424B] font-medium text-xl md:text-2xl">
+            Update Echo
+          </h2>
           {isLoading ? (
             <div className="flex items-center justify-center h-[50vh]">
               <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-[#96c94b] border-solid"></div>

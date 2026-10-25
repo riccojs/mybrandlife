@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useToggleAccountActivationMutation } from "../../redux/features/auth/authApi";
 import SelectComponent from "../ui/Select.component";
+import { LoaderCircle } from "lucide-react";
 
 interface DataTypes {
   isShow: boolean;
@@ -93,16 +94,17 @@ function DeactivateUser({ isShow, setShow, id, status }: DataTypes) {
             <div className="flex gap-3 items-center mt-5">
               <button
                 onClick={() => setShow(false)}
-                className="bg-slate-200 px-6 py-3 cursor-pointer rounded-lg flex gap-2 items-center w-fit mt-3"
+                disabled={isLoading}
+                className="bg-slate-200 text-[#000000] flex justify-center items-center gap-1 w-fit border border-gray-200 px-10 h-12 rounded-lg cursor-pointer"
               >
                 Close
               </button>
-              <button className="bg-[#cbf38b] px-6 py-3 cursor-pointer rounded-lg flex gap-2 items-center w-fit mt-3">
-                {isLoading ? (
-                  <i className="fa-solid fa-circle-notch animate-spin"></i>
-                ) : (
-                  "Save"
-                )}
+              <button
+                disabled={isLoading}
+                type="submit"
+                className={`${isLoading ? "bg-[#77a630] cursor-not-allowed" : "bg-[#96c94b] cursor-pointer"}  text-[#000000] flex justify-center items-center gap-1 min-w-32 w-32 h-12 rounded-lg`}
+              >
+                {isLoading ? <LoaderCircle className="animate-spin" /> : "Save"}
               </button>
             </div>
           </form>

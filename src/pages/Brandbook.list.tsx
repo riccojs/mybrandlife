@@ -48,8 +48,11 @@ function BrandbookList() {
     userId: "",
   });
   const events = data?.data?.event;
-  const totalItems = data?.data?.totalEvent;
+  const totalItem = data?.data?.totalEvent;
   const brandbookId = view ? view : selected;
+  const currentPage = data?.data?.currentPage || [];
+  const start = (currentPage - 1) * limit + 1;
+  const end = Math.min(currentPage * limit, totalItem);
 
   const handlePageChange = (value: number) => {
     searchParams.set("page", value.toString());
@@ -89,8 +92,8 @@ function BrandbookList() {
   if (!isLoading && !isFetching && events?.length === 0) {
     content = (
       <tr>
-        <td colSpan={7}>
-          <p className="bg-amber-100 text-md font-normal p-3 rounded-md">
+        <td colSpan={7} className="p-0!">
+          <p className="bg-[#FEFBED] text-center text-[#643315] text-md font-normal py-5 rounded-md">
             Data not found!
           </p>
         </td>
@@ -111,31 +114,31 @@ function BrandbookList() {
         const { id, name, email, date, time, note, status } = item || {};
 
         return (
-          <tr key={id}>
+          <tr key={id} className="hover:bg-gray-50">
             <td>{name}</td>
-            <td>{email?.slice(0, 18)}..</td>
+            <td className="text-sm">{email?.slice(0, 20)}..</td>
             <td>{formattedDate(date)}</td>
             <td>{time}</td>
             <td>{note}</td>
             <td>
               <p
-                className={`w-fit px-3 py-1 rounded-md text-center font-medium text-sm capitalize ${
+                className={`w-fit px-3 py-1 rounded-md text-center font-medium text-xs ${
                   status === "PENDING" || status === "REJECTED"
-                    ? "bg-red-100 text-red-500"
-                    : "bg-green-100 text-green-500"
+                    ? "bg-red-100 text-red-700"
+                    : "bg-green-100 text-green-700"
                 }`}
               >
                 {status}
               </p>
             </td>
             <td>
-              <div className="flex gap-3">
+              <div className="flex gap-2">
                 <button
                   onClick={() => {
                     setSelected(id);
                     setViewEvent(true);
                   }}
-                  className="border border-gray-300 min-w-8 w-8 h-8 flex justify-center items-center rounded-md cursor-pointer"
+                  className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
                 >
                   <i className="fa-regular fa-eye"></i>
                 </button>
@@ -144,7 +147,7 @@ function BrandbookList() {
                     setSelected(id);
                     setUpdateEvent(true);
                   }}
-                  className="border border-gray-300 min-w-8 w-8 h-8 flex justify-center items-center rounded-md cursor-pointer"
+                  className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
                 >
                   <i className="fa-regular fa-pen-to-square"></i>
                 </button>
@@ -153,7 +156,7 @@ function BrandbookList() {
                     setOpen(true);
                     setSelected(id);
                   }}
-                  className="border border-gray-300 min-w-8 w-8 h-8 flex justify-center items-center rounded-md cursor-pointer"
+                  className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
                 >
                   <RiDeleteBin5Line size={20} />
                 </button>
@@ -171,12 +174,9 @@ function BrandbookList() {
         <div className="flex md:flex-row flex-col justify-between items-start md:items-center">
           <div className="md:w-6/12 w-full">
             <h2 className="text-normal text-2xl md:text-3xl">BrandBook</h2>
-            <ul className="flex gap-2 items-center py-2">
+            <ul className="flex gap-2 flex-wrap items-center py-2">
               <li>
-                <Link
-                  to="/admin/dashboard"
-                  className="text-normal text-sm md:text-base"
-                >
+                <Link to="/" className="text-normal text-sm md:text-base">
                   Dashboard
                 </Link>
               </li>
@@ -191,62 +191,61 @@ function BrandbookList() {
             </ul>
           </div>
         </div>
-        <div className="flex flex-col gap-5 mt-5">
-          <div className="w-full 2xl:flex-row flex-col gap-5 flex justify-between items-center">
-            <div className="flex w-full md:flex-row flex-col justify-between items-start gap-3">
-              <div className="w-full md:w-96">
-                <SearchComponent
-                  name="search"
-                  color="white"
-                  placeholder="Seach by name"
-                  required={false}
-                  autoComplete="text"
-                  value={search}
-                  handleChange={(e) => {
-                    const value = e.target.value;
-                    if (value) {
-                      searchParams.set("search", value);
-                      searchParams.set("page", "1");
-                    } else {
-                      searchParams.delete("search");
-                      searchParams.delete("page");
-                    }
-                    setSearchParams(searchParams);
-                  }}
-                />
-              </div>
-              <div className="w-full md:w-52">
-                <SelectComponent
-                  value={status}
-                  color="white"
-                  handleChange={(item: string) => {
-                    if (item) {
-                      searchParams.set("status", item);
-                      searchParams.set("page", "1");
-                    } else {
-                      searchParams.delete("status");
-                      searchParams.delete("page");
-                    }
-                    setSearchParams(searchParams);
-                  }}
-                  datas={[
-                    { key: "Pending", value: "PENDING" },
-                    { key: "Confirmed", value: "CONFIRMED" },
-                    { key: "Rejected", value: "REJECTED" },
-                    { key: "Canceled", value: "CANCELED" },
-                    { key: "Expired", value: "EXPIRED" },
-                  ]}
-                  label="Select Status"
-                />
-              </div>
+
+        <div className="w-full mx-auto bg-white rounded-2xl border border-gray-200 shadow-sm mt-3">
+          <div className="flex md:flex-row flex-col gap-3 md:gap-0 items-center w-full justify-between p-6">
+            <div className="w-full md:w-96">
+              <SearchComponent
+                name="search"
+                color="white"
+                placeholder="Seach by name"
+                required={false}
+                autoComplete="text"
+                value={search}
+                handleChange={(e) => {
+                  const value = e.target.value;
+                  if (value) {
+                    searchParams.set("search", value);
+                    searchParams.set("page", "1");
+                  } else {
+                    searchParams.delete("search");
+                    searchParams.delete("page");
+                  }
+                  setSearchParams(searchParams);
+                }}
+              />
+            </div>
+            <div className="w-full md:w-52">
+              <SelectComponent
+                value={status}
+                color="white"
+                handleChange={(item: string) => {
+                  if (item) {
+                    searchParams.set("status", item);
+                    searchParams.set("page", "1");
+                  } else {
+                    searchParams.delete("status");
+                    searchParams.delete("page");
+                  }
+                  setSearchParams(searchParams);
+                }}
+                datas={[
+                  { key: "Pending", value: "PENDING" },
+                  { key: "Confirmed", value: "CONFIRMED" },
+                  { key: "Rejected", value: "REJECTED" },
+                  { key: "Canceled", value: "CANCELED" },
+                  { key: "Expired", value: "EXPIRED" },
+                ]}
+                label="Select Status"
+              />
             </div>
           </div>
-          <div className="overflow-x-auto bg-white">
-            <table className="my-table table-fixed w-full min-w-300">
-              <thead>
-                <tr className="border-y border-gray-300">
+          <div className="xl:overflow-x-auto overflow-x-scroll custom-scroll bg-white">
+            <table className="my-table table-fixed w-full min-w-350">
+              <thead className="text-xs uppercase text-gray-500 bg-gray-50">
+                <tr className="border-y border-gray-200">
                   <th>Name</th>
-                  <th className="w-52">Email</th>
+                  <th>Email</th>
                   <th>Selected Date</th>
                   <th>Selected Time</th>
                   <th>Note</th>
@@ -257,15 +256,22 @@ function BrandbookList() {
               <tbody>{content}</tbody>
             </table>
           </div>
+          <div className="flex flex-wrap md:gap-0 gap-3 items-center justify-between px-6 py-5 border-t border-gray-200">
+            <p className="text-sm text-gray-400">
+              Showing <span className="font-medium text-gray-500">{start}</span>{" "}
+              to <span className="font-medium text-gray-500">{end}</span> of{" "}
+              <span className="font-medium text-gray-700">{totalItem}</span>{" "}
+              results
+            </p>
+            <Pagination
+              handlePageChange={handlePageChange}
+              page={page}
+              totalItems={totalItem}
+              itemsPerPage={limit}
+            />
+          </div>
         </div>
-        {totalItems > limit && (
-          <Pagination
-            handlePageChange={handlePageChange}
-            page={page}
-            totalItems={totalItems}
-            itemsPerPage={limit}
-          />
-        )}
+
         {isShow && enableEvent && (
           <BrandbookAgreement
             setShow={setIsShow}
@@ -299,7 +305,7 @@ function BrandbookList() {
         {selected && (
           <WarningPopup
             open={open}
-            title="Do you want delete this BrandBook Request?"
+            title="Do you want to delete this BrandBook Request?"
             description={`Deleting this BrandBook Request will permanently remove all associated data from the database. This action cannot be undone. Click "Delete" to continue or "Close" to cancel.`}
             smButton="Delete"
             clButton="Close"

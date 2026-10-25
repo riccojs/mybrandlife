@@ -347,14 +347,15 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
             <div className="flex gap-3 items-center">
               <button
                 onClick={() => setIsShowFiles(false)}
-                className="bg-slate-200 text-[#000000] flex justify-center items-center gap-1 w-fit border border-gray-200 px-10 py-3 rounded-2xl cursor-pointer"
+                disabled={isLoading}
+                className="bg-slate-200 text-[#000000] flex justify-center items-center gap-1 w-fit border border-gray-200 px-10 h-12 rounded-lg cursor-pointer"
               >
                 Close
               </button>
               <button
                 disabled={isLoading}
                 type="submit"
-                className="bg-[#BDF188] text-[#000000] flex justify-center items-center gap-1 w-fit border border-[#76c725] px-10 py-3 rounded-2xl cursor-pointer"
+                className={`${isLoading ? "bg-[#77a630] cursor-not-allowed" : "bg-[#96c94b] cursor-pointer"}  text-[#000000] flex justify-center items-center gap-1 min-w-32 w-32 h-12 rounded-lg`}
               >
                 {isLoading ? <LoaderCircle className="animate-spin" /> : "Save"}
               </button>

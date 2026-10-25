@@ -6,10 +6,11 @@ import { DayPicker } from "react-day-picker";
 import type { BrandbookType } from "../../utils/brandbook.types";
 import SelectComponent from "../ui/Select.component";
 import "react-day-picker/style.css";
+import { LoaderCircle } from "lucide-react";
 
 interface TypeForm {
   data: {
-    even: BrandbookType;
+    event: BrandbookType;
   };
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   id: string;
@@ -17,12 +18,12 @@ interface TypeForm {
 
 function BrandbookForm({ data, setShow, id }: TypeForm) {
   const [brandbook, setBrandbook] = useState({
-    name: data?.even?.name || "",
-    email: data?.even?.email || "",
-    date: data?.even?.date || "",
-    time: data?.even?.time || "",
-    note: data?.even?.note || "",
-    status: data?.even?.status || "",
+    name: data?.event?.name || "",
+    email: data?.event?.email || "",
+    date: data?.event?.date || "",
+    time: data?.event?.time || "",
+    note: data?.event.note || "",
+    status: data?.event?.status || "",
   });
 
   const [updateEvent, { isLoading }] = useUpdateEventMutation();
@@ -70,6 +71,7 @@ function BrandbookForm({ data, setShow, id }: TypeForm) {
     }
     return "";
   };
+
   return (
     <form onSubmit={handleSubmit} className="w-full">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start mt-5">
@@ -125,7 +127,7 @@ function BrandbookForm({ data, setShow, id }: TypeForm) {
             placeholder="Select time"
           />
         </div>
-        <div className="w-full bg-[#F3F3F3] border border-gray-300 rounded-lg p-3">
+        <div className="min-w-64 w-full custom-scroll overflow-x-auto bg-[#F3F3F3] border border-gray-300 rounded-lg p-3">
           <DayPicker
             mode="single"
             selected={new Date(date)}
@@ -150,23 +152,20 @@ function BrandbookForm({ data, setShow, id }: TypeForm) {
         </div>
       </div>
 
-      <div className="flex gap-3 items-center">
+      <div className="flex gap-3 items-center mt-5">
         <button
-          type="button"
           onClick={() => setShow(false)}
-          className="bg-slate-200 px-6 py-3 cursor-pointer rounded-lg flex gap-2 items-center w-fit mt-3"
+          disabled={isLoading}
+          className="bg-slate-200 text-[#000000] flex justify-center items-center gap-1 w-fit border border-gray-200 px-10 h-12 rounded-lg cursor-pointer"
         >
           Close
         </button>
         <button
+          disabled={isLoading}
           type="submit"
-          className="bg-[#cbf38b] px-6 py-3 cursor-pointer rounded-lg flex gap-2 items-center w-fit mt-3"
+          className={`${isLoading ? "bg-[#77a630] cursor-not-allowed" : "bg-[#96c94b] cursor-pointer"}  text-[#000000] flex justify-center items-center gap-1 min-w-32 w-32 h-12 rounded-lg`}
         >
-          {isLoading ? (
-            <i className="fa-solid fa-circle-notch animate-spin"></i>
-          ) : (
-            "Save"
-          )}
+          {isLoading ? <LoaderCircle className="animate-spin" /> : "Save"}
         </button>
       </div>
     </form>
