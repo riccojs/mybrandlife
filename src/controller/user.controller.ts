@@ -120,7 +120,11 @@ export async function getAllUserByAdmin(req: Request, res: Response) {
         userTemplete: true,
       },
     });
-    const templates = await Prisma.userTemplete.findMany();
+    const templates = await Prisma.userTemplete.findMany({
+      include: {
+        user: true,
+      },
+    });
     res.status(200).json({
       status: SUCCESS_STATUS,
       message: QUERY_SUCCESSFUL_MESSAGE,

@@ -292,7 +292,7 @@ export async function createEvent(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `${name} create brandbook successfully`,
-      redirectUrl: `/admin/brandbook?view=${newBrandbook?.id}`,
+      redirectUrl: `/brandbook?view=${newBrandbook?.id}`,
       profile: null,
       seen: false,
       userId: null,
@@ -606,7 +606,7 @@ export async function updateEventStatus(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `${existEvent?.user?.landerName} ${status} brandbook status successfully`,
-      redirectUrl: `/admin/brandbook?view=${existEvent?.id}`,
+      redirectUrl: `/brandbook?view=${existEvent?.id}`,
       profile: existEvent?.user?.profile ? existEvent?.user?.profile : null,
       seen: false,
       userId: existEvent?.user?.id,
@@ -725,7 +725,7 @@ export async function deleteEvent(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `${existEvent?.user?.landerName} delete brandbook successfully`,
-      redirectUrl: `/admin/brandbook?view=${existEvent?.id}`,
+      redirectUrl: `/brandbook?view=${existEvent?.id}`,
       profile: existEvent?.user?.profile ? existEvent?.user?.profile : null,
       seen: false,
       userId: existEvent?.user?.id,
