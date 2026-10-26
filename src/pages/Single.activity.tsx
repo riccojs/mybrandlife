@@ -1,4 +1,4 @@
-import { Copy, ArrowLeftIcon } from "lucide-react";
+import { Copy, ArrowLeft } from "lucide-react";
 import { Link, useParams } from "react-router";
 import toast from "react-hot-toast";
 import type { ActivitiesType } from "../utils/activities.type";
@@ -34,17 +34,14 @@ export default function SingleActivity() {
   }
   if (!isFetching && !isLoading && data) {
     content = (
-      <div className="min-h-screen p-6">
+      <div className="min-h-screen p-3 md:p-6">
         <div className="flex items-center justify-between mb-6">
           <div className="flex md:flex-row flex-col justify-between items-start md:items-center">
             <div className="w-full">
-              <h2 className="text-normal text-2xl md:text-3xl">Activity Log</h2>
-              <ul className="flex gap-2 items-center py-2">
+              <h2 className="text-normal text-xl md:text-3xl">Activity Log</h2>
+              <ul className="flex gap-2 flex-wrap items-center py-2">
                 <li>
-                  <Link
-                    to="/admin/dashboard"
-                    className="text-normal text-sm md:text-base"
-                  >
+                  <Link to="/" className="text-normal text-sm md:text-base">
                     Dashboard
                   </Link>
                 </li>
@@ -63,10 +60,10 @@ export default function SingleActivity() {
           <div className="flex gap-3">
             <Link
               to="/activity"
-              className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-3 hover:bg-gray-50"
+              className="bg-[#96c94b] text-black md:w-fit w-full justify-center flex gap-2 items-center px-6 py-2 md:py-3 rounded-lg text-normal text-md"
             >
-              <ArrowLeftIcon size={16} />
-              back
+              <ArrowLeft size={20} />
+              <span>Back</span>
             </Link>
           </div>
         </div>
@@ -74,20 +71,20 @@ export default function SingleActivity() {
           <div className="grid grid-cols-12 gap-6">
             <div className="col-span-12 lg:col-span-4 rounded-xl bg-white border border-gray-300 p-8">
               <div className="flex flex-col items-center">
-                <p className="w-24 min-w-24 h-24 rounded-full flex justify-center items-center bg-slate-300 text-xl">
+                <p className="w-16 md:w-24 min-w-16 md:min-w-24 h-16 md:h-24 rounded-full flex justify-center items-center bg-slate-300 textlg md:text-xl">
                   {method}
                 </p>
-                <h2 className="mt-5 text-xl font-semibold max-w-full break-all">
+                <h2 className="mt-5 text-md md:text-xl font-semibold max-w-full break-all">
                   {action?.slice(0, 100)}...
                 </h2>
-                <p className="mt-2 text-gray-400">
+                <p className="mt-2 text-gray-400 text-sm md:text-base">
                   Created At: {formattedDate(create_at)}
                 </p>
                 <p className="mt-2 text-xs text-gray-400">
                   End Point: {endpoint}
                 </p>
                 <button
-                  className={`mt-8 w-full rounded-lg border py-3 font-medium ${status === "SUCCESS" ? "bg-green-100 text-green-500" : "bg-red-100 text-red-500"}`}
+                  className={`mt-8 w-full text-sm md:text-base rounded-lg border p-2 md:py-3 font-medium ${status === "SUCCESS" ? "bg-green-100 text-green-500" : "bg-red-100 text-red-500"}`}
                 >
                   {status}
                 </button>
@@ -97,46 +94,50 @@ export default function SingleActivity() {
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-10">
                 <div>
                   <p className="text-sm text-gray-400">LOG ID</p>
-                  <h4 className="mt-2 font-semibold text-gray-700">
+                  <h4 className="mt-2 font-semibold text-gray-700 text-sm md:text-base">
                     {id?.slice(0, 20)}...
                   </h4>
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">USER ID</p>
-                  <h4 className="mt-2 font-semibold text-gray-700">
-                    {userId ? `${userId?.slice(0, 20)}...` : "N/A"}
+                  <h4 className="mt-2 font-semibold text-gray-700 text-sm md:text-base">
+                    {userId ? `${userId?.slice(0, 20)}...` : "-"}
                   </h4>
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">METHOD</p>
-                  <h4 className="mt-2 font-semibold text-gray-700">{method}</h4>
+                  <h4 className="mt-2 font-semibold text-gray-700 text-sm md:text-base">
+                    {method}
+                  </h4>
                 </div>
 
                 <div>
                   <p className="text-sm text-gray-400">STATUS</p>
-                  <h4 className="mt-2 font-semibold text-gray-700">{status}</h4>
+                  <h4 className="mt-2 font-semibold text-gray-700 text-sm md:text-base">
+                    {status}
+                  </h4>
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">CREATED AT</p>
-                  <h4 className="mt-2 font-semibold text-gray-700">
+                  <h4 className="mt-2 font-semibold text-gray-700 text-sm md:text-base">
                     {formattedDate(create_at)}
                   </h4>
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">UPDATE AT</p>
-                  <h4 className="mt-2 font-semibold text-gray-700">
+                  <h4 className="mt-2 font-semibold text-gray-700 text-sm md:text-base">
                     {formattedDate(update_at)}
                   </h4>
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">ENDPOINT</p>
-                  <h4 className="mt-2 font-normal text-gray-700 text-sm max-w-full break-all">
+                  <h4 className="mt-2 font-normal text-gray-700 text-sm max-w-full break-all md:text-base">
                     {endpoint}
                   </h4>
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">ACTION</p>
-                  <h4 className="mt-2 text-gray-700 text-sm max-w-full break-all">
+                  <h4 className="mt-2 text-gray-700 text-sm max-w-full break-all md:text-base">
                     {action}
                   </h4>
                 </div>
@@ -145,15 +146,17 @@ export default function SingleActivity() {
           </div>
           <div className="rounded-xl border border-gray-300 bg-white p-6">
             <div className="flex gap-3 mb-8">
-              <button className="rounded-lg bg-gray-100 px-5 py-3">
+              <button className="rounded-lg bg-green-100 text-green-700 text-sm font-medium px-5 py-3">
                 REQUEST DETAILS
               </button>
             </div>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-3">
-                <h2 className="text-md text-gray-400">ENDPONT:</h2>
-                <div className="bg-gray-100 px-6 py-3 rounded-lg flex w-full justify-between items-center">
-                  <p>{endpoint}</p>
+                <h2 className="text-md text-gray-400 text-sm md:text-base">
+                  ENDPONT:
+                </h2>
+                <div className="bg-gray-100 px-6 py-3 rounded-lg flex w-full justify-between items-center text-sm md:text-base">
+                  <p className="break-all">{endpoint}</p>
                   <Copy
                     onClick={() => handleCopy(endpoint)}
                     color="gray"
@@ -162,8 +165,10 @@ export default function SingleActivity() {
                 </div>
               </div>
               <div className="flex flex-col gap-3">
-                <h2 className="text-md text-gray-400">LOG ID:</h2>
-                <div className="bg-gray-100 px-6 py-3 rounded-lg flex w-full justify-between items-center">
+                <h2 className="text-md text-gray-400 text-sm md:text-base">
+                  LOG ID:
+                </h2>
+                <div className="bg-gray-100 px-6 py-3 rounded-lg flex w-full justify-between items-center text-sm md:text-base">
                   <p>{id}</p>
                   <Copy
                     onClick={() => handleCopy(id)}

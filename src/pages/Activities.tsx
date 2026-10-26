@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import toast from "react-hot-toast";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { Search } from "lucide-react";
 import WarningPopup from "../component/Warning.popup";
 import Pagination from "../component/Pagination";
 import SelectComponent from "../component/ui/Select.component";
@@ -12,6 +11,7 @@ import {
   useGetAllActivitiesQuery,
 } from "../redux/features/activities/activitiesApi";
 import type { ActivitiesType } from "../utils/activities.type";
+import SearchComponent from "../component/ui/Search.component";
 
 function Activities() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -32,8 +32,11 @@ function Activities() {
     methodBy,
   });
 
-  const totalItems = data?.data?.totalActivities;
+  const totalItem = data?.data?.totalActivities;
   const activities = data?.data?.activities;
+  const currentPage = data?.data?.currentPage || [];
+  const start = (currentPage - 1) * limit + 1;
+  const end = Math.min(currentPage * limit, totalItem);
 
   const handlePageChange = (value: number) => {
     searchParams.set("page", value.toString());
@@ -90,8 +93,8 @@ function Activities() {
   if (!isLoading && !isFetching && activities?.length === 0) {
     content = (
       <tr>
-        <td colSpan={6}>
-          <p className="bg-amber-100 text-md font-normal p-3 rounded-md">
+        <td colSpan={6} className="p-0!">
+          <p className="bg-[#FEFBED] text-center text-[#643315] text-md font-normal py-5 rounded-md">
             Data not found!
           </p>
         </td>
@@ -103,27 +106,27 @@ function Activities() {
       const { id, action, method, userId, status } = item || {};
 
       return (
-        <tr key={id}>
-          <td>{id}</td>
-          <td>{userId ? userId : "N/A"}</td>
+        <tr key={id} className="hover:bg-gray-50">
+          <td className="text-sm text-gray-500">{id}</td>
+          <td className="text-sm text-gray-500">{userId ? userId : "-"}</td>
           <td>{method}</td>
           <td>{action}</td>
           <td>
             <p
-              className={`w-fit px-3 py-1 rounded-md text-center font-medium text-sm ${
+              className={`w-fit px-3 py-1 rounded-md text-center font-medium text-xs ${
                 status === "SUCCESS"
-                  ? "bg-green-100 text-green-500"
-                  : "bg-red-100 text-red-500"
+                  ? "bg-green-100 text-green-700"
+                  : "bg-red-100 text-red-700"
               }`}
             >
               {status}
             </p>
           </td>
           <td>
-            <div className="flex gap-3">
+            <div className="flex gap-2">
               <Link
                 to={`/activity/${id}`}
-                className="border border-gray-300 min-w-8 w-8 h-8 flex justify-center items-center rounded-md cursor-pointer"
+                className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
               >
                 <i className="fa-regular fa-eye"></i>
               </Link>
@@ -132,7 +135,7 @@ function Activities() {
                   setOpen(true);
                   setSelectedId(id);
                 }}
-                className="border border-gray-300 w-8 h-8 flex justify-center items-center rounded-md cursor-pointer"
+                className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
               >
                 <i className="fa-regular fa-trash-can"></i>
               </button>
@@ -149,12 +152,9 @@ function Activities() {
         <div className="flex md:flex-row flex-col justify-between items-start md:items-center">
           <div className="md:w-6/12 w-full">
             <h2 className="text-normal text-2xl md:text-3xl">Acitvity Log</h2>
-            <ul className="flex gap-2 items-center py-2">
+            <ul className="flex flex-wrap gap-2 items-center py-2">
               <li>
-                <Link
-                  to="/admin/dashboard"
-                  className="text-normal text-sm md:text-base"
-                >
+                <Link to="/" className="text-normal text-sm md:text-base">
                   Dashboard
                 </Link>
               </li>
@@ -167,16 +167,17 @@ function Activities() {
             </ul>
           </div>
         </div>
-        <div className="w-full mt-5 mx-auto bg-white rounded-2xl border border-gray-200">
-          <div className="flex flex-wrap gap-3 md:gap-0 items-center justify-between p-6">
-            <div className="relative w-96">
-              <Search
-                size={18}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-              />
-              <input
-                type="text"
-                onChange={(e) => {
+        <div className="w-full mx-auto bg-white rounded-2xl border border-gray-200 shadow-sm mt-3">
+          <div className="flex md:flex-row flex-col gap-3 md:gap-0 items-center w-full justify-between p-6">
+            <div className="w-full md:w-96">
+              <SearchComponent
+                name="search"
+                color="white"
+                placeholder="Seach by user id"
+                required={false}
+                autoComplete="text"
+                value={searchBy}
+                handleChange={(e) => {
                   const value = e.target.value;
                   if (value) {
                     searchParams.set("search", value);
@@ -187,9 +188,6 @@ function Activities() {
                   }
                   setSearchParams(searchParams);
                 }}
-                value={searchBy}
-                placeholder="Search by user id..."
-                className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 outline-none text-sm"
               />
             </div>
             <div className="flex gap-5">
@@ -225,38 +223,42 @@ function Activities() {
               </div>
             </div>
           </div>
-          <div className="overflow-x-auto bg-white">
-            <table className="my-table table-fixed w-full min-w-300">
-              <thead>
-                <tr className="border-y border-gray-300">
-                  <th className="text-md text-gray-500 font-normal">LOG ID</th>
-                  <th className="text-md text-gray-500 font-normal">USER ID</th>
-                  <th className="text-md text-gray-500 font-normal">METHOD</th>
-                  <th className="text-md text-gray-500 font-normal">
-                    LOG ACTION
-                  </th>
-                  <th className="text-md text-gray-500 font-normal">STATUS</th>
-                  <th className="text-md text-gray-500 font-normal">ACTION</th>
+          <div className="xl:overflow-x-auto overflow-x-scroll custom-scroll bg-white">
+            <table className="my-table table-fixed w-full min-w-350">
+              <thead className="text-xs uppercase text-gray-500 bg-gray-50">
+                <tr className="border-y border-gray-200">
+                  <th>LOG ID</th>
+                  <th>USER ID</th>
+                  <th>METHOD</th>
+                  <th>LOG ACTION</th>
+                  <th>STATUS</th>
+                  <th>ACTION</th>
                 </tr>
               </thead>
               <tbody>{content}</tbody>
             </table>
           </div>
+          <div className="flex flex-wrap md:gap-0 gap-3 items-center justify-between px-6 py-5 border-t border-gray-200">
+            <p className="text-sm text-gray-400">
+              Showing <span className="font-medium text-gray-500">{start}</span>{" "}
+              to <span className="font-medium text-gray-500">{end}</span> of{" "}
+              <span className="font-medium text-gray-700">{totalItem}</span>{" "}
+              results
+            </p>
+            <Pagination
+              handlePageChange={handlePageChange}
+              page={page}
+              totalItems={totalItem}
+              itemsPerPage={limit}
+            />
+          </div>
         </div>
-        {totalItems > limit && (
-          <Pagination
-            handlePageChange={handlePageChange}
-            page={page}
-            totalItems={totalItems}
-            itemsPerPage={limit}
-          />
-        )}
       </div>
 
       {selectId && (
         <WarningPopup
           open={open}
-          title="Do you want delete this log?"
+          title="Do you want to delete this log?"
           description={`Deleting this log will permanently remove all associated data from the database. This action cannot be undone. Click "Delete" to continue or "Close" to cancel.`}
           smButton="Delete"
           clButton="Close"

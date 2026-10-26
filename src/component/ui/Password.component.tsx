@@ -1,3 +1,4 @@
+import { LockKeyhole } from "lucide-react";
 import React, { useState } from "react";
 
 interface Types {
@@ -23,7 +24,7 @@ function PasswordComponent({
   return (
     <div
       tabIndex={0}
-      className={`relative bg-[#F3F3F3] border text-base border-gray-300 focus-within:border-[#96c94b] focus-within:border py-3 px-3 w-full rounded-xl ${
+      className={`relative bg-[#F7F9FB] border text-slate-900 text-sm border-[#dce5f2] focus-within:border-[#96c94b] focus-within:border py-3 px-3 w-full rounded-xl ${
         isError ? "border-red-500" : ""
       }`}
     >
@@ -35,7 +36,7 @@ function PasswordComponent({
         onChange={handleChange}
         required={required}
         autoComplete={autoComplete}
-        className="text-normal text-base outline-none w-full"
+        className="text-normal text-base outline-none w-full pl-8"
       />
       {showPass ? (
         <i
@@ -48,6 +49,7 @@ function PasswordComponent({
           onClick={() => setShowPass(true)}
         ></i>
       )}
+      <LockKeyhole className="absolute top-3 left-3 text-slate-700" size={22} />
     </div>
   );
 }

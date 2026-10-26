@@ -79,7 +79,7 @@ function SettingProfile({ setUser, user, logoRef }: DataTypes) {
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        className={`relative flex flex-col items-center justify-center gap-3 border-2 border-dashed rounded-xl py-16 cursor-pointer transition ${
+        className={`relative flex flex-col items-center justify-center gap-3 border-2 border-dashed rounded-xl py-6 md:py-12 cursor-pointer transition ${
           isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300 bg-white"
         }`}
       >
@@ -92,9 +92,9 @@ function SettingProfile({ setUser, user, logoRef }: DataTypes) {
           onChange={handleFileChange}
         />
 
-        <CiImageOn color="#0084F9" size={90} />
+        <CiImageOn color="#0084F9" size={50} />
 
-        <h3 className="text-xl font-medium text-black">
+        <h3 className="text-base md:text-xl font-medium text-black">
           Drag & Drop your image
         </h3>
 
@@ -102,15 +102,15 @@ function SettingProfile({ setUser, user, logoRef }: DataTypes) {
       </label>
 
       {user.profile && (
-        <div className="bg-[#F5F9FC] flex justify-between items-center p-4 mt-5 rounded-md">
+        <div className="bg-[#F5F9FC] flex justify-between items-center py-2 px-4 mt-3 rounded-md">
           <p className="truncate">
             {typeof user.profile === "string"
               ? user.profile.split("/").pop()
               : user.profile.name}
           </p>
 
-          <span className="w-12 h-12 flex items-center justify-center rounded-full bg-green-100">
-            <CheckCircle className="text-green-600" />
+          <span className="w-10 h-10 flex items-center justify-center rounded-full bg-green-100">
+            <CheckCircle className="text-green-600" size={20} />
           </span>
         </div>
       )}

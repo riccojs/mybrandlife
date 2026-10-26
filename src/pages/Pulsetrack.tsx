@@ -1,4 +1,4 @@
-import { Search, Pencil, Eye, Trash2 } from "lucide-react";
+import { Pencil, Eye, Trash2 } from "lucide-react";
 import { useState } from "react";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import toast from "react-hot-toast";
@@ -14,6 +14,7 @@ import {
 import ViewProject from "../component/pulsetrack/View.project";
 import Pagination from "../component/Pagination";
 import type { PulsetrackType } from "../utils/pulsetrack.types";
+import SearchComponent from "../component/ui/Search.component";
 
 const statusStyles: Record<string, string> = {
   ACTIVATE: "bg-emerald-100 text-emerald-700",
@@ -21,19 +22,6 @@ const statusStyles: Record<string, string> = {
   PENDING: "bg-gray-200 text-gray-600",
   SUSPEND: "bg-gray-300 text-gray-700",
   DEACTIVATE: "bg-gray-300 text-gray-700",
-};
-
-const avatarColors: string[] = [
-  "bg-lime-100 text-lime-600",
-  "bg-gray-200 text-gray-600",
-  "bg-green-100 text-green-600",
-  "bg-yellow-100 text-yellow-700",
-  "bg-red-100 text-red-600",
-];
-
-const getColorFromName = (name: string) => {
-  const charCode = name.charCodeAt(0);
-  return avatarColors[charCode % avatarColors.length];
 };
 
 const Pulsetrack = () => {
@@ -97,8 +85,8 @@ const Pulsetrack = () => {
   if (!isFetching && !isLoading && pulsetrack?.length === 0) {
     content = (
       <tr>
-        <td colSpan={6}>
-          <p className="bg-amber-100 text-md font-normal p-3 rounded-md">
+        <td colSpan={6} className="p-0!">
+          <p className="bg-[#FEFBED] text-center text-[#643315] text-md font-normal py-5 rounded-md">
             Data not found!
           </p>
         </td>
@@ -107,7 +95,7 @@ const Pulsetrack = () => {
   }
   if (!isFetching && !isLoading && pulsetrack?.length > 0) {
     content = pulsetrack?.map((item: PulsetrackType) => {
-      const { id, name, idPrefix, basePath, create_at, active } = item;
+      const { id, name, idPrefix, basePath, create_at, active, total } = item;
       const formattedDate = (value: string) => {
         const createDate = new Date(value);
         return createDate?.toLocaleDateString("en-GB", {
@@ -117,63 +105,59 @@ const Pulsetrack = () => {
         });
       };
       return (
-        <tr
-          key={id}
-          className="border-t border-gray-100 hover:bg-gray-50 transition"
-        >
-          <td className="px-6 py-5">
-            <div className="flex items-center gap-4">
-              <div
-                className={`w-14 min-w-14 h-11 rounded-xl flex items-center justify-center font-semibold text-sm ${getColorFromName(name || "")}`}
-              >
-                {name?.slice(0, 3).toUpperCase()}
-              </div>
-              <Link
-                to={`/pulsetrack/${id}`}
-                className="font-medium text-gray-800 hover:underline"
-              >
-                {name}
-              </Link>
+        <tr key={id} className="hover:bg-gray-50">
+          <td>
+            <div className="flex gap-2 items-center">
+              <p className="capitalize w-10 min-w-10 h-10 mn-h-10 bg-gray-100 text-black text-xl font-medium rounded-full flex justify-center items-center">
+                {name?.slice(0, 1)}
+              </p>
+              <span>
+                <h2 className="text-md text-medium jost">{name}</h2>
+                <p className="text-xs text-gray-400">
+                  Join: {formattedDate(create_at)}
+                </p>
+              </span>
             </div>
           </td>
-          <td className="px-6 py-5 text-gray-600 text-sm">
-            {formattedDate(create_at)}
-          </td>
-          <td className="px-6 py-5">
+          <td className="font-medium text-gray-600 text-sm">${total}</td>
+          <td>
             <span
               className={`px-3 py-1 text-xs font-medium rounded-full ${statusStyles[active]}`}
             >
               {active}
             </span>
           </td>
-          <td className="px-6 py-5 font-medium">{idPrefix}</td>
-          <td className="px-6 py-5 font-medium">{basePath}</td>
+          <td>{idPrefix}</td>
+          <td>{basePath}</td>
           <td className="px-6 py-5">
-            <div className="flex gap-4 text-gray-500">
-              <Pencil
-                size={18}
+            <div className="flex gap-2 text-gray-500">
+              <button
                 onClick={() => {
                   setShow(true);
                   setSelectedId(id);
                 }}
-                className="cursor-pointer hover:text-gray-700"
-              />
-              <Eye
-                size={18}
+                className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
+              >
+                <Pencil size={20} />
+              </button>
+              <button
                 onClick={() => {
                   setOpenProject(true);
                   setSelectedId(id);
                 }}
-                className="cursor-pointer hover:text-gray-700"
-              />
-              <Trash2
-                size={18}
+                className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
+              >
+                <Eye size={20} />
+              </button>
+              <button
                 onClick={() => {
                   setOpen(true);
                   setSelectedId(id);
                 }}
-                className="cursor-pointer hover:text-red-500"
-              />
+                className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
+              >
+                <Trash2 size={20} />
+              </button>
             </div>
           </td>
         </tr>
@@ -182,16 +166,13 @@ const Pulsetrack = () => {
   }
 
   return (
-    <section className="bg-gray-50 min-h-screen p-5">
+    <section className="min-h-screen p-5">
       <div className="flex md:flex-row flex-col justify-between items-start md:items-center">
         <div className="md:w-6/12 w-full">
           <h2 className="text-normal text-2xl md:text-3xl">Pulsetrack</h2>
-          <ul className="flex gap-2 items-center py-2">
+          <ul className="flex gap-2 items-center py-2 flex-wrap">
             <li>
-              <Link
-                to="/admin/dashboard"
-                className="text-normal text-sm md:text-base"
-              >
+              <Link to="/" className="text-normal text-sm md:text-base">
                 Dashboard
               </Link>
             </li>
@@ -206,24 +187,27 @@ const Pulsetrack = () => {
           </ul>
         </div>
       </div>
-      <div className="w-full mx-auto bg-white rounded-2xl border border-gray-200 shadow-sm">
-        <div className="flex flex-wrap gap-3 md:gap-0 items-center justify-between p-6 border-b border-gray-200">
-          <div className="relative w-96">
-            <Search
-              size={18}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-            />
-            <input
-              type="text"
-              onChange={(e) => {
+      <div className="w-full mx-auto bg-white rounded-2xl border border-gray-200 shadow-sm mt-3">
+        <div className="flex md:flex-row flex-col gap-3 md:gap-0 items-center w-full justify-between p-6">
+          <div className="w-full md:w-96">
+            <SearchComponent
+              name="search"
+              color="white"
+              placeholder="Seach by ID prefix"
+              required={false}
+              autoComplete="text"
+              value={searchBy}
+              handleChange={(e) => {
                 const value = e.target.value;
-                searchParams.set("search", value);
-                searchParams.set("page", "1");
+                if (value) {
+                  searchParams.set("search", value);
+                  searchParams.set("page", "1");
+                } else {
+                  searchParams.delete("search");
+                  searchParams.delete("page");
+                }
                 setSearchParams(searchParams);
               }}
-              value={searchBy}
-              placeholder="Search pulsetrack..."
-              className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 outline-none text-sm"
             />
           </div>
           <div className="w-full md:w-52">
@@ -242,39 +226,36 @@ const Pulsetrack = () => {
             />
           </div>
         </div>
-        <div className="bg-white rounded-xl border border-gray-200">
-          <div className="overflow-x-auto">
-            <table className="w-full table-fixed border-collapse min-w-325">
+        <div className="bg-white rounded-xl">
+          <div className="xl:overflow-x-auto overflow-x-scroll custom-scroll bg-white">
+            <table className="my-table table-fixed w-full min-w-350">
               <thead className="text-xs uppercase text-gray-500 bg-gray-50">
-                <tr>
-                  <th className="text-left px-6 py-4 w-96">Project Name</th>
-                  <th className="text-left px-6 py-4">Date Created</th>
-                  <th className="text-left px-6 py-4">Status</th>
-                  <th className="text-left px-6 py-4">ID Prefix</th>
-                  <th className="text-left px-6 py-4">Base Path</th>
-                  <th className="text-left px-6 py-4">Actions</th>
+                <tr className="border-y border-gray-200">
+                  <th>Project Name</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>ID Prefix</th>
+                  <th>Base Path</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
-
               <tbody>{content}</tbody>
             </table>
           </div>
         </div>
         <div className="flex flex-wrap md:gap-0 gap-3 items-center justify-between px-6 py-5 border-t border-gray-200">
-          <p className="text-sm text-gray-500">
-            Showing <span className="font-medium text-gray-700">{start}</span>{" "}
-            to <span className="font-medium text-gray-700">{end}</span> of{" "}
+          <p className="text-sm text-gray-400">
+            Showing <span className="font-medium text-gray-500">{start}</span>{" "}
+            to <span className="font-medium text-gray-500">{end}</span> of{" "}
             <span className="font-medium text-gray-700">{totalItem}</span>{" "}
             results
           </p>
-          {totalItem > limit && (
-            <Pagination
-              handlePageChange={handlePageChange}
-              page={page}
-              totalItems={totalItem}
-              itemsPerPage={limit}
-            />
-          )}
+          <Pagination
+            handlePageChange={handlePageChange}
+            page={page}
+            totalItems={totalItem}
+            itemsPerPage={limit}
+          />
         </div>
       </div>
 
@@ -295,7 +276,7 @@ const Pulsetrack = () => {
       {selectId && (
         <WarningPopup
           open={open}
-          title="Do you want delete pulsetrack project report?"
+          title="Do you want to delete this pulsetrack project?"
           description={`Deleting this pulsetrack project will permanently remove all associated data from the database. This action cannot be undone. Click "Delete" to continue or "Close" to cancel.`}
           smButton="Delete"
           clButton="Close"

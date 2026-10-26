@@ -65,8 +65,8 @@ const ContactVault = () => {
   if (!isFetching && !isLoading && requests?.length === 0) {
     content = (
       <tr>
-        <td colSpan={6}>
-          <p className="bg-amber-100 text-md font-normal p-3 rounded-md">
+        <td colSpan={7} className="p-0!">
+          <p className="bg-[#FEFBED] text-center text-[#643315] text-md font-normal py-5 rounded-md">
             Data not found!
           </p>
         </td>
@@ -85,38 +85,35 @@ const ContactVault = () => {
         });
       };
       return (
-        <tr
-          key={id}
-          className="border-t border-gray-100 hover:bg-gray-50 transition"
-        >
-          <td className="px-6 py-5 text-gray-600 text-sm">
-            {formattedDate(create_at)}
-          </td>
-          <td className="px-6 py-5 text-gray-600 text-sm">{name}</td>
-          <td className="px-6 py-5 text-gray-600 text-sm">{email}</td>
-          <td className="px-6 py-5 text-gray-600 text-sm">{phone}</td>
-          <td className="px-6 py-5 text-gray-600 text-sm">{note}</td>
-          <td className="px-6 py-5 text-gray-600 text-sm">
+        <tr key={id} className="hover:bg-gray-50">
+          <td className="text-gray-600 text-sm">{formattedDate(create_at)}</td>
+          <td className="text-gray-600 text-sm">{name}</td>
+          <td className="text-gray-600 text-sm break-all">{email}</td>
+          <td className="text-gray-600 text-sm">{phone}</td>
+          <td className="text-gray-600 text-sm">{note}</td>
+          <td className="text-gray-600 text-sm break-all">
             {templete?.user?.domain}/{templete?.user?.landerName}
           </td>
-          <td className="px-6 py-5">
-            <div className="flex gap-4 text-gray-500">
+          <td>
+            <div className="flex gap-2">
               <button
                 onClick={() => {
                   setView(true);
                   setSelectedId(id);
                 }}
+                className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
               >
-                <Eye size={18} className="cursor-pointer hover:text-gray-700" />
+                <Eye size={20} />
               </button>
-              <Trash2
-                size={18}
+              <button
                 onClick={() => {
                   setOpen(true);
                   setSelectedId(id);
                 }}
-                className="cursor-pointer hover:text-red-500"
-              />
+                className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
+              >
+                <Trash2 size={20} />
+              </button>
             </div>
           </td>
         </tr>
@@ -128,13 +125,10 @@ const ContactVault = () => {
     <section className="p-5">
       <div className="flex md:flex-row flex-col justify-between items-start md:items-center">
         <div className="md:w-6/12 w-full">
-          <h2 className="text-normal text-2xl md:text-3xl">Contact Vault</h2>
-          <ul className="flex gap-2 items-center py-2">
+          <h2 className="text-normal text-xl md:text-3xl">Contact Vault</h2>
+          <ul className="flex gap-2 flex-wrap items-center py-2">
             <li>
-              <Link
-                to="/admin/dashboard"
-                className="text-normal text-sm md:text-base"
-              >
+              <Link to="/" className="text-normal text-sm md:text-base">
                 Dashboard
               </Link>
             </li>
@@ -149,8 +143,8 @@ const ContactVault = () => {
           </ul>
         </div>
       </div>
-      <div className="w-full 2xl:flex-row flex-col gap-5 flex justify-between items-center mt-5">
-        <div className="flex w-full md:flex-row flex-col justify-between items-start gap-3">
+      <div className="w-full mx-auto bg-white rounded-2xl border border-gray-200 shadow-sm mt-3">
+        <div className="flex md:flex-row flex-col gap-3 md:gap-0 items-center w-full justify-between p-6">
           <div className="w-full md:w-96">
             <SearchComponent
               name="search"
@@ -173,62 +167,56 @@ const ContactVault = () => {
             />
           </div>
         </div>
-      </div>
-      <div className="w-full mx-auto bg-white rounded-2xl border border-gray-200 shadow-sm mt-5">
-        <div className="p-5">
-          <h2>Request List</h2>
-        </div>
-        <div className="bg-white rounded-xl border border-gray-200">
-          <div className="overflow-x-auto">
-            <table className="w-full table-fixed border-collapse min-w-325">
+
+        <div className="bg-white rounded-xl">
+          <div className="xl:overflow-x-auto overflow-x-scroll custom-scroll bg-white">
+            <table className="my-table table-fixed w-full min-w-350">
               <thead className="text-xs uppercase text-gray-500 bg-gray-50">
-                <tr>
-                  <th className="text-left px-6 py-4">Submit at</th>
-                  <th className="text-left px-6 py-4">Request Name</th>
-                  <th className="text-left px-6 py-4">Request Email</th>
-                  <th className="text-left px-6 py-4">Request Phone</th>
-                  <th className="text-left px-6 py-4">Request Note</th>
-                  <th className="text-left px-6 py-4">Request Page</th>
-                  <th className="text-left px-6 py-4">Actions</th>
+                <tr className="border-y border-gray-200">
+                  <th>Submit at</th>
+                  <th>Request Name</th>
+                  <th>Request Email</th>
+                  <th>Request Phone</th>
+                  <th>Request Note</th>
+                  <th>Request Page</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
-
               <tbody>{content}</tbody>
             </table>
           </div>
-        </div>
-        <div className="flex flex-wrap md:gap-0 gap-3 items-center justify-between px-6 py-5 border-t border-gray-200">
-          <p className="text-sm text-gray-500">
-            Showing <span className="font-medium text-gray-700">{start}</span>{" "}
-            to <span className="font-medium text-gray-700">{end}</span> of{" "}
-            <span className="font-medium text-gray-700">{totalItem}</span>{" "}
-            results
-          </p>
-          {totalItem > limit && (
+          <div className="flex flex-wrap md:gap-0 gap-3 items-center justify-between px-6 py-5 border-t border-gray-200">
+            <p className="text-sm text-gray-400">
+              Showing <span className="font-medium text-gray-500">{start}</span>{" "}
+              to <span className="font-medium text-gray-500">{end}</span> of{" "}
+              <span className="font-medium text-gray-700">{totalItem}</span>{" "}
+              results
+            </p>
             <Pagination
               handlePageChange={handlePageChange}
               page={page}
               totalItems={totalItem}
               itemsPerPage={limit}
             />
-          )}
+          </div>
         </div>
-        {view && selectId ? (
-          <ViewRequest setShow={setView} isShow={view} id={selectId} />
-        ) : null}
-        {selectId && (
-          <WarningPopup
-            open={open}
-            title="Do you want delete this contact vault?"
-            description={`Deleting this contact vault will permanently remove all associated data from the database. This action cannot be undone. Click "Delete" to continue or "Close" to cancel.`}
-            smButton="Delete"
-            clButton="Close"
-            onClose={() => setOpen(false)}
-            onConfirm={() => handleDelete(selectId)}
-            loading={delLoad}
-          />
-        )}
       </div>
+
+      {view && selectId ? (
+        <ViewRequest setShow={setView} isShow={view} id={selectId} />
+      ) : null}
+      {selectId && (
+        <WarningPopup
+          open={open}
+          title="Do you want to delete this contact vault?"
+          description={`Deleting this contact vault will permanently remove all associated data from the database. This action cannot be undone. Click "Delete" to continue or "Close" to cancel.`}
+          smButton="Delete"
+          clButton="Close"
+          onClose={() => setOpen(false)}
+          onConfirm={() => handleDelete(selectId)}
+          loading={delLoad}
+        />
+      )}
     </section>
   );
 };

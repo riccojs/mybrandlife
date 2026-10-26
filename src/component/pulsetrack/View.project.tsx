@@ -1,4 +1,4 @@
-import { Folder, Save, User } from "lucide-react";
+import { Folder, User } from "lucide-react";
 import useBodyScroll from "../../hook/userBodyscroll";
 import type { PulsetrackType } from "../../utils/pulsetrack.types";
 import { useGetOnePulsetrackQuery } from "../../redux/features/pulsetrack/pulsetrackApi";
@@ -8,6 +8,14 @@ interface Props {
   onClose: () => void;
   id: string;
 }
+
+const statusStyles: Record<string, string> = {
+  ACTIVATE: "bg-emerald-100 text-emerald-700",
+  INPROCESS: "bg-amber-100 text-amber-700",
+  PENDING: "bg-gray-200 text-gray-600",
+  SUSPEND: "bg-gray-300 text-gray-700",
+  DEACTIVATE: "bg-gray-300 text-gray-700",
+};
 
 function ViewProject({ isOpen, onClose, id }: Props) {
   useBodyScroll(isOpen);
@@ -40,8 +48,9 @@ function ViewProject({ isOpen, onClose, id }: Props) {
               <h1 className="text-xl font-medium text-gray-900">{name}</h1>
               <p className="text-gray-500 mt-1">Project ID: #{idPrefix}</p>
             </div>
-            <span className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-green-700 bg-green-100 rounded-full">
-              <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+            <span
+              className={`flex items-center gap-2 px-3 py-2 text-xs font-medium ${statusStyles[active]} rounded-full`}
+            >
               {active}
             </span>
           </div>
@@ -129,14 +138,6 @@ function ViewProject({ isOpen, onClose, id }: Props) {
               className="px-6 py-2 cursor-pointer rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300"
             >
               Close
-            </button>
-
-            <button
-              onClick={() => onClose()}
-              className="flex cursor-pointer items-center gap-2 px-6 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600"
-            >
-              <Save size={16} />
-              SaVe
             </button>
           </div>
         </div>

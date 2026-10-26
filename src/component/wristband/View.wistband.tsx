@@ -3,6 +3,7 @@ import type { WristbandType } from "../../utils/wristband.types";
 import { useGetOneWristbandQuery } from "../../redux/features/wristband/wristbandApi";
 import useBodyScroll from "../../hook/userBodyscroll";
 import SingleEventLader from "../loader/Single.event.lader";
+import { X } from "lucide-react";
 
 interface DataTypes {
   isShow: boolean;
@@ -103,9 +104,9 @@ function ViewWistband({ isShow, setShow, id }: DataTypes) {
         )}
         <button
           onClick={() => setShow(false)}
-          className="text-gray-400 text-2xl absolute top-2 right-2 cursor-pointer"
+          className="absolute top-2 right-2 border border-[#E7EBF2] text-[#8C98AE] bg-[#f0f3f8] hover:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-full cursor-pointer"
         >
-          <i className="fa-solid fa-circle-xmark"></i>
+          <X size={20} />
         </button>
       </div>
     </div>

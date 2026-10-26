@@ -10,6 +10,7 @@ import {
   Phone,
   Pin,
   StickyNote,
+  X,
 } from "lucide-react";
 import useBodyScroll from "../../hook/userBodyscroll";
 import ViewRequestLoader from "../loader/View.request.loader";
@@ -39,9 +40,9 @@ function ViewRequest({ isShow, setShow, id }: DataTypes) {
   };
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center w-full min-h-screen z-50 overflow-auto bg-white/20 backdrop-blur-xs">
+    <div className="inset-0 bg-[#00000039] flex fixed left-0 justify-center items-center w-full h-auto min-h-screen z-50 overflow-auto">
       <div
-        className={`relative p-10 flex flex-col w-11/12 lg:w-8/12 xl:w-7/12 2xl:w-3/12 m-auto justify-center bg-white rounded-2xl shadow-xl ${
+        className={`relative p-6 md:p-10 flex flex-col w-11/12 lg:w-8/12 xl:w-7/12 2xl:w-3/12 m-auto justify-center bg-white rounded-2xl shadow-xl ${
           isShow ? "zoom-animation" : ""
         }`}
       >
@@ -86,7 +87,7 @@ function ViewRequest({ isShow, setShow, id }: DataTypes) {
                     <h2 className="text-[#3D424B] font-medium text-md">
                       Request Email
                     </h2>
-                    <p className="text-[#3D424B] font-normal text-sm">
+                    <p className="text-[#3D424B] font-normal text-sm break-all">
                       {email}
                     </p>
                   </div>
@@ -109,7 +110,7 @@ function ViewRequest({ isShow, setShow, id }: DataTypes) {
                     <NotebookTabs />
                   </span>
                   <div>
-                    <h2 className="text-[#3D424B] font-medium text-md">
+                    <h2 className="text-[#3D424B] font-medium text-md break-all">
                       Request Note
                     </h2>
                     <p className="text-[#3D424B] font-normal text-sm">{note}</p>
@@ -123,7 +124,7 @@ function ViewRequest({ isShow, setShow, id }: DataTypes) {
                     <h2 className="text-[#3D424B] font-medium text-md">
                       Request Page
                     </h2>
-                    <p className="text-[#3D424B] font-normal text-sm">
+                    <p className="text-[#3D424B] font-normal text-sm break-all">
                       {user?.domain}/${user?.landerName}
                     </p>
                   </div>
@@ -161,9 +162,9 @@ function ViewRequest({ isShow, setShow, id }: DataTypes) {
         )}
         <button
           onClick={() => setShow(false)}
-          className="text-red-500 text-2xl absolute top-1 right-1 cursor-pointer"
+          className="absolute top-2 right-2 border border-[#E7EBF2] text-[#8C98AE] bg-[#f0f3f8] hover:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-full cursor-pointer"
         >
-          <i className="fa-solid fa-circle-xmark"></i>
+          <X size={20} />
         </button>
       </div>
     </div>
