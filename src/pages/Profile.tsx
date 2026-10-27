@@ -1,6 +1,21 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
-import { MapPinHouse, NotebookTabs, SquarePen } from "lucide-react";
+import {
+  CardSim,
+  CircleCheckBig,
+  Earth,
+  FileUser,
+  MailSearch,
+  MapPinHouse,
+  NotebookPen,
+  NotebookTabs,
+  PencilSparkles,
+  SquareChartGantt,
+  SquarePen,
+  UserCheck,
+  UserRoundPen,
+  UserShield,
+} from "lucide-react";
 import { useAuth } from "../hook/useAuth";
 import type { LocationType } from "../utils/user.types";
 import UpdateAddress from "../component/profile/Update.address";
@@ -24,6 +39,7 @@ interface UserType {
   firstName: string | null;
   privateDomain: string | null;
   address: LocationType[];
+  planKey: string | null;
 }
 function Profile() {
   const { user } = useAuth() as authType;
@@ -42,6 +58,7 @@ function Profile() {
     domain,
     package: pkg,
     frequency,
+    planKey,
   } = user || {};
 
   const primaryAddress = user?.address?.find(
@@ -78,121 +95,147 @@ function Profile() {
         </div>
         <div>
           <div className="jost p-5 md:p-10 rounded-2xl shadow bg-white">
-            <div className="border-b border-gray-300 pb-5">
-              <p className="text-xl md:text-2xl text-medium">Profile Infos</p>
-              <p className="text-gray-500 text-md font-normal">
-                Your detailed profile info
-              </p>
-            </div>
-            <div className="mt-5">
-              <div className="border-b border-gray-300 pb-5">
+            <div className="relative rounded-2xl h-44 md:h-54 bg-linear-to-r from-[#08251e] via-[#064333] to-[#087354]">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_82%_20%,rgba(17,185,129,0.19),transparent_40%),radial-gradient(ellipse_at_40%_100%,rgba(4,120,87,0.12),transparent_45%)]" />
+
+              <div className="absolute left-2 md:left-7 top-4.5 rounded-full border border-white/15 bg-white/15 px-7 py-1.5 text-[10px] font-medium tracking-wide text-emerald-100">
+                Profile Infos
+              </div>
+
+              <div className="absolute right-2 md:right-7 top-4.5 flex items-center gap-2 rounded-full border border-white/15 bg-[#052e25]/75 px-5 py-1.5 text-[10px] text-emerald-100">
+                <CircleCheckBig size={12} />
+                {status}
+              </div>
+              <div className="absolute -bottom-8 md:-bottom-14 left-8">
                 {profile ? (
                   <img
                     src={profile}
                     alt=""
-                    className="w-16 md:w-24 rounded-md mt-2"
+                    className="w-18 md:w-32 rounded-full min-h-18 object-cover md:min-h-32 h-18 md:h-32"
                   />
                 ) : (
-                  <p className="md:min-w-24 md:min-h-24 w-16 md:w-24 h-16 md:h-24 rounded-md bg-gray-300 text-3xl md:text-6xl uppercase text-normal flex justify-center items-center">
+                  <p className="min-w-18 md:min-w-32 min-h-18 md:min-h-32 w-18 md:w-24 h-18 md:h-32 rounded-full bg-gray-300 text-6xl uppercase text-normal flex justify-center items-center">
                     {landerName?.slice(0, 1)}
                   </p>
                 )}
               </div>
+              <Link
+                to="/setting"
+                className="absolute -bottom-14 left-28 md:left-44 gap-2 border font-medium uppercase text-xs md:text-sm border-gray-200 bg-[#96c94b] text-black w-40 md:w-48 min-w-40 md:min-w-48 h-12 rounded-xl flex justify-center items-center"
+              >
+                <PencilSparkles size={20} />
+                <p>Update Setting</p>
+              </Link>
+            </div>
+            <div className="mt-20">
               <div className="grid grid-cols-1 md:grid-cols-2 mt-2 md:mt-5 gap-3 md:gap-6">
-                <div className="flex flex-col gap-1">
-                  <p>First Name</p>
-                  <span className="bg-[#F1F1F1] flex gap-2 items-center border border-gray-200 rounded-md">
-                    <i className="fa-solid fa-user-gear border-r border-gray-200 py-3 px-4 text-xl"></i>
-                    <p className="text-bold text-md p-3">
-                      {firstName ? firstName : "Not available"}
+                <div className="flex gap-2 items-center bg-[#F7F9FB] border-2 p-3 rounded-2xl border-gray-100">
+                  <p className="min-w-14 w-14 h-14 text-xl rounded-full border border-[#C7F3DC] bg-[#EDFCF4] text-[#67A585] flex justify-center items-center">
+                    <MailSearch size={22} />
+                  </p>
+                  <div>
+                    <p className="text-[#909BB1] text-sm uppercase">
+                      EMAIL ADDRESS
                     </p>
-                  </span>
+                    <p className="text-[#2E3442] text-md">{email}</p>
+                  </div>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <p>Mid Name</p>
-                  <span className="bg-[#F1F1F1] flex gap-2 items-center border border-gray-200 rounded-md">
-                    <i className="fa-regular fa-id-badge border-r border-gray-300 py-3 px-4 text-xl"></i>
-                    <p className="text-bold text-md p-3">
-                      {midName ? midName : "Not available"}
+                <div className="flex gap-2 items-center bg-[#F7F9FB] border-2 p-3 rounded-2xl border-gray-100">
+                  <p className="min-w-14 w-14 h-14 text-xl rounded-full border border-[#C7F3DC] bg-[#EDFCF4] text-[#67A585] flex justify-center items-center">
+                    <UserRoundPen size={22} />
+                  </p>
+                  <div>
+                    <p className="text-[#909BB1] text-sm uppercase">
+                      FIRST NAME
                     </p>
-                  </span>
+                    <p className="text-[#2E3442] text-md">{firstName}</p>
+                  </div>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <p>Last Name</p>
-                  <span className="bg-[#F1F1F1] flex gap-2 items-center border border-gray-200 rounded-md">
-                    <i className="fa-solid fa-user-gear border-r border-gray-200 py-3 px-4 text-xl"></i>
-                    <p className="text-bold text-md p-3">
-                      {lastName ? lastName : "Not available"}
+                <div className="flex gap-2 items-center bg-[#F7F9FB] border-2 p-3 rounded-2xl border-gray-100">
+                  <p className="min-w-14 w-14 h-14 text-xl rounded-full border border-[#C7F3DC] bg-[#EDFCF4] text-[#67A585] flex justify-center items-center">
+                    <UserShield size={22} />
+                  </p>
+                  <div>
+                    <p className="text-[#909BB1] text-sm uppercase">
+                      FIRST NAME
                     </p>
-                  </span>
+                    <p className="text-[#2E3442] text-md">{midName}</p>
+                  </div>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <p>Lander name</p>
-                  <span className="bg-[#F1F1F1] flex gap-2 items-center border border-gray-200 rounded-md">
-                    <i className="fa-regular fa-user border-r border-gray-300 py-3 px-4 text-xl"></i>
-                    <p className="text-bold text-md p-3">{landerName}</p>
-                  </span>
-                </div>
-
-                <div className="flex flex-col gap-1">
-                  <p>Email</p>
-                  <span className="bg-[#F1F1F1] break-all flex gap-2 items-center border border-gray-300 rounded-md">
-                    <i className="fa-regular fa-envelope border-r border-gray-300 px-4 py-3 text-xl"></i>
-                    <p className="text-bold text-md p-3">{email}</p>
-                  </span>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <p>Your phone number</p>
-                  <span className="bg-[#F1F1F1] flex gap-2 items-center border border-gray-200 rounded-md">
-                    <i className="fa-solid fa-phone-volume border-r border-gray-300 py-3 px-4 text-lg"></i>
-                    <p className="text-bold text-md p-3">
-                      {phone ? phone : "Not availavle"}
+                <div className="flex gap-2 items-center bg-[#F7F9FB] border-2 p-3 rounded-2xl border-gray-100">
+                  <p className="min-w-14 w-14 h-14 text-xl rounded-full border border-[#C7F3DC] bg-[#EDFCF4] text-[#67A585] flex justify-center items-center">
+                    <UserCheck size={22} />
+                  </p>
+                  <div>
+                    <p className="text-[#909BB1] text-sm uppercase">
+                      LAST NAME
                     </p>
-                  </span>
+                    <p className="text-[#2E3442] text-md">{lastName}</p>
+                  </div>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <p>Membership Domain</p>
-                  <span className="bg-[#F1F1F1] flex gap-2 items-center border border-gray-200 rounded-md">
-                    <i className="fa-solid fa-people-group border-r border-gray-300 py-3 px-4 text-xl"></i>
-                    <p className="text-bold text-md p-3 uppercase">
-                      {domain ? domain : "Not available"}
+                <div className="flex gap-2 items-center bg-[#F7F9FB] border-2 p-3 rounded-2xl border-gray-100">
+                  <p className="min-w-14 w-14 h-14 text-xl rounded-full border border-[#C7F3DC] bg-[#EDFCF4] text-[#67A585] flex justify-center items-center">
+                    <FileUser size={22} />
+                  </p>
+                  <div>
+                    <p className="text-[#909BB1] text-sm uppercase">
+                      LANDER NAME
                     </p>
-                  </span>
+                    <p className="text-[#2E3442] text-md">{landerName}</p>
+                  </div>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <p>Membership Package</p>
-                  <span className="bg-[#F1F1F1] flex gap-2 items-center border border-gray-200 rounded-md">
-                    <i className="fa-solid fa-people-group border-r border-gray-300 py-3 px-4 text-xl"></i>
-                    <p className="text-bold text-md p-3 uppercase">
-                      {pkg ? pkg : "Not available"}
+                <div className="flex gap-2 items-center bg-[#F7F9FB] border-2 p-3 rounded-2xl border-gray-100">
+                  <p className="min-w-14 w-14 h-14 text-xl rounded-full border border-[#C7F3DC] bg-[#EDFCF4] text-[#67A585] flex justify-center items-center">
+                    <CardSim size={22} />
+                  </p>
+                  <div>
+                    <p className="text-[#909BB1] text-sm uppercase">
+                      PHONE NUMBER
                     </p>
-                  </span>
+                    <p className="text-[#2E3442] text-md">{phone}</p>
+                  </div>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <p>Membership Frequency</p>
-                  <span className="bg-[#F1F1F1] flex gap-2 items-center border border-gray-200 rounded-md">
-                    <i className="fa-solid fa-people-group border-r border-gray-300 py-3 px-4 text-xl"></i>
-                    <p className="text-bold text-md p-3 uppercase">
-                      {frequency ? frequency : "Not available"}
+                <div className="flex gap-2 items-center bg-[#F7F9FB] border-2 p-3 rounded-2xl border-gray-100">
+                  <p className="min-w-14 w-14 h-14 text-xl rounded-full border border-[#C7F3DC] bg-[#EDFCF4] text-[#67A585] flex justify-center items-center">
+                    <Earth size={22} />
+                  </p>
+                  <div>
+                    <p className="text-[#909BB1] text-sm uppercase">
+                      USER DOMAIN
                     </p>
-                  </span>
+                    <p className="text-[#2E3442] text-md">{domain}</p>
+                  </div>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <p>Profile Status</p>
-                  <span className="bg-[#F1F1F1] flex gap-2 items-center border border-gray-200 rounded-md">
-                    <div className="border-r border-gray-300 py-3 px-4">
-                      <i className="fa-solid fa-circle-check text-xl"></i>
-                    </div>
-                    <p
-                      className={` py-1 px-3 rounded-md text-xs font-bold w-fit ${
-                        status === "ACTIVATE"
-                          ? "text-green-500 bg-green-100"
-                          : "text-red-500 bg-red-100"
-                      }`}
-                    >
-                      {status}
+                <div className="flex gap-2 items-center bg-[#F7F9FB] border-2 p-3 rounded-2xl border-gray-100">
+                  <p className="min-w-14 w-14 h-14 text-xl rounded-full border border-[#C7F3DC] bg-[#EDFCF4] text-[#67A585] flex justify-center items-center">
+                    <SquareChartGantt size={22} />
+                  </p>
+                  <div>
+                    <p className="text-[#909BB1] text-sm uppercase">
+                      MEMBERSHIP PACKAGE
                     </p>
-                  </span>
+                    <p className="text-[#2E3442] text-md">{pkg}</p>
+                  </div>
+                </div>
+                <div className="flex gap-2 items-center bg-[#F7F9FB] border-2 p-3 rounded-2xl border-gray-100">
+                  <p className="min-w-14 w-14 h-14 text-xl rounded-full border border-[#C7F3DC] bg-[#EDFCF4] text-[#67A585] flex justify-center items-center">
+                    <NotebookPen size={22} />
+                  </p>
+                  <div>
+                    <p className="text-[#909BB1] text-sm uppercase">
+                      PLAN FREQUENCY
+                    </p>
+                    <p className="text-[#2E3442] text-md">{frequency}</p>
+                  </div>
+                </div>
+                <div className="flex gap-2 items-center bg-[#F7F9FB] border-2 p-3 rounded-2xl border-gray-100">
+                  <p className="min-w-14 w-14 h-14 text-xl rounded-full border border-[#C7F3DC] bg-[#EDFCF4] text-[#67A585] flex justify-center items-center">
+                    <NotebookTabs size={22} />
+                  </p>
+                  <div>
+                    <p className="text-[#909BB1] text-sm uppercase">PLAN KEY</p>
+                    <p className="text-[#2E3442] text-md">{planKey}</p>
+                  </div>
                 </div>
               </div>
             </div>

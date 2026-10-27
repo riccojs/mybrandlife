@@ -69,7 +69,9 @@ function UpdatePhone({ setUser, user }: Props) {
   };
   return (
     <div className="relative flex flex-col gap-1">
-      <label className="text-md font-normal">Phone Number</label>
+      <label className="text-sm font-semibold text-slate-900">
+        Phone Number
+      </label>
 
       <div className="relative">
         <input
@@ -112,7 +114,7 @@ function UpdatePhone({ setUser, user }: Props) {
           </div>
         )}
       </div>
-      <p className="text-black bg-amber-50 px-3 py-2 text-sm mt-1 rounded-xl">
+      <p className="bg-[#FEFBED] text-[#643315] text-xs font-normal px-3 py-2 rounded-lg mt-1">
         Country code must be selected before entering the phone number.
       </p>
     </div>

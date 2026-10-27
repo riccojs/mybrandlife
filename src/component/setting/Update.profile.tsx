@@ -61,14 +61,16 @@ function UpdateProfile({ setUser, user, logoRef }: DataTypes) {
   };
 
   return (
-    <div className="flex flex-col gap-1 md:col-span-2">
-      <label htmlFor="">Dashboard Profile Picture</label>
+    <div className="flex flex-col gap-1">
+      <label className="text-sm font-semibold text-slate-900">
+        Dashboard Profile Picture
+      </label>
       <label
         htmlFor="imageUpload"
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        className={`relative flex flex-col items-center justify-center gap-3 border-2 border-dashed rounded-xl py-6 cursor-pointer transition ${
+        className={`relative flex flex-col items-center justify-center gap-1 border-2 border-dashed rounded-xl py-3 cursor-pointer transition ${
           isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300 bg-white"
         }`}
       >
@@ -81,25 +83,25 @@ function UpdateProfile({ setUser, user, logoRef }: DataTypes) {
           onChange={handleFileChange}
         />
 
-        <CiImageOn color="#0084F9" size={50} />
+        <CiImageOn color="#0084F9" size={20} />
 
-        <h3 className="text-base md:text-xl font-medium text-black">
+        <h3 className="text-sm font-medium text-black">
           Drag & Drop your image
         </h3>
 
-        <p className="text-gray-500 text-sm">PNG, JPG, JPEG • Max size 2 MB</p>
+        <p className="text-gray-500 text-xs">PNG, JPG, JPEG • Max size 2 MB</p>
       </label>
 
       {user.profile && (
-        <div className="bg-[#F5F9FC] flex justify-between items-center p-4 mt-5 rounded-xl">
+        <div className="bg-[#F5F9FC] flex justify-between items-center px-3 py-2 text-sm rounded-xl">
           <p className="truncate">
             {typeof user.profile === "string"
               ? user.profile.split("/").pop()
               : user.profile.name}
           </p>
 
-          <span className="w-12 h-12 flex items-center justify-center rounded-full bg-green-100">
-            <CheckCircle className="text-green-600" />
+          <span className="w-5 h-5 flex items-center justify-center rounded-full bg-green-100">
+            <CheckCircle className="text-green-600" size={10} />
           </span>
         </div>
       )}
