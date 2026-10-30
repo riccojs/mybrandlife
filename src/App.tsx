@@ -38,81 +38,90 @@ import ResetPassword from "./pages/Reset.password";
 import GoldRoute from "./route/Gold.route";
 import SilverRoute from "./route/Silver.route";
 import MaintenanceRoute from "./route/Maintenance.route";
+import { HelmetProvider } from "react-helmet-async";
 
 function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
       <MaintenanceRoute>
-        <Routes>
-          <Route element={<AuthRoute />}>
-            <Route path="/auth/login" element={<Login />} />
-            <Route path="/auth/reset" element={<Reset />} />
-            <Route path="/auth/reset/:token" element={<ResetPassword />} />
-          </Route>
-          <Route element={<PrivateRoute />}>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/build-your-lander" element={<CreateOnboard />} />
-            <Route path="/onboard/:id" element={<UpdateOnboard />} />
-            <Route path="/onboard/update/:id" element={<SIngleOnboard />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/setting" element={<Setting />} />
-            <Route path="/subscription" element={<Subscription />} />
-            <Route path="/onboard" element={<OnboardingList />} />
-            <Route element={<SilverRoute />}>
-              <Route path="/brandbook" element={<Brandbook />} />
-              <Route path="/brandbook/slot" element={<CreateSlot />} />
-              <Route path="/spin" element={<SpinList />} />
-              <Route path="/wristband" element={<OrderedWristband />} />
-              <Route path="/wristband/:id" element={<OrderedWristbandView />} />
-              <Route
-                path="/brandbook/google/connect/success"
-                element={<GoogleConnectsuccess />}
-              />
-              <Route
-                path="/wristband/confirmation/:id"
-                element={<WristbandOrderConfirmation />}
-              />
+        <HelmetProvider>
+          <Routes>
+            <Route element={<AuthRoute />}>
+              <Route path="/auth/login" element={<Login />} />
+              <Route path="/auth/reset" element={<Reset />} />
+              <Route path="/auth/reset/:token" element={<ResetPassword />} />
             </Route>
-            <Route element={<GoldRoute />}>
-              <Route path="/brandbook/slot" element={<CreateSlot />} />
-              <Route path="/echo" element={<Echos />} />
-              <Route path="/brandbook" element={<Brandbook />} />
-              <Route path="/brandtrack" element={<Brandtrack />} />
-              <Route path="/spin" element={<SpinList />} />
-              <Route path="/wristband" element={<OrderedWristband />} />
-              <Route path="/wristband/:id" element={<OrderedWristbandView />} />
-              <Route
-                path="/wristband/confirmation/:id"
-                element={<WristbandOrderConfirmation />}
-              />
-              <Route
-                path="/brandbook/google/connect/success"
-                element={<GoogleConnectsuccess />}
-              />
-              <Route
-                path="/echo/stripe/connect/success"
-                element={<StripeConnectsuccess />}
-              />
-              <Route
-                path="/stripe/tip/payment/success"
-                element={<TipPaymentSuccess />}
-              />
-              <Route path="/brandshare" element={<JoinUserList />} />
+            <Route element={<PrivateRoute />}>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/build-your-lander" element={<CreateOnboard />} />
+              <Route path="/onboard/:id" element={<UpdateOnboard />} />
+              <Route path="/onboard/update/:id" element={<SIngleOnboard />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/setting" element={<Setting />} />
+              <Route path="/subscription" element={<Subscription />} />
+              <Route path="/onboard" element={<OnboardingList />} />
+              <Route element={<SilverRoute />}>
+                <Route path="/brandbook" element={<Brandbook />} />
+                <Route path="/brandbook/slot" element={<CreateSlot />} />
+                <Route path="/spin" element={<SpinList />} />
+                <Route path="/wristband" element={<OrderedWristband />} />
+                <Route
+                  path="/wristband/:id"
+                  element={<OrderedWristbandView />}
+                />
+                <Route
+                  path="/brandbook/google/connect/success"
+                  element={<GoogleConnectsuccess />}
+                />
+                <Route
+                  path="/wristband/confirmation/:id"
+                  element={<WristbandOrderConfirmation />}
+                />
+              </Route>
+              <Route element={<GoldRoute />}>
+                <Route path="/brandbook/slot" element={<CreateSlot />} />
+                <Route path="/echo" element={<Echos />} />
+                <Route path="/brandbook" element={<Brandbook />} />
+                <Route path="/brandtrack" element={<Brandtrack />} />
+                <Route path="/spin" element={<SpinList />} />
+                <Route path="/wristband" element={<OrderedWristband />} />
+                <Route
+                  path="/wristband/:id"
+                  element={<OrderedWristbandView />}
+                />
+                <Route
+                  path="/wristband/confirmation/:id"
+                  element={<WristbandOrderConfirmation />}
+                />
+                <Route
+                  path="/brandbook/google/connect/success"
+                  element={<GoogleConnectsuccess />}
+                />
+                <Route
+                  path="/echo/stripe/connect/success"
+                  element={<StripeConnectsuccess />}
+                />
+                <Route
+                  path="/stripe/tip/payment/success"
+                  element={<TipPaymentSuccess />}
+                />
+                <Route path="/brandshare" element={<JoinUserList />} />
 
-              <Route path="/pulsetrack" element={<Pulsetrack />}>
-                <Route index element={<PulsetrackDashboard />} />
-                <Route path="projects" element={<ProjectList />} />
-                <Route path="projects/:id" element={<WristbandStore />} />
-                <Route path="orders" element={<OrderList />} />
-                <Route path="orders/success/:id" element={<OrderSummery />} />
-                <Route path="export" element={<ExportData />} />
-                <Route path="setting" element={<Dashboard />} />
+                <Route path="/pulsetrack" element={<Pulsetrack />}>
+                  <Route index element={<PulsetrackDashboard />} />
+                  <Route path="projects" element={<ProjectList />} />
+                  <Route path="projects/:id" element={<WristbandStore />} />
+                  <Route path="orders" element={<OrderList />} />
+                  <Route path="orders/success/:id" element={<OrderSummery />} />
+                  <Route path="export" element={<ExportData />} />
+                  <Route path="setting" element={<Dashboard />} />
+                </Route>
               </Route>
             </Route>
-          </Route>
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+        </HelmetProvider>
       </MaintenanceRoute>
       <Toaster />
     </BrowserRouter>
