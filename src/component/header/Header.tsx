@@ -84,7 +84,7 @@ function Header() {
                     }`
                   }
                 >
-                  Follow US
+                  Follow Us
                 </NavLink>
               </li>
               <li>
@@ -117,7 +117,7 @@ function Header() {
               </li>
               <li>
                 <NavLink
-                  to="/about-us"
+                  to="/about"
                   className={({ isActive }) =>
                     `text-sm font-medium pb-1 hover:text-[#65B32E] hover:border-b-2 hover:border-[#65B32E] transition-all duration-100 ${
                       isActive
@@ -126,7 +126,7 @@ function Header() {
                     }`
                   }
                 >
-                  About Us
+                  About
                 </NavLink>
               </li>
             </ul>

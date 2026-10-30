@@ -1,6 +1,8 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import privacyContent from "../utils/privacyContent";
+import { Helmet } from "react-helmet-async";
 
-function PrivacyPolicy() {
+export default function PrivacyPolicy() {
   const handlePrint = () => {
     window.print();
   };
@@ -8,181 +10,120 @@ function PrivacyPolicy() {
   useEffect(() => {
     document.title = "Privacy Policy — My Brand Life";
   }, []);
-
   return (
-    <section className="py-5 md:py-10 print:py-0">
-      <div className="container flex flex-col gap-5 md:gap-10 relative">
-        <div className="absolute top-0 right-0 print:hidden">
-          <button
-            onClick={handlePrint}
-            title="Print this page"
-            className="w-10 h-10 active:scale-105 cursor-pointer flex justify-center items-center border border-gray-300 rounded-lg hover:bg-gray-100"
-          >
-            <i className="fa-solid fa-print text-md md:text-lg"></i>
-          </button>
-        </div>
+    <main className="min-h-screen bg-white">
+      <Helmet>
+        <title>Privacy Policy - My Brand Life</title>
+        <meta name="description" content="Privacy Policy - My Brand Life" />
+      </Helmet>
 
-        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5">
-          <h2 className="text-md md:text-lg font-medium">
-            My Brand Life — Privacy Policy
-          </h2>
-          <h3 className="text-sm md:text-base font-normal">
-            <strong>Last Updated:</strong> October 28, 2025
-          </h3>
+      <article className="container re py-10 print:py-0">
+        <div className="relative">
+          <div className="absolute top-0 right-0 print:hidden">
+            <button
+              onClick={handlePrint}
+              title="Print this page"
+              className="w-10 h-10 text-slate-500 active:bg-slate-100 active:scale-105 cursor-pointer flex justify-center items-center border border-gray-200 rounded-lg"
+            >
+              <i className="fa-solid fa-print text-xl"></i>
+            </button>
+          </div>
+        </div>
+        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5 mb-5">
+          <h1 className="text-lg md:text-xl font-medium">
+            My Brand Life - Privacy Policy
+          </h1>
           <p className="text-sm md:text-base font-normal">
-            Your privacy matters to us. This Privacy Policy explains how My
-            Brand Life LLC collects, uses, and protects your information when
-            you use mybrandlife.me and its connected applications.
+            <strong>Last Updated:</strong> October 30, 2026
           </p>
         </div>
-        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5">
-          <h2 className="text-md md:text-lg font-medium">
-            1. Information We Collect
-          </h2>
-          <h3 className="text-normal text-sm md:text-base">We collect:</h3>
-          <ul className="list-disc pl-10 flex flex-col gap-2 text-sm md:text-base">
-            <li>
-              <strong>Account Data:</strong> name, email, phone, business info,
-              and login credentials.
-            </li>
-            <li>
-              <strong>Usage Data:</strong> page visits, clicks, IP address,
-              browser type, and device info (via Plausible Analytics).
-            </li>
-            <li>
-              <strong>Payment Data:</strong> processed securely through Stripe;
-              we do not store credit card numbers.
-            </li>
-            <li>
-              <strong>Visitor Form Data:</strong> name, email, phone, business
-              info, and login credentials.
-            </li>
-          </ul>
-          <p className="text-sm md:text-base font-normal">
-            Optional integrations (e.g., GPS location sharing or affiliate
-            tracking) collect additional data only with visitor consent.
+        <div className="space-y-2.75">
+          <p>
+            My Brand Life LLC (“My Brand Life,” “MBL,” “we,” “our,” or “us”)
+            respects your privacy and is committed to handling personal
+            information responsibly.
+          </p>
+
+          <p>
+            This Privacy Policy explains how we collect, use, disclose, store,
+            and protect information when you use My Brand Life websites,
+            applications, public lander pages, dashboards, forms, features,
+            services, and associated My Brand Life domains.
+          </p>
+
+          <p>
+            This policy applies to subscribers, account users, visitors to
+            public My Brand Life pages, and individuals who submit information
+            through a My Brand Life-powered form or feature.
+          </p>
+
+          <p>
+            By using our services, you acknowledge the practices described in
+            this Privacy Policy.
           </p>
         </div>
-        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5">
-          <h2 className="text-md md:text-lg font-medium">
-            2. How We Use Your Information
-          </h2>
-          <h3 className="text-sm md:text-base">We use your information to:</h3>
-          <ul className="list-disc pl-10 flex flex-col gap-2 text-sm md:text-base">
-            <li>Provide and personalize your hosted brand page.</li>
-            <li>Process subscriptions and billing.</li>
-            <li>Improve platform performance and reliability.</li>
-            <li>Communicate updates, new features, or offers.</li>
-            <li>Prevent fraud, spam, or misuse.</li>
-          </ul>
-          <p className="text-sm md:text-base font-normal">
-            We never sell your data.
-          </p>
+        <div className="mt-4.5">
+          {privacyContent.map((section) => (
+            <section key={section.title} className="mb-5">
+              <div
+                key={section.title}
+                className="flex flex-col gap-2 border-b border-gray-200 mt-8 mb-5 pb-2"
+              >
+                <h2 className="text-lg md:text-xl font-medium">
+                  {section.title}
+                </h2>
+              </div>
+
+              <div>
+                {section.content.map((block, index) => {
+                  if (block.type === "subheading") {
+                    return (
+                      <h3
+                        key={`${section.title}-subheading-${index}`}
+                        className="mt-5 text-lg md:text-xl font-medium"
+                      >
+                        {block.text}
+                      </h3>
+                    );
+                  }
+
+                  if (block.type === "list") {
+                    return (
+                      <div className="flex flex-col gap-2">
+                        <ul className="list-disc pl-10 flex flex-col gap-2 text-sm md:text-base">
+                          {block.items.map((item, index) => (
+                            <li key={index}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <p
+                      key={`${section.title}-paragraph-${index}`}
+                      className={`my-2 text-sm md:text-base font-normal ${
+                        block.bold
+                          ? "font-bold leading-[1.35]"
+                          : "leading-[1.35]"
+                      }`}
+                    >
+                      {block.text.split("\n").map((line, lineIndex) => (
+                        <React.Fragment key={lineIndex}>
+                          {line}
+                          {lineIndex < block.text.split("\n").length - 1 && (
+                            <br />
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </p>
+                  );
+                })}
+              </div>
+            </section>
+          ))}
         </div>
-        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5">
-          <h2 className="text-md md:text-lg font-medium">
-            3. Cookies and Analytics
-          </h2>
-          <p className="text-sm md:text-base font-normal">
-            We use <strong>Plausible Analytics,</strong> a privacy-focused
-            analytics service that does not use cookies or track individuals.
-          </p>
-          <p className="text-sm md:text-base font-normal">
-            Limited non-personal usage data (e.g., country, browser type) may be
-            collected for performance insights.
-          </p>
-        </div>
-        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5">
-          <h2 className="text-md md:text-lg font-medium">4. Data Sharing</h2>
-          <h3 className="text-sm md:text-base">We share data only with:</h3>
-          <ul className="list-disc pl-10 flex flex-col gap-2 text-sm md:text-base">
-            <li>
-              <strong>Stripe</strong> for payment processing.
-            </li>
-            <li>
-              <strong>Hostinger</strong> for hosting and email infrastructure.
-            </li>
-            <li>
-              <strong>Google Workspace </strong> for forms and communications.
-            </li>
-            <li>
-              <strong>Affiliate partners </strong> when links are voluntarily
-              used.
-            </li>
-          </ul>
-          <p className="text-sm md:text-base font-normal">
-            All third parties comply with GDPR and other data protection
-            standards.
-          </p>
-        </div>
-        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5">
-          <h2 className="text-md md:text-lg font-medium">5. Data Retention</h2>
-          <p className="text-sm md:text-base font-normal">
-            We retain account and visitor data as long as necessary to provide
-            services or comply with legal obligations.
-          </p>
-          <p className="text-sm md:text-base font-normal">
-            Users may request deletion of personal data at any time via{" "}
-            <strong>privacy@mybrandlife.me.</strong>
-          </p>
-        </div>
-        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5">
-          <h2 className="text-md md:text-lg font-medium">6. Security</h2>
-          <p className="text-sm md:text-base font-normal">
-            We use SSL encryption, secure hosting, and restricted database
-            access. No online service is 100% secure, but we continuously
-            monitor and improve our systems to protect user data.
-          </p>
-        </div>
-        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5">
-          <h2 className="text-md md:text-lg font-medium">7. Your Rights</h2>
-          <h3 className="text-sm md:text-base">
-            Depending on your location, you may have rights to:
-          </h3>
-          <ul className="list-disc pl-10 flex flex-col gap-2 text-sm md:text-base">
-            <li>Access, correct, or delete your personal data.</li>
-            <li>Opt-out of marketing emails.</li>
-            <li>
-              Withdraw consent for optional features (like location tracking).
-            </li>
-          </ul>
-          <p className="text-sm md:text-base font-normal">
-            To exercise these rights, contact{" "}
-            <strong>privacy@mybrandlife.me.</strong>
-          </p>
-        </div>
-        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5">
-          <h2 className="text-md md:text-lg font-medium">
-            8. Children’s Privacy
-          </h2>
-          <p className="text-sm md:text-base font-normal">
-            Our services are not directed toward children under 13.
-          </p>
-          <p className="text-sm md:text-base font-normal">
-            We do not knowingly collect data from minors.
-          </p>
-        </div>
-        <div className="flex flex-col gap-2 border-b border-gray-200 pb-5">
-          <h2 className="text-md md:text-lg font-medium">9. Policy Updates</h2>
-          <p className="text-sm md:text-base font-normal">
-            We may revise this Privacy Policy periodically.
-          </p>
-          <p className="text-sm md:text-base font-normal">
-            Updates will be posted with a new “Last Updated” date.
-          </p>
-        </div>
-        <div className="flex flex-col gap-2">
-          <h2 className="text-md md:text-lg font-medium">10. Contact Us</h2>
-          <p className="text-sm md:text-base font-normal">
-            <strong>privacy@mybrandlife.me</strong>
-          </p>
-          <p className="text-sm md:text-base font-normal">
-            My Brand Life LLC — Stevens Point, Wisconsin, USA
-          </p>
-        </div>
-      </div>
-    </section>
+      </article>
+    </main>
   );
 }
-
-export default PrivacyPolicy;

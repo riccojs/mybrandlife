@@ -1,3 +1,4 @@
+import { SquareArrowOutUpRight } from "lucide-react";
 import { Link } from "react-router";
 
 function CoreValues() {
@@ -26,8 +27,8 @@ function CoreValues() {
                 Empower Your Brand
               </h2>
               <p className="text-black text-sm md:text-base font-normal">
-                Bring all your platforms and tools together in one place. A
-                single hub makes your brand clear, consistent, and easy to find.
+                Bring your links, content, contact information, and brand tools
+                together in one place.
               </p>
             </div>
           </Link>
@@ -35,14 +36,14 @@ function CoreValues() {
             <div className="bg-[#e8ffc4] p-5 md:p-10 rounded-lg flex flex-col gap-3 relative hover-effect h-full">
               <div className="absolute -top-2.5 left-8 w-10/12 h-5 bg-[#dcffa4] rounded-t-lg"></div>
               <p className="text-black bg-[#96c94b] text-xs md:text-sm px-4 py-1 rounded-md font-medium w-fit">
-                2 - Engage Your People
+                2 - Engage Your Audience
               </p>
               <h2 className="text-black text-md md:text-xl font-medium">
                 Connect With People
               </h2>
               <p className="text-black text-sm md:text-base font-normal">
-                Stay connected with your audience through smart features that
-                make it simple to talk, share, and build real relationships.
+                Give people simple ways to connect, interact, request, book, and
+                respond.
               </p>
             </div>
           </Link>
@@ -56,12 +57,19 @@ function CoreValues() {
                 Build Your Presence
               </h2>
               <p className="text-black text-sm md:text-base font-normal">
-                Grow your reach with tools that keep you visible, memorable, and
-                connected wherever your audience is.
+                Use your My Brand Life page, QR codes, NFC, analytics, and
+                connected tools to reach people wherever they are.
               </p>
             </div>
           </Link>
         </div>
+        <Link
+          to="/follow-us"
+          className="flex w-fit active:scale-[0.98] m-auto mt-6 items-center gap-2 px-8 py-3 rounded-full hover:bg-[#589c28] text-white text-xs md:text-sm font-medium shadow-lg transition-all bg-[#65B32E] shadow-[#65B32E]/25"
+        >
+          <SquareArrowOutUpRight size={15} />
+          See a My Brand Life Page in Action
+        </Link>
       </div>
     </section>
   );

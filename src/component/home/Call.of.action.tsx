@@ -13,20 +13,20 @@ function CallOfAction() {
           </h2>
 
           <p className="text-black text-sm md:text-base font-normal text-center my-2 md:my-5 w-full md:w-10/12">
-            At MyBrandLife, our mission is to empower individuals and businesses
-            by providing tailored, industry-specific landing pages that enhance
-            their online presence and engagement. We strive to simplify the
-            digital experience, enabling our users to showcase their unique
-            brands effectively and effortlessly.
+            At My Brand Life, our mission is to make building and managing your
+            digital presence simple, professional, and powerful. We create
+            industry-specific brand landers that bring your socials, contact
+            information, links, requests, bookings, and more together in one
+            place—giving your audience a clear and easy way to connect with you.
           </p>
           <p className="text-black text-sm md:text-base font-normal text-center my-2 md:my-5 w-full md:w-10/12">
-            My Brand Life delivers tailored brand landers for every
-            niche—empowering you to build a cohesive identity that connects with
-            your audience. Whether you're a creative, coach, entrepreneur,
-            entertainer, restaurant, or service provider, we make branding
-            simple and impactful. With built-in tools like QR codes, NFC, and
-            more, your brand connects seamlessly online and offline - unlocking
-            endless ways to engage your world.
+            Whether you're a creative, coach, entrepreneur, entertainer,
+            restaurant, service provider, or growing brand, My Brand Life helps
+            you create a cohesive identity that works across both the digital
+            and physical world. With built-in tools like QR codes, NFC,
+            engagement features, and more, your brand can connect seamlessly
+            online and offline—making it easier for people to discover you,
+            interact with you, and stay connected.
           </p>
           <div className="flex gap-3 items-center mb-5 md:mt-0 mt-2">
             <Link

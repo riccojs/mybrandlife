@@ -6,13 +6,14 @@ import {
   socialIcons,
 } from "../../utils/footer.menu";
 import { Link } from "react-router";
-import file from "../../assets/files/Price_Features_ALL.pdf";
+import file from "../../assets/files/My-Brand-Life-Pricing-Guide.pdf";
 import { ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import AskForhelp from "../popups/Ask.forhelp";
 
 function Footer() {
   const [showTab, setShowTab] = useState(false);
+  const [showbugTab, setShowBugTab] = useState(false);
 
   return (
     <footer className="border-t border-[#EEEEEE] bg-[#FBFCFA]">
@@ -168,6 +169,14 @@ function Footer() {
                     Ask for help
                   </button>
                 </li>
+                <li>
+                  <button
+                    onClick={() => setShowBugTab(true)}
+                    className="text-sm font-normal leading-none text-[#555555] transition-colors duration-200 hover:text-[#59A605] cursor-pointer"
+                  >
+                    Feedback & Bugs
+                  </button>
+                </li>
               </ul>
             </div>
           </div>
@@ -175,8 +184,8 @@ function Footer() {
         <div className="h-px w-full bg-[#E5E7EB]" />
         <div className="flex min-h-12 flex-col items-start md:items-center justify-between gap-2 py-3 sm:flex-row">
           <p className="text-[11px] xl:text-xs font-normal text-[#555555]">
-            ©2026 MyBrandLife.me. All rights reserved. Portions of the text and
-            imagery may be AI-generated.
+            © {new Date().getFullYear()} MyBrandLife.me. All rights reserved.
+            Portions of the text and imagery may be AI-generated.
           </p>
 
           <p className="flex items-center gap-1 text-[11px] xl:text-xs font-normal text-[#555555]">
@@ -184,7 +193,20 @@ function Footer() {
           </p>
         </div>
       </div>
-      {showTab && <AskForhelp showTab={showTab} setShowTab={setShowTab} />}
+      {showTab && (
+        <AskForhelp
+          title="Ask For Help"
+          showTab={showTab}
+          setShowTab={setShowTab}
+        />
+      )}
+      {showbugTab && (
+        <AskForhelp
+          title="Feedback & Bugs"
+          showTab={showbugTab}
+          setShowTab={setShowBugTab}
+        />
+      )}
     </footer>
   );
 }

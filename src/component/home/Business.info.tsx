@@ -2,7 +2,7 @@ import Image from "../../assets/YBYLYP.png";
 
 function BusinessInfo() {
   return (
-    <section className=" bg-white">
+    <section className=" bg-white py-5 md:py-10">
       <div className="container">
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 items-center">
           <div>
@@ -12,12 +12,12 @@ function BusinessInfo() {
             <h2 className="text-black text-lg md:text-2xl font-medium">
               What's on MyBrandLife Radar?
             </h2>
-            <p className="text-black text-sm md:text-md font-normal mt-3">
+            <p className="text-black text-sm md:text-base font-normal mt-3">
               MyBrandLife is built to grow with you. New tools, features, and
               partner services are being developed to make building your brand
               easier, more connected, and more valuable over time.
             </p>
-            <div className="flex flex-col gap-3 my-5 text-sm md:text-md">
+            <div className="flex flex-col gap-3 my-5 text-sm md:text-base">
               <span className="flex gap-2 items-start">
                 <i className="fa-solid fa-check text-[#96c94b] mt-1"></i>
                 <p>

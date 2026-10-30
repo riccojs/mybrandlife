@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import BusinessInfo from "../component/home/Business.info";
 import GoldAccTab from "../component/popups/Gold.acc.tab";
 import AdditionalTab from "../component/popups/Additional.tab";
 import MerchandiseTab from "../component/popups/Merchandise.tab";
@@ -30,6 +29,8 @@ import BrandFormNote from "../component/popups/BrandForm.note";
 import BrandGearNote from "../component/popups/BrandGear.note";
 import { motion } from "framer-motion";
 import { domainCategories } from "../utils/domains";
+import { Helmet } from "react-helmet-async";
+import funText from "../utils/funTest";
 
 function Pricing() {
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ function Pricing() {
   const pricingRef = useRef<HTMLDivElement | null>(null);
   const [domainSelect, setDomainSelect] = useState("");
   const [showMore, setShowMore] = useState("");
+  const [randomFunText, setRandomFunText] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
@@ -119,6 +121,9 @@ function Pricing() {
   const handleDomainSelection = (domain: string) => {
     setDomainSelect(domain);
     dispatch(selectedDomain(domain));
+    setRandomFunText(
+      funText[Number(Math.floor(Math.random() * funText.length))],
+    );
   };
 
   useEffect(() => {
@@ -146,13 +151,34 @@ function Pricing() {
 
   return (
     <React.Fragment>
+      <Helmet>
+        <title>Pricing & Plans - My Brand Life</title>
+        <meta name="description" content="Pricing & Plans - My Brand Life" />
+      </Helmet>
       <section className={`${domainSelect ? "pt-10 pb-10" : "pt-10"}`}>
         <div className="container">
-          <div>
-            <h2 className="text-black text-lg md:text-3xl font-medium text-center">
-              Choose Your Domain Lander
-            </h2>
-            <div className="w-full xl:w-5/12 m-auto mb-10">
+          <div className="mb-8">
+            <div className="flex flex-col gap-2">
+              <h2 className="text-black text-lg md:text-3xl font-medium text-center">
+                Find Your My Brand Life Domain
+              </h2>
+              <p className="text-slate-800 text-xl font-normal text-center">
+                Your industry helps determine the My Brand Life experience
+                that's right for you.
+              </p>
+              <p className="text-slate-600 text-base font-normal text-center w-full md:w-7/12 m-auto">
+                Choose the domain that best represents you, your business, or
+                your brand. Once selected, we'll show you the available plans,
+                features, and pricing built for that domain.
+              </p>
+              <h3 className="text-slate-800 text-xl font-medium text-center">
+                Pricing and available plans vary by domain.
+              </h3>
+              <h2 className="text-slate-800 text-2xl font-bold text-center">
+                Choose Your Domain
+              </h2>
+            </div>
+            <div className="w-full xl:w-5/12 m-auto">
               <PriceSelector
                 pricingRef={pricingRef}
                 isShow={priceShow}
@@ -161,6 +187,10 @@ function Pricing() {
                 handleSelectDomain={handleDomainSelection}
               />
             </div>
+            <h4 className="text-slate-800 text-base font-normal text-center w-full md:w-5/12 m-auto mt-3">
+              Not sure which one fits? Choose the closest match, or contact us
+              and we'll help you find the right My Brand Life.
+            </h4>
           </div>
           <div className={`${domainSelect ? "mb-5" : "mb-0"}`}>
             {domainData[domainSelect]?.title && (
@@ -173,9 +203,9 @@ function Pricing() {
                   duration: 0.4,
                   ease: "easeOut",
                 }}
-                className="w-full text-center text-md md:text-2xl font-medium flex justify-center"
+                className="w-full text-center text-md md:text-2xl font-medium flex justify-center md:w-6/12 m-auto"
               >
-                {domainData[domainSelect]?.title}
+                {randomFunText} {domainData[domainSelect]?.title}
               </motion.h2>
             )}
 
@@ -283,7 +313,7 @@ function Pricing() {
                           bronzePlanFeatures?.planKey ?? "",
                         )
                       }
-                      className="w-full bg-[#cbf38b] text-black text-md font-normal px-5 py-2 rounded-lg transition-all duration-300 active:scale-105 cursor-pointer"
+                      className="w-full bg-[#96c94b] text-black text-md font-normal px-5 py-2 rounded-lg transition-all duration-300 active:scale-105 cursor-pointer"
                     >
                       Choose Now
                     </button>
@@ -386,7 +416,7 @@ function Pricing() {
                           silverPlanFeatures?.planKey ?? "",
                         )
                       }
-                      className="w-full bg-[#cbf38b] text-black text-md font-normal px-5 py-2 rounded-lg transition-all duration-300 active:scale-105 cursor-pointer"
+                      className="w-full bg-[#96c94b] text-black text-md font-normal px-5 py-2 rounded-lg transition-all duration-300 active:scale-105 cursor-pointer"
                     >
                       Choose Now
                     </button>
@@ -489,7 +519,7 @@ function Pricing() {
                         GoldPlanFeatures?.planKey ?? "",
                       )
                     }
-                    className="w-full bg-[#cbf38b] text-black text-md font-normal px-5 py-2 rounded-lg transition-all duration-300 active:scale-105 cursor-pointer"
+                    className="w-full bg-[#96c94b] text-black text-md font-normal px-5 py-2 rounded-lg transition-all duration-300 active:scale-105 cursor-pointer"
                   >
                     Choose Now
                   </button>
@@ -601,7 +631,7 @@ function Pricing() {
                   }
                 </p>
 
-                <button className="mt-5 w-full bg-gray-200 py-2 rounded-md border-gray-400 cursor-not-allowed">
+                <button className="mt-5 w-full bg-slate-300 py-2 rounded-md border-gray-400 cursor-not-allowed">
                   Coming Soon
                 </button>
                 <img src={BPSLOGO} alt="" className="w-44 mt-3" />
@@ -682,8 +712,6 @@ function Pricing() {
           )}
         </div>
       </section>
-
-      <BusinessInfo />
 
       {showTab && <BrandShareNote setShowTab={setShowTab} showTab={showTab} />}
       {merchendiseTab && (

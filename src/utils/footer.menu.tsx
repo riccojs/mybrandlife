@@ -42,8 +42,8 @@ export const importantLinks = [
   },
   {
     id: 2,
-    name: "Tearms & Conditions",
-    url: "/terms-condition",
+    name: "Terms & Conditions",
+    url: "/terms-and-conditions",
   },
   {
     id: 3,
@@ -57,8 +57,8 @@ export const importantLinks = [
   },
   {
     id: 5,
-    name: "About Us",
-    url: "/about-us",
+    name: "About",
+    url: "/about",
   },
 ];
 
@@ -67,6 +67,11 @@ export const saasLinks = [
     id: 1,
     name: "Register",
     url: "/pricing",
+  },
+  {
+    id: 2,
+    name: "What's Coming / MBL Ecosystem",
+    url: "/whats-coming-mbl-ecosystem",
   },
   {
     id: 3,

@@ -51,10 +51,8 @@ function PriceSelector({
         >
           <div className="pt-2 px-2">
             <p className="text-xs font-normal text-black bg-amber-100 border-l-2 border-amber-400 p-2 rounded-md">
-              Scroll to explore available domain options or use the search box
-              to find an exact match. Just give us your niche, brand,
-              profession, or a short description of what you're looking for, and
-              we will do what we can.
+              Tell us your niche, profession, brand, or what you're looking for,
+              and we'll help match you with the right domain.
             </p>
           </div>
           <div className="p-2">

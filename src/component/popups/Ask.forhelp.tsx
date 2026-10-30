@@ -7,6 +7,7 @@ import { LoaderCircle } from "lucide-react";
 interface TypesForm {
   showTab: boolean;
   setShowTab: React.Dispatch<React.SetStateAction<boolean>>;
+  title: string;
 }
 
 interface UserDataType {
@@ -18,7 +19,7 @@ interface UserDataType {
   location: string;
 }
 
-function AskForhelp({ showTab, setShowTab }: TypesForm) {
+function AskForhelp({ showTab, setShowTab, title }: TypesForm) {
   const [user, setUser] = useState<UserDataType>({
     email: "",
     phone: "",
@@ -69,7 +70,7 @@ function AskForhelp({ showTab, setShowTab }: TypesForm) {
         }`}
       >
         <h2 className="text-lg md:text-2xl font-medium text-black text-center mt-5 mb-2">
-          Ask for help
+          {title}
         </h2>
         <p className="text-xs md:text-md font-normal text-black text-center">
           Fill the form and submit it. We will notify shortly.

@@ -1,16 +1,17 @@
 import { Link } from "react-router";
-import Logo from "../../assets/logo.png";
+import Logo from "../../assets/MBL_Logo_CROP.png";
+import DemoPhoto from "../../assets/my-brand-life-laptop-demo.png";
 
 function FunFacts() {
   return (
     <section className="my-5 md:my-10">
       <div className="w-10/12 lg:w-7/12 m-auto bg-[#FFF3E3] h-5 rounded-t-lg"></div>
-      <div className="container m-auto w-11/12 bg-[#FFF9F1] p-5 md:p-14 rounded-xl grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-20">
+      <div className="container m-auto w-11/12 bg-[#FFF9F1] p-5 md:p-14 rounded-xl grid grid-cols-1 lg:grid-cols-2 gap-10 items-center md:gap-20">
         <div>
-          <h2 className="text-lg md:text-3xl xl:text-4xl font-bold text-black">
-            Brand & Social Media Fun Facts
+          <h2 className="text-lg xl:text-2xl font-bold text-black text-center">
+            Choose your niche → Build your lander → Share it everywhere
           </h2>
-          <p className="text-sm md:text-md font-normal text-black my-5">
+          <p className="text-sm md:text-md font-normal text-black my-5 text-center">
             At My Brand Life, our mission is simple: to empower individuals and
             businesses with landing pages and tools that make their online
             presence stronger, simpler, and more connected.
@@ -28,46 +29,7 @@ function FunFacts() {
           </Link>
         </div>
         <div className="flex flex-col gap-5">
-          <div className="flex flex-col gap-1">
-            <h2 className="text-sm md:text-base font-bold text-black">
-              Digital First Impressions
-            </h2>
-            <p className="text-xs md:text-sm font-normal text-black">
-              It takes just 50 milliseconds for someone to judge your website —
-              faster than a blink. Your domain is often the first thing they
-              see.
-            </p>
-          </div>
-          <div className="flex flex-col gap-1">
-            <h2 className="text-sm md:text-base font-bold text-black">
-              The Power of Consistency
-            </h2>
-            <p className="text-xs md:text-sm font-normal text-black">
-              Brands that look and feel the same everywhere can see revenue grow
-              by 33%. A domain that matches your socials makes your brand
-              unforgettable.
-            </p>
-          </div>
-          <div className="flex flex-col gap-1">
-            <h2 className="text-sm md:text-base font-bold text-black">
-              The Social Media Clock
-            </h2>
-            <p className="text-xs md:text-sm font-normal text-black">
-              The average person spends 2 hours and 27 minutes a day on social
-              platforms. A custom domain helps your followers find you off
-              social, no matter how algorithms change.
-            </p>
-          </div>
-          <div className="flex flex-col gap-1">
-            <h2 className="text-sm md:text-base font-bold text-black">
-              Email Still Wins
-            </h2>
-            <p className="text-xs md:text-sm font-normal text-black">
-              Every $1 spent on email marketing returns $42. A branded domain
-              makes your email addresses look professional and instantly more
-              trustworthy.
-            </p>
-          </div>
+          <img src={DemoPhoto} alt={DemoPhoto} className="w-80" />
         </div>
       </div>
     </section>
