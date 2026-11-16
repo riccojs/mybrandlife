@@ -1323,6 +1323,7 @@ export async function updateCustomPlatform(req: Request, res: Response) {
 // Update templete medias
 export async function updateTempleteMedias(req: Request, res: Response) {
   const id = req.params.id as string;
+  const { enableEpk } = req.body;
   try {
     const existTemplate = await Prisma.userTemplete.findUnique({
       where: { id },
@@ -1360,6 +1361,14 @@ export async function updateTempleteMedias(req: Request, res: Response) {
         logoImage: medias.logoImage || existTemplate.logoImage,
         bodyImage: medias.bodyImage || existTemplate.bodyImage,
         epkFile: medias.epkFile || existTemplate.epkFile,
+      },
+    });
+    await Prisma.user.update({
+      where: {
+        id: existTemplate?.userId,
+      },
+      data: {
+        enableEpk: enableEpk === "true" ? true : false,
       },
     });
     res.status(200).json({

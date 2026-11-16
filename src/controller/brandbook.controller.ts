@@ -409,7 +409,7 @@ export async function googleAuthCallback(req: Request, res: Response) {
     oauth2Client.setCredentials(tokens);
     const calendar = google.calendar({ version: "v3", auth: oauth2Client });
     const user = await Prisma.user.findUnique({ where: { id: userId } });
-    const calendarSummary = `${user?.username || "Brand"} - MyBrandLife Calendar`;
+    const calendarSummary = `${user?.username || "Brand"} - My Brand Life Calendar`;
     const calendarList = await calendar.calendarList.list();
     const existingCalendar = calendarList.data.items?.find(
       (cal): boolean => cal.summary?.includes("MyBrandLife") ?? false,

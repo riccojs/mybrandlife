@@ -26,14 +26,14 @@ async function alertEmail(
   const mailGenerator = new Mailgen({
     theme: "default",
     product: {
-      name: "The MyBrandLife.me Team",
+      name: "The My Brand Life.me Team",
       link: corsUrl,
       copyright: OUTRO_RESPONSE,
     },
   });
   const emailTemplate = {
     body: {
-      name: "The MyBrandLife.me Team",
+      name: "The My Brand Life.me Team",
       intro: introMessage,
       dictionary: {
         message: bodyMessage,

@@ -40,6 +40,7 @@ model user {
   enableBrandshare    Boolean          @default(true)
   enablePrivateDomain Boolean          @default(true)
   enablevcf           Boolean          @default(true)
+  enableEpk           Boolean          @default(false)
   verifyEmail         Boolean          @default(true)
   events              event[]
   slots               slot[]

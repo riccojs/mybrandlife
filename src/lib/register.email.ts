@@ -35,7 +35,7 @@ export async function registerEmail(
   const mailGenerator = new Mailgen({
     theme: "default",
     product: {
-      name: "TheMyBrandLife.me Team",
+      name: "The My Brand Life Team",
       link: corsUrl,
       copyright: OUTRO_RESPONSE,
     },
@@ -47,7 +47,7 @@ export async function registerEmail(
       signature: SINGNATURE_RESPONSE,
       outro: `
       <p style="font-size: 16px; color: #777;"> Your Verification Code: <span style="font-size: 18px; font-weight: 500; color: #2a2a2aff;">${verificationCode}</span>, If you didn't create this account, you can safely ignore this email. Need help? Our team is here for you: ${supportMail}</p>
-      <p style="font-size: 16px; color: #4285F4;"><a href="${corsUrl}">TheMyBrandLife.me Team</a></p>
+      <p style="font-size: 16px; color: #4285F4;"><a href="${corsUrl}">The My Brand Life Team</a></p>
       <p style="font-size: 16px; color: #4285F4;">E-mail: ${supportMail}</p>
       `,
     },
