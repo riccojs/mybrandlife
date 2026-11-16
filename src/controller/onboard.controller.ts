@@ -614,7 +614,7 @@ export async function requestADomain(req: Request, res: Response) {
     });
     await notificationCreator({
       title: "You've receive a domain request",
-      redirectUrl: `/admin/domain_request?view=${newRequest?.id}`,
+      redirectUrl: `/domain_request?view=${newRequest?.id}`,
       profile: null,
       seen: false,
       userId: null,
@@ -664,7 +664,7 @@ export async function requestInfo(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `${name} submit info successfully`,
-      redirectUrl: `/admin/onboard/update/${templateId}`,
+      redirectUrl: `/onboard/update/${templateId}`,
       profile: null,
       seen: false,
       userId: null,
@@ -965,7 +965,7 @@ export async function onboardingUser(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `${existUser?.landerName} has been onboard successfully`,
-      redirectUrl: `/admin/onboard/update/${newTemplate?.id}`,
+      redirectUrl: `/onboard/update/${newTemplate?.id}`,
       profile: existUser?.profile ? existUser?.profile : null,
       seen: false,
       userId: existUser?.id,
@@ -1025,7 +1025,7 @@ export async function recreatePayment(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `${existUser?.landerName} has been recreate payment`,
-      redirectUrl: `/admin/onboard/update/${existTemplate?.id}`,
+      redirectUrl: `/onboard/update/${existTemplate?.id}`,
       profile: existUser?.profile ? existUser?.profile : null,
       seen: false,
       userId: existUser?.id,
@@ -1088,7 +1088,7 @@ export async function updateTempleteSocial(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `${existTemplete?.user?.landerName} onboard has been update successfully`,
-      redirectUrl: `/admin/onboard/update/${existTemplete?.id}`,
+      redirectUrl: `/onboard/update/${existTemplete?.id}`,
       profile: existTemplete?.user?.profile
         ? existTemplete?.user?.profile
         : null,
@@ -1166,7 +1166,7 @@ export async function createTempleteSocial(req: Request, res: Response) {
 
     await notificationCreator({
       title: `${existTemplete.user?.landerName} onboard has been updated successfully`,
-      redirectUrl: `/admin/onboard/update/${existTemplete.id}`,
+      redirectUrl: `/onboard/update/${existTemplete.id}`,
       profile: existTemplete.user?.profile ?? null,
       seen: false,
       userId: existTemplete.user?.id,
@@ -1234,7 +1234,7 @@ export async function createTempleteCustom(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `${existTemplete.user?.landerName} onboard has been updated successfully`,
-      redirectUrl: `/admin/onboard/update/${existTemplete.id}`,
+      redirectUrl: `/onboard/update/${existTemplete.id}`,
       profile: existTemplete.user?.profile ?? null,
       seen: false,
       userId: existTemplete.user?.id,
@@ -1298,7 +1298,7 @@ export async function updateCustomPlatform(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `${existTemplete?.user?.landerName} onboard has been update successfully`,
-      redirectUrl: `/admin/onboard/update/${existTemplete?.id}`,
+      redirectUrl: `/onboard/update/${existTemplete?.id}`,
       profile: existTemplete?.user?.profile
         ? existTemplete?.user?.profile
         : null,
@@ -1376,7 +1376,7 @@ export async function updateTempleteMedias(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `${existTemplate?.user?.landerName} onboard has been update successfully`,
-      redirectUrl: `/admin/onboard/update/${existTemplate?.id}`,
+      redirectUrl: `/onboard/update/${existTemplate?.id}`,
       profile: existTemplate?.user?.profile
         ? existTemplate?.user?.profile
         : null,
@@ -1536,7 +1536,7 @@ export async function updateTempleteInfos(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `${existTemplete?.user?.landerName} onboard has been update successfully`,
-      redirectUrl: `/admin/onboard/update/${existTemplete?.id}`,
+      redirectUrl: `/onboard/update/${existTemplete?.id}`,
       profile: existTemplete?.user?.profile
         ? existTemplete?.user?.profile
         : null,
@@ -1609,7 +1609,7 @@ export async function updateMemebership(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `${existUser?.landerName} membership has been update successfully`,
-      redirectUrl: `/admin/user/${existUser?.id}`,
+      redirectUrl: `/user/${existUser?.id}`,
       profile: existUser?.profile ? existUser?.profile : null,
       seen: false,
       userId: existUser?.id,
@@ -1728,7 +1728,7 @@ export async function deleteTemplete(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `${existTemplete?.user?.landerName} onboard has been delete successfully`,
-      redirectUrl: "/admin/onboard",
+      redirectUrl: "/onboard",
       profile: existTemplete?.user?.profile
         ? existTemplete?.user?.profile
         : null,

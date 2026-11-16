@@ -301,7 +301,7 @@ export async function createEcho(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `${name} echo submit successfully`,
-      redirectUrl: `/admin/echo?view=${newEcho?.id}`,
+      redirectUrl: `/echo?view=${newEcho?.id}`,
       profile: null,
       seen: false,
       userId: null,
@@ -414,7 +414,7 @@ export async function deleteEcho(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `${existEcho?.user?.landerName} delete echo successfully`,
-      redirectUrl: `/admin/echo?view=${existEcho?.id}`,
+      redirectUrl: `/echo?view=${existEcho?.id}`,
       profile: existEcho?.user?.profile ? existEcho?.user?.profile : null,
       seen: false,
       userId: existEcho?.user?.id,
@@ -688,7 +688,7 @@ export async function updateEchoStatus(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `${existEcho?.user?.landerName} ${status} echo successfully`,
-      redirectUrl: `/admin/echo?view=${existEcho?.id}`,
+      redirectUrl: `/echo?view=${existEcho?.id}`,
       profile: existEcho?.user?.profile ? existEcho?.user?.profile : null,
       seen: false,
       userId: existEcho?.user?.id,

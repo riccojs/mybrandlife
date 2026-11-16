@@ -296,7 +296,7 @@ export async function pulsetrackwristbandWebhook(req: Request, res: Response) {
       });
       await notificationCreator({
         title: `${transaction?.lander?.landerName} has successfully paid for the pulsetrack wristband.`,
-        redirectUrl: `${baseURL}/admin/pulsetrack/orders/success/${id}`,
+        redirectUrl: `${baseURL}/pulsetrack/orders/success/${id}`,
         profile: transaction?.lander?.profile
           ? transaction?.lander?.profile
           : null,
@@ -385,7 +385,7 @@ export async function extraWristbandWebhook(req: Request, res: Response) {
       });
       await notificationCreator({
         title: `${landerName} has successfully paid for the extra wristband.`,
-        redirectUrl: `/admin/ordered_wristband/confirmation/${session.id}`,
+        redirectUrl: `/ordered_wristband/confirmation/${session.id}`,
         profile: profile ? profile : null,
         seen: false,
         userId: id,

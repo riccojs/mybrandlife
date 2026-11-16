@@ -502,7 +502,7 @@ export async function register(req: Request, res: Response) {
       });
       await notificationCreator({
         title: `${newUser?.firstName} has been registered successfully.`,
-        redirectUrl: `/admin/user/${newUser?.id}`,
+        redirectUrl: `/user/${newUser?.id}`,
         profile: null,
         seen: false,
         userId: newUser?.id,
@@ -707,7 +707,7 @@ export async function verify(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `${existUser?.landerName} has been verify successfully`,
-      redirectUrl: `/admin/user/${existUser?.id}`,
+      redirectUrl: `/user/${existUser?.id}`,
       profile: existUser?.profile ? existUser?.profile : null,
       seen: false,
       userId: existUser?.id,
@@ -1163,7 +1163,7 @@ export async function updateUser(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `${existUser?.landerName} has been update his profile`,
-      redirectUrl: `/admin/user/${existUser?.id}`,
+      redirectUrl: `/user/${existUser?.id}`,
       profile: existUser?.profile ? existUser?.profile : null,
       seen: false,
       userId: existUser?.id,
@@ -1229,7 +1229,7 @@ export async function updateUserAddress(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `${existUser?.landerName} has been update his address`,
-      redirectUrl: `/admin/user/${existUser?.id}`,
+      redirectUrl: `/user/${existUser?.id}`,
       profile: existUser?.profile ? existUser?.profile : null,
       seen: false,
       userId: existUser?.id,
@@ -1317,7 +1317,7 @@ export async function updateUserByAdmin(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `Admin has been update ${existUser?.landerName} profile`,
-      redirectUrl: `/admin/user/${existUser?.id}`,
+      redirectUrl: `/user/${existUser?.id}`,
       profile: existUser?.profile ? existUser?.profile : null,
       seen: false,
       userId: existUser?.id,
@@ -1606,7 +1606,7 @@ export async function togglrUserActivation(req: Request, res: Response) {
     if (status === "DEACTIVATE") {
       await notificationCreator({
         title: `${existUser?.landerName} has been deactivated`,
-        redirectUrl: `/admin/user/${existUser?.id}`,
+        redirectUrl: `/user/${existUser?.id}`,
         profile: existUser?.profile ? existUser?.profile : null,
         seen: false,
         userId: existUser?.id,
@@ -1615,7 +1615,7 @@ export async function togglrUserActivation(req: Request, res: Response) {
     if (status === "SUSPEND") {
       await notificationCreator({
         title: `${existUser?.landerName} has been suspended`,
-        redirectUrl: `/admin/user/${existUser?.id}`,
+        redirectUrl: `/user/${existUser?.id}`,
         profile: existUser?.profile ? existUser?.profile : null,
         seen: false,
         userId: existUser?.id,
@@ -1675,7 +1675,7 @@ export async function deleteUser(req: Request, res: Response) {
     });
     await notificationCreator({
       title: `${existUser?.landerName} account has been deleted`,
-      redirectUrl: "/admin/user",
+      redirectUrl: "/user",
       profile: existUser?.profile ? existUser?.profile : null,
       seen: false,
       userId: existUser?.id,
