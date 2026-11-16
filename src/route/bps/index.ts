@@ -1,5 +1,5 @@
 import express from "express";
-import UserRoute from "./bps.auth.route";
+import UserRoute from "./bps.auth.route.js";
 
 const router = express.Router();
 
