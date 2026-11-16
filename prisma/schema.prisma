@@ -1,0 +1,916 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model user {
+  id                  String           @id @default(uuid())
+  username            String?
+  firstName           String
+  midName             String
+  lastName            String
+  email               String           @unique
+  password            String
+  phone               String?
+  phoneCode           String?
+  profile             String?
+  landerName          String           @unique
+  aggreement          Boolean
+  package             String
+  frequency           String
+  status              ActivationStatus @default(PENDING)
+  domain              String
+  planKey             String
+  planPrice           Float
+  planOldPrice        Float
+  planId              String           @default(uuid())
+  discount            Int?
+  discountType        CodeType?
+  calendarId          String?
+  stripeAccountId     String?
+  accessToken         String?
+  refreshToken        String?
+  referalCode         String?
+  privateDomain       String?
+  ShowCalendar        Boolean          @default(false)
+  enableDirectory     Boolean          @default(true)
+  enableBrandshare    Boolean          @default(true)
+  enablePrivateDomain Boolean          @default(true)
+  enablevcf           Boolean          @default(true)
+  verifyEmail         Boolean          @default(true)
+  events              event[]
+  slots               slot[]
+  echos               echo[]
+  membership          userMembership?
+  bpsMembership       bpsMembership?
+  otpModel            otpModel[]
+  userTemplete        userTemplete[]
+  discounts           discount[]
+  tokens              tokens[]
+  referrals           referralCode?
+  pulsetracks         pulsetrack[]
+  pulsetrackDatas     pulsetrackData[]
+  wristbands          wristbandItem[]
+  trackExport         trackExport[]
+  spinings            spining[]
+  address             address[]
+  create_at           DateTime         @default(now())
+  update_at           DateTime         @updatedAt
+}
+
+model admin {
+  id        String           @id @default(uuid())
+  username  String
+  firstName String
+  lastName  String
+  email     String           @unique
+  phone     String
+  address   String
+  profile   String?
+  password  String
+  secureKey String
+  status    ActivationStatus @default(ACTIVATE)
+  create_at DateTime         @default(now())
+  update_at DateTime         @updatedAt
+}
+
+model address {
+  id        String      @id @default(uuid())
+  state     String
+  city      String
+  country   String
+  zip       String
+  streetOne String
+  streetTow String
+  type      AddressType
+  userId    String
+  user      user        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  create_at DateTime    @default(now())
+  update_at DateTime    @updatedAt
+}
+
+model userMembership {
+  id            String           @id @default(uuid())
+  plan          String
+  price         Float
+  duration      String
+  expired       Boolean
+  activate_at   DateTime?
+  oldPrice      Float
+  transactionId String?
+  status        ActivationStatus @default(PENDING)
+  userId        String?          @unique
+  user          user?            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  create_at     DateTime         @default(now())
+  update_at     DateTime         @updatedAt
+}
+
+model userTemplete {
+  id                String           @id @default(uuid())
+  layout            Layout
+  officialColor     String?
+  bio               String?
+  tagLine           String?
+  offerings         String?
+  funnySaying       String?
+  headerImage       String?
+  logoImage         String?
+  bodyImage         String?
+  epkFile           String?
+  favicon           String?
+  heading           String?
+  title             String?
+  footerText        String?
+  footerWidget      String?
+  headBtnLeft       String?
+  headBtnRight      String?
+  centerHeading     String?
+  centerDescripion  String?
+  vcfFile           String?
+  echoTips          String[]
+  headerBgType      Type
+  headerBg          String?
+  ContentBGType     Type
+  ContentBg         String?
+  footerBgType      Type
+  FooterBg          String?
+  merchendiseUrl    String?
+  merchendiseStatus Boolean?
+  merchendiseLogo   String?
+  songRequest       String?
+  services_label    String?
+  about_label       String?
+  verify            Boolean?         @default(false)
+  status            ActivationStatus @default(PENDING)
+  userId            String
+  enableEvent       Boolean          @default(false)
+  enableEcho        Boolean          @default(false)
+  enableSpin        Boolean          @default(false)
+  buttonSet         buttonSet[]
+  customPlatfrom    customPlatfrom[]
+  services          services[]
+  templateInfo      templateInfo[]
+  user              user             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  create_at         DateTime         @default(now())
+  update_at         DateTime         @updatedAt
+}
+
+model services {
+  id         String       @id @default(uuid())
+  title      String
+  templateId String
+  template   userTemplete @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  create_at  DateTime     @default(now())
+  update_at  DateTime     @updatedAt
+}
+
+model buttonSet {
+  id         String       @id @default(uuid())
+  name       ButtonName
+  url        String
+  templateId String
+  templete   userTemplete @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  create_at  DateTime     @default(now())
+  update_at  DateTime     @updatedAt
+}
+
+model customPlatfrom {
+  id         String       @id @default(uuid())
+  name       String
+  url        String
+  templateId String
+  templete   userTemplete @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  create_at  DateTime     @default(now())
+  update_at  DateTime     @updatedAt
+}
+
+model otpModel {
+  id        String   @id @default(uuid())
+  email     String
+  userId    String
+  expireIn  DateTime
+  user      user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  code      Int      @unique
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt
+}
+
+model contact {
+  id        String   @id @default(uuid())
+  firstname String
+  lastname  String
+  niche     String
+  email     String
+  message   String
+  phone     String
+  subject   String
+  seen      Boolean  @default(false)
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt
+}
+
+model discount {
+  id        String   @id @default(uuid())
+  name      String
+  code      String
+  amount    String
+  userId    String
+  user      user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt
+}
+
+model domainReq {
+  id        String   @id @default(uuid())
+  domain    String
+  email     String
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt
+}
+
+model templateInfo {
+  id         String        @id @default(uuid())
+  name       String
+  email      String
+  phone      String
+  note       String
+  lat        Float?
+  lon        Float?
+  accu       Float?
+  templateId String?
+  templete   userTemplete? @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  create_at  DateTime      @default(now())
+  update_at  DateTime      @updatedAt
+}
+
+model event {
+  id        String      @id @default(uuid())
+  name      String
+  email     String
+  date      DateTime
+  time      String
+  note      String
+  userId    String
+  status    EventStatus
+  user      user        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  create_at DateTime    @default(now())
+  update_at DateTime    @updatedAt
+}
+
+model slot {
+  id        String   @id @default(uuid())
+  date      DateTime
+  times     String[]
+  userId    String
+  user      user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt
+}
+
+model echo {
+  id            String     @id @default(uuid())
+  name          String
+  email         String
+  message       String
+  tip           Float?
+  status        EchoStatus @default(PENDING)
+  transactionId String?
+  shoutOut      String?
+  city          String?
+  userId        String
+  user          user       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  create_at     DateTime   @default(now())
+  update_at     DateTime   @updatedAt
+}
+
+model tokens {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  expireAt  DateTime
+  userId    String
+  user      user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt
+}
+
+model referralCode {
+  id        String     @id @default(uuid())
+  code      String     @unique
+  type      CodeType
+  value     Int
+  joined    Int?
+  limit     Int?
+  expire_in DateTime?
+  label     String?
+  link      String?
+  logo      String?
+  active    Boolean    @default(false)
+  userId    String?    @unique
+  user      user?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joinUsers joinUser[]
+  create_at DateTime   @default(now())
+  update_at DateTime   @updatedAt
+}
+
+model joinUser {
+  id             String       @id @default(uuid())
+  code           String
+  referralcodeId String
+  firstName      String
+  lastName       String
+  midName        String
+  email          String
+  phone          String
+  landerName     String
+  referralCode   referralCode @relation(fields: [referralcodeId], references: [id], onDelete: Cascade)
+  create_at      DateTime     @default(now())
+  update_at      DateTime     @updatedAt
+}
+
+model partners {
+  id            String      @id @default(uuid())
+  title         String
+  description   String
+  linkText      String?
+  link          String?
+  type          PartnerType
+  recipent      String[]    @default([])
+  recipentLabel String?
+  logo          String
+  create_at     DateTime    @default(now())
+  update_at     DateTime    @updatedAt
+}
+
+model reports {
+  id        String   @id @default(uuid())
+  comment   String
+  reason    String
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt
+}
+
+model wristband {
+  id             String          @id @default(uuid())
+  title          String
+  description    String
+  price          Float
+  banner         String
+  color          WristbandName
+  status         WristbandStatus
+  wristbandItems wristbandItem[]
+  stock          Int
+  create_at      DateTime        @default(now())
+  update_at      DateTime        @updatedAt
+}
+
+model pulsetrack {
+  id                 String           @id @default(uuid())
+  sequence           Int              @unique @default(autoincrement())
+  landerId           String
+  name               String
+  baseDomain         String
+  basePath           String
+  idPrefix           Int?             @unique
+  active             BrandtapStatus   @default(PENDING)
+  transactionId      String?
+  subTotal           Float            @default(0)
+  total              Float            @default(0)
+  expediteProduction Float            @default(0)
+  expediteShipping   Float            @default(0)
+  city               String?
+  zip                Int?
+  address            String?
+  state              String?
+  lander             user             @relation(fields: [landerId], references: [id], onDelete: Cascade)
+  wristbands         wristbandItem[]
+  pulsetrackData     pulsetrackData[]
+  trackExports       trackExport[]
+  create_at          DateTime         @default(now())
+  update_at          DateTime         @updatedAt
+}
+
+model wristbandItem {
+  id                String               @id @default(uuid())
+  pulsetrackId      String?
+  wristbandId       String
+  userId            String
+  idPrefix          Int?
+  title             String
+  price             Float
+  quantity          Int
+  subTotal          Float
+  banner            String
+  color             WristbandName
+  assignedFirstName String?
+  assignedLastName  String?
+  assignedNickname  String?
+  status            OrderWristbandStatus @default(PENDING)
+  shippingCarrier   String?
+  trackingNumber    String
+  paid_at           DateTime?
+  shipped_at        DateTime?
+  delivered_at      DateTime?
+  complete_at       DateTime?
+  inproduction_at   DateTime?
+  cancel_at         DateTime?
+  refund_at         DateTime?
+  disable_at        DateTime?
+  transactionId     String?
+  qrCode            String
+  mode              WristbandMode
+  pulsetrack        pulsetrack?          @relation(fields: [pulsetrackId], references: [id], onDelete: Cascade)
+  wristband         wristband            @relation(fields: [wristbandId], references: [id], onDelete: Cascade)
+  user              user                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  create_at         DateTime             @default(now())
+  update_at         DateTime             @updatedAt
+}
+
+model pulsetrackData {
+  id               String     @id @default(uuid())
+  pulsetrackId     String
+  landerId         String
+  idPrefix         Int
+  occurredAt       DateTime
+  landingUrl       String
+  referrer         String
+  referrerDomain   String
+  browser          String
+  os               String
+  deviceType       String
+  screenWidth      Int
+  screenHeight     Int
+  devicePixelRatio Int
+  language         String
+  timeZone         String
+  connectionType   String
+  firstVisit       Boolean
+  isUnique         Boolean
+  ipAddress        String
+  geoCity          String
+  geoRegion        String
+  geoCountry       String
+  gpsLat           Float?
+  gpsLan           Float?
+  gpsAccuracy      Float?
+  gpsTimestamp     DateTime?
+  gpsConsent       Boolean    @default(false)
+  pulsetrack       pulsetrack @relation(fields: [pulsetrackId], references: [id], onDelete: Cascade)
+  lander           user       @relation(fields: [landerId], references: [id], onDelete: Cascade)
+  create_at        DateTime   @default(now())
+  update_at        DateTime   @updatedAt
+}
+
+model trackExport {
+  id           String      @id @default(uuid())
+  landerId     String
+  pulsetrackId String?
+  name         String
+  status       String
+  action       String
+  pulsetrack   pulsetrack? @relation(fields: [pulsetrackId], references: [id], onDelete: Cascade)
+  lander       user        @relation(fields: [landerId], references: [id], onDelete: Cascade)
+  create_at    DateTime    @default(now())
+  update_at    DateTime    @updatedAt
+}
+
+model setting {
+  id             String   @id @default(uuid())
+  maintenance    Boolean  @default(false)
+  accountEmail   String?
+  refreshToken   String?
+  rootFolderId   String?
+  parentFolderId String?
+  create_at      DateTime @default(now())
+  update_at      DateTime @updatedAt
+}
+
+model spining {
+  id        String       @id @default(uuid())
+  groupType SpinCategory
+  title     String
+  url       String
+  isEnable  Boolean      @default(false)
+  landerId  String
+  lander    user         @relation(fields: [landerId], references: [id], onDelete: Cascade)
+  create_at DateTime     @default(now())
+  update_at DateTime     @updatedAt
+}
+
+model activityLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  action    String
+  status    String
+  endpoint  String
+  method    String
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt
+}
+
+model notification {
+  id          String   @id @default(uuid())
+  title       String
+  redirectUrl String
+  profile     String?
+  seen        Boolean  @default(false)
+  userId      String?
+  create_at   DateTime @default(now())
+  update_at   DateTime @updatedAt
+}
+
+model bpsMembership {
+  id            String                  @id @default(uuid())
+  userId        String?                 @unique
+  plan          String
+  heading       String
+  tier          String
+  price         Int
+  setupFee      Int
+  status        ActivationStatus        @default(PENDING)
+  transactionId String
+  activate_at   DateTime?
+  user          user?                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  packages      bpsPackage[]
+  onboards      bpsOnboard[]
+  posts         bpsMembershipPost[]
+  workspace     bpsMembershipWorkspace?
+  drive         bpsMembershipDrive?
+  create_at     DateTime                @default(now())
+  update_at     DateTime                @updatedAt
+}
+
+model bpsPackage {
+  id           String            @id @default(uuid())
+  membershipId String
+  key          FeatureName
+  value        Int
+  platforms    packagePlatform[]
+  membership   bpsMembership     @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  create_at    DateTime          @default(now())
+  update_at    DateTime          @updatedAt
+}
+
+model bpsStaff {
+  id        String              @id @default(uuid())
+  firstName String
+  lastName  String
+  userName  String?
+  email     String              @unique
+  password  String
+  role      StaffRole
+  profile   String?
+  phone     String?
+  secretKey String              @unique @default(uuid())
+  status    ActivationStatus    @default(PENDING)
+  approver  bpsApprover[]
+  posts     bpsMembershipPost[]
+  create_at DateTime            @default(now())
+  update_at DateTime            @updatedAt
+}
+
+model bpsOnboard {
+  id              String              @id @default(uuid())
+  membershipId    String
+  brandName       String
+  website         String
+  industry        String
+  location        String
+  timeZone        String
+  services        String[]
+  businessHour    Int
+  brandOwner      String
+  activity        String
+  promotions      String[]
+  events          String[]
+  lead            String
+  targetAudince   String
+  tarritory       String
+  tone            String
+  language        String
+  brandDo         String[]
+  brandDont       String[]
+  keyClaim        String
+  avoidTopics     String[]
+  upcommingEvents String[]
+  logo            String
+  cover           String
+  brandAssests    String[]
+  approvalMode    BpsApprovalMode
+  membership      bpsMembership       @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  bpsApprover     bpsApprover[]
+  posts           bpsMembershipPost[]
+  onboardProccess bpsProccessStatus[]
+  create_at       DateTime            @default(now())
+  update_at       DateTime            @updatedAt
+}
+
+model packagePlatform {
+  id         String       @id @default(uuid())
+  packageId  String
+  name       PlatformName
+  url        String
+  active     Boolean      @default(false)
+  expireAt   DateTime
+  bpsPackage bpsPackage   @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  create_at  DateTime     @default(now())
+  update_at  DateTime     @updatedAt
+}
+
+model bpsApprover {
+  id         String     @id @default(uuid())
+  staffId    String
+  onboardId  String
+  staffname  String
+  staffemail String
+  staffrole  String?
+  active     Boolean    @default(true)
+  notes      String?
+  staff      bpsStaff   @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  onboard    bpsOnboard @relation(fields: [onboardId], references: [id], onDelete: Cascade)
+  create_at  DateTime   @default(now())
+  update_at  DateTime   @updatedAt
+}
+
+model bpsMembershipDrive {
+  id                String         @id @default(uuid())
+  membershipId      String?        @unique
+  folderId          String?
+  folderUrl         String?
+  clientGoogleEmail String?
+  accessStatus      String?
+  createdSharedAt   DateTime?
+  sharedAt          DateTime?
+  membership        bpsMembership? @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  create_at         DateTime       @default(now())
+  update_at         DateTime       @updatedAt
+}
+
+model bpsMembershipWorkspace {
+  id                 String             @id @default(uuid())
+  membershipId       String?            @unique
+  provider           String
+  workspaceName      String?
+  staffWorkspaceUrl  String?
+  provisioningStatus BpsWorkspaceStatus @default(NOT_CONFIGURED)
+  notes              String?
+  membership         bpsMembership?     @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  create_at          DateTime           @default(now())
+  update_at          DateTime           @updatedAt
+}
+
+model bpsMembershipPost {
+  id           String           @id @default(uuid())
+  membershipId String
+  staffId      String
+  onboardId    String
+  title        String
+  description  String
+  requestType  String
+  requestDate  DateTime
+  deadline     DateTime
+  assests      String[]
+  priority     String
+  status       ActivationStatus @default(PENDING)
+  note         String?
+  membership   bpsMembership    @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  staff        bpsStaff         @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  onboard      bpsOnboard       @relation(fields: [onboardId], references: [id], onDelete: Cascade)
+  create_at    DateTime         @default(now())
+  update_at    DateTime         @updatedAt
+}
+
+model bpsProccessStatus {
+  id          String         @id @default(uuid())
+  onboardId   String
+  name        String
+  description String
+  completeAt  DateTime
+  status      ProccessStatus
+  onboard     bpsOnboard     @relation(fields: [onboardId], references: [id], onDelete: Cascade)
+  create_at   DateTime       @default(now())
+  update_at   DateTime       @updatedAt
+}
+
+// enum
+enum FeatureName {
+  SOCIAL_PLATFORM
+  GENERAL_POST
+  VIDEO_POST
+  MARKETING_CREATION
+  SMART_SCHEDULING
+  SLA_POST
+  SLA_EDIT
+  TIKTOK_INCLUDE
+  ADD_ONS
+  FREE_MYBRANDLIFE
+  INCLUDES
+  YEARLY_SAVING
+}
+
+enum ProccessStatus {
+  VERIFY_ONBOARDING
+  VERIFY_BRAND_ASSETS
+  CREATE_WORKSPACE
+  CONNECT_SOCIAL
+  CONFIGURE_APPROVAL
+  CONFIGURE_CALENDAR
+  CONFIGURE_REPORTING
+  FINAL_REVIEW
+}
+
+enum PlatformName {
+  FACEBOOK
+  TWITTER
+  LINKEDIN
+  YOUTUBE
+  TIKTOK
+  INSTAGRAM
+  TELEGRAM
+  REDDIT
+  PINTEREST
+  DISCORD
+  DRIBBLE
+  SNAPCHAT
+}
+
+enum StaffRole {
+  OPERATOR
+  MANAGER
+  LEADER
+}
+
+enum BpsApprovalMode {
+  APPROVAL_REQUIRED
+  LET_BPS_HANDLE
+}
+
+enum BpsWorkspaceStatus {
+  NOT_CONFIGURED
+  PENDING
+  CONFIGURED
+  NEEDS_UPDATE
+}
+
+enum CodeType {
+  MONTHLY
+  PERCENT
+  LIFETIME
+}
+
+enum Shiping {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  RECEIVED
+  COMPLETE
+  CANCELED
+}
+
+enum WristbandStatus {
+  DRAFT
+  PENDING
+  INSTOCK
+  OUTOFSTOCK
+}
+
+enum PartnerType {
+  LINKTYPE
+  FORMTYPE
+}
+
+enum WristbandName {
+  BLACK
+  RED
+  GREEN
+  YELLOW
+  BLUE
+  WHITE
+  ORANGE
+  PURPLE
+  PINK
+  SILVER
+  GRAY
+  GOLD
+  TEAL
+  NEON_GREEN
+  NEON_PINK
+  NAVY
+  BROWN
+  TAN
+  CLEAR
+}
+
+enum ButtonName {
+  FACEBOOK
+  TWITTER
+  LINKEDIN
+  YOUTUBE
+  CUSTOM
+  SNAPCHAT
+  TIKTOK
+  EMAIL
+  PHONE
+  INSTAGRAM
+  REDDIT
+  TUMBLR
+  PINTEREST
+  WHATSAPP
+  WECHAT
+  TELEGRAM
+  DISCORD
+  TWITCH
+  GITHUB
+  SOUNDCLOUD
+  VIMEO
+  SPOTIFY
+  CLUBHOUSE
+  PERISCOPE
+  DRIBBLE
+  BEHANCE
+  DAILYMOTION
+  MIXCLOUD
+  FLICKR
+  ANCHOR
+  PATREON
+  NEXTDOOR
+}
+
+enum Type {
+  IMAGE
+  COLOR
+}
+
+enum Layout {
+  LEFT
+  RIGHT
+  CENTER
+}
+
+enum EchoStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+  EXPIRED
+  CANCELED
+  PAID
+  DEACTIVATE
+}
+
+enum EventStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+  CANCELED
+  EXPIRED
+  DEACTIVATE
+}
+
+enum ActivationStatus {
+  PENDING
+  ACTIVATE
+  DEACTIVATE
+  SUSPEND
+}
+
+enum BrandtapStatus {
+  PENDING
+  ACTIVATE
+  DEACTIVATE
+  SUSPEND
+  INPROCESS
+}
+
+enum OrderWristbandStatus {
+  PAID
+  INPRODUCTION
+  SHIPPED
+  DELIVERED
+  CANCELED
+  REFUNDED
+  LOST
+  DISABLED
+  PENDING
+  COMPLETE
+}
+
+enum WristbandMode {
+  PULSETRACK
+  GLOBAL
+  EXTRA
+}
+
+enum SpinCategory {
+  PEOPLE
+  CLUBS
+  HOTELS
+  RESTAURANTS
+  OTHER
+}
+
+enum AddressType {
+  PRIMARY
+  SHIPPING
+}
