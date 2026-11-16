@@ -1,5 +1,5 @@
 import fs from "fs";
-import getGoogleDrive from "../config/googleDrive";
+import getGoogleDrive from "../config/googleDrive.js";
 
 async function uploadFileToDrive(
   file: Express.Multer.File,
