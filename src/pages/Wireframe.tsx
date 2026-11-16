@@ -33,7 +33,6 @@ interface OnboardType {
   merchendiseStatus: boolean;
   about_label: string;
   services_label: string;
-
   buttonSet: ButtonsType[];
   services: ServiceType[];
   customPlatfrom: { name: string; url: string; id: string }[];
@@ -41,6 +40,7 @@ interface OnboardType {
   layout: string;
   officialColor: string;
   enableEvent: boolean;
+  epkFile: string;
   brandshare: {
     logo: string;
     label: string;
@@ -70,6 +70,7 @@ interface UserType {
   enableBrandshare: boolean;
   enablePrivateDomain: boolean;
   enablevcf: boolean;
+  enableEpk: boolean;
 }
 
 function Wireframe() {
@@ -135,6 +136,7 @@ function Wireframe() {
     brandshare,
     services_label,
     about_label,
+    epkFile,
   } = onboard || {};
 
   const {
@@ -146,6 +148,7 @@ function Wireframe() {
     privateDomain,
     enablevcf,
     enablePrivateDomain,
+    enableEpk,
   } = user || {};
 
   const { data } = useCheckEchoConnectionQuery(userId);
@@ -414,6 +417,35 @@ function Wireframe() {
               )}
 
               <div className="grid grid-cols-2 gap-2 md:gap-3 mt-2 md:mt-3">
+                {enableEpk && (
+                  <button
+                    className="flex justify-center px-4 gap-2 items-center w-full h-8 md:h-12 
+             rounded-lg hover:scale-105 duration-300 transition-all cursor-pointer 
+             border border-white hover:shadow-[0_0_14px_rgba(255,255,255,0.90)]"
+                    style={{
+                      backgroundImage: `linear-gradient(to right, ${officialColor}, #fff)`,
+                    }}
+                    onClick={() =>
+                      track("ButtonClick", {
+                        props: {
+                          buttonName: "View Merchandise",
+                          lander: landerName,
+                          currentDomain: window.location.hostname,
+                        },
+                      })
+                    }
+                  >
+                    <i className="fa-solid fa-file-arrow-down text-sm md:text-xl"></i>
+                    <a
+                      className="text-xs md:text-base font-normal"
+                      download
+                      target="_blank"
+                      href={epkFile}
+                    >
+                      EPK Download
+                    </a>
+                  </button>
+                )}
                 {buttonSet?.map((item) => {
                   const { id, name, url } = item;
                   const Icon = getSocialIcon(name, url);
@@ -491,7 +523,7 @@ function Wireframe() {
             </div>
             <div className="mt-6">
               <h2 className="text-base md:text-xl font-medium text-white text-center capitalize">
-                {about_label ? about_label : "About"} {landerName}
+                {about_label ? about_label : `About ${landerName}`}
               </h2>
               <p className="text-gray-200 mt-3 text-sm md:text-md font-normal text-center w-full  m-auto">
                 {bio}
