@@ -10,10 +10,10 @@ function BusinessInfo() {
           </div>
           <div>
             <h2 className="text-black text-lg md:text-2xl font-medium">
-              What's on MyBrandLife Radar?
+              What's on My Brand Life Radar?
             </h2>
             <p className="text-black text-sm md:text-base font-normal mt-3">
-              MyBrandLife is built to grow with you. New tools, features, and
+              My Brand Life is built to grow with you. New tools, features, and
               partner services are being developed to make building your brand
               easier, more connected, and more valuable over time.
             </p>
@@ -21,10 +21,10 @@ function BusinessInfo() {
               <span className="flex gap-2 items-start">
                 <i className="fa-solid fa-check text-[#96c94b] mt-1"></i>
                 <p>
-                  <strong>Social Hub:</strong> Your MyBrandLife page brings your
-                  links, social platforms, contact points, and brand connections
-                  into one simple home. It also helps you understand which links
-                  and actions are getting the most attention.
+                  <strong>Social Hub:</strong> Your My Brand Life page brings
+                  your links, social platforms, contact points, and brand
+                  connections into one simple home. It also helps you understand
+                  which links and actions are getting the most attention.
                 </p>
               </span>
               <span className="flex gap-2 items-start">
@@ -48,9 +48,10 @@ function BusinessInfo() {
                 <i className="fa-solid fa-check text-[#96c94b] mt-1"></i>
                 <p>
                   <strong>More Value Apps:</strong> Additional tools are planned
-                  across the MyBrandLife ecosystem, including apps such as EPIK,
-                  BrandMail, PulseDrive, BrandBalance, BrandGuard, BrandQueue,
-                  BrandWall, PulsePass, PulseTrack, BrandLink, and more.
+                  across the My Brand Life ecosystem, including apps such as
+                  EPIK, BrandMail, PulseDrive, BrandBalance, BrandGuard,
+                  BrandQueue, BrandWall, PulsePass, PulseTrack, BrandLink, and
+                  more.
                 </p>
               </span>
               <span className="flex gap-2 items-start">

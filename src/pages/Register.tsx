@@ -298,7 +298,7 @@ function Register() {
             </p>
 
             <p className="text-sm text-black/60">
-              At MyBrandLife, our mission is to empower individuals and
+              At My Brand Life, our mission is to empower individuals and
               businesses by providing tailored, industry-specific landing pages
               that enhance their online presence and engagement.
             </p>

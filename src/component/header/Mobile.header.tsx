@@ -218,7 +218,8 @@ function MobileHeader({ isShow, setIsShow }: Types) {
               </a>
             </div>
             <p className="text-gray-400 text-xs font-normal">
-              © {new Date().getFullYear()} MyBrandLife.me. All rights reserved.
+              © {new Date().getFullYear()} My Brand Life.me. All rights
+              reserved.
             </p>
           </div>
         </div>

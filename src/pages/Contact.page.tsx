@@ -120,7 +120,8 @@ function ContactPage() {
                         Office Location
                       </h3>
                       <p className="text-sm sm:text-md font-normal text-black text-left md:text-center lg:text-left block">
-                        1320 Main Street, Suite 66, Stevens Point, WI 54481
+                        My Brand Life LLC, N4488 Powers Ave #3000, Mauston, WI
+                        53948
                       </p>
                     </div>
                   </a>

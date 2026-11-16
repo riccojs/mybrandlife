@@ -29,7 +29,7 @@ function Maintenance() {
           </button>
         </div>
         <p className="text-xs text-gray-500 mt-6">
-          ©{new Date().getFullYear()} MyBrandLife.me. All rights reserved.
+          ©{new Date().getFullYear()} My Brand Life.me. All rights reserved.
           Portions of the text and imagery may be AI-generated.
         </p>
       </div>

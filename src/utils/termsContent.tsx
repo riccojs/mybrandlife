@@ -12,7 +12,7 @@ const termsContent = [
   },
   {
     type: "paragraph",
-    text: "These Terms apply to mybrandlife.me, applicable application subdomains, participating My…Life domains, and other websites, applications, or services operated by or on behalf of My Brand Life.",
+    text: "These Terms apply to my brand life.me, applicable application subdomains, participating My…Life domains, and other websites, applications, or services operated by or on behalf of My Brand Life.",
   },
   {
     type: "paragraph",

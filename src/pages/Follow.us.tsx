@@ -224,8 +224,8 @@ function FollowUs() {
                 </Link>
               </p>
               <p className="text-white/70 mt-5 text-xs font-normal text-center">
-                ©{new Date().getFullYear()} MyBrandLife.me. All rights reserved.
-                Portions of the text and imagery may be AI-generated.
+                ©{new Date().getFullYear()} My Brand Life.me. All rights
+                reserved. Portions of the text and imagery may be AI-generated.
               </p>
             </div>
           </div>

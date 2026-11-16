@@ -23,12 +23,12 @@ function Footer() {
             <a href="/" className="inline-flex items-center">
               <img
                 src={Logo}
-                alt="MyBrandLife"
+                alt="My Brand Life"
                 className="w-16 h-auto object-contain"
               />
             </a>
             <p className="mt-2.5 text-sm font-normal leading-[1.55] text-[#555555]">
-              At MyBrandLife, our mission is to empower individuals and
+              At My Brand Life, our mission is to empower individuals and
               businesses by providing tailored, industry-specific landing pages
               that enhance their online presence and engagement.
             </p>
@@ -184,7 +184,7 @@ function Footer() {
         <div className="h-px w-full bg-[#E5E7EB]" />
         <div className="flex min-h-12 flex-col items-start md:items-center justify-between gap-2 py-3 sm:flex-row">
           <p className="text-[11px] xl:text-xs font-normal text-[#555555]">
-            © {new Date().getFullYear()} MyBrandLife.me. All rights reserved.
+            © {new Date().getFullYear()} My Brand Life.me. All rights reserved.
             Portions of the text and imagery may be AI-generated.
           </p>
 
