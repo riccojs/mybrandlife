@@ -29,7 +29,14 @@ function Dashboard() {
       <div className="w-full p-2 md:p-5">
         {!existTemplate && user?.package === "gold" && (
           <div className="mb-5">
-            <p className="bg-[#FEFBED] text-[#643315] text-xs font-normal px-3 py-2 rounded-lg mt-1">
+            <p className="bg-[#FEFBED] text-[#643315] text-sm font-normal border border-[#f6e599] p-2 rounded-lg mt-1">
+              Build your brand to unlock analytics dashboard.
+            </p>
+          </div>
+        )}
+        {!existTemplate && user?.package === "silver" && (
+          <div className="mb-5">
+            <p className="bg-[#FEFBED] text-[#643315] text-sm font-normal border border-[#f6e599] p-3 rounded-lg mt-1">
               Build your brand to unlock analytics dashboard.
             </p>
           </div>
