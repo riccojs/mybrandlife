@@ -265,37 +265,41 @@ function Profile() {
                   <tr>
                     <td className="text-md font-medium p-2">Country:</td>
                     <td className="text-md font-normal p-2">
-                      {primaryAddress?.country}
+                      {primaryAddress?.country ? primaryAddress?.country : "-"}
                     </td>
                   </tr>
                   <tr>
                     <td className="text-md font-medium p-2">State:</td>
                     <td className="text-md font-normal p-2">
-                      {primaryAddress?.state}
+                      {primaryAddress?.state ? primaryAddress?.state : "-"}
                     </td>
                   </tr>
                   <tr>
                     <td className="text-md font-medium p-2">City:</td>
                     <td className="text-md font-normal p-2">
-                      {primaryAddress?.city}
+                      {primaryAddress?.city ? primaryAddress?.city : "-"}
                     </td>
                   </tr>
                   <tr>
                     <td className="text-md font-medium p-2">Postal Code:</td>
                     <td className="text-md font-normal p-2">
-                      {primaryAddress?.zip}
+                      {primaryAddress?.zip ? primaryAddress?.zip : "-"}
                     </td>
                   </tr>
                   <tr>
                     <td className="text-md font-medium p-2">Adress One:</td>
                     <td className="text-md font-normal p-2">
-                      {primaryAddress?.streetOne}
+                      {primaryAddress?.streetOne
+                        ? primaryAddress?.streetOne
+                        : "-"}
                     </td>
                   </tr>
                   <tr>
                     <td className="text-md font-medium p-2">Address Tow:</td>
                     <td className="text-md font-normal p-2">
-                      {primaryAddress?.streetTow}
+                      {primaryAddress?.streetTow
+                        ? primaryAddress?.streetTow
+                        : "-"}
                     </td>
                   </tr>
                 </tbody>
@@ -325,37 +329,43 @@ function Profile() {
                   <tr>
                     <td className="text-md font-medium p-2">Country:</td>
                     <td className="text-md font-normal p-2">
-                      {ShippingAddress?.country}
+                      {ShippingAddress?.country
+                        ? ShippingAddress?.country
+                        : "-"}
                     </td>
                   </tr>
                   <tr>
                     <td className="text-md font-medium p-2">State:</td>
                     <td className="text-md font-normal p-2">
-                      {ShippingAddress?.state}
+                      {ShippingAddress?.state ? ShippingAddress?.state : "-"}
                     </td>
                   </tr>
                   <tr>
                     <td className="text-md font-medium p-2">City:</td>
                     <td className="text-md font-normal p-2">
-                      {ShippingAddress?.city}
+                      {ShippingAddress?.city ? ShippingAddress?.city : "-"}
                     </td>
                   </tr>
                   <tr>
                     <td className="text-md font-medium p-2">Postal Code:</td>
                     <td className="text-md font-normal p-2">
-                      {ShippingAddress?.zip}
+                      {ShippingAddress?.zip ? ShippingAddress?.zip : "-"}
                     </td>
                   </tr>
                   <tr>
                     <td className="text-md font-medium p-2">Adress One:</td>
                     <td className="text-md font-normal p-2">
-                      {ShippingAddress?.streetOne}
+                      {ShippingAddress?.streetOne
+                        ? ShippingAddress?.streetOne
+                        : "-"}
                     </td>
                   </tr>
                   <tr>
                     <td className="text-md font-medium p-2">Address Tow:</td>
                     <td className="text-md font-normal p-2">
-                      {ShippingAddress?.streetTow}
+                      {ShippingAddress?.streetTow
+                        ? ShippingAddress?.streetTow
+                        : "-"}
                     </td>
                   </tr>
                 </tbody>

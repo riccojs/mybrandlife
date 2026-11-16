@@ -21,10 +21,12 @@ interface OnboardTypes {
   headerImage?: File | string | null;
   bodyImage?: File | string | null;
   epkFile?: File | string | null;
+  enableEpk: boolean;
 }
 
 interface UserType {
   package?: string;
+  enableEpk: boolean;
 }
 
 function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
@@ -55,8 +57,10 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
     headerImage: null,
     bodyImage: null,
     epkFile: null,
+    enableEpk: false,
   });
-  const { logoImage, headerImage, bodyImage, epkFile } = onboard || {};
+  const { logoImage, headerImage, bodyImage, epkFile, enableEpk } =
+    onboard || {};
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -65,6 +69,7 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
     formData.append("headerImage", headerImage ? headerImage : "");
     formData.append("bodyImage", bodyImage ? bodyImage : "");
     formData.append("epkFile", epkFile ? epkFile : "");
+    formData.append("enableEpk", String(enableEpk));
     updateImages({ id, formData })
       .unwrap()
       .then((res) => {
@@ -148,6 +153,7 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
         headerImage: data.onboard.headerImage ?? null,
         bodyImage: data.onboard.bodyImage ?? null,
         epkFile: data.onboard.epkFile ?? null,
+        enableEpk: data?.onboard?.user?.enableEpk ?? false,
       });
     }
   }, [data?.onboard]);
@@ -343,6 +349,26 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
                     PNG, JPG, JPEG • Max 2MB
                   </p>
                 </label>
+                <div className="flex gap-2 mt-1">
+                  <input
+                    type="checkbox"
+                    id="enableEpk"
+                    checked={enableEpk}
+                    name="enableEpk"
+                    onChange={(e) =>
+                      setOnboard((prev) => ({
+                        ...prev,
+                        enableEpk: e.target.checked,
+                      }))
+                    }
+                  />
+                  <label
+                    htmlFor="enableEpk"
+                    className="text-sm md:text-md font-medium text-black mt-1 cursor-pointer"
+                  >
+                    Activate or deactivate your EPK file.
+                  </label>
+                </div>
                 {onboard?.epkFile && (
                   <div className="bg-[#F5F9FC] mt-2 text-sm border border-gray-100 flex gap-3 justify-between items-center p-2 rounded-xl">
                     {typeof onboard.epkFile === "string"

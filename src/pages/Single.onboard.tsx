@@ -258,7 +258,7 @@ function SIngleOnboard() {
                       Your Bio
                     </p>
                     <div className="text-sm md:text-md font-normal text-[#202431]">
-                      {isLoading ? <SingleLoadder /> : bio}
+                      {isLoading ? <SingleLoadder /> : bio ? bio : "-"}
                     </div>
                   </div>
                   <div className="flex gap-1 border-2 border-[#F2F5F9] flex-col bg-[#F7F9FB] p-5 rounded-2xl">
@@ -266,7 +266,7 @@ function SIngleOnboard() {
                       Tag Line
                     </p>
                     <div className="text-sm md:text-md font-normal text-[#202431]">
-                      {isLoading ? <SingleLoadder /> : tagLine}
+                      {isLoading ? <SingleLoadder /> : tagLine ? tagLine : "-"}
                     </div>
                   </div>
                   <div className="flex gap-1 border-2 border-[#F2F5F9] flex-col bg-[#F7F9FB] p-5 rounded-2xl">
@@ -274,7 +274,13 @@ function SIngleOnboard() {
                       Business offerings
                     </p>
                     <div className="text-sm md:text-md font-normal text-[#202431]">
-                      {isLoading ? <SingleLoadder /> : offerings}
+                      {isLoading ? (
+                        <SingleLoadder />
+                      ) : offerings ? (
+                        offerings
+                      ) : (
+                        "-"
+                      )}
                     </div>
                   </div>
                   <div className="flex gap-1 border-2 border-[#F2F5F9] flex-col bg-[#F7F9FB] p-5 rounded-2xl">
@@ -287,7 +293,7 @@ function SIngleOnboard() {
                       ) : services_label ? (
                         services_label
                       ) : (
-                        "N/A"
+                        "-"
                       )}
                     </div>
                   </div>
@@ -301,7 +307,7 @@ function SIngleOnboard() {
                       ) : about_label ? (
                         about_label
                       ) : (
-                        "N/A"
+                        "-"
                       )}
                     </div>
                   </div>
@@ -322,7 +328,7 @@ function SIngleOnboard() {
                         />
                       </div>
                     ) : (
-                      "N/A"
+                      "-"
                     )}
                   </div>
                   <div className="flex gap-1 border-2 border-[#F2F5F9] flex-col bg-[#F7F9FB] p-5 rounded-2xl">
@@ -332,10 +338,12 @@ function SIngleOnboard() {
                     <div className="text-sm md:text-md font-normal text-[#202431]">
                       {isLoading ? (
                         <SingleLoadder />
-                      ) : (
+                      ) : services?.length > 0 ? (
                         services
                           ?.map((item: { title: string }) => item.title)
                           .join(", ")
+                      ) : (
+                        "-"
                       )}
                     </div>
                   </div>
@@ -385,7 +393,7 @@ function SIngleOnboard() {
                     <FilePenLine color="#8C98AE" size={20} />
                   </button>
                 </div>
-                <p className="bg-[#FFFCF0] w-full text-[#7C3E16] border-2 border-[#FCF2C6] p-5 text-sm font-normal rounded-lg">
+                <p className="bg-[#FFFCF0] w-full text-[#7C3E16] border-2 border-[#FCF2C6] p-5 text-sm font-normal rounded-lg mb-1">
                   Note: If you upload no files and pick no colors, the default
                   background is black.
                 </p>
