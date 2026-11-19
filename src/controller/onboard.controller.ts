@@ -36,7 +36,6 @@ import {
 import { ButtonSetType, LayoutDetection, UserType } from "../utils/types.js";
 import { paymentCreator } from "../middelware/payment.creator.js";
 import getBase64Image from "../lib/getBase64Image.js";
-import { fileURLToPath } from "url";
 import { ButtonName } from "@prisma/client";
 import fileProtocol from "./fileProtocol.js";
 import alertEmail from "../lib/alert.email.js";
@@ -44,11 +43,9 @@ import activityLog from "../middelware/activity.log.js";
 import notificationCreator from "../middelware/notification.createor.js";
 import extraWristbandPayment from "../middelware/extrawristband.payment.js";
 const card = new VCard();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const publicPath = process.env.PUBLIC_PATH as string;
 const PUBLIC_DIR =
-  process.env.PUBLIC_DIR ||
+  publicPath ||
   (process.env.NODE_ENV === "production"
     ? "/data/public"
     : path.resolve(process.cwd(), "public"));
@@ -1493,7 +1490,7 @@ export async function updateTempleteInfos(req: Request, res: Response) {
     }
 
     // create vfc file
-    if (!existTemplete?.vcfFile) {
+    if (existTemplete?.user && !existTemplete.vcfFile) {
       const { midName, email, phone, address, landerName } =
         existTemplete?.user;
       const primaryAddress = address?.find((item) => item.type === "PRIMARY");
