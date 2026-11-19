@@ -1511,7 +1511,7 @@ export async function updateTempleteInfos(req: Request, res: Response) {
         }
       }
       const basePath = fileProtocol(req);
-      const fileDir = path.join(__dirname, "../../public");
+      const fileDir = path.join(__dirname, publicPath);
       if (!fs.existsSync(fileDir)) fs.mkdirSync(fileDir, { recursive: true });
       const fileName = `${landerName || "contact"}_${Date.now()}.vcf`;
       const filePath = path.join(fileDir, fileName);
