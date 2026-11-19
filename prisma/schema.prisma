@@ -38,6 +38,7 @@ model user {
   ShowCalendar        Boolean          @default(false)
   enableDirectory     Boolean          @default(true)
   enableBrandshare    Boolean          @default(true)
+  enablePrivateDomain Boolean          @default(false)
   enableQr            Boolean          @default(true)
   enableMblLogo       Boolean          @default(true)
   enablevcf           Boolean          @default(true)
