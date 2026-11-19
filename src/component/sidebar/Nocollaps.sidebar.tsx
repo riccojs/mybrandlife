@@ -33,6 +33,7 @@ import MYBARLIFE from "../../assets/logos/mybarlife.png";
 import MYEVENTLIFE from "../../assets/logos/myeventlife.png";
 import MYVIBELIFE from "../../assets/logos/MyVibeLife.png";
 import MYPHOTOLIFE from "../../assets/logos/MyPhotoLife.png";
+import MYAGENTLIFE from "../../assets/logos/myagentlife.png";
 import MYPHOTOGRAPHYLIFE from "../../assets/logos/MyPhotographyLife.png";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -109,6 +110,7 @@ function NoCollapsSidebar() {
     myvibelife: MYVIBELIFE,
     myphotolife: MYPHOTOLIFE,
     myphotographylife: MYPHOTOGRAPHYLIFE,
+    myagentlife: MYAGENTLIFE,
   };
   const isBuildMode = !isLoading && totalOnboard === 0;
 
