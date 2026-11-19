@@ -6,7 +6,6 @@ import { LoaderCircle } from "lucide-react";
 import type { CustomPlatformItem } from "../../utils/user.types";
 import useBodyScroll from "../../hook/userBodyscroll";
 import { useCreateCustomsMutation } from "../../redux/features/onboard/onboardApi";
-import { useAuth } from "../../hook/useAuth";
 
 interface TypesForm {
   isShowButton: boolean;
@@ -37,7 +36,6 @@ function AddCustomButton({
     customPlatform: [],
   });
   const [createCustoms, { isLoading }] = useCreateCustomsMutation();
-  const { user } = useAuth() as { user: { package: string } | null };
   const handleFeatureChange = (
     index: number,
     field: keyof CustomPlatformItem,
@@ -114,16 +112,10 @@ function AddCustomButton({
               <div className="w-full flex justify-between items-center">
                 <h2 className="text-md font-normal capitalize">
                   Add Custom Link{" "}
-                  {user?.package !== "gold" && (
-                    <span className="text-red-500 text-xs font-normal">
-                      (Gold Only)
-                    </span>
-                  )}
                 </h2>
                 <button
                   type="button"
                   onClick={handleAddFeature}
-                  disabled={user?.package !== "gold"}
                   className="dark-gold cursor-pointer"
                 >
                   <i className="fa-solid fa-plus text-xl" />

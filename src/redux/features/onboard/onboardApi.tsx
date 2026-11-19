@@ -213,6 +213,15 @@ export const onboardApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["update"],
     }),
+    deleteFile: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/api/onboard/file/${id}`,
+        method: "DELETE",
+        credentials: "include",
+        body: data,
+      }),
+      invalidatesTags: ["update"],
+    }),
   }),
 });
 
@@ -243,4 +252,5 @@ export const {
   useDeleteOnboardRequestMutation,
   useCreateSocialsMutation,
   useCreateCustomsMutation,
+  useDeleteFileMutation,
 } = onboardApi;

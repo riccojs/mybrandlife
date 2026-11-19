@@ -2,11 +2,12 @@ import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useParams } from "react-router";
-import { CheckCircle, LoaderCircle } from "lucide-react";
+import { LoaderCircle, X } from "lucide-react";
 import { CiImageOn } from "react-icons/ci";
 import useBodyScroll from "../../hook/userBodyscroll";
 import { useAuth } from "../../hook/useAuth";
 import {
+  useDeleteFileMutation,
   useGetOneOnboardQuery,
   useUpdateImagesMutation,
 } from "../../redux/features/onboard/onboardApi";
@@ -21,6 +22,7 @@ interface OnboardTypes {
   headerImage?: File | string | null;
   bodyImage?: File | string | null;
   epkFile?: File | string | null;
+  enableEpk: boolean;
 }
 
 interface UserType {
@@ -29,8 +31,9 @@ interface UserType {
 
 function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
   useBodyScroll(isShowFile);
-
+  const [deleteFile, { isLoading: delLoad }] = useDeleteFileMutation();
   const params = useParams();
+  const [deleteId, setDeleteId] = useState("");
   const id = params.id;
   const { user } = useAuth() as { user: UserType | null };
   const { data } = useGetOneOnboardQuery(id);
@@ -55,10 +58,12 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
     headerImage: data.onboard.headerImage || null,
     bodyImage: data.onboard.bodyImage || null,
     epkFile: data.onboard.epkFile || null,
+    enableEpk: false,
   });
-  const { logoImage, headerImage, bodyImage, epkFile } = onboard || {};
+  const { logoImage, headerImage, bodyImage, epkFile, enableEpk } =
+    onboard || {};
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("logoImage", logoImage ? logoImage : "");
@@ -141,6 +146,25 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
     validateAndSaveFile(file, field);
   };
 
+  const handleDeleteFile = (name: string) => {
+    const data = {
+      fileName: name,
+    };
+    setDeleteId(name);
+    deleteFile({ id, data })
+      .unwrap()
+      .then((res) => {
+        toast.success(res.message);
+        setIsShowFiles(false);
+        setDeleteId("");
+      })
+      .catch((error) => {
+        const err = error as FetchBaseQueryError;
+        const errorMessage = (err.data as { message: string }).message;
+        toast.error(errorMessage);
+      });
+  };
+
   return (
     <div className="inset-0 bg-[#00000039] flex fixed left-0 justify-center items-center w-full min-h-screen z-50 overflow-auto">
       <div
@@ -158,7 +182,7 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
           <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6 my-5">
               <div className="flex flex-col gap-1 w-full">
-                <label htmlFor="" className="text-lg font-medium text-black">
+                <label className="text-md md:text-lg font-medium text-black">
                   Header Image
                 </label>
                 <label
@@ -166,7 +190,7 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
                   onDragOver={(e) => handleDragOver(e, "headerImage")}
                   onDragLeave={handleDragLeave}
                   onDrop={(e) => handleDrop(e, "headerImage")}
-                  className={`relative flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed md:px-0 px-2 py-8 transition cursor-pointer
+                  className={`relative flex flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed md:px-0 px-2 py-8 transition cursor-pointer
                       ${
                         draggingField === "headerImage"
                           ? "border-blue-500 bg-blue-50"
@@ -182,12 +206,14 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
                     onChange={(e) => handleFileChange(e, "headerImage")}
                   />
                   <CiImageOn size={60} color="#0084F9" />
-                  <h3 className="text-md font-medium">Drag & Drop your logo</h3>
+                  <h3 className="text-sm md:text-md font-medium">
+                    Drag & Drop Header Image
+                  </h3>
                   <p className="text-xs text-gray-500">
                     PNG, JPG, JPEG • Max 2MB
                   </p>
-                  <p className="text-gray-500 text-xs font-normal text-center">
-                    Recommended header image size 1920PX x 400PX
+                  <p className="text-gray-500 text-[10px] md:text-xs font-normal">
+                    Recommended header image size (1920px x 400px)
                   </p>
                 </label>
                 {onboard?.headerImage && (
@@ -195,16 +221,25 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
                     {typeof onboard.headerImage === "string"
                       ? onboard?.headerImage?.split("/").pop()
                       : onboard?.headerImage?.name}
-                    <span className="w-8 h-8 min-w-8 flex items-center justify-center rounded-full bg-red-100">
-                      <span className="w-8 h-8 min-w-8 flex items-center justify-center rounded-full bg-green-100">
-                        <CheckCircle className="text-green-600" size={18} />
-                      </span>
+
+                    <span
+                      onClick={() => handleDeleteFile("headerImage")}
+                      className="w-8 h-8 min-w-8 flex items-center justify-center rounded-full bg-red-100 cursor-pointer"
+                    >
+                      {delLoad && deleteId === "headerImage" ? (
+                        <LoaderCircle
+                          className="text-red-600 animate-spin"
+                          size={18}
+                        />
+                      ) : (
+                        <X className="text-red-600" size={18} />
+                      )}
                     </span>
                   </div>
                 )}
               </div>
               <div className="flex flex-col gap-1 w-full">
-                <label htmlFor="" className="text-lg font-medium text-black">
+                <label className="text-md md:text-lg font-medium text-black">
                   Logo or Portrait
                 </label>
                 <label
@@ -212,7 +247,7 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
                   onDragOver={(e) => handleDragOver(e, "logoImage")}
                   onDragLeave={handleDragLeave}
                   onDrop={(e) => handleDrop(e, "logoImage")}
-                  className={`relative flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed px-2 md:px-0 py-8 transition cursor-pointer
+                  className={`relative flex flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed px-2 md:px-0 py-8 transition cursor-pointer
                       ${
                         draggingField === "logoImage"
                           ? "border-blue-500 bg-blue-50"
@@ -228,12 +263,14 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
                     onChange={(e) => handleFileChange(e, "logoImage")}
                   />
                   <CiImageOn size={60} color="#0084F9" />
-                  <h3 className="text-md font-medium">Drag & Drop your logo</h3>
+                  <h3 className="text-sm md:text-md font-medium">
+                    Drag & Drop Logo
+                  </h3>
                   <p className="text-xs text-gray-500">
                     PNG, JPG, JPEG • Max 2MB
                   </p>
-                  <p className="text-gray-500 text-xs font-normal text-center">
-                    Recommended logo image size 300PX x 300PX
+                  <p className="text-gray-500 text-[10px] md:text-xs font-normal">
+                    Recommended logo size (300px x 300px)
                   </p>
                 </label>
                 {onboard?.logoImage && (
@@ -241,16 +278,24 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
                     {typeof onboard.logoImage === "string"
                       ? onboard?.logoImage?.split("/").pop()
                       : onboard?.logoImage?.name}
-                    <span className="w-8 h-8 min-w-8 flex items-center justify-center rounded-full bg-red-100">
-                      <span className="w-8 h-8 min-w-8 flex items-center justify-center rounded-full bg-green-100">
-                        <CheckCircle className="text-green-600" size={18} />
-                      </span>
+                    <span
+                      onClick={() => handleDeleteFile("logoImage")}
+                      className="w-8 h-8 min-w-8 flex items-center justify-center rounded-full bg-red-100 cursor-pointer"
+                    >
+                      {delLoad && deleteId === "logoImage" ? (
+                        <LoaderCircle
+                          className="text-red-600 animate-spin"
+                          size={18}
+                        />
+                      ) : (
+                        <X className="text-red-600" size={18} />
+                      )}
                     </span>
                   </div>
                 )}
               </div>
               <div className="flex flex-col gap-1 w-full">
-                <label htmlFor="" className="text-lg font-medium text-black">
+                <label className="text-md md:text-lg font-medium text-black">
                   Body Image
                 </label>
                 <label
@@ -258,7 +303,7 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
                   onDragOver={(e) => handleDragOver(e, "bodyImage")}
                   onDragLeave={handleDragLeave}
                   onDrop={(e) => handleDrop(e, "bodyImage")}
-                  className={`relative flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed px-2 md:px-0 py-8 transition cursor-pointer
+                  className={`relative flex flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed px-2 md:px-0 py-8 transition cursor-pointer
                       ${
                         draggingField === "bodyImage"
                           ? "border-blue-500 bg-blue-50"
@@ -274,12 +319,14 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
                     onChange={(e) => handleFileChange(e, "bodyImage")}
                   />
                   <CiImageOn size={60} color="#0084F9" />
-                  <h3 className="text-md font-medium">Drag & Drop your logo</h3>
+                  <h3 className="text-sm md:text-md font-medium">
+                    Drag & Drop Body Image
+                  </h3>
                   <p className="text-xs text-gray-500">
                     PNG, JPG, JPEG • Max 2MB
                   </p>
-                  <p className="text-gray-500 text-xs font-normal text-center">
-                    Recommended body image size 1920PX x 1080PX
+                  <p className="text-gray-500 text-[10px] md:text-xs font-normal">
+                    Recommended body image size (1920px x 1080px)
                   </p>
                 </label>
                 {onboard?.bodyImage && (
@@ -287,16 +334,24 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
                     {typeof onboard.bodyImage === "string"
                       ? onboard?.bodyImage?.split("/").pop()
                       : onboard?.bodyImage?.name}
-                    <span className="w-8 h-8 min-w-8 flex items-center justify-center rounded-full bg-red-100">
-                      <span className="w-8 h-8 min-w-8 flex items-center justify-center rounded-full bg-green-100">
-                        <CheckCircle className="text-green-600" size={18} />
-                      </span>
+                    <span
+                      onClick={() => handleDeleteFile("bodyImage")}
+                      className="w-8 h-8 min-w-8 flex items-center justify-center rounded-full bg-red-100 cursor-pointer"
+                    >
+                      {delLoad && deleteId === "bodyImage" ? (
+                        <LoaderCircle
+                          className="text-red-600 animate-spin"
+                          size={18}
+                        />
+                      ) : (
+                        <X className="text-red-600" size={18} />
+                      )}
                     </span>
                   </div>
                 )}
               </div>
               <div className="flex flex-col gap-1 w-full">
-                <label htmlFor="" className="text-lg font-medium text-black">
+                <label className="text-md md:text-lg font-medium text-black">
                   EPK.zip File Upload{" "}
                   {disableBox && (
                     <span className="text-xs font-normal text-red-500">
@@ -321,24 +376,55 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
                     type="file"
                     hidden
                     ref={epkFileRef}
-                    accept=".zip,application/zip"
+                    accept=".zip,.pdf,application/zip,application/pdf"
                     onChange={(e) => handleFileChange(e, "epkFile")}
                   />
                   <CiImageOn size={60} color="#0084F9" />
-                  <h3 className="text-md font-medium">Drag & Drop your logo</h3>
-                  <p className="text-xs text-gray-500">
-                    PNG, JPG, JPEG • Max 2MB
+                  <h3 className="text-sm md:text-md font-medium">
+                    Drag & Drop Your EPK File
+                  </h3>
+                  <p className="text-xs text-gray-500">PDF or ZIP • Max 4MB</p>
+                  <p className="text-gray-500 text-[10px] md:text-xs font-normal">
+                    Recommended EPK Format PDF or ZIP
                   </p>
                 </label>
+                <div className="flex gap-2 mt-1">
+                  <input
+                    type="checkbox"
+                    id="enableEpk"
+                    checked={enableEpk}
+                    name="enableEpk"
+                    onChange={(e) =>
+                      setOnboard((prev) => ({
+                        ...prev,
+                        enableEpk: e.target.checked,
+                      }))
+                    }
+                  />
+                  <label
+                    htmlFor="enableEpk"
+                    className="text-sm md:text-md font-medium text-black mt-1 cursor-pointer"
+                  >
+                    Activate or deactivate your EPK file.
+                  </label>
+                </div>
                 {onboard?.epkFile && (
                   <div className="bg-[#F5F9FC] mt-2 text-sm border border-gray-100 flex gap-3 justify-between items-center p-2 rounded-xl">
                     {typeof onboard.epkFile === "string"
                       ? onboard?.epkFile?.split("/").pop()
                       : onboard?.epkFile?.name}
-                    <span className="w-8 h-8 min-w-8 flex items-center justify-center rounded-full bg-red-100">
-                      <span className="w-8 h-8 min-w-8 flex items-center justify-center rounded-full bg-green-100">
-                        <CheckCircle className="text-green-600" size={18} />
-                      </span>
+                    <span
+                      onClick={() => handleDeleteFile("epkFile")}
+                      className="w-8 h-8 min-w-8 flex items-center justify-center rounded-full bg-red-100 cursor-pointer"
+                    >
+                      {delLoad && deleteId === "epkFile" ? (
+                        <LoaderCircle
+                          className="text-red-600 animate-spin"
+                          size={18}
+                        />
+                      ) : (
+                        <X className="text-red-600" size={18} />
+                      )}
                     </span>
                   </div>
                 )}
@@ -348,7 +434,7 @@ function EditFiles({ isShowFile, setIsShowFiles }: TypesForm) {
               <button
                 onClick={() => setIsShowFiles(false)}
                 disabled={isLoading}
-                className="bg-slate-200 text-[#000000] flex justify-center items-center gap-1 w-fit border border-gray-200 px-10 h-12 rounded-lg cursor-pointer"
+                className="bg-slate-200 text-[#000000] min-w-32 w-32 h-12 flex justify-center items-center gap-1 border border-gray-200 rounded-lg cursor-pointer"
               >
                 Close
               </button>

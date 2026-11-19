@@ -231,39 +231,60 @@ export default function HeaderNotification() {
 
   return (
     <div className="flex items-center gap-3">
-      <button
-        type="button"
-        aria-label="Documentation"
-        onClick={() => {
-          navigate("/ordered-wristband");
-        }}
-        title="Documentation"
-        className="hidden h-9 w-9 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 sm:inline-flex"
-      >
-        <CircleHelp className="h-5 w-5" />
-      </button>
-
-      <div className="relative" ref={notifyRef}>
+      <div className="relative inline-flex group">
         <button
           type="button"
-          id="notification-bell-btn"
-          aria-label="Toggle notifications"
-          aria-expanded={isOpen}
-          aria-haspopup="true"
-          onClick={() => setIsOpen((open) => !open)}
-          className={`relative flex h-9 w-9 bg-slate-100 items-center cursor-pointer justify-center rounded-xl transition-all duration-200 ${
-            isOpen
-              ? "bg-emerald-50 text-emerald-700 shadow-sm ring-2 ring-emerald-500/30"
-              : "text-slate-500 hover:bg-slate-200"
-          }`}
+          aria-label="Documentation"
+          onClick={() => {
+            navigate("/ordered-wristband");
+          }}
+          title="Documentation"
+          className="hidden h-9 cursor-pointer w-9 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 sm:inline-flex"
         >
-          <Bell className="h-4 w-4" />
-          {unreadCount > 0 && (
-            <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
-              {unreadCount}
-            </span>
-          )}
+          <CircleHelp className="h-5 w-5" />
         </button>
+        <div
+          role="tooltip"
+          className="absolute top-12 left-1/2 -translate-x-1/2 w-44 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+        >
+          <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+            <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+            <span className="relative z-10">Ordered Wristbands</span>
+          </div>
+        </div>
+      </div>
+      <div className="relative" ref={notifyRef}>
+        <div className="relative inline-flex group">
+          <button
+            type="button"
+            id="notification-bell-btn"
+            aria-label="Toggle notifications"
+            aria-expanded={isOpen}
+            aria-haspopup="true"
+            onClick={() => setIsOpen((open) => !open)}
+            className={`relative flex h-9 w-9 bg-slate-100 items-center cursor-pointer justify-center rounded-xl transition-all duration-200 ${
+              isOpen
+                ? "bg-emerald-50 text-emerald-700 shadow-sm ring-2 ring-emerald-500/30"
+                : "text-slate-500 hover:bg-slate-200"
+            }`}
+          >
+            <Bell className="h-4 w-4" />
+            {unreadCount > 0 && (
+              <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
+                {unreadCount}
+              </span>
+            )}
+          </button>
+          <div
+            role="tooltip"
+            className="absolute top-12 left-1/2 -translate-x-1/2 w-28 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+          >
+            <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+              <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+              <span className="relative z-10">Notifications</span>
+            </div>
+          </div>
+        </div>
 
         <div
           className={`absolute -right-14 md:-right-10 top-[calc(100%+14px)] z-50 w-[min(440px,calc(100vw-2rem))] transition-all duration-200 ease-in-out transform origin-top-right ${

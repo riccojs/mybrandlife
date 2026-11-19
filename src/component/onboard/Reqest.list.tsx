@@ -8,10 +8,10 @@ import {
   useDeleteOnboardRequestMutation,
   useGetAllOnboardRequestsQuery,
 } from "../../redux/features/onboard/onboardApi";
-import SpiningLoader from "../loader/Spining.loader";
 import type { RequestType } from "../../utils/spin.types";
 import ViewRequest from "./View.request";
 import WarningPopup from "../Warning.popup";
+import RequestListLoader from "../loader/Request.list.loader";
 
 const RequestList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -61,7 +61,7 @@ const RequestList = () => {
   // decide what to render
   let content;
   if (isFetching || isLoading) {
-    content = [...Array(8)].map((_, i) => <SpiningLoader key={i} />);
+    content = [...Array(8)].map((_, i) => <RequestListLoader key={i} />);
   }
   if (!isFetching && !isLoading && requests?.length === 0) {
     content = (
@@ -131,17 +131,17 @@ const RequestList = () => {
           <h2 className="text-lg text-[#121625] font-normal">Request List</h2>
           <p className="text-[#A0AABC] text-sm">Total Entries: {totalItem}</p>
         </div>
-        <div className="bg-white rounded-xl border border-gray-200">
-          <div className="overflow-x-auto">
-            <table className="w-full table-fixed border-collapse min-w-325">
+        <div className="bg-white rounded-xl">
+          <div className="xl:overflow-x-auto overflow-x-scroll custom-scroll bg-white">
+            <table className="my-table table-fixed w-full min-w-350">
               <thead className="text-xs uppercase text-gray-500 bg-gray-50">
-                <tr>
-                  <th className="text-left px-6 py-4">Submit at</th>
-                  <th className="text-left px-6 py-4">Request Name</th>
-                  <th className="text-left px-6 py-4">Request Email</th>
-                  <th className="text-left px-6 py-4">Request Phone</th>
-                  <th className="text-left px-6 py-4">Request Note</th>
-                  <th className="text-left px-6 py-4">Actions</th>
+                <tr className="border-y border-gray-200">
+                  <th>Submit at</th>
+                  <th>Request Name</th>
+                  <th>Request Email</th>
+                  <th>Request Phone</th>
+                  <th>Request Note</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>{content}</tbody>

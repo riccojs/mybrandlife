@@ -96,30 +96,74 @@ function Header({ setSidebard, sidebar, setNavbar }: Types) {
   return (
     <header className="sticky z-10 top-0 bg-white flex justify-between items-center h-16 border-b-2 border-gray-200 p-3 md:px-5">
       <div className="flex gap-2 items-center w-3/12">
-        <button
-          onClick={() => setSidebard(!sidebar)}
-          className="xl:flex hidden bg-[#E2E2E2] border border-gray-200 w-10 min-w-10 h-10 justify-center items-center rounded-full cursor-pointer text-xl"
-        >
-          {sidebar ? <RiCollapseDiagonalLine /> : <BiCollapse />}
-        </button>
-        <button
-          onClick={() => setNavbar(true)}
-          className="flex xl:hidden bg-[#E2E2E2] border border-gray-200 w-10 min-w-10 h-10 justify-center items-center rounded-full cursor-pointer text-xl"
-        >
-          <RiMenu3Line size={20} />
-        </button>
-        <Link
-          to="/onboard"
-          className="bg-[#cbf38b] h-10 w-10 min-w-10 text-center rounded-full flex justify-center items-center text-base font-normal"
-        >
-          <img src={OnboardIcon} className="w-6" alt="" />
-        </Link>
-        <Link
-          to="/user"
-          className="bg-[#cbf38b] h-10 w-10 min-w-10 text-center rounded-full flex justify-center items-center text-base font-normal"
-        >
-          <img src={UserIcon} className="w-6" alt="" />
-        </Link>
+        <div className="relative inline-flex group">
+          <button
+            onClick={() => setSidebard(!sidebar)}
+            className="xl:flex hidden bg-[#E2E2E2] border border-gray-200 w-10 min-w-10 h-10 justify-center items-center rounded-full cursor-pointer text-xl"
+          >
+            {sidebar ? <RiCollapseDiagonalLine /> : <BiCollapse />}
+          </button>
+          <div
+            role="tooltip"
+            className="absolute top-12 left-1/2 -translate-x-1/2 w-40 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+          >
+            <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+              <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+              <span className="relative z-10">Sidebar Collapse</span>
+            </div>
+          </div>
+        </div>
+        <div className="relative inline-flex group">
+          <button
+            onClick={() => setNavbar(true)}
+            className="flex xl:hidden bg-[#E2E2E2] border border-gray-200 w-10 min-w-10 h-10 justify-center items-center rounded-full cursor-pointer text-xl"
+          >
+            <RiMenu3Line size={20} />
+          </button>
+          <div
+            role="tooltip"
+            className="absolute top-12 left-18 -translate-x-1/2 w-40 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+          >
+            <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+              <div className="absolute -top-2 left-7 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+              <span className="relative z-10">Navbar Collaps</span>
+            </div>
+          </div>
+        </div>
+        <div className="relative inline-flex group">
+          <Link
+            to="/onboard"
+            className="bg-[#cbf38b] h-10 w-10 min-w-10 text-center rounded-full flex justify-center items-center text-base font-normal"
+          >
+            <img src={OnboardIcon} className="w-6" alt="" />
+          </Link>
+          <div
+            role="tooltip"
+            className="absolute top-12 left-1/2 -translate-x-1/2 w-32 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+          >
+            <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+              <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+              <span className="relative z-10">Onboard List</span>
+            </div>
+          </div>
+        </div>
+        <div className="relative inline-flex group">
+          <Link
+            to="/user"
+            className="bg-[#cbf38b] h-10 w-10 min-w-10 text-center rounded-full flex justify-center items-center text-base font-normal"
+          >
+            <img src={UserIcon} className="w-6" alt="" />
+          </Link>
+          <div
+            role="tooltip"
+            className="absolute top-12 left-1/2 -translate-x-1/2 w-24 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+          >
+            <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+              <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+              <span className="relative z-10">User List</span>
+            </div>
+          </div>
+        </div>
       </div>
       <div className="flex gap-3 items-center">
         <div className="relative" ref={notifyRef}>
