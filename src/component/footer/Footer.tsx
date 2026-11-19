@@ -5,7 +5,7 @@ import {
   saasLinks,
   socialIcons,
 } from "../../utils/footer.menu";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import file from "../../assets/files/My-Brand-Life-Pricing-Guide.pdf";
 import { ShieldCheck } from "lucide-react";
 import { useState } from "react";
@@ -14,6 +14,8 @@ import AskForhelp from "../popups/Ask.forhelp";
 function Footer() {
   const [showTab, setShowTab] = useState(false);
   const [showbugTab, setShowBugTab] = useState(false);
+  const [searchParams] = useSearchParams();
+  const redirect = searchParams.get("redirect") || "";
 
   return (
     <footer className="border-t border-[#EEEEEE] bg-[#FBFCFA]">
@@ -193,13 +195,14 @@ function Footer() {
           </p>
         </div>
       </div>
-      {showTab && (
-        <AskForhelp
-          title="Ask For Help"
-          showTab={showTab}
-          setShowTab={setShowTab}
-        />
-      )}
+      {showTab ||
+        (redirect && (
+          <AskForhelp
+            title="Ask For Help"
+            showTab={showTab}
+            setShowTab={setShowTab}
+          />
+        ))}
       {showbugTab && (
         <AskForhelp
           title="Feedback & Bugs"

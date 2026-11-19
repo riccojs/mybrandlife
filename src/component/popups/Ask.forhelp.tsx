@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useSendAskForHelpEmailMutation } from "../../redux/features/partner/partnerApi";
 import { LoaderCircle } from "lucide-react";
+import { useSearchParams } from "react-router";
 
 interface TypesForm {
   showTab: boolean;
@@ -20,6 +21,8 @@ interface UserDataType {
 }
 
 function AskForhelp({ showTab, setShowTab, title }: TypesForm) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const redirect = searchParams.get("redirect") || "";
   const [user, setUser] = useState<UserDataType>({
     email: "",
     phone: "",
@@ -185,6 +188,11 @@ function AskForhelp({ showTab, setShowTab, title }: TypesForm) {
               onClick={() => {
                 if (isLoading) {
                   return;
+                }
+                if (redirect) {
+                  setShowTab(false);
+                  searchParams.delete("redirect");
+                  setSearchParams(searchParams);
                 }
                 setShowTab(false);
               }}
