@@ -28,6 +28,7 @@ import {
   deleteOnboardRequest,
   createTempleteSocial,
   createTempleteCustom,
+  deleteTemplateFiles,
 } from "../controller/onboard.controller.js";
 import medias from "../middelware/medias.js";
 import profile from "../middelware/profile.js";
@@ -58,6 +59,7 @@ router.put("/verify/:id", auth, verifyOnboard);
 router.delete("/:id", auth, deleteTemplete);
 router.delete("/requests/:id", auth, deleteOnboardRequest);
 router.delete("/social/:id", auth, deleteTempleteButton);
+router.delete("/file/:id", auth, deleteTemplateFiles);
 router.delete("/custom/:id", auth, deleteCustomButton);
 
 export default router;

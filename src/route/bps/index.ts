@@ -1,8 +1,10 @@
 import express from "express";
-import UserRoute from "./bps.auth.route.js";
+import UserBpsRoute from "./bps.auth.route.js";
+import AdminBpsRoute from "./bps.admin.route.js";
 
 const router = express.Router();
 
-router.use("/auth", UserRoute);
+router.use("/auth", UserBpsRoute);
+router.use("/admin", AdminBpsRoute);
 
 export default router;

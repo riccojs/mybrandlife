@@ -25,6 +25,7 @@ import {
   togglrUserActivation,
   deleteUser,
   updateUserAddress,
+  togglrUserQRLogo,
 } from "../controller/user.controller.js";
 import publicSecretAuth from "../middelware/public.secret.auth.js";
 import profile from "../middelware/profile.js";
@@ -54,6 +55,7 @@ router.patch("/password/:id", auth, updatePassword);
 router.patch("/password/admin/:id", auth, updateUserPasswordByAdmin);
 router.patch("/membership/:id", auth, updateUserMembership);
 router.patch("/toggle/activation/:id", auth, togglrUserActivation);
+router.patch("/toggle/access/:id", auth, togglrUserQRLogo);
 router.delete("/:id", auth, deleteUser);
 
 export default router;

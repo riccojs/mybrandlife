@@ -555,11 +555,7 @@ export async function OnboardBpsUser(req: Request, res: Response) {
     }
     const newOnboard = await Prisma.bpsOnboard.create({
       data: {
-        membership: {
-          connect: {
-            id: membershipId,
-          },
-        },
+        membershipId: membershipId,
         brandName: brandName,
         website: website,
         industry: industry,

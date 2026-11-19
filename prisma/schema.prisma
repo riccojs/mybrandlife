@@ -38,7 +38,8 @@ model user {
   ShowCalendar        Boolean          @default(false)
   enableDirectory     Boolean          @default(true)
   enableBrandshare    Boolean          @default(true)
-  enablePrivateDomain Boolean          @default(true)
+  enableQr            Boolean          @default(true)
+  enableMblLogo       Boolean          @default(true)
   enablevcf           Boolean          @default(true)
   enableEpk           Boolean          @default(false)
   verifyEmail         Boolean          @default(true)
@@ -600,7 +601,7 @@ model bpsOnboard {
   cover           String
   brandAssests    String[]
   approvalMode    BpsApprovalMode
-  membership      bpsMembership       @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  membership      bpsMembership     @relation(fields: [membershipId], references: [id], onDelete: Cascade)
   bpsApprover     bpsApprover[]
   posts           bpsMembershipPost[]
   onboardProccess bpsProccessStatus[]

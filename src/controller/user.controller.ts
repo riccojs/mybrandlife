@@ -735,7 +735,6 @@ export async function logged(req: Request, res: Response) {
   interface AuthTokenPayload extends JwtPayload {
     id: string;
     email: string;
-    role: "USER" | "ADMIN";
   }
   const token = req.cookies.userToken;
   if (!token)
@@ -745,40 +744,43 @@ export async function logged(req: Request, res: Response) {
     });
   try {
     const decoded = jwt.verify(token, SecretKey) as AuthTokenPayload;
-    let userData = null;
-
-    if (decoded.role === "ADMIN") {
-      userData = await Prisma.admin.findUnique({ where: { id: decoded.id } });
-    } else {
-      userData = await Prisma.user.findUnique({
-        where: { id: decoded.id, status: "ACTIVATE" },
-        include: {
-          userTemplete: true,
-          membership: true,
-          address: true,
-          pulsetrackDatas: true,
-        },
-      });
-    }
-    if (!userData) {
+    let brandshare;
+    const existUser = await Prisma.user.findUnique({
+      where: { id: decoded.id, status: "ACTIVATE" },
+      include: {
+        userTemplete: true,
+        membership: true,
+        address: true,
+        pulsetrackDatas: true,
+      },
+    });
+    if (!existUser) {
       return res.status(401).json({
         status: ERROR_STATUS,
         message: DATA_NOT_FOUND_MESSAGE,
       });
     }
     await activityLog({
-      userId: userData?.id,
+      userId: existUser?.id,
       action: "Logged User",
       status: LOG_SUCCESS,
       endpoint: req.originalUrl,
       method: req.method,
     });
+
+    if (existUser?.referalCode) {
+      brandshare = await Prisma.referralCode.findUnique({
+        where: {
+          code: existUser?.referalCode,
+        },
+      });
+    }
     return res.status(200).json({
       status: SUCCESS_STATUS,
       message: QUERY_SUCCESSFUL_MESSAGE,
       user: {
-        ...userData,
-        role: decoded.role,
+        ...existUser,
+        brandshare: brandshare,
       },
     });
   } catch (error: any) {
@@ -1621,6 +1623,68 @@ export async function togglrUserActivation(req: Request, res: Response) {
         userId: existUser?.id,
       });
     }
+  } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+    res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
+
+// toogle user qr or mbl logo
+export async function togglrUserQRLogo(req: Request, res: Response) {
+  const id = req.params.id as string;
+  const { enable, type } = req.body;
+  try {
+    const existUser = await Prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (!existUser) {
+      return res.status(404).json({
+        status: ERROR_STATUS,
+        message: DATA_NOT_FOUND_MESSAGE,
+      });
+    }
+    if (type === "enableQr") {
+      await Prisma.user.update({
+        where: {
+          id: id,
+        },
+        data: {
+          enableQr: enable,
+        },
+      });
+    }
+    if (type === "enableMblLogo") {
+      await Prisma.user.update({
+        where: {
+          id: id,
+        },
+        data: {
+          enableMblLogo: enable,
+        },
+      });
+    }
+    await activityLog({
+      userId: existUser?.id,
+      action: "Toggle User Activation",
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+    res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: UPDATE_SUCCESSFUL_MESSAGE,
+    });
   } catch (error: any) {
     await activityLog({
       userId: "",

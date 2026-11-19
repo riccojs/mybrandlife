@@ -17,6 +17,7 @@ const {
   REGISTRATION_SUCCESS_MESSAGE,
   DELETE_SUCCESS_MESSAGE,
   ONBOARDING_SUCCESSFUL_REDIRECT_MESSAGE,
+  INAVALID_FILE_NAME_MESSAGE,
 } = response;
 import fs from "fs";
 import path from "path";
@@ -802,21 +803,22 @@ export async function onboardingUser(req: Request, res: Response) {
                 : "#96c94b";
     const newTemplate = await Prisma.userTemplete.create({
       data: {
-        bio,
-        tagLine,
-        offerings,
-        funnySaying,
+        bio: bio,
+        tagLine: tagLine,
+        offerings: offerings,
+        funnySaying: funnySaying,
         headerImage: medias.headerImage,
         logoImage: medias.logoImage,
         bodyImage: medias.bodyImage,
         epkFile: medias.epkFile,
         merchendiseLogo: medias.merchendiselogo,
         layout: layoutDetection,
-        userId,
+        userId: userId,
         headerBgType: "COLOR",
         ContentBGType: "COLOR",
         footerBgType: "COLOR",
-        merchendiseUrl,
+        merchendiseUrl: merchendiseUrl,
+        merchendiseStatus: merchendiseUrl ? true : false,
         verify: true,
         officialColor: colorDetection,
         status: "ACTIVATE",
@@ -1870,6 +1872,70 @@ export async function deleteCustomButton(req: Request, res: Response) {
       method: req.method,
     });
     res.status(500).json({
+      status: ERROR_STATUS,
+      message: error.message,
+    });
+  }
+}
+
+// delete templete custom button
+
+export async function deleteTemplateFiles(req: Request, res: Response) {
+  const id = req.params.id as string;
+  const { fileName } = req.body;
+  const allowedFields = [
+    "headerImage",
+    "logoImage",
+    "bodyImage",
+    "epkFile",
+  ] as const;
+
+  try {
+    if (!allowedFields.includes(fileName)) {
+      return res.status(400).json({
+        status: ERROR_STATUS,
+        message: INAVALID_FILE_NAME_MESSAGE,
+      });
+    }
+    const existTemplate = await Prisma.userTemplete.findUnique({
+      where: { id },
+    });
+
+    if (!existTemplate) {
+      return res.status(404).json({
+        status: ERROR_STATUS,
+        message: DATA_NOT_FOUND_MESSAGE,
+      });
+    }
+    await Prisma.userTemplete.update({
+      where: { id },
+      data: {
+        [fileName]: null,
+      },
+    });
+
+    await activityLog({
+      userId: existTemplate.userId,
+      action: `Deleted ${fileName}`,
+      status: LOG_SUCCESS,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+
+    return res.status(200).json({
+      status: SUCCESS_STATUS,
+      message: DELETE_SUCCESS_MESSAGE,
+    });
+  } catch (error: any) {
+    await activityLog({
+      userId: "",
+      action: error.message,
+      status: LOG_FAILED,
+      endpoint: req.originalUrl,
+      method: req.method,
+    });
+
+    return res.status(500).json({
       status: ERROR_STATUS,
       message: error.message,
     });

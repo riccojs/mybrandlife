@@ -90,6 +90,7 @@ export const response = {
   GOOGLE_DRIVE_FOLDER_CREATE_FAILED_MESSAGE:
     "Failed to create Google Drive folder",
   BPS_STAFF_REGISTER_SUCCESSFUL_MESSAGE: "Staff register successful",
+  INAVALID_FILE_NAME_MESSAGE: "Invalid file name",
 };
 
 export default response;
