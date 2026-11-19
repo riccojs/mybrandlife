@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../hook/useAuth";
 import type { UserSettingType } from "../utils/user.types";
+import ToggleAccessSetting from "../component/setting/Toogle.access.setting";
 
 interface AuthType {
   user: {
@@ -315,6 +316,18 @@ function Setting() {
             </div>
             <UpdateDirectoryStatus />
             {userAuth?.referalCode && <ToggleBrandshare />}
+            <ToggleAccessSetting
+              title="Do you want to hide QR code from your lander?"
+              description="If QR is hidden, it will be removed from visibility on your subscriber page and will not be accessible to subscribers."
+              label="Show or hide QR"
+              name="enableQr"
+            />
+            <ToggleAccessSetting
+              title="Do you want to hide MBL logo from your lander?"
+              description="If MBL logo is hidden, it will be removed from visibility on your subscriber page and will not be accessible to subscribers."
+              label="Show or hide MBL logo"
+              name="enableMblLogo"
+            />
             {userAuth && userAuth?.userTemplete?.length > 0 && (
               <UpdateMerchendiseStatus />
             )}

@@ -117,12 +117,24 @@ function SIngleOnboard() {
                       View and update general info
                     </p>
                   </div>
-                  <button
-                    onClick={() => setIsShowInfo(true)}
-                    className="border border-[#E7EBF2] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
-                  >
-                    <FilePenLine color="#8C98AE" size={20} />
-                  </button>
+
+                  <div className="relative inline-flex group">
+                    <button
+                      onClick={() => setIsShowInfo(true)}
+                      className="border border-[#E7EBF2] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
+                    >
+                      <FilePenLine color="#8C98AE" size={20} />
+                    </button>
+                    <div
+                      role="tooltip"
+                      className="absolute top-12 left-1/2 -translate-x-1/2 w-32 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+                    >
+                      <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+                        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+                        <span className="relative z-10">Update Info</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div className="mt-3 md:mt-8 grid grid-cols-1 lg:grid-cols-2 gap-2 md:gap-5">
                   <div className="flex gap-1 border-2 border-[#F2F5F9] flex-col bg-[#F7F9FB] p-5 rounded-2xl">
@@ -386,12 +398,24 @@ function SIngleOnboard() {
                       Update your file settings here
                     </p>
                   </div>
-                  <button
-                    onClick={() => setIsShowFiles(true)}
-                    className="border border-[#E7EBF2] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
-                  >
-                    <FilePenLine color="#8C98AE" size={20} />
-                  </button>
+
+                  <div className="relative inline-flex group">
+                    <button
+                      onClick={() => setIsShowFiles(true)}
+                      className="border border-[#E7EBF2] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
+                    >
+                      <FilePenLine color="#8C98AE" size={20} />
+                    </button>
+                    <div
+                      role="tooltip"
+                      className="absolute top-12 left-1/2 -translate-x-1/2 w-32 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+                    >
+                      <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+                        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+                        <span className="relative z-10">Update Files</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <p className="bg-[#FFFCF0] w-full text-[#7C3E16] border-2 border-[#FCF2C6] p-5 text-sm font-normal rounded-lg mb-1">
                   Note: If you upload no files and pick no colors, the default

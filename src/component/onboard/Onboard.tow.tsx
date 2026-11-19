@@ -66,8 +66,8 @@ function OneboardTow({
         return;
       }
 
-      if (file.size > 10 * 1024 * 1024) {
-        toast.error("File must be less than 10MB.");
+      if (file.size > 4 * 1024 * 1024) {
+        toast.error("File must be less than 4MB.");
         return;
       }
     }
@@ -175,11 +175,11 @@ function OneboardTow({
             />
             <CiImageOn size={60} color="#0084F9" />
             <h3 className="text-sm md:text-md font-medium">
-              Drag & Drop your logo
+              Drag & Drop Header Image
             </h3>
             <p className="text-xs text-gray-500">PNG, JPG, JPEG • Max 2MB</p>
             <p className="text-gray-500 text-[10px] md:text-xs font-normal">
-              Recommended header image size 1920PX x 400PX
+              Recommended header image size (1920px x 400px)
             </p>
           </label>
           {onboard?.headerImage && (
@@ -224,12 +224,10 @@ function OneboardTow({
               onChange={(e) => handleFileChange(e, "logoImage")}
             />
             <CiImageOn size={60} color="#0084F9" />
-            <h3 className="text-sm md:text-md font-medium">
-              Drag & Drop your logo
-            </h3>
+            <h3 className="text-sm md:text-md font-medium">Drag & Drop Logo</h3>
             <p className="text-xs text-gray-500">PNG, JPG, JPEG • Max 2MB</p>
             <p className="text-gray-500 text-[10px] md:text-xs font-normal">
-              Recommended logo image size 300PX x 300PX
+              Recommended logo size (300px x 300px)
             </p>
           </label>
           {onboard?.logoImage && (
@@ -275,11 +273,11 @@ function OneboardTow({
             />
             <CiImageOn size={60} color="#0084F9" />
             <h3 className="text-sm md:text-md font-medium">
-              Drag & Drop your logo
+              Drag & Drop Body Image
             </h3>
             <p className="text-xs text-gray-500">PNG, JPG, JPEG • Max 2MB</p>
             <p className="text-gray-500 text-[10px] md:text-xs font-normal">
-              Recommended body image size 1920PX x 1080PX
+              Recommended body image size (1920px x 1080px)
             </p>
           </label>
           {onboard?.bodyImage && (
@@ -349,11 +347,11 @@ function OneboardTow({
             />
             <CiImageOn size={60} color="#0084F9" />
             <h3 className="text-sm md:text-md font-medium">
-              Drag & Drop your logo
+              Drag & Drop Your EPK File
             </h3>
-            <p className="text-xs text-gray-500">PNG, JPG, JPEG • Max 2MB</p>
+            <p className="text-xs text-gray-500">PDF or ZIP • Max 4MB</p>
             <p className="text-gray-500 text-[10px] md:text-xs font-normal">
-              Recommended body image size 1920PX x 1080PX
+              Recommended EPK Format PDF or ZIP
             </p>
           </label>
           {onboard?.epkFile && (

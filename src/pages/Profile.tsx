@@ -252,12 +252,26 @@ function Profile() {
                   Primary Address
                 </h2>
               </div>
-              <button
-                onClick={() => setPrimaryOpen(true)}
-                className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
-              >
-                <SquarePen size={20} />
-              </button>
+
+              <div className="relative inline-flex group">
+                <button
+                  onClick={() => setPrimaryOpen(true)}
+                  className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
+                >
+                  <SquarePen size={20} />
+                </button>
+                <div
+                  role="tooltip"
+                  className="absolute top-12 left-1/2 -translate-x-1/2 w-52 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+                >
+                  <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+                    <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+                    <span className="relative z-10">
+                      Update Primary Address
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="mt-5 overflow-x-auto custom-scroll">
               <table className="my-table table-fixed w-full min-w-96">
@@ -316,12 +330,26 @@ function Profile() {
                   Shipping Address
                 </h2>
               </div>
-              <button
-                onClick={() => setShippingOpen(true)}
-                className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
-              >
-                <SquarePen size={20} />
-              </button>
+
+              <div className="relative inline-flex group">
+                <button
+                  onClick={() => setShippingOpen(true)}
+                  className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
+                >
+                  <SquarePen size={20} />
+                </button>
+                <div
+                  role="tooltip"
+                  className="absolute top-12 -left-7 -translate-x-1/2 w-52 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+                >
+                  <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+                    <div className="absolute -top-2 right-10 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+                    <span className="relative z-10">
+                      Update Shipping Address
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="mt-5 overflow-x-auto custom-scroll">
               <table className="my-table table-fixed w-full min-w-96">

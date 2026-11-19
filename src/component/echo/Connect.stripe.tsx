@@ -28,7 +28,7 @@ function ConnectStripe({ id }: { id: string }) {
   };
 
   return (
-    <>
+    <div className="relative inline-flex group">
       <button
         onClick={getLoad ? () => {} : handleConnect}
         disabled={data?.connected && data?.ready ? true : false}
@@ -42,7 +42,16 @@ function ConnectStripe({ id }: { id: string }) {
           <BsStripe size={20} />
         )}
       </button>
-    </>
+      <div
+        role="tooltip"
+        className="absolute top-14 left-0 -translate-x-1/2 w-40 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+      >
+        <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+          <div className="absolute -top-2 right-10 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+          <span className="relative z-10">Connect Stripe</span>
+        </div>
+      </div>
+    </div>
   );
 }
 

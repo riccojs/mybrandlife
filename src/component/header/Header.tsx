@@ -7,15 +7,9 @@ import { useAuth } from "../../hook/useAuth";
 import WristbandIcon from "../../assets/menu-icons/ristband.svg";
 import OnboardIcon from "../../assets/menu-icons/onboard.svg";
 import LogoutModal from "../../component/Logout.modal";
-import NotificationIcon from "../../assets/app-icons/notification.png";
-import HeaderNotification from "./Header.notification";
-import type { NotificationType } from "../../utils/notification.type";
-import io from "socket.io-client";
 import { BiCollapse } from "react-icons/bi";
 import { RiCollapseDiagonalLine, RiMenu3Line } from "react-icons/ri";
 import { ChevronDown, CircleHelp } from "lucide-react";
-
-const socket = io(import.meta.env.VITE_APP_API_URL);
 
 interface Types {
   setSidebard: React.Dispatch<React.SetStateAction<boolean>>;
@@ -40,12 +34,8 @@ interface UserAuth {
 function Header({ setSidebard, sidebar, setNavbar }: Types) {
   const [logout, { isLoading }] = useLogoutMutation();
   const [isProfile, setIsProfile] = useState(false);
-  const [isNotify, setIsNotify] = useState(false);
-  const [hasNewNotification, setHasNewNotification] = useState(false);
   const [showLogout, setShowLogout] = useState(false);
   const profileRef = useRef<HTMLDivElement | null>(null);
-  const notifyRef = useRef<HTMLDivElement | null>(null);
-
   const { user } = useAuth() as UserAuth;
   const {
     email,
@@ -61,12 +51,6 @@ function Header({ setSidebard, sidebar, setNavbar }: Types) {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        notifyRef.current &&
-        !notifyRef.current.contains(event.target as Node)
-      ) {
-        setIsNotify(false);
-      }
       if (
         profileRef.current &&
         !profileRef.current.contains(event.target as Node)
@@ -96,79 +80,105 @@ function Header({ setSidebard, sidebar, setNavbar }: Types) {
       });
   };
 
-  useEffect(() => {
-    socket.on("newNotification", (notification: NotificationType) => {
-      if (!notification?.seen) {
-        setHasNewNotification(true);
-      }
-    });
-
-    return () => {
-      socket.off("newNotification");
-    };
-  }, []);
-
   return (
-    <header className="sticky z-10 top-0 bg-white flex justify-between items-center h-16 border-b-2 border-gray-200 p-3 md:px-5">
+    <header className="sticky z-50 top-0 bg-white flex justify-between items-center h-16 border-b-2 border-gray-200 p-3 md:px-5">
       <div className="flex gap-2 items-center w-3/12">
-        <button
-          onClick={() => setSidebard(!sidebar)}
-          className="xl:flex hidden bg-[#E2E2E2] border border-gray-200 w-10 min-w-10 h-10 justify-center items-center rounded-full cursor-pointer text-xl"
-        >
-          {sidebar ? <RiCollapseDiagonalLine /> : <BiCollapse />}
-        </button>
-        <button
-          onClick={() => setNavbar(true)}
-          className="flex xl:hidden bg-[#E2E2E2] border border-gray-200 w-10 min-w-10 h-10 justify-center items-center rounded-full cursor-pointer text-xl"
-        >
-          <RiMenu3Line size={20} />
-        </button>
+        <div className="relative inline-flex group">
+          <button
+            onClick={() => setSidebard(!sidebar)}
+            className="xl:flex hidden bg-[#E2E2E2] border border-gray-200 w-10 min-w-10 h-10 justify-center items-center rounded-full cursor-pointer text-xl"
+          >
+            {sidebar ? <RiCollapseDiagonalLine /> : <BiCollapse />}
+          </button>
+          <div
+            role="tooltip"
+            className="absolute top-12 left-1/2 -translate-x-1/2 w-40 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+          >
+            <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+              <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+              <span className="relative z-10">Sidebar Collapse</span>
+            </div>
+          </div>
+        </div>
+        <div className="relative inline-flex group">
+          <button
+            onClick={() => setNavbar(true)}
+            className="flex xl:hidden bg-[#E2E2E2] border border-gray-200 w-10 min-w-10 h-10 justify-center items-center rounded-full cursor-pointer text-xl"
+          >
+            <RiMenu3Line size={20} />
+          </button>
+          <div
+            role="tooltip"
+            className="absolute top-12 left-18 -translate-x-1/2 w-40 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+          >
+            <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+              <div className="absolute -top-2 left-7 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+              <span className="relative z-10">Navbar Collaps</span>
+            </div>
+          </div>
+        </div>
+
         <div className="flex gap-2 items-center">
           {existTemplate && (
+            <div className="relative inline-flex group">
+              <a
+                href={`https://${domain}/${landerName}`}
+                target="_blank"
+                className="bg-[#cbf38b] h-10 w-10 md:min-w-10 text-center rounded-full flex justify-center items-center text-base font-normal"
+              >
+                <img src={OnboardIcon} alt="" className="w-5" />
+              </a>
+              <div
+                role="tooltip"
+                className="absolute top-12 left-1/2 -translate-x-1/2 w-40 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+              >
+                <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+                  <span className="relative z-10">Lander Page</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="relative inline-flex group">
             <a
-              href={`https://${domain}/${landerName}`}
+              href="https://yourworldlife.store/collections/mybrandlife"
               target="_blank"
               className="bg-[#cbf38b] h-10 w-10 md:min-w-10 text-center rounded-full flex justify-center items-center text-base font-normal"
             >
-              <img src={OnboardIcon} alt="" className="w-5" />
+              <img src={WristbandIcon} className="w-6" alt="" />
             </a>
-          )}
-          <a
-            href="https://yourworldlife.store/collections/mybrandlife"
-            target="_blank"
-            className="bg-[#cbf38b] h-10 w-10 md:min-w-10 text-center rounded-full flex justify-center items-center text-base font-normal"
-          >
-            <img src={WristbandIcon} className="w-6" alt="" />
-          </a>
+            <div
+              role="tooltip"
+              className="absolute top-12 left-1/2 -translate-x-1/2 w-40 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+            >
+              <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+                <span className="relative z-10">More Wristband</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div className="flex gap-3 md:gap-5 items-center">
-        {secureKey && (
-          <div className="relative" ref={notifyRef}>
-            <button
-              onClick={() => {
-                setIsNotify((prev) => !prev);
-                setHasNewNotification(false);
-              }}
-              className="relative border border-gray-200 p-2 rounded-lg cursor-pointer"
-            >
-              <img src={NotificationIcon} alt="" className="w-6 min-w-6 h-6" />
-
-              {hasNewNotification && (
-                <p className="bg-red-500 w-2 h-2 rounded-full absolute -top-0.5 -right-0.5"></p>
-              )}
-            </button>
-            <HeaderNotification isNotify={isNotify} setIsNotify={setIsNotify} />
+        <div className="relative inline-flex group">
+          <a
+            href="https://mybrandlife.me/contact"
+            target="_blank"
+            className="hidden h-9 w-9 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 sm:inline-flex"
+          >
+            <CircleHelp className="h-5 w-5" />
+          </a>
+          <div
+            role="tooltip"
+            className="absolute top-12 left-1/2 -translate-x-1/2 w-32 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+          >
+            <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+              <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+              <span className="relative z-10">Ask For Help</span>
+            </div>
           </div>
-        )}
-
-        <a
-          href="https://mybrandlife.me/contact"
-          target="_blank"
-          className="hidden h-9 w-9 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 sm:inline-flex"
-        >
-          <CircleHelp className="h-5 w-5" />
-        </a>
+        </div>
 
         <div className="relative" ref={profileRef}>
           <button

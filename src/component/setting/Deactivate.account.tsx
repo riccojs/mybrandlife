@@ -10,7 +10,7 @@ function DeactivateAccount() {
         <p className="text-gray-700 text-medium text-base md:text-xl">
           Deactivate Your Account?
         </p>
-        <p className="bg-amber-50 text-black p-3 rounded-lg text-sm md:text-md font-normal w-full sm:w-8/12 lg:w-6/12 border-l-4 border-amber-300">
+        <p className="bg-[#FFFCF0] text-[#7C3E16] border-2 border-[#FCF2C6] p-5 text-sm font-normal rounded-lg w-fit">
           Deactivating your account will also deactivate your membership and
           onboarding access. Please make sure you want to continue before
           proceeding.

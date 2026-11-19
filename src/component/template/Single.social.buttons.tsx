@@ -108,19 +108,40 @@ function SingleSocialButtons() {
           </p>
         </div>
         <div className="flex gap-3 items-center">
-          <button
-            onClick={() => setAddButton(true)}
-            className="border border-[#E7EBF2] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
-          >
-            <FilePlus color="#8C98AE" size={20} />
-          </button>
-
-          <button
-            onClick={() => setIsShowButton(true)}
-            className="border border-[#E7EBF2] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
-          >
-            <FilePenLine color="#8C98AE" size={20} />
-          </button>
+          <div className="relative inline-flex group">
+            <button
+              onClick={() => setAddButton(true)}
+              className="border border-[#E7EBF2] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
+            >
+              <FilePlus color="#8C98AE" size={20} />
+            </button>
+            <div
+              role="tooltip"
+              className="absolute top-12 left-1/2 -translate-x-1/2 w-32 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+            >
+              <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+                <span className="relative z-10">Create Button</span>
+              </div>
+            </div>
+          </div>
+          <div className="relative inline-flex group">
+            <button
+              onClick={() => setIsShowButton(true)}
+              className="border border-[#E7EBF2] active:bg-[#E7EBF2] w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
+            >
+              <FilePenLine color="#8C98AE" size={20} />
+            </button>
+            <div
+              role="tooltip"
+              className="absolute top-12 left-1/2 -translate-x-1/2 w-32 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+            >
+              <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+                <span className="relative z-10">Update Button</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div className="mt-3 md:mt-8 grid grid-cols-1 lg:grid-cols-2 gap-5">

@@ -8,7 +8,16 @@ import WarningPopup from "../popups/Warning.popup";
 
 function ToggleBrandshare() {
   const { user: userData } = useAuth() as {
-    user: { enableBrandshare: boolean; id: string } | null;
+    user: {
+      enableBrandshare: boolean;
+      id: string;
+      brandshare: {
+        logo: string;
+        label: string;
+        link: string;
+        code: string;
+      };
+    } | null;
   };
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState({
@@ -40,13 +49,15 @@ function ToggleBrandshare() {
       });
   };
 
+  const existBrandshare = userData?.brandshare?.code ? true : false;
+
   return (
     <div className="bg-white border border-gray-200 p-10 rounded-2xl shadow my-5">
       <div className="flex flex-col gap-5 justify-start">
         <p className="text-gray-700 text-medium text-xl">
           Do you want hide BrandShare?
         </p>
-        <p className="bg-amber-50 text-black p-3 rounded-lg text-md font-normal w-full sm:w-8/12 lg:w-6/12 border-l-4 border-amber-300">
+        <p className="bg-[#FFFCF0] text-[#7C3E16] border-2 border-[#FCF2C6] p-5 text-sm font-normal rounded-lg w-fit">
           If BrandShare is hidden, it will be removed from visibility on your
           subscriber page and will not be accessible to subscribers.
         </p>
@@ -75,7 +86,7 @@ function ToggleBrandshare() {
           onClick={() => {
             setOpen(true);
           }}
-          disabled
+          disabled={existBrandshare}
           className="bg-[#96c94b] mt-3 cursor-pointer text-[#000000] flex justify-center items-center gap-1 min-w-32 w-32 h-12 rounded-lg"
         >
           <p>Update</p>

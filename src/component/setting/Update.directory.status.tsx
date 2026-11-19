@@ -46,7 +46,7 @@ function UpdateDirectoryStatus() {
         <p className="text-gray-700 text-medium text-md md:text-xl">
           Disable Your Account from the Directory?
         </p>
-        <p className="bg-amber-50 text-black p-3 rounded-lg text-sm md:text-md font-normal w-full sm:w-8/12 lg:w-6/12 border-l-4 border-amber-300">
+        <p className="bg-[#FFFCF0] text-[#7C3E16] border-2 border-[#FCF2C6] p-5 text-sm font-normal rounded-lg w-fit">
           Disabling your account will remove your profile from the public
           directory. Other users will no longer be able to find or connect with
           you through search.

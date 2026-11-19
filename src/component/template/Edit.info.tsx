@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import toast from "react-hot-toast";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { LoaderCircle, Plus } from "lucide-react";
@@ -245,17 +245,21 @@ function EditInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
                   forwarding.
                 </p>
                 <p className="bg-[#FFFCF0] w-full text-[#7C3E16] border-2 border-[#FCF2C6] p-5 text-sm font-normal rounded-lg mt-3">
-                  Domain Forwarding Help.” The link will take them to{" "}
                   <a
                     href="https://www.google.com/search?q=how+to+forward+a+domain+to+another+website"
                     target="_blank"
-                    className="text-[#7C3E16] uppercase font-bold underline"
+                    className="text-[#7C3E16] font-semibold underline"
                   >
-                    Click
+                    How to forward your domain name?
                   </a>{" "}
-                  WARNING - setting your page to your own domain will require
-                  forwarding that domain to “display full path to the subscriber
-                  page.
+                  Or send us a message, and we can{" "}
+                  <a
+                    href="https://mybrandlife.me?redirect=true"
+                    target="_blank"
+                    className="text-[#7C3E16] font-semibold underline"
+                  >
+                    HELP.
+                  </a>
                 </p>
               </div>
               <div className="flex flex-col">
@@ -293,6 +297,16 @@ function EditInfo({ isShowInfo, setIsShowInfo }: TypesForm) {
                   Activating your VCF file makes it visible on your landing
                   page. Deactivating it hides it from your landing page.
                 </p>
+                <div className="bg-[#FFFCF0] w-full text-[#7C3E16] border-2 border-[#FCF2C6] p-5 rounded-lg mt-3 flex flex-col gap-1">
+                  <p className="text-sm font-medium">Merchandise Link</p>
+                  <Link to="/setting" className="text-xs font-normal underline">
+                    Activate or Deactivate Your Merchandise Link
+                  </Link>
+                  <p className="text-xs font-normal">
+                    Note: The merchandise image and activation can be managed
+                    under Account → Settings on your user dashboard.
+                  </p>
+                </div>
               </div>
               <div className="flex flex-col">
                 <label

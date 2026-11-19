@@ -272,48 +272,72 @@ function Brandbook() {
             </div>
             {existTemplate && (
               <div className="flex w-full sm:w-auto gap-4 items-center justify-center md:justify-end">
-                {enableEvent ? (
-                  <button
-                    onClick={() => {
-                      if (user?.calendarId) {
-                        setIsShow(true);
-                      } else {
-                        return;
-                      }
-                    }}
-                    className={`min-w-12 w-12 h-12 p-3 rounded-lg flex gap-2 items-center justify-center ${user?.calendarId ? "bg-gray-200 cursor-pointer" : "bg-gray-300 cursor-not-allowed"}`}
+                <div className="relative inline-flex group">
+                  {enableEvent ? (
+                    <button
+                      onClick={() => {
+                        if (user?.calendarId) {
+                          setIsShow(true);
+                        } else {
+                          return;
+                        }
+                      }}
+                      className={`min-w-12 w-12 h-12 p-3 rounded-lg flex gap-2 items-center justify-center ${user?.calendarId ? "bg-gray-200 cursor-pointer" : "bg-gray-300 cursor-not-allowed"}`}
+                    >
+                      <img
+                        src={BrandbookIcon}
+                        alt={BrandbookIcon}
+                        className="w-full h-full"
+                      />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        if (user?.calendarId) {
+                          setIsShow(true);
+                        } else {
+                          return;
+                        }
+                      }}
+                      className={`min-w-12 w-12 h-12 p-3 rounded-lg flex gap-2 items-center justify-center ${user?.calendarId ? "bg-[#cbf38b] cursor-pointer" : "bg-gray-300 cursor-not-allowed"}`}
+                    >
+                      <img
+                        src={BrandbookIcon}
+                        alt={BrandbookIcon}
+                        className="w-full h-full"
+                      />
+                    </button>
+                  )}
+                  <div
+                    role="tooltip"
+                    className="absolute top-14 left-1/2 -translate-x-1/2 w-44 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
                   >
-                    <img
-                      src={BrandbookIcon}
-                      alt={BrandbookIcon}
-                      className="w-full h-full"
-                    />
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => {
-                      if (user?.calendarId) {
-                        setIsShow(true);
-                      } else {
-                        return;
-                      }
-                    }}
-                    className={`min-w-12 w-12 h-12 p-3 rounded-lg flex gap-2 items-center justify-center ${user?.calendarId ? "bg-[#cbf38b] cursor-pointer" : "bg-gray-300 cursor-not-allowed"}`}
-                  >
-                    <img
-                      src={BrandbookIcon}
-                      alt={BrandbookIcon}
-                      className="w-full h-full"
-                    />
-                  </button>
-                )}
+                    <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+                      <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+                      <span className="relative z-10">
+                        BrandBook Activation
+                      </span>
+                    </div>
+                  </div>
+                </div>
                 <ConnectGoogle />
-                <Link
-                  to="/brandbook/slot"
-                  className="bg-[#cbf38b] min-w-12 w-12 h-12 p-3 py-3 rounded-lg flex gap-2 items-center justify-center"
-                >
-                  <RiCalendarEventFill size={20} />
-                </Link>
+                <div className="relative inline-flex group">
+                  <Link
+                    to="/brandbook/slot"
+                    className="bg-[#cbf38b] min-w-12 w-12 h-12 p-3 py-3 rounded-lg flex gap-2 items-center justify-center"
+                  >
+                    <RiCalendarEventFill size={20} />
+                  </Link>
+                  <div
+                    role="tooltip"
+                    className="absolute top-14 left-0 -translate-x-1/2 w-32 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+                  >
+                    <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+                      <div className="absolute -top-2 right-5 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+                      <span className="relative z-10">Create Slots</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>

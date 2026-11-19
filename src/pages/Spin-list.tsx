@@ -245,7 +245,7 @@ const SpinList = () => {
           </div>
           <div className="flex w-full gap-3 items-center justify-center md:justify-end">
             {existTemplate && (
-              <div>
+              <div className="relative inline-flex group">
                 {enableSpin ? (
                   <button
                     onClick={() => setSpinStatus(true)}
@@ -269,14 +269,34 @@ const SpinList = () => {
                     />
                   </button>
                 )}
+                <div
+                  role="tooltip"
+                  className="absolute top-14 left-1/2 -translate-x-1/2 w-36 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+                >
+                  <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+                    <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+                    <span className="relative z-10">Spin Activation</span>
+                  </div>
+                </div>
               </div>
             )}
-            <button
-              onClick={() => setOpen(true)}
-              className="flex cursor-pointer bg-gray-50 items-center min-w-12 w-12 h-12 p-3 rounded-lg border border-gray-200 hover:bg-gray-100 text-sm"
-            >
-              <StickyNotePlus />
-            </button>
+            <div className="relative inline-flex group">
+              <button
+                onClick={() => setOpen(true)}
+                className="flex cursor-pointer bg-gray-50 items-center min-w-12 w-12 h-12 p-3 rounded-lg border border-gray-200 hover:bg-gray-100 text-sm"
+              >
+                <StickyNotePlus />
+              </button>
+              <div
+                role="tooltip"
+                className="absolute top-14 left-0 -translate-x-1/2 w-40 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+              >
+                <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+                  <div className="absolute -top-2 right-10 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+                  <span className="relative z-10">Create Group</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div className="bg-white rounded-xl ">

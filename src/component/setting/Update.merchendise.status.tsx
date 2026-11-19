@@ -109,11 +109,11 @@ function UpdateMerchendiseStatus() {
 
   return (
     <div className="bg-white border border-gray-200 p-5 md:p-10 rounded-2xl shadow mt-3">
-      <div className="flex flex-col gap-5 justify-start">
+      <div className="flex flex-col gap-5 justify-start md:w-7/12 w-full">
         <p className="text-gray-700 text-medium text-base md:text-xl">
           Disable Your Merchandise URL from Your Lander
         </p>
-        <p className="bg-amber-50 text-black p-3 rounded-lg text-sm md:text-md font-normal w-full sm:w-8/12 lg:w-6/12 border-l-4 border-amber-300">
+        <p className="bg-[#FFFCF0] text-[#7C3E16] border-2 border-[#FCF2C6] p-5 text-sm font-normal rounded-lg w-fit">
           Disabling your merchandise URL will remove your products from public
           view on your lander. Visitors will no longer be able to browse,
           search, or purchase your merchandise. Make sure you understand the
@@ -140,7 +140,7 @@ function UpdateMerchendiseStatus() {
             </label>
           </div>
         </div>
-        <div className="flex flex-col gap-1 md:w-6/12 w-full">
+        <div className="flex flex-col gap-1 ">
           <label className="text-md font-normal text-black">
             Merchandise Logo
           </label>
@@ -193,7 +193,7 @@ function UpdateMerchendiseStatus() {
           <div className="text-xs text-gray-600 leading-5 mt-2 space-y-1">
             <p>• Accepted formats: PNG, JPG, JPEG, SVG</p>
             <p>• Preferred: Transparent PNG or SVG</p>
-            <p>• Maximum file size: 25MB</p>
+            <p>• Maximum file size: 8MB</p>
             <p>• Minimum width: 2000px</p>
             <p>• Recommended width: 3000px+</p>
             <p>• Best print size: 4500 × 4800px</p>
@@ -201,13 +201,18 @@ function UpdateMerchendiseStatus() {
             <p>• Color mode: RGB preferred</p>
             <p>• Background: Transparent preferred</p>
             <p>• For print products only (T-shirts, sweatshirts, hats, etc.)</p>
-            <p className="text-red-500">
+            <p className="text-red-700">
               • Do not upload blurry images, screenshots, or low-quality web
               graphics
             </p>
-            <p className="text-red-500">• Embroidery files are not accepted</p>
+            <p className="text-red-700">• Embroidery files are not accepted</p>
           </div>
         </div>
+
+        <p className="bg-[#FFFCF0] text-[#7C3E16] border-2 border-[#FCF2C6] p-5 text-sm font-normal rounded-lg w-fit">
+          Your link will show on your landing page, but it may take a few days
+          for the merch to become available.
+        </p>
 
         <button
           type="button"

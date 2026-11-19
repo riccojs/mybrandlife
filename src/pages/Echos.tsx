@@ -264,29 +264,40 @@ function Echos() {
             </div>
             {existTemplate && (
               <div className="flex w-full sm:w-auto gap-3 items-center justify-center md:justify-end">
-                {enableEcho ? (
-                  <button
-                    onClick={() => setIsShow(true)}
-                    className="bg-gray-300 min-w-12 w-12 h-12 p-3 cursor-pointer rounded-lg flex gap-2 items-center justify-center"
+                <div className="relative inline-flex group">
+                  {enableEcho ? (
+                    <button
+                      onClick={() => setIsShow(true)}
+                      className="bg-gray-300 min-w-12 w-12 h-12 p-3 cursor-pointer rounded-lg flex gap-2 items-center justify-center"
+                    >
+                      <img
+                        src={IchoIcon}
+                        alt={IchoIcon}
+                        className="w-full h-full"
+                      />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => setIsShow(true)}
+                      className="bg-[#cbf38b] min-w-12 w-12 h-12 p-2 cursor-pointer rounded-lg flex gap-2 items-center justify-center"
+                    >
+                      <img
+                        src={IchoIcon}
+                        alt={IchoIcon}
+                        className="w-full h-full"
+                      />
+                    </button>
+                  )}
+                  <div
+                    role="tooltip"
+                    className="absolute top-14 left-1/2 -translate-x-1/2 w-36 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
                   >
-                    <img
-                      src={IchoIcon}
-                      alt={IchoIcon}
-                      className="w-full h-full"
-                    />
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => setIsShow(true)}
-                    className="bg-[#cbf38b] min-w-12 w-12 h-12 p-2 cursor-pointer rounded-lg flex gap-2 items-center justify-center"
-                  >
-                    <img
-                      src={IchoIcon}
-                      alt={IchoIcon}
-                      className="w-full h-full"
-                    />
-                  </button>
-                )}
+                    <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+                      <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+                      <span className="relative z-10">ECHO Activation</span>
+                    </div>
+                  </div>
+                </div>
                 {user && <ConnectStripe id={user?.id} />}
               </div>
             )}

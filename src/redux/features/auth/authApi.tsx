@@ -252,6 +252,14 @@ export const authApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["LoggedUser"],
     }),
+    toggleAccessSetting: builder.mutation({
+      query: ({ id, user }) => ({
+        url: `/api/auth/toggle/access/${id}`,
+        method: "PATCH",
+        body: user,
+      }),
+      invalidatesTags: ["LoggedUser"],
+    }),
     updatePasswordByAdmin: builder.mutation({
       query: ({ id, user }) => ({
         url: `/api/auth/password/admin/${id}`,
@@ -307,4 +315,5 @@ export const {
   useGetSettingQuery,
   useTogglebrandshareStatusMutation,
   useUpdateUserAddressMutation,
+  useToggleAccessSettingMutation,
 } = authApi;

@@ -61,7 +61,9 @@ function HeaderProfile({
           <p className="text-sm capitalize font-medium text-normal leading-4">
             {`${firstName} ${lastName}`}
           </p>
-          <p className="text-[#525252] text-[10px] font-normal">{email}</p>
+          <p className="text-[#525252] text-[10px] font-normal">
+            {email?.slice(0, 20)}...
+          </p>
         </div>
       </div>
       <ul className="flex flex-col gap-1 items-start justify-center">

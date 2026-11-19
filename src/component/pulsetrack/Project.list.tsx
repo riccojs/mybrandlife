@@ -210,12 +210,24 @@ const ProjectList = () => {
               }}
             />
           </div>
-          <button
-            onClick={() => setOpen(true)}
-            className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] min-w-10 w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
-          >
-            <LayersPlus size={20} />
-          </button>
+
+          <div className="relative inline-flex group">
+            <button
+              onClick={() => setOpen(true)}
+              className="border border-[#E7EBF2] text-[#8C98AE] active:bg-[#E7EBF2] min-w-10 w-10 h-10 flex justify-center items-center rounded-lg cursor-pointer"
+            >
+              <LayersPlus size={20} />
+            </button>
+            <div
+              role="tooltip"
+              className="absolute top-12 left-3 -translate-x-1/2 w-32 max-w-[calc(100vw-32px)] opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out"
+            >
+              <div className="relative bg-white border border-gray-200 rounded-lg p-3 text-sm leading-5 text-black shadow-lg text-center">
+                <div className="absolute -top-2 right-10 -translate-x-1/2 w-3.5 h-3.5 bg-white border-l border-t border-gray-300 rotate-45" />
+                <span className="relative z-10">Create ID</span>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="bg-white rounded-xl ">
           <div className="overflow-x-auto bg-white">
