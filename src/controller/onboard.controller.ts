@@ -47,6 +47,11 @@ const card = new VCard();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const publicPath = process.env.PUBLIC_PATH as string;
+const PUBLIC_DIR =
+  process.env.PUBLIC_DIR ||
+  (process.env.NODE_ENV === "production"
+    ? "/data/public"
+    : path.resolve(process.cwd(), "public"));
 
 // get all onboard
 export async function getAllOnboard(req: Request, res: Response) {
@@ -1488,7 +1493,7 @@ export async function updateTempleteInfos(req: Request, res: Response) {
     }
 
     // create vfc file
-    if (existTemplete?.user) {
+    if (!existTemplete?.vcfFile) {
       const { midName, email, phone, address, landerName } =
         existTemplete?.user;
       const primaryAddress = address?.find((item) => item.type === "PRIMARY");
@@ -1510,19 +1515,25 @@ export async function updateTempleteInfos(req: Request, res: Response) {
           });
         }
       }
-      const basePath = fileProtocol(req);
-      const fileDir = path.join(
-        __dirname,
-        process.env.NODE_ENV === "production" ? "/data/public" : "../../public",
-      );
-      if (!fs.existsSync(fileDir)) fs.mkdirSync(fileDir, { recursive: true });
-      const fileName = `${landerName || "contact"}_${Date.now()}.vcf`;
-      const filePath = path.join(fileDir, fileName);
+      fs.mkdirSync(PUBLIC_DIR, { recursive: true });
+      const safeName = (landerName || "contact")
+        .trim()
+        .replace(/[^a-zA-Z0-9_-]/g, "_");
+      const fileName = `${safeName}_${Date.now()}.vcf`;
+      const filePath = path.join(PUBLIC_DIR, fileName);
       fs.writeFileSync(filePath, card.toString(), "utf-8");
-      const fileUrl = `${basePath}${fileName}`;
+      if (!fs.existsSync(filePath)) {
+        throw new Error("VCF file generation failed");
+      }
+      const basePath = fileProtocol(req);
+      const fileUrl = `${basePath}${encodeURIComponent(fileName)}`;
       await Prisma.userTemplete.update({
-        where: { id: id },
-        data: { vcfFile: fileUrl },
+        where: {
+          id: existTemplete.id,
+        },
+        data: {
+          vcfFile: fileUrl,
+        },
       });
     }
 
