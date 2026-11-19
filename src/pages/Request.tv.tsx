@@ -11,7 +11,7 @@ function RequestTv() {
   const [qrSize, setQrSize] = useState(150);
   const { onboard } = useOnboard();
   const qrRef = useRef<HTMLDivElement | null>(null);
-  const { tagLine, logo, services, funnySaying, portrait } = onboard || {};
+  const { tagLine, logoImage, services, funnySaying, portrait } = onboard || {};
 
   const handleDownload = () => {
     const svg = qrRef.current?.querySelector("svg");
@@ -77,9 +77,9 @@ function RequestTv() {
             }
           >
             <Link to={`/${landerName}`}>
-              {logo ? (
+              {logoImage ? (
                 <img
-                  src={logo}
+                  src={logoImage}
                   alt=""
                   className="w-16 sm:w-32 h-16 sm:h-32 min-w-16 sm:min-w-32 min-h-16 sm:min-h-32 rounded-full object-cover"
                 />
@@ -89,6 +89,22 @@ function RequestTv() {
                 </p>
               )}
             </Link>
+          </div>
+
+          <Link
+            to={`/${landerName}`}
+            className="bg-[#CCEF87] text-black text-sm font-medium px-10 py-1 rounded-md w-fit m-auto mb-5"
+          >
+            Back
+          </Link>
+
+          <div
+            id="tooltip-default"
+            role="tooltip"
+            className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip"
+          >
+            Tooltip content
+            <div className="tooltip-arrow" data-popper-arrow></div>
           </div>
 
           <div className="flex flex-col gap-5 border-y border-gray-500 p-5 sm:p-10 flex-1 overflow-y-auto">

@@ -71,6 +71,8 @@ interface UserType {
   enablePrivateDomain: boolean;
   enablevcf: boolean;
   enableEpk: boolean;
+  enableQr: boolean;
+  enableMblLogo: boolean;
 }
 
 function Wireframe() {
@@ -149,6 +151,8 @@ function Wireframe() {
     enablevcf,
     enablePrivateDomain,
     enableEpk,
+    enableQr,
+    enableMblLogo,
   } = user || {};
 
   const { data } = useCheckEchoConnectionQuery(userId);
@@ -530,7 +534,7 @@ function Wireframe() {
               </p>
             </div>
           </div>
-          {enableBrandshare && brandshare && (
+          {brandshare && (
             <div className="flex flex-col justify-center items-center gap-2 mt-5">
               <a
                 href={brandshare?.link}
@@ -599,7 +603,7 @@ function Wireframe() {
               </li>
             </ul>
 
-            {packageName === "gold" && (
+            {packageName === "gold" && enableBrandshare && (
               <div className="flex justify-center mt-5">
                 <button className="flex items-center gap-3 py-3 rounded-lg justify-center text-white text-center bg-[#cf3832] px-6">
                   <a
@@ -624,30 +628,32 @@ function Wireframe() {
               </div>
             )}
           </div>
-          <div className="bg-amber-50 m-auto mt-5 overflow-hidden w-24 p-2 h-24 min-w-24 flex flex-col rounded-xl justify-center items-center">
-            <div
-              ref={qrRef}
-              className="bg-amber-50 overflow-hidden w-24 p-2 h-24 min-w-24 flex flex-col gap-2 rounded-xl justify-center items-center"
-            >
-              <QRCode value={`${qrBase}/${landerName}`} />
-            </div>
+          {enableQr && (
+            <div className="bg-amber-50 m-auto mt-5 overflow-hidden w-24 p-2 h-24 min-w-24 flex flex-col rounded-xl justify-center items-center">
+              <div
+                ref={qrRef}
+                className="bg-amber-50 overflow-hidden w-24 p-2 h-24 min-w-24 flex flex-col gap-2 rounded-xl justify-center items-center"
+              >
+                <QRCode value={`${qrBase}/${landerName}`} />
+              </div>
 
-            <button
-              onClick={() => {
-                track("ButtonClick", {
-                  props: {
-                    buttonName: "Download QR Code",
-                    lander: landerName,
-                    currentDomain: window.location.hostname,
-                  },
-                });
-                handleDownload();
-              }}
-              className="text-xs cursor-pointer"
-            >
-              Download
-            </button>
-          </div>
+              <button
+                onClick={() => {
+                  track("ButtonClick", {
+                    props: {
+                      buttonName: "Download QR Code",
+                      lander: landerName,
+                      currentDomain: window.location.hostname,
+                    },
+                  });
+                  handleDownload();
+                }}
+                className="text-xs cursor-pointer"
+              >
+                Download
+              </button>
+            </div>
+          )}
           <div className="flex flex-col gap-3 items-center mt-8">
             <button
               onClick={() =>
@@ -668,7 +674,15 @@ function Wireframe() {
             >
               Join the community get your lander here!
             </a>
-            <img src={MBLLogo} className="w-16 md:w-24 h-16 md:h-24" alt="" />
+            {enableMblLogo && (
+              <a href="https://mybrandlife.me" target="_blank">
+                <img
+                  src={MBLLogo}
+                  className="w-16 md:w-24 h-16 md:h-24"
+                  alt=""
+                />
+              </a>
+            )}
           </div>
         </div>
       </div>
