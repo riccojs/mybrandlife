@@ -321,12 +321,14 @@ function Setting() {
               description="If QR is hidden, it will be removed from visibility on your subscriber page and will not be accessible to subscribers."
               label="Show or hide QR"
               name="enableQr"
+              isShow={false}
             />
             <ToggleAccessSetting
               title="Do you want to hide MBL logo from your lander?"
-              description="If MBL logo is hidden, it will be removed from visibility on your subscriber page and will not be accessible to subscribers."
+              description="If MBL logo is hidden, it will be removed from visibility on your subscriber page and will not be accessible to subscribers. Disabling this component is not available at this time."
               label="Show or hide MBL logo"
               name="enableMblLogo"
+              isShow={true}
             />
             {userAuth && userAuth?.userTemplete?.length > 0 && (
               <UpdateMerchendiseStatus />

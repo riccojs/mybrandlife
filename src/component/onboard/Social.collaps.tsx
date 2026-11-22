@@ -2,6 +2,7 @@ import { useState, type RefObject, type SetStateAction } from "react";
 import { ChevronDown, CircleAlert } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { OnboardTypes } from "../../utils/user.types";
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 interface UserType {
   user: {
@@ -83,6 +84,18 @@ function SocialCollaps({
       } else {
         links[platform] = "";
       }
+      return {
+        ...prev,
+        socialLinks: links,
+      };
+    });
+  };
+
+  const handleDelete = (platform: string) => {
+    setOnboard((prev) => {
+      const links = { ...prev.socialLinks };
+      delete links[platform];
+
       return {
         ...prev,
         socialLinks: links,
@@ -268,34 +281,44 @@ function SocialCollaps({
                     <label className="text-sm md:text-md font-medium text-[#1F2534]">
                       {name}:
                     </label>
-                    {name === "EMAIL" ? (
-                      <input
-                        type="email"
-                        value={onboard.socialLinks?.[name] || ""}
-                        onChange={(e) => handleChange(e, name)}
-                        required
-                        placeholder="e.x example@gmail.com"
-                        className="bg-[#FBFCFD] border border-[#C6CFDC] focus:outline focus:outline-[#96c94b] focus:border py-3 px-3 w-full rounded-xl text-sm md:text-md"
-                      />
-                    ) : name === "PHONE" || name === "WHATSAPP" ? (
-                      <input
-                        type="number"
-                        value={onboard.socialLinks?.[name] || ""}
-                        onChange={(e) => handleChange(e, name)}
-                        required
-                        placeholder="e.x 123-456-7856"
-                        className="bg-[#FBFCFD] border border-[#C6CFDC] focus:outline focus:outline-[#96c94b] focus:border py-3 px-3 w-full rounded-xl text-normal"
-                      />
-                    ) : (
-                      <input
-                        type="url"
-                        value={onboard.socialLinks?.[name] || ""}
-                        onChange={(e) => handleChange(e, name)}
-                        required
-                        placeholder="e.x https://example.com"
-                        className="bg-[#FBFCFD] border border-[#C6CFDC] focus:outline focus:outline-[#96c94b] focus:border py-3 px-3 w-full rounded-xl text-normal"
-                      />
-                    )}
+                    <div className="relative">
+                      {name === "EMAIL" ? (
+                        <input
+                          type="email"
+                          value={onboard.socialLinks?.[name] || ""}
+                          onChange={(e) => handleChange(e, name)}
+                          required
+                          placeholder="e.x example@gmail.com"
+                          className="bg-[#FBFCFD] border border-[#C6CFDC] focus:outline focus:outline-[#96c94b] focus:border py-3 px-3 w-full rounded-xl text-sm md:text-md"
+                        />
+                      ) : name === "PHONE" || name === "WHATSAPP" ? (
+                        <input
+                          type="number"
+                          value={onboard.socialLinks?.[name] || ""}
+                          onChange={(e) => handleChange(e, name)}
+                          required
+                          placeholder="e.x 123-456-7856"
+                          className="bg-[#FBFCFD] border border-[#C6CFDC] focus:outline focus:outline-[#96c94b] focus:border py-3 px-3 w-full rounded-xl text-normal"
+                        />
+                      ) : (
+                        <input
+                          type="url"
+                          value={onboard.socialLinks?.[name] || ""}
+                          onChange={(e) => handleChange(e, name)}
+                          required
+                          placeholder="e.x https://example.com"
+                          className="bg-[#FBFCFD] border border-[#C6CFDC] focus:outline focus:outline-[#96c94b] focus:border py-3 px-3 w-full rounded-xl text-normal"
+                        />
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(name)}
+                        className="absolute top-2.5 right-2 cursor-pointer bg-red-100 text-red-500 w-8 h-8 min-w-8 rounded-full flex justify-center items-center transition-colors"
+                        title={`Delete ${name}`}
+                      >
+                        <RiDeleteBin5Line size={15} />
+                      </button>
+                    </div>
                   </div>
                 ))}
             </div>

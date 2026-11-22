@@ -13,9 +13,16 @@ interface DataType {
   description: string;
   label: string;
   name: ToggleField;
+  isShow: boolean;
 }
 
-function ToggleAccessSetting({ title, description, label, name }: DataType) {
+function ToggleAccessSetting({
+  title,
+  description,
+  label,
+  name,
+  isShow,
+}: DataType) {
   const { user: userData } = useAuth() as {
     user: {
       enableQr: boolean;
@@ -68,7 +75,7 @@ function ToggleAccessSetting({ title, description, label, name }: DataType) {
             <input
               type="checkbox"
               checked={checked}
-              disabled={isLoading}
+              disabled={isLoading || isShow}
               onChange={(e) => setChecked(e.target.checked)}
             />
             <span className="slider round"></span>
@@ -85,17 +92,18 @@ function ToggleAccessSetting({ title, description, label, name }: DataType) {
           <ArrowRight size={20} />
         </button>
       </div>
-
-      <WarningPopup
-        open={open}
-        title={title}
-        description={description}
-        smButton="Update"
-        clButton="Close"
-        onClose={() => setOpen(false)}
-        onConfirm={handleSubmit}
-        loading={isLoading}
-      />
+      {!isShow && (
+        <WarningPopup
+          open={open}
+          title={title}
+          description={description}
+          smButton="Update"
+          clButton="Close"
+          onClose={() => setOpen(false)}
+          onConfirm={handleSubmit}
+          loading={isLoading}
+        />
+      )}
     </div>
   );
 }
