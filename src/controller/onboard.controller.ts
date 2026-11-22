@@ -906,13 +906,26 @@ export async function onboardingUser(req: Request, res: Response) {
 
     // vCard creation
     if (vfrCreate === "yes") {
-      const { midName, email, phone, address, landerName } = existUser;
-      card.set("fn", midName || "");
+      const {
+        midName,
+        email,
+        phone,
+        address,
+        landerName,
+        privateDomain,
+        domain,
+        firstName,
+        lastName,
+      } = existUser;
+      const website = privateDomain ? privateDomain : `${domain}/${landerName}`;
+      card.set("fn", `${firstName || ""} ${lastName || ""}`.trim());
+      card.set("n", `${lastName || ""};${firstName || ""};${midName || ""};;`);
       card.set("note", offerings);
       card.set("org", landerName || "");
       card.set("title", tagLine || "");
       card.set("email", email || "");
       card.set("tel", phone || "");
+      card.set("url", website || "");
       const primaryAddress = address?.find((item) => item.type === "PRIMARY");
       const adrString = `${primaryAddress?.streetOne ?? ""}, ${primaryAddress?.streetTow ?? ""}`;
       card.set("adr", adrString);
@@ -1490,18 +1503,28 @@ export async function updateTempleteInfos(req: Request, res: Response) {
     }
 
     // create vfc file
-    if (existTemplete?.user && !existTemplete.vcfFile) {
-      const { midName, email, phone, address, landerName } =
-        existTemplete?.user;
+    if (existTemplete?.user) {
+      const {
+        midName,
+        email,
+        phone,
+        address,
+        landerName,
+        domain,
+        privateDomain,
+      } = existTemplete?.user;
+      const website = privateDomain ? privateDomain : `${domain}/${landerName}`;
       const primaryAddress = address?.find((item) => item.type === "PRIMARY");
       const adrString = `${primaryAddress?.streetOne ?? ""}, ${primaryAddress?.streetTow ?? ""}`;
-      card.set("fn", midName ?? "");
+      card.set("fn", `${firstName || ""} ${lastName || ""}`.trim());
+      card.set("n", `${lastName || ""};${firstName || ""};${midName || ""};;`);
       card.set("note", offerings);
       card.set("org", landerName || "");
       card.set("title", tagLine || "");
       card.set("email", email || "");
       card.set("tel", phone || "");
       card.set("adr", adrString);
+      card.set("url", website || "");
       const portraitPath = existTemplete?.logoImage;
       if (portraitPath) {
         const portraitData = await getBase64Image(portraitPath);
