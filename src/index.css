@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  transition: 0.3s ease;
+}
+.inactive {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-100%);
+  transition: 0.3s ease;
+}
