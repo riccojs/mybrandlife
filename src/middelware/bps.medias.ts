@@ -1,6 +1,6 @@
 import multer from "multer";
 import fs from "fs";
-const uploadPath = process.env.PUBLIC_PATH as string;
+const uploadPath = process.env.PUBLIC_PATH || "public";
 
 if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath, { recursive: true });

@@ -3,10 +3,9 @@ import { Prisma } from "../utils/prisma.js";
 import status from "../utils/status.js";
 import response from "../utils/response.js";
 import bcrypt from "bcryptjs";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import { setAuthCookie, clearAuthCookie, ROLES } from "../middelware/auth.js";
 import fileProtocol from "./fileProtocol.js";
 import activityLog from "../middelware/activity.log.js";
-const SecretKey = process.env.SECRET_KEY ?? "";
 const { SUCCESS_STATUS, ERROR_STATUS, LOG_SUCCESS, LOG_FAILED } = status;
 const {
   DATA_NOT_FOUND_MESSAGE,
@@ -222,23 +221,16 @@ export async function login(req: Request, res: Response) {
       });
     }
     const matchPassword = await bcrypt.compare(password, existAdmin.password);
-    const token = jwt.sign(
-      { email: existAdmin.email, id: existAdmin.id, role: "ADMIN" },
-      SecretKey,
-      { expiresIn: "7d" },
-    );
     if (!matchPassword) {
       return res.status(400).json({
         status: ERROR_STATUS,
         message: PASSWORD_NOT_MATCH_MESSAGE,
       });
     }
-    res.cookie("adminToken", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      path: "/",
+    setAuthCookie(res, {
+      email: existAdmin.email,
+      id: existAdmin.id,
+      role: ROLES.ADMIN,
     });
     res.status(200).json({
       status: SUCCESS_STATUS,
@@ -268,19 +260,15 @@ export async function login(req: Request, res: Response) {
 
 // looged admin
 export async function logged(req: Request, res: Response) {
-  interface AuthTokenPayload extends JwtPayload {
-    id: string;
-    email: string;
-  }
-  const token = req.cookies.adminToken;
-  if (!token)
+  // authenticate(ROLES.ADMIN) has already verified the adminToken cookie.
+  const decoded = req.auth;
+  if (!decoded)
     return res.status(401).json({
       status: ERROR_STATUS,
       message: UNAUTHORIZE_ERROR_MESSAGE,
     });
 
   try {
-    const decoded = jwt.verify(token, SecretKey) as AuthTokenPayload;
     const user = await Prisma.admin.findUnique({
       where: { id: decoded.id },
     });
@@ -323,13 +311,7 @@ export async function logout(req: Request, res: Response) {
         message: DATA_NOT_FOUND_MESSAGE,
       });
     }
-    res.cookie("adminToken", "", {
-      httpOnly: true,
-      expires: new Date(0),
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-    });
+    clearAuthCookie(res, ROLES.ADMIN);
     res.status(200).json({
       status: SUCCESS_STATUS,
       message: LOGOUT_SUCCESSFUL_MESSAGE,

@@ -18,7 +18,7 @@ const bpsPlans: any = {
 
 const { INVALID_PLAN_MESSAGE, DATA_NOT_FOUND_MESSAGE } = response;
 const { ERROR_STATUS } = status;
-const bpsURL = process.env.BPS_CORS_URL;
+const bpsSiteUrl = process.env.BPS_SITE_URL || "https://mybrandlife.me";
 
 interface DataType {
   planKey: string;
@@ -26,13 +26,12 @@ interface DataType {
 }
 
 export async function bpsPayment({ planKey, userId }: DataType) {
-  const successUrl = `https://mybrandlife.me/auth/verify`;
-  const failedUrl = `https://mybrandlife.me/pricing`;
+  const successUrl = `${bpsSiteUrl}/auth/verify`;
+  const failedUrl = `${bpsSiteUrl}/pricing`;
 
   try {
     const existUser = await Prisma.user.findUnique({
       where: { id: userId },
-      include: { membership: true },
     });
     if (!existUser) {
       throw new Error(DATA_NOT_FOUND_MESSAGE);
@@ -50,7 +49,7 @@ export async function bpsPayment({ planKey, userId }: DataType) {
     } else {
       customer = await stripe.customers.create({
         email: email ?? "",
-        name: username ?? "",
+        name: username || `${existUser.firstName} ${existUser.lastName}`,
       });
     }
     const session = await stripe.checkout.sessions.create({

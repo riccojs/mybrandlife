@@ -78,6 +78,7 @@ export const response = {
   USER_SUSPEND_MESSAGE: "Account Suspended",
   USER_DEACTIVATE_MESSAGE: "Account Deactivated",
   USER_ACTIVATE_MESSAGE: "Account Activated",
+  USER_ACTIVATE_UNVERIFIED_MESSAGE: "Account Not Active",
   BPS_USER_REGISTER_SUCCESSFUL_MESSAGE: "Registration Successful",
   BPS_MEMBERSHIP_CREATE_FAILED: "Membership create failed",
   BPS_CUSTOMER_ALREADY_EXIST: "Customer id invalid",
@@ -91,6 +92,27 @@ export const response = {
     "Failed to create Google Drive folder",
   BPS_STAFF_REGISTER_SUCCESSFUL_MESSAGE: "Staff register successful",
   INAVALID_FILE_NAME_MESSAGE: "Invalid file name",
+  DRIVE_FOLDER_NOT_FOUND_MESSAGE: "Drive folder not found!",
+  WORKSPACE_CREATE_SUCCESSFUL_MESSAGE: "Workspace Create Successful",
+  IVALID_WORKSPACE_ID_MESSAGE: "Invalid workspace Id",
+  ASSETS_UPLOAD_SUCCESSFUL_MESSAGE: "Assets uploaded successfully.",
+  BPS_MEMBERSHIP_ALREADY_ACTIVE_MESSAGE: "BPS membership already active!",
+  APPROVER_NOT_FOUND_MESSAGE: "Approver staff not found!",
+  MEDIA_NOT_FOUND_MESSAGE: "Media not found.",
+  REQUIRED_FIELDS_MISSING_MESSAGE: "Required fields missing!",
+  BPS_MEMBERSHIP_NOT_FOUND_MESSAGE: "BPS membership not found!",
+  BPS_MEMBERSHIP_NOT_ACTIVE_MESSAGE: "BPS membership is not active!",
+  BPS_MEMBERSHIP_ALREADY_CLOSING_MESSAGE:
+    "BPS membership is already set to close at the end of the period.",
+  BPS_MEMBERSHIP_CLOSE_SCHEDULED_MESSAGE:
+    "BPS membership will close at the end of the current period.",
+  BPS_MEMBERSHIP_CLOSED_MESSAGE: "BPS membership closed.",
+  BPS_MEMBERSHIP_RESUMED_MESSAGE: "BPS membership renewed. It will continue.",
+  BPS_MEMBERSHIP_RENEW_CHECKOUT_MESSAGE:
+    "Complete the payment to renew your BPS membership.",
+  BPS_MEMBERSHIP_PENDING_MESSAGE:
+    "BPS membership payment is not complete yet. Use checkout.",
+  BPS_SUBSCRIPTION_NOT_FOUND_MESSAGE: "Stripe subscription not found!",
 };
 
 export default response;

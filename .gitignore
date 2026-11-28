@@ -13,6 +13,7 @@ node_modules/.prisma
 ecosystem.config.cjs
 public
 .github
+/.claude
 
 # Logs
 npm-debug.log*

@@ -2,27 +2,27 @@ import express from "express";
 import publicSecretAuth from "../../middelware/public.secret.auth.js";
 import {
   loggedBpsUser,
-  registerBpsUser,
   checkoutBpsUser,
   verifyBpsUser,
   loginBpsUser,
-  OnboardBpsUser,
-  registerBpsStaff,
+  registerBpsUser,
+  createUserWorkspace,
 } from "../../controller/bps/bps.auth.conroller.js";
-import bpsMedias from "../../middelware/bps.medias.js";
-import { googleDriveConnect } from "../../config/googleDriveConnect.js";
-import { googleDriveCallback } from "../../config/googleDriveCallback.js";
-import bpsAuth from "../../middelware/bpsAuth.js";
+import {
+  authenticate,
+  logoutRole,
+  ROLES,
+} from "../../middelware/auth.js";
+
+const bpsAuth = authenticate(ROLES.BPS, ROLES.STAFF);
 const router = express.Router();
 
-router.get("/google-drive/connect", googleDriveConnect);
-router.get("/google-drive/callback", googleDriveCallback);
-router.get("/logged", bpsAuth, loggedBpsUser);
+router.get("/logged", authenticate(ROLES.BPS), loggedBpsUser);
+router.post("/logout", logoutRole(ROLES.BPS));
 router.post("/register", publicSecretAuth, registerBpsUser);
-router.post("/register/staff", bpsAuth, registerBpsStaff);
 router.post("/login", publicSecretAuth, loginBpsUser);
 router.post("/verify", publicSecretAuth, verifyBpsUser);
 router.post("/checkout/:id", bpsAuth, checkoutBpsUser);
-router.post("/onboard/:id", bpsMedias, bpsAuth, OnboardBpsUser);
+router.patch("/workspace/:id", bpsAuth, createUserWorkspace);
 
 export default router;

@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "ProccessStatus" ADD VALUE 'ONBOARD_SUBMITED';

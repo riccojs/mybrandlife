@@ -480,14 +480,10 @@ model trackExport {
 }
 
 model setting {
-  id             String   @id @default(uuid())
-  maintenance    Boolean  @default(false)
-  accountEmail   String?
-  refreshToken   String?
-  rootFolderId   String?
-  parentFolderId String?
-  create_at      DateTime @default(now())
-  update_at      DateTime @updatedAt
+  id          String   @id @default(uuid())
+  maintenance Boolean  @default(false)
+  create_at   DateTime @default(now())
+  update_at   DateTime @updatedAt
 }
 
 model spining {
@@ -525,57 +521,79 @@ model notification {
 }
 
 model bpsMembership {
-  id            String                  @id @default(uuid())
-  userId        String?                 @unique
+  id            String           @id @default(uuid())
+  userId        String?          @unique
   plan          String
   heading       String
   tier          String
   price         Int
   setupFee      Int
-  status        ActivationStatus        @default(PENDING)
+  status        ActivationStatus @default(PENDING)
   transactionId String
   activate_at   DateTime?
-  user          user?                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Stripe subscription behind this membership (set by the checkout webhook).
+  subscriptionId    String?
+  // true = the member asked to close; access ends at activate_at, no more renewals.
+  cancelAtPeriodEnd Boolean   @default(false)
+  canceled_at       DateTime?
+  csAccountId   String?
+  csWorkspaceId String?
+  user          user?            @relation(fields: [userId], references: [id], onDelete: Cascade)
   packages      bpsPackage[]
   onboards      bpsOnboard[]
-  posts         bpsMembershipPost[]
-  workspace     bpsMembershipWorkspace?
-  drive         bpsMembershipDrive?
-  create_at     DateTime                @default(now())
-  update_at     DateTime                @updatedAt
+  platforms     bpsPlatfrom[]
+  create_at     DateTime         @default(now())
+  update_at     DateTime         @updatedAt
+
+  @@index([transactionId])
+  @@index([csWorkspaceId])
+  @@index([subscriptionId])
 }
 
 model bpsPackage {
-  id           String            @id @default(uuid())
+  id           String        @id @default(uuid())
   membershipId String
   key          FeatureName
   value        Int
-  platforms    packagePlatform[]
-  membership   bpsMembership     @relation(fields: [membershipId], references: [id], onDelete: Cascade)
-  create_at    DateTime          @default(now())
-  update_at    DateTime          @updatedAt
+  membership   bpsMembership @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  create_at    DateTime      @default(now())
+  update_at    DateTime      @updatedAt
+}
+
+model bpsPlatfrom {
+  id            String         @id @default(uuid())
+  membershipId  String
+  name          PlatformName
+  csAccountId   String?
+  csWorkspaceId String?
+  attemp        String?        @unique
+  status        PlatformStatus
+  membership    bpsMembership  @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  create_at     DateTime       @default(now())
+  update_at     DateTime       @updatedAt
+
+  @@unique([membershipId, name])
 }
 
 model bpsStaff {
-  id        String              @id @default(uuid())
+  id        String           @id @default(uuid())
   firstName String
   lastName  String
   userName  String?
-  email     String              @unique
+  email     String           @unique
   password  String
   role      StaffRole
   profile   String?
   phone     String?
-  secretKey String              @unique @default(uuid())
-  status    ActivationStatus    @default(PENDING)
+  secretKey String           @unique @default(uuid())
+  status    ActivationStatus @default(PENDING)
   approver  bpsApprover[]
-  posts     bpsMembershipPost[]
-  create_at DateTime            @default(now())
-  update_at DateTime            @updatedAt
+  create_at DateTime         @default(now())
+  update_at DateTime         @updatedAt
 }
 
 model bpsOnboard {
-  id              String              @id @default(uuid())
+  id              String          @id @default(uuid())
   membershipId    String
   brandName       String
   website         String
@@ -602,24 +620,11 @@ model bpsOnboard {
   cover           String
   brandAssests    String[]
   approvalMode    BpsApprovalMode
-  membership      bpsMembership     @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  membership      bpsMembership   @relation(fields: [membershipId], references: [id], onDelete: Cascade)
   bpsApprover     bpsApprover[]
-  posts           bpsMembershipPost[]
-  onboardProccess bpsProccessStatus[]
-  create_at       DateTime            @default(now())
-  update_at       DateTime            @updatedAt
-}
-
-model packagePlatform {
-  id         String       @id @default(uuid())
-  packageId  String
-  name       PlatformName
-  url        String
-  active     Boolean      @default(false)
-  expireAt   DateTime
-  bpsPackage bpsPackage   @relation(fields: [packageId], references: [id], onDelete: Cascade)
-  create_at  DateTime     @default(now())
-  update_at  DateTime     @updatedAt
+  onboardProccess bpsProccess[]
+  create_at       DateTime        @default(now())
+  update_at       DateTime        @updatedAt
 }
 
 model bpsApprover {
@@ -637,55 +642,7 @@ model bpsApprover {
   update_at  DateTime   @updatedAt
 }
 
-model bpsMembershipDrive {
-  id                String         @id @default(uuid())
-  membershipId      String?        @unique
-  folderId          String?
-  folderUrl         String?
-  clientGoogleEmail String?
-  accessStatus      String?
-  createdSharedAt   DateTime?
-  sharedAt          DateTime?
-  membership        bpsMembership? @relation(fields: [membershipId], references: [id], onDelete: Cascade)
-  create_at         DateTime       @default(now())
-  update_at         DateTime       @updatedAt
-}
-
-model bpsMembershipWorkspace {
-  id                 String             @id @default(uuid())
-  membershipId       String?            @unique
-  provider           String
-  workspaceName      String?
-  staffWorkspaceUrl  String?
-  provisioningStatus BpsWorkspaceStatus @default(NOT_CONFIGURED)
-  notes              String?
-  membership         bpsMembership?     @relation(fields: [membershipId], references: [id], onDelete: Cascade)
-  create_at          DateTime           @default(now())
-  update_at          DateTime           @updatedAt
-}
-
-model bpsMembershipPost {
-  id           String           @id @default(uuid())
-  membershipId String
-  staffId      String
-  onboardId    String
-  title        String
-  description  String
-  requestType  String
-  requestDate  DateTime
-  deadline     DateTime
-  assests      String[]
-  priority     String
-  status       ActivationStatus @default(PENDING)
-  note         String?
-  membership   bpsMembership    @relation(fields: [membershipId], references: [id], onDelete: Cascade)
-  staff        bpsStaff         @relation(fields: [staffId], references: [id], onDelete: Cascade)
-  onboard      bpsOnboard       @relation(fields: [onboardId], references: [id], onDelete: Cascade)
-  create_at    DateTime         @default(now())
-  update_at    DateTime         @updatedAt
-}
-
-model bpsProccessStatus {
+model bpsProccess {
   id          String         @id @default(uuid())
   onboardId   String
   name        String
@@ -698,6 +655,13 @@ model bpsProccessStatus {
 }
 
 // enum
+enum PlatformStatus {
+  CREATED
+  CONNECTED
+  EXPIRED
+  DISCONNECTED
+}
+
 enum FeatureName {
   SOCIAL_PLATFORM
   GENERAL_POST
@@ -714,13 +678,12 @@ enum FeatureName {
 }
 
 enum ProccessStatus {
+  ONBOARD_SUBMITED
   VERIFY_ONBOARDING
   VERIFY_BRAND_ASSETS
   CREATE_WORKSPACE
   CONNECT_SOCIAL
-  CONFIGURE_APPROVAL
   CONFIGURE_CALENDAR
-  CONFIGURE_REPORTING
   FINAL_REVIEW
 }
 
@@ -748,13 +711,6 @@ enum StaffRole {
 enum BpsApprovalMode {
   APPROVAL_REQUIRED
   LET_BPS_HANDLE
-}
-
-enum BpsWorkspaceStatus {
-  NOT_CONFIGURED
-  PENDING
-  CONFIGURED
-  NEEDS_UPDATE
 }
 
 enum CodeType {

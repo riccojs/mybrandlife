@@ -7,7 +7,7 @@ import membershipCreator from "../middelware/membership.creator.js";
 import { paymentCreator } from "../middelware/payment.creator.js";
 import { registerEmail } from "../lib/register.email.js";
 import { UserType } from "../utils/types.js";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import { setAuthCookie, clearAuthCookie, ROLES } from "../middelware/auth.js";
 import welcomeEmail from "../lib/welcome.email.js";
 import { v4 as uuidv4 } from "uuid";
 import resetEmail from "../lib/reset.email.js";
@@ -19,7 +19,6 @@ import defaultWristband from "../middelware/default.wristband.js";
 import activityLog from "../middelware/activity.log.js";
 import notificationCreator from "../middelware/notification.createor.js";
 
-const SecretKey = process.env.SECRET_KEY ?? "";
 const corsUrl = process.env.FRONTEND_CORS_URL ?? "";
 const { SUCCESS_STATUS, ERROR_STATUS, LOG_SUCCESS, LOG_FAILED } = status;
 const {
@@ -46,6 +45,7 @@ const {
   USER_ACTIVATE_MESSAGE,
   DELETE_SUCCESS_MESSAGE,
   USER_DEACTIVATE_MESSAGE,
+  USER_ACTIVATE_UNVERIFIED_MESSAGE,
 } = response;
 
 // get all user
@@ -169,6 +169,7 @@ export async function getOneUser(req: Request, res: Response) {
           },
         },
         address: true,
+        bpsMembership: true,
       },
     });
     if (!existUser) {
@@ -559,24 +560,23 @@ export async function login(req: Request, res: Response) {
         message: USER_DEACTIVATE_MESSAGE,
       });
     }
+    if (existUser?.status === "PENDING") {
+      return res.status(400).json({
+        status: ERROR_STATUS,
+        message: USER_ACTIVATE_UNVERIFIED_MESSAGE,
+      });
+    }
     const matchPassword = await bcrypt.compare(password, existUser.password);
-    const token = jwt.sign(
-      { email: existUser.email, id: existUser.id, role: "USER" },
-      SecretKey,
-      { expiresIn: "7d" },
-    );
     if (!matchPassword) {
       return res.status(400).json({
         status: ERROR_STATUS,
         message: PASSWORD_NOT_MATCH_MESSAGE,
       });
     }
-    res.cookie("userToken", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      path: "/",
+    setAuthCookie(res, {
+      email: existUser.email,
+      id: existUser.id,
+      role: ROLES.USER,
     });
     res.status(200).json({
       status: SUCCESS_STATUS,
@@ -626,13 +626,7 @@ export async function logout(req: Request, res: Response) {
       endpoint: req.originalUrl,
       method: req.method,
     });
-    res.cookie("userToken", "", {
-      httpOnly: true,
-      expires: new Date(0),
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-    });
+    clearAuthCookie(res, ROLES.USER);
     res.status(200).json({
       status: SUCCESS_STATUS,
       message: LOGOUT_SUCCESSFUL_MESSAGE,
@@ -695,9 +689,9 @@ export async function verify(req: Request, res: Response) {
       where: { id: existOtp.userId },
       data: { status: "ACTIVATE" },
     });
-    const lander = existUser.landerName ?? "";
+    const firstName = existUser.firstName ?? "";
     const email = existUser.email ?? "";
-    await welcomeEmail(lander, email);
+    await welcomeEmail(firstName, email);
     await activityLog({
       userId: existUser?.id,
       action: "Verify User",
@@ -732,18 +726,14 @@ export async function verify(req: Request, res: Response) {
 
 // looged user
 export async function logged(req: Request, res: Response) {
-  interface AuthTokenPayload extends JwtPayload {
-    id: string;
-    email: string;
-  }
-  const token = req.cookies.userToken;
-  if (!token)
+  // authenticate(ROLES.USER) has already verified the userToken cookie.
+  const decoded = req.auth;
+  if (!decoded)
     return res.status(401).json({
       status: ERROR_STATUS,
       message: UNAUTHORIZE_ERROR_MESSAGE,
     });
   try {
-    const decoded = jwt.verify(token, SecretKey) as AuthTokenPayload;
     let brandshare;
     const existUser = await Prisma.user.findUnique({
       where: { id: decoded.id, status: "ACTIVATE" },

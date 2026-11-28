@@ -1,5 +1,5 @@
 import express from "express";
-import auth from "../middelware/auth.js";
+import auth, { authenticate, ROLES } from "../middelware/auth.js";
 import publicSecretAuth from "../middelware/public.secret.auth.js";
 import {
   login,
@@ -18,7 +18,7 @@ import profile from "../middelware/profile.js";
 const router = express.Router();
 
 router.get("/activities", auth, getAllActivities);
-router.get("/logged", auth, logged);
+router.get("/logged", authenticate(ROLES.ADMIN), logged);
 router.get("/setting", publicSecretAuth, getSetting);
 router.get("/activities/:id", auth, getOneActivities);
 router.post("/register", publicSecretAuth, register);

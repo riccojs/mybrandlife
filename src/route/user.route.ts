@@ -1,5 +1,5 @@
 import express from "express";
-import auth from "../middelware/auth.js";
+import auth, { authenticate, ROLES } from "../middelware/auth.js";
 import {
   getAllUser,
   register,
@@ -32,7 +32,7 @@ import profile from "../middelware/profile.js";
 
 const router = express.Router();
 
-router.get("/logged", auth, logged);
+router.get("/logged", authenticate(ROLES.USER), logged);
 router.get("/admin", publicSecretAuth, getAllUserByAdmin);
 router.get("/affiliate/:name", publicSecretAuth, getOneUserByLandername);
 router.get("/", auth, getAllUser);

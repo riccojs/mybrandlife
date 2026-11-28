@@ -26,6 +26,20 @@ const bpsMembershipWebhookSecret =
   process.env.BPS_MEMBERSHIP_WEBHOOK_SECRET ?? "";
 const baseURL = process.env.FRONTEND_CORS_URL;
 
+// New paid-until date for a renewal: one period after the current paid-until
+// date, or after now if that date has already passed.
+export function extendPaidUntil(
+  paidUntil: Date | null,
+  period: "monthly" | "yearly",
+  now: Date = new Date(),
+): Date {
+  const base =
+    paidUntil && new Date(paidUntil) > now ? new Date(paidUntil) : new Date(now);
+  if (period === "monthly") base.setMonth(base.getMonth() + 1);
+  else base.setFullYear(base.getFullYear() + 1);
+  return base;
+}
+
 // membership webhook
 export async function membershipWebhook(req: Request, res: Response) {
   const sig = req.headers["stripe-signature"] as string;
@@ -130,14 +144,27 @@ export async function renewalWebhook(req: Request, res: Response) {
     );
     if (event.type === "invoice.payment_succeeded") {
       const invoice = event.data.object as Stripe.Invoice;
+      // The first invoice of a new subscription is already handled by the
+      // checkout.session.completed webhooks. Extending here too would add an
+      // extra month/year to the first period.
+      if (invoice.billing_reason === "subscription_create") {
+        return res.status(200).json({ received: true });
+      }
       let existUser = null;
+      let subscriptionMetadata: Stripe.Metadata = {};
+      // Newer Stripe API versions put the subscription on invoice.parent.
+      const parentSub = invoice.parent?.subscription_details?.subscription;
+      const lineSub = invoice.lines?.data?.[0]?.subscription;
       const subscriptionId =
-        typeof invoice.lines?.data?.[0]?.subscription === "string"
-          ? invoice.lines.data[0].subscription
-          : null;
+        typeof parentSub === "string"
+          ? parentSub
+          : typeof lineSub === "string"
+            ? lineSub
+            : null;
       if (subscriptionId) {
         const subscription =
           await stripe.subscriptions.retrieve(subscriptionId);
+        subscriptionMetadata = subscription.metadata ?? {};
         const userId = subscription.metadata.userId;
         if (!userId) throw new Error(USER_ID_MISSING_IN_SUBSCRIPTION);
         existUser = await Prisma.user.findUnique({
@@ -157,20 +184,41 @@ export async function renewalWebhook(req: Request, res: Response) {
       }
       if (!existUser) throw new Error(DATA_NOT_FOUND_MESSAGE);
       const { landerName, email, frequency, planKey } = existUser;
-      const baseDate = existUser.membership?.activate_at
-        ? new Date(existUser.membership.activate_at) > new Date()
-          ? new Date(existUser.membership.activate_at)
-          : new Date()
-        : new Date();
-      const newExpireDate =
-        frequency === "monthly"
-          ? new Date(baseDate.setMonth(baseDate.getMonth() + 1))
-          : new Date(baseDate.setFullYear(baseDate.getFullYear() + 1));
 
-      await Prisma.userMembership.update({
-        where: { userId: existUser.id },
-        data: { activate_at: newExpireDate.toISOString(), status: "ACTIVATE" },
-      });
+      // BPS subscriptions carry metadata.planKey (e.g. GROWTH_MONTHLY); main
+      // subscriptions carry metadata.planId. Renew the BPS membership too, or
+      // the expiry job would close paying BPS customers after one period.
+      const bpsPlanKey = subscriptionMetadata.planKey;
+      if (bpsPlanKey) {
+        const bps = await Prisma.bpsMembership.findUnique({
+          where: { userId: existUser.id },
+        });
+        if (bps) {
+          const bpsNewExpire = extendPaidUntil(
+            bps.activate_at,
+            bpsPlanKey.toUpperCase().endsWith("_MONTHLY") ? "monthly" : "yearly",
+          );
+          await Prisma.bpsMembership.update({
+            where: { id: bps.id },
+            data: { activate_at: bpsNewExpire, status: "ACTIVATE" },
+          });
+        }
+      }
+
+      if (existUser.membership) {
+        const newExpireDate = extendPaidUntil(
+          existUser.membership.activate_at,
+          frequency === "monthly" ? "monthly" : "yearly",
+        );
+        await Prisma.userMembership.update({
+          where: { userId: existUser.id },
+          data: {
+            activate_at: newExpireDate,
+            status: "ACTIVATE",
+            expired: false, // re-open a membership the expiry job had closed
+          },
+        });
+      }
       await webhookEmail(
         landerName ?? "",
         email ?? "",
@@ -443,11 +491,12 @@ export async function bpsMembershipWebhook(req: Request, res: Response) {
       const userId = transaction?.userId ?? "";
 
       const now = new Date();
-      const { tier } = transaction || {};
+      const { tier, plan } = transaction || {};
       const { landerName, email, status } = transaction?.user;
 
+      // plan is the Stripe plan key, e.g. BASIC_MONTHLY / BASIC_YEARLY.
       let activateAt;
-      if (tier === "monthly") {
+      if (plan?.toUpperCase().endsWith("_MONTHLY")) {
         activateAt = new Date(
           now.getFullYear(),
           now.getMonth() + 1,
@@ -464,11 +513,19 @@ export async function bpsMembershipWebhook(req: Request, res: Response) {
       const formattedActivateAt = activateAt
         .toISOString()
         .replace("Z", "+00:00");
+      const subscriptionId =
+        typeof session.subscription === "string"
+          ? session.subscription
+          : (session.subscription?.id ?? null);
       await Prisma.bpsMembership.update({
         where: { id },
         data: {
           activate_at: formattedActivateAt,
           status: "ACTIVATE",
+          // new (or renewed) subscription: remember it, clear any old close request
+          subscriptionId,
+          cancelAtPeriodEnd: false,
+          canceled_at: null,
         },
       });
       if (status === "PENDING") {
@@ -478,13 +535,15 @@ export async function bpsMembershipWebhook(req: Request, res: Response) {
             status: "ACTIVATE",
           },
         });
-        await Prisma.userMembership.update({
-          where: { id: transaction?.user?.membership?.id },
-          data: {
-            status: "ACTIVATE",
-            activate_at: formattedActivateAt,
-          },
-        });
+        if (transaction.user.membership?.id) {
+          await Prisma.userMembership.update({
+            where: { id: transaction.user.membership.id },
+            data: {
+              status: "ACTIVATE",
+              activate_at: formattedActivateAt,
+            },
+          });
+        }
       }
       await webhookEmail(
         landerName ?? "",
@@ -498,6 +557,53 @@ export async function bpsMembershipWebhook(req: Request, res: Response) {
         endpoint: req.originalUrl,
         method: req.method,
       });
+    }
+
+    // Keep the membership in sync when the subscription is changed in Stripe
+    // itself (customer portal, dashboard, or Stripe giving up on failed payments).
+    if (
+      event.type === "customer.subscription.updated" ||
+      event.type === "customer.subscription.deleted"
+    ) {
+      const sub = event.data.object as Stripe.Subscription;
+      // Only the membership's *current* subscription counts: an old one ending
+      // after a renewal must not close the new one. Unknown ids (e.g. main
+      // memberships) are ignored.
+      const membership = await Prisma.bpsMembership.findFirst({
+        where: { subscriptionId: sub.id },
+      });
+      if (membership) {
+        if (event.type === "customer.subscription.deleted") {
+          if (membership.status === "ACTIVATE") {
+            await Prisma.bpsMembership.update({
+              where: { id: membership.id },
+              data: {
+                status: "DEACTIVATE",
+                cancelAtPeriodEnd: false,
+                canceled_at: membership.canceled_at ?? new Date(),
+              },
+            });
+          }
+        } else {
+          const closing = Boolean(sub.cancel_at_period_end || sub.cancel_at);
+          if (closing !== membership.cancelAtPeriodEnd) {
+            await Prisma.bpsMembership.update({
+              where: { id: membership.id },
+              data: {
+                cancelAtPeriodEnd: closing,
+                canceled_at: closing ? (membership.canceled_at ?? new Date()) : null,
+              },
+            });
+          }
+        }
+        await activityLog({
+          userId: membership.userId ?? "",
+          action: `BPS subscription ${event.type.split(".").pop()}`,
+          status: LOG_SUCCESS,
+          endpoint: req.originalUrl,
+          method: req.method,
+        });
+      }
     }
 
     return res.status(200).json({ received: true });

@@ -30,7 +30,7 @@ import CornRouter from "./route/corn.route.js";
 const allowedOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(",").map((o) => o.trim())
   : [];
-const publicPath = process.env.PUBLIC_PATH as string;
+const publicPath = process.env.PUBLIC_PATH || "public";
 
 // app middlewares
 app.use("/webhook", WebhookRouter);
